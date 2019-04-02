@@ -1,0 +1,176 @@
+definitions: {}
+info:
+  title: Focus API
+  version: '1.0'
+paths:
+  /focus/aanvragen:
+    get:
+      description: Alle lopende en afgehandelde aanvragen voor een bepaalde persoon geidentificeerd door een BSN nummer verpakt in een SAML token
+      parameters:
+        - description: TMA encoded BSN
+          in: header
+          name: x-saml-attribute-token1
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            Lopende en Afgeronde Aanvragen
+            
+            De processtappen per product zijn:
+            -- aanvraag
+            -- inBehandeling
+            -- herstelTermijn
+            -- beslissing
+            -- bezwaar
+            
+            Als er geen data beschikbaar is voor een bepaalde processtap is de waarde null
+            
+            Alle data die wordt ontvangen uit de focus API worden door de API geretourneerd
+            
+            Er worden in de API tevens een aantal attributen toegevoegd aan het originele bericht uit de focus API.
+            
+            _id
+            Aanvragen worden gekenmerkt door een soort product, bv Participatiewet en productnaam, bv Levensonderhoud
+            Dit komt terug in de _id, bv 0-1 welke een combinatie is van de index van het soort product (0) en het product (1)
+            
+            Bij een processtap is de _id de index van de processtap op volgorde zoals bovenstaand bij processtappen is toegelicht.
+            
+            _meest_recent
+            _meest_recent bevat de meest recente processtap.
+            
+          schema:
+                    items:
+                      properties:
+                        _id:
+                          type: string
+                        _meest_recent:
+                          type: string
+                        soortProduct:
+                          type: string
+                        dienstverleningstermijn:
+                          type: integer
+                        inspanningsperiode:
+                          type: integer
+                        naam:
+                          type: string
+                        typeBesluit:
+                          type: string
+                        processtappen:
+                          properties:
+                            processtapnaam:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                datum:
+                                  type: string
+                                  format: date-time
+                                reden:
+                                  type: string
+                                document:
+                                  items:
+                                    properties:
+                                      $ref:
+                                        type: string
+                                      id:
+                                        type: string
+                                      isBulk:
+                                        type: string
+                                        enum:
+                                          - true | false
+                                      isDms:
+                                        type: string
+                                        enum:
+                                          - true | false
+                                      omschrijving:
+                                        type: string
+        '500':
+          description: Parameter error or connectivity failure
+      summary: Geeft de lopende en afgehandelde aanvragen terug
+      tags:
+        - focus
+  /focus/document:
+    get:
+      description: voor een bepaalde persoon geidentificeerd door een BSN nummer
+      parameters:
+        - description: document id
+          in: query
+          name: id
+          required: true
+          type: integer
+        - default: 'False'
+          description: Tells if the document is a bulk document
+          in: query
+          name: isBulk
+          required: false
+          type: boolean
+        - default: 'False'
+          description: Tells if the document is a DMS (Document Management System) document
+          in: query
+          name: isDms
+          required: false
+          type: boolean
+        - description: TMA encoded BSN
+          in: header
+          name: x-saml-attribute-token1
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: |
+            Document contents (base64 encoded string), filename and description
+            - description
+            Short description of the document (normally null)
+            - fileName
+            Name of the file, including extension, e.g. doc.pdf
+            - contents
+            Base64 encoded contents
+            - mime_type
+            MIME type (application/pdf voor pdf documenten, anders application/octet-stream)
+          schema:
+            properties:
+              contents:
+                type: string
+                format: byte
+              description:
+                type: string
+              fileName:
+                type: string
+              mime_type:
+                type: string
+            type: object
+        '500':
+          description: Parameter error or connectivity failure
+      summary: Geeft een bij een aanvraag behorend document terug
+      tags:
+        - focus
+  /focus/status/data:
+    get:
+      description: This is tested by creating a session
+      produces:
+        - text/plain
+      responses:
+        '200':
+          description: Data connection with Focus OK
+        '500':
+          description: Data connection with Focus failed
+      summary: Returns "Connectivity to Focus OK" when the Focus Api server is alive.
+      tags:
+        - focus
+  /focus/status/health:
+    get:
+      description: ''
+      produces:
+        - text/plain
+      responses:
+        '200':
+          description: OK
+      summary: Returns OK when the Api server is alive (which is the case if this method gets executed...)
+      tags:
+        - focus
+swagger: '2.0'

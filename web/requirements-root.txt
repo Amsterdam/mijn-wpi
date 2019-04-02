@@ -1,0 +1,25 @@
+requests
+lxml
+
+# flask and plugins
+flask
+flask_cors
+flask_limiter
+flask_testing
+
+# TMA token verification tools
+signxml
+
+# swagger
+connexion
+
+# soap api
+zeep==2.4.0
+# to convert the soap xml to a dict
+xmltodict
+
+# testing tools
+hiro
+mock
+flake8
+coverage

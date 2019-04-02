@@ -1,0 +1,11 @@
+/.idea
+settings.sh
+*.pem
+__pycache__
+/venv
+reports
+/focus-api.iml
+/web/.cache/
+.coverage
+htmlcov/
+vars.sh
