@@ -1,3 +1,4 @@
+
 import os
 import json
 from base64 import b64encode, b64decode
@@ -18,12 +19,12 @@ os.environ['FOCUS_WSDL'] = 'focus/focus.wsdl'
 test_dir = os.path.dirname(os.path.realpath(__file__))
 
 
-from focus.config import config, credentials
-from focus.focusconnect import FocusConnection
-from focus.focusinterpreter import _to_list, _to_type, _to_int, _to_bool, convert_aanvragen
-from focus.saml import verify_saml_token_and_retrieve_saml_attribute, SamlVerificationException
-from focus.server import application
-import focus.server
+from focus.config import config, credentials  # noqa: E402
+from focus.focusconnect import FocusConnection  # noqa: E402
+from focus.focusinterpreter import _to_list, _to_int, _to_bool, convert_aanvragen  # noqa: E402
+from focus.saml import verify_saml_token_and_retrieve_saml_attribute, SamlVerificationException  # noqa: E402
+from focus.server import application  # noqa: E402
+import focus.server  # noqa: E402
 
 
 unencrypted_saml_token = b"""
@@ -205,7 +206,7 @@ class TestSamlToken(TestCase):
         with self.assertRaises(SamlVerificationException):
             with open(os.path.join(test_dir, 'test_tma_cert.crt'), 'rb') as cert_file:
                 cert = cert_file.read()
-                bsn = verify_saml_token_and_retrieve_saml_attribute(
+                verify_saml_token_and_retrieve_saml_attribute(
                     saml_token=saml_token_tampered,
                     attribute='uid',
                     saml_cert=cert)
@@ -284,89 +285,110 @@ class TestInterpreter(TestCase):
         self.assertEqual(_to_bool({}, "x"), {})
 
     def test_convert_aanvragen(self):
-        self.assertEqual(convert_aanvragen({"bsn": 123}, ""), [])
-        self.assertEqual(convert_aanvragen({"bsn": 123, "soortProduct": {}}, ""), [])
-        self.assertEqual(convert_aanvragen({
-            "bsn": 123,
-            "soortProduct": {
-                "naam": "soortProduct",
-                "product": {
-                    "dienstverleningstermijn": "30",
-                    "inspanningsperiode": "50"
-                }
-            }}, ""), [
-                        {
-                            "_id": "0-0",
-                            "_meest_recent": None,
-                            "soortProduct": "soortProduct",
-                            "dienstverleningstermijn": 30,
-                            "inspanningsperiode": 50
-                        }
-                    ])
-        self.assertEqual(convert_aanvragen({
-            "bsn": 123,
-            "soortProduct": {
-                "naam": "soortProduct",
-                "product": {
-                    "dienstverleningstermijn": "30",
-                    "inspanningsperiode": "50",
-                    "processtappen": {
-                        "aanvraag": {
-                            "document": {
-                                "id": "1",
-                                "isBulk": "false",
-                                "isDms": "true"
-                            }
+
+        tests = [
+            {
+                "input": {"bsn": 123},
+                "expected": [],
+                "url_root": ""
+            },
+            {
+                "input": {"bsn": 123, "soortProduct": {}},
+                "expected": [],
+                "url_root": ""
+            },
+            {
+                "input": {
+                    "bsn": 123,
+                    "soortProduct": {
+                        "naam": "soortProduct",
+                        "product": {
+                            "dienstverleningstermijn": "30",
+                            "inspanningsperiode": "50"
                         }
                     }
-                }
-            }}, "http://xyz.com/"), [
-                        {
-                            "_id": "0-0",
-                            "_meest_recent": "aanvraag",
-                            "soortProduct": "soortProduct",
-                            "dienstverleningstermijn": 30,
-                            "inspanningsperiode": 50,
+                },
+                "expected": [
+                    {
+                        "_id": "0-0",
+                        "_meest_recent": None,
+                        "soortProduct": "soortProduct",
+                        "dienstverleningstermijn": 30,
+                        "inspanningsperiode": 50
+                    }
+                ],
+                "url_root": ""
+            },
+            {
+                "input": {
+                    "bsn": 123,
+                    "soortProduct": {
+                        "naam": "soortProduct",
+                        "product": {
+                            "dienstverleningstermijn": "30",
+                            "inspanningsperiode": "50",
                             "processtappen": {
                                 "aanvraag": {
-                                    "_id": 0,
-                                    "document": [{
-                                        "$ref": "http://xyz.com/focus/document?id=1&isBulk=false&isDms=true",
-                                        "id": 1,
-                                        "isBulk": False,
-                                        "isDms": True
-                                    }]
+                                    "document": {
+                                        "id": "1",
+                                        "isBulk": "false",
+                                        "isDms": "true"
+                                    }
                                 }
                             }
                         }
-                    ])
-        self.assertEqual(convert_aanvragen({
-            "bsn": 123,
-            "soortProduct": {
-                "naam": "soortProduct",
-                "product": {
-                    "dienstverleningstermijn": "30",
-                    "inspanningsperiode": "50",
-                    "processtappen": {
-                        "aanvraag": {
-                            "datum": "123",
-                            "document": {
-                                "id": "1",
-                                "isBulk": "false",
-                                "isDms": "true"
-                            }
-                        },
-                        "beslissing": {
-                            "datum": "123",
-                            "document": {
-                                "id": "1",
-                                "isBulk": "false",
-                                "isDms": "true"
+                    }},
+                "expected": [
+                    {
+                        "_id": "0-0",
+                        "_meest_recent": "aanvraag",
+                        "soortProduct": "soortProduct",
+                        "dienstverleningstermijn": 30,
+                        "inspanningsperiode": 50,
+                        "processtappen": {
+                            "aanvraag": {
+                                "_id": 0,
+                                "document": [{
+                                    "$ref": "http://xyz.com/focus/document?id=1&isBulk=false&isDms=true",
+                                    "id": 1,
+                                    "isBulk": False,
+                                    "isDms": True
+                                }]
                             }
                         }
                     }
-                }
-            }}, "http://xyz.com/"), [
+                ],
+                "url_root": "http://xyz.com/"
+            },
+            {
+                "input": {
+                    "bsn": 123,
+                    "soortProduct": {
+                        "naam": "soortProduct",
+                        "product": {
+                            "dienstverleningstermijn": "30",
+                            "inspanningsperiode": "50",
+                            "processtappen": {
+                                "aanvraag": {
+                                    "datum": "123",
+                                    "document": {
+                                        "id": "1",
+                                        "isBulk": "false",
+                                        "isDms": "true"
+                                    }
+                                },
+                                "beslissing": {
+                                    "datum": "123",
+                                    "document": {
+                                        "id": "1",
+                                        "isBulk": "false",
+                                        "isDms": "true"
+                                    }
+                                }
+                            }
+                        }
+                    }},
+                "expected": [
                     {
                         "_id": "0-0",
                         "_meest_recent": "beslissing",
@@ -396,34 +418,39 @@ class TestInterpreter(TestCase):
                             }
                         }
                     }
-                ])
-        self.assertEqual(convert_aanvragen({
-            "bsn": 123,
-            "soortProduct": {
-                "naam": "soortProduct",
-                "product": {
-                    "dienstverleningstermijn": "30",
-                    "inspanningsperiode": "50",
-                    "processtappen": {
-                        "aanvraag": {
-                            "datum": "234",
-                            "document": {
-                                "id": "1",
-                                "isBulk": "false",
-                                "isDms": "true"
-                            }
-                        },
-                        "beslissing": {
-                            "datum": "123",
-                            "document": {
-                                "id": "1",
-                                "isBulk": "false",
-                                "isDms": "true"
+                ],
+                "url_root": "http://xyz.com/"
+            },
+            {
+                "input": {
+                    "bsn": 123,
+                    "soortProduct": {
+                        "naam": "soortProduct",
+                        "product": {
+                            "dienstverleningstermijn": "30",
+                            "inspanningsperiode": "50",
+                            "processtappen": {
+                                "aanvraag": {
+                                    "datum": "234",
+                                    "document": {
+                                        "id": "1",
+                                        "isBulk": "false",
+                                        "isDms": "true"
+                                    }
+                                },
+                                "beslissing": {
+                                    "datum": "123",
+                                    "document": {
+                                        "id": "1",
+                                        "isBulk": "false",
+                                        "isDms": "true"
+                                    }
+                                }
                             }
                         }
                     }
-                }
-            }}, "http://xyz.com/"), [
+                },
+                "expected": [
                     {
                         "_id": "0-0",
                         "_meest_recent": "aanvraag",
@@ -453,4 +480,11 @@ class TestInterpreter(TestCase):
                             }
                         }
                     }
-                ])
+                ],
+                'url_root': "http://xyz.com/"
+            }
+        ]
+
+        for values in tests:
+            converted = convert_aanvragen(values['input'], values['url_root'])
+            self.assertEqual(converted, values['expected'])
