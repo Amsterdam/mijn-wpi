@@ -228,6 +228,11 @@ class TestHealth(TestCase):
         response = self.client.get('/status/health')
         self.assertEqual(response.status_code, 200)
 
+    def test_external_health(self):
+        """ Check the endpoint for external health checks. Actually tests the data connection. """
+        response = self.client.get('/focus/status/health')
+        self.assertEqual(response.status_code, 200)
+
 
 @patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
 class TestData(TestCase):
