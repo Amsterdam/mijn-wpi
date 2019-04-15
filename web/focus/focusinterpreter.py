@@ -60,7 +60,7 @@ def _get_document_ref(document, url_root="/"):
         document["id"],
         document["isBulk"],
         document["isDms"],
-        )
+    )
 
 
 def _convert_document(document, url_root):

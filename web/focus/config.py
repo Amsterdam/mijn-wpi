@@ -41,8 +41,8 @@ credentials = {
 urls = {
     'swagger': "/focus/swagger.yaml",
     'health': "/status/health",
-    'external_health': "/focus/status/health",
     'data': "/status/data",
+    'health_public': "/focus/status/health",
     'aanvragen': "/focus/aanvragen",
     'document': "/focus/document"
 }
