@@ -61,7 +61,6 @@ def status_health():
 
 
 @application.route(urls["data"])
-@application.route(urls["health_public"])
 @limiter.exempt
 def status_data():
     return server().status_data()
