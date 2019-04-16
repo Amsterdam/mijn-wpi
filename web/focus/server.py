@@ -3,9 +3,9 @@ import logging
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 
-from focus.config import check_env, config, credentials, urls, get_TMA_certificate
-from focus.focusconnect import FocusConnection
-from focus.focusserver import FocusServer
+from .config import check_env, config, credentials, urls, get_TMA_certificate
+from .focusconnect import FocusConnection
+from .focusserver import FocusServer
 from flask_limiter import Limiter
 
 

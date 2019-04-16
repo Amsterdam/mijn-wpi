@@ -74,7 +74,7 @@ class TestApiNoToken(TestCase):
         BSN saml token is a required header attribute
         """
         response = self.client.get('/focus/aanvragen')
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 422)
         self.assertEqual(response.data, b'Parameter error: Missing SAML token')
 
 
