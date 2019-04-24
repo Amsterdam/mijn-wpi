@@ -38,6 +38,8 @@ credentials = {
     'password': get_variable('FOCUS_PASSWORD')
 }
 
+SENTRY_DSN = get_variable('SENTRY_DSN')
+
 urls = {
     'swagger': "/focus/swagger.yaml",
     'health': "/status/health",

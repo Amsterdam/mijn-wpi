@@ -23,3 +23,6 @@ hiro
 mock
 flake8
 coverage
+
+# error reporting
+sentry-sdk[flask]

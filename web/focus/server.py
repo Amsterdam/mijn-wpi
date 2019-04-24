@@ -1,9 +1,11 @@
 import logging
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 
-from .config import check_env, config, credentials, urls, get_TMA_certificate
+from .config import check_env, config, credentials, urls, get_TMA_certificate, SENTRY_DSN
 from .focusconnect import FocusConnection
 from .focusserver import FocusServer
 from flask_limiter import Limiter
@@ -11,6 +13,14 @@ from flask_limiter import Limiter
 
 def global_limiter():
     return "global_limiter"
+
+
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[FlaskIntegration()],
+        with_locals=False
+    )
 
 
 application = Flask(__name__)

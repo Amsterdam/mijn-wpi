@@ -19,7 +19,7 @@ os.environ['FOCUS_WSDL'] = 'focus/focus.wsdl'
 test_dir = os.path.dirname(os.path.realpath(__file__))
 
 
-from focus.config import config, credentials  # noqa: E402
+from focus.config import config, credentials  # noqa: E402  Module level import not at top of file
 from focus.focusconnect import FocusConnection  # noqa: E402
 from focus.focusinterpreter import _to_list, _to_int, _to_bool, convert_aanvragen  # noqa: E402
 from focus.saml import verify_saml_token_and_retrieve_saml_attribute, SamlVerificationException  # noqa: E402
