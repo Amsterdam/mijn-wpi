@@ -6,9 +6,6 @@ set -e # stop on any error
 echo "Running style checks"
 flake8
 
-echo "Running unit tests"
-python -m unittest
-
 echo "Running coverage tests"
 export COVERAGE_FILE=/tmp/.coverage
 coverage erase
