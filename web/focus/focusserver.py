@@ -7,7 +7,7 @@ The server interprets requests, execute the corresponding action and return JSON
 import logging
 
 from flask import jsonify, request, Response
-from focus.saml import get_bsn_from_saml_token
+from .saml import get_bsn_from_saml_token
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +34,7 @@ class FocusServer:
         return Response(
             'Focus connectivity failed',
             content_type='text/plain',
-            status=500
+            status=422
         )
 
     @staticmethod
