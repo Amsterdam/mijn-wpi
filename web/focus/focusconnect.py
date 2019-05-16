@@ -87,7 +87,7 @@ class FocusConnection:
 
         return aanvragen
 
-    def document(self, bsn, id, isBulk, isDms):
+    def document(self, bsn, id, isBulk, isDms, isDownload):
         """
         Retrieve a document from Focus
         :param bsn: string
@@ -99,10 +99,11 @@ class FocusConnection:
 
         # Get the document
         result = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
+
         # Convert the result to a dictionary for the specified keys
         document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
         # Convert the file contents to a base64 encoded string
-        document["contents"] = base64.b64encode(result["dataHandler"]).decode('utf-8')
+        document["contents"] = result["dataHandler"] if isDownload else base64.b64encode(result["dataHandler"]).decode('utf-8')
         # Provide for a MIME-type
         document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"
 
