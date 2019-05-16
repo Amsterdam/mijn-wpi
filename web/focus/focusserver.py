@@ -34,7 +34,7 @@ class FocusServer:
         return Response(
             'Focus connectivity failed',
             content_type='text/plain',
-            status=422
+            status=500
         )
 
     @staticmethod
@@ -45,7 +45,7 @@ class FocusServer:
         return Response(
             'Parameter error: {}'.format(message),
             content_type='text/plain',
-            status=500
+            status=422
         )
 
     @staticmethod
