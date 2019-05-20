@@ -30,10 +30,18 @@ limiter = Limiter(
     default_limits=["5 per 1 second"]
 )
 
-log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+file_handler = logging.FileHandler('focus/logs/app.log')
+file_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+
 log_handler = logging.StreamHandler()
+
 application.logger.addHandler(log_handler)
+application.logger.addHandler(file_handler)
 
 CORS(app=application, send_wildcard=True)
 
@@ -42,7 +50,6 @@ CORS(app=application, send_wildcard=True)
 check_env()
 # Initialize server to None, instantiate on first call to focus_server
 focus_server = None
-
 
 def server():
     """
@@ -62,6 +69,11 @@ def server():
 @application.route(urls["swagger"])
 def swagger_yaml():
     return send_from_directory('static', 'swagger.yaml')
+
+
+@application.route(urls["log"])
+def app_log():
+    return send_from_directory('logs', 'app.log')
 
 
 @application.route(urls["health"])

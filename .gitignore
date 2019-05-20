@@ -9,3 +9,5 @@ reports
 .coverage
 htmlcov/
 vars.sh
+.vscode
+*.log
