@@ -5,9 +5,10 @@ The server uses the Focus connection class to handle the physical connection wit
 The server interprets requests, execute the corresponding action and return JSON responses
 """
 import logging
-
+import io
 from flask import jsonify, request, Response
 from .saml import get_bsn_from_saml_token
+from flask import send_file
 
 logger = logging.getLogger(__name__)
 
@@ -100,6 +101,7 @@ class FocusServer:
         id = request.args.get('id', None)
         isBulk = request.args.get('isBulk', "false").lower() == "true"
         isDms = request.args.get('isDms', "false").lower() == "true"
+        isDownload = request.args.get('download', "false").lower() == "true"
 
         try:
             bsn = get_bsn_from_saml_token(self._tma_certificate)
@@ -111,10 +113,19 @@ class FocusServer:
                 bsn=bsn,
                 id=id,
                 isBulk=isBulk,
-                isDms=isDms
+                isDms=isDms,
+                isDownload=isDownload
             )
         except Exception as error:
             logger.error("Failed to retrieve document: {}".format(str(error)))
             return self._no_connection_response()
+
+        if isDownload:
+            return send_file(
+                io.BytesIO(document['contents']),
+                mimetype=document['mime_type'],
+                as_attachment=True,
+                attachment_filename=document['file_name']
+            )
 
         return jsonify(document)

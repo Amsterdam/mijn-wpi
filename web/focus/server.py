@@ -1,4 +1,5 @@
 import logging
+from io import StringIO
 # import sentry_sdk
 # from sentry_sdk.integrations.flask import FlaskIntegration
 
@@ -30,8 +31,11 @@ limiter = Limiter(
     default_limits=["5 per 1 second"]
 )
 
-log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+memory_handler = StringIO()
+logging.basicConfig(stream=memory_handler, level=logging.INFO)
+
 log_handler = logging.StreamHandler()
 application.logger.addHandler(log_handler)
 
@@ -62,6 +66,11 @@ def server():
 @application.route(urls["swagger"])
 def swagger_yaml():
     return send_from_directory('static', 'swagger.yaml')
+
+
+@application.route(urls["log"])
+def app_log():
+    return memory_handler.getvalue()
 
 
 @application.route(urls["health"])
