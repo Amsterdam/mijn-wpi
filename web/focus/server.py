@@ -71,7 +71,7 @@ def swagger_yaml():
     return send_from_directory('static', 'swagger.yaml')
 
 
-@application.route(urls["log"])
+@application.route(urls["__debug__log"])
 def app_log():
     return send_from_directory('logs', 'app.log')
 
