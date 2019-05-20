@@ -10,4 +10,3 @@ reports
 htmlcov/
 vars.sh
 .vscode
-*.log
