@@ -51,6 +51,7 @@ check_env()
 # Initialize server to None, instantiate on first call to focus_server
 focus_server = None
 
+
 def server():
     """
     Gets a server to execute the request.
