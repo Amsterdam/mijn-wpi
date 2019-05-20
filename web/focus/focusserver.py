@@ -125,7 +125,7 @@ class FocusServer:
                 io.BytesIO(document['contents']),
                 mimetype=document['mime_type'],
                 as_attachment=True,
-                attachment_filename=document['file_name']
+                attachment_filename=document['fileName']
             )
 
         return jsonify(document)
