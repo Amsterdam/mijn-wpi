@@ -5,9 +5,10 @@ The server uses the Focus connection class to handle the physical connection wit
 The server interprets requests, execute the corresponding action and return JSON responses
 """
 import logging
-
+import io
 from flask import jsonify, request, Response
 from .saml import get_bsn_from_saml_token
+from flask import send_file
 
 logger = logging.getLogger(__name__)
 
