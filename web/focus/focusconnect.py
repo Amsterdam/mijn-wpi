@@ -45,7 +45,7 @@ class FocusConnection:
         session.verify = self._config['session_verify']
         session.auth = HTTPBasicAuth(self._credentials['username'], self._credentials['password'])
 
-        timeout = 10    # Timeout period for getting WSDL and operations in seconds
+        timeout = 30    # Timeout period for getting WSDL and operations in seconds
 
         try:
             transport = Transport(session=session, timeout=timeout, operation_timeout=timeout)
