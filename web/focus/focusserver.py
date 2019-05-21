@@ -113,8 +113,7 @@ class FocusServer:
                 bsn=bsn,
                 id=id,
                 isBulk=isBulk,
-                isDms=isDms,
-                isDownload=isDownload
+                isDms=isDms
             )
         except Exception as error:
             logger.error("Failed to retrieve document: {}".format(str(error)))
