@@ -7,8 +7,9 @@ The server interprets requests, execute the corresponding action and return JSON
 import logging
 import io
 from flask import jsonify, request, Response
-from .saml import get_bsn_from_saml_token
 from flask import send_file
+
+from focus.saml import get_bsn_from_request
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +78,7 @@ class FocusServer:
         :return:
         """
         try:
-            bsn = get_bsn_from_saml_token(self._tma_certificate)
+            bsn = get_bsn_from_request(request)
         except Exception as error:
             return self._parameter_error_response(error)
 
@@ -104,7 +105,7 @@ class FocusServer:
         isDownload = request.args.get('download', "false").lower() == "true"
 
         try:
-            bsn = get_bsn_from_saml_token(self._tma_certificate)
+            bsn = get_bsn_from_request(request)
         except Exception as error:
             return self._parameter_error_response(error)
 

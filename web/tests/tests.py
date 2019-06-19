@@ -1,13 +1,9 @@
 
 import os
 import json
-from base64 import b64encode, b64decode
-from xml.etree import ElementTree
 
 from flask_testing.utils import TestCase
-from lxml import etree
 from mock import patch
-from signxml import XMLSigner
 import hiro as hiro
 
 
@@ -22,7 +18,6 @@ test_dir = os.path.dirname(os.path.realpath(__file__))
 from focus.config import config, credentials  # noqa: E402  Module level import not at top of file
 from focus.focusconnect import FocusConnection  # noqa: E402
 from focus.focusinterpreter import _to_list, _to_int, _to_bool, convert_aanvragen  # noqa: E402
-from focus.saml import verify_saml_token_and_retrieve_saml_attribute, SamlVerificationException  # noqa: E402
 from focus.server import application  # noqa: E402
 import focus.server  # noqa: E402
 
@@ -38,25 +33,6 @@ unencrypted_saml_token = b"""
     </saml:AttributeStatement>
 </saml:Assertion>
 """
-
-
-def generate_dummy_saml_token():
-    """
-    Generate a freshly signed and base64 encoded SAML token which is similar to
-    the one TMA gives us, but using test a certificate.
-
-    :return: a base 64 encoded string with a SAML token
-    """
-    xml_root = ElementTree.fromstring(unencrypted_saml_token)
-    signer = XMLSigner()
-    with open(os.path.join(test_dir, 'test_tma_cert.crt'), 'rb') as cert_file:
-        with open(os.path.join(test_dir, 'test_tma_cert.key'), 'rb') as key_file:
-            cert = cert_file.read()
-            key = key_file.read()
-            signed_root = signer.sign(xml_root, key=key, cert=cert)
-
-            token_string = etree.tostring(signed_root, pretty_print=True)
-            return b64encode(token_string)
 
 
 def get_fake_tma_cert():
@@ -81,7 +57,7 @@ class TestApiNoToken(TestCase):
 @patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
 @patch('focus.focusconnect.FocusConnection._initialize_client', new=lambda s: "Alive")
 # side step decoding the BSN from SAML token
-@patch('focus.focusserver.get_bsn_from_saml_token', new=lambda s: 123456789)
+@patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
 class TestApi(TestCase):
     def create_app(self):
         return application
@@ -136,7 +112,7 @@ class TestConnection(TestCase):
 
 
 @patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
-@patch('focus.focusserver.get_bsn_from_saml_token', new=lambda s: 123456789)
+@patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
 class TestRateLimiter(TestCase):
     def create_app(self):
         return application
@@ -181,35 +157,6 @@ class TestRateLimiter(TestCase):
             for i in range(20):  # more than 5 / second
                 response = self.client.get('/status/health')
                 self.assert200(response)
-
-
-class TestSamlToken(TestCase):
-    def create_app(self):
-        return application
-
-    def setUp(self):
-        self.saml_token = generate_dummy_saml_token()
-
-    def test_saml_token(self):
-        with open(os.path.join(test_dir, 'test_tma_cert.crt'), 'rb') as cert_file:
-            cert = cert_file.read()
-            bsn = verify_saml_token_and_retrieve_saml_attribute(
-                saml_token=self.saml_token,
-                attribute='uid',
-                saml_cert=cert)
-            self.assertEqual(bsn, '123456789')
-
-    def test_saml_token_tampered(self):
-        saml_token_tampered = b64encode(b64decode(self.saml_token).replace(b'123456789', b'987654321'))
-        self.assertNotEqual(self.saml_token, saml_token_tampered)
-
-        with self.assertRaises(SamlVerificationException):
-            with open(os.path.join(test_dir, 'test_tma_cert.crt'), 'rb') as cert_file:
-                cert = cert_file.read()
-                verify_saml_token_and_retrieve_saml_attribute(
-                    saml_token=saml_token_tampered,
-                    attribute='uid',
-                    saml_cert=cert)
 
 
 @patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
