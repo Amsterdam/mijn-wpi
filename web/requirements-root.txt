@@ -1,3 +1,4 @@
+--extra-index-url https://nexus.secure.amsterdam.nl/repository/pypi-hosted/simple
 requests
 lxml
 
@@ -8,7 +9,7 @@ flask_limiter
 flask_testing
 
 # TMA token verification tools
-signxml
+tma-saml>=0.2
 
 # swagger
 connexion
