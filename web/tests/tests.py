@@ -11,6 +11,7 @@ import hiro as hiro
 os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
 os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
 os.environ['FOCUS_WSDL'] = 'focus/focus.wsdl'
+os.environ['TMA_CERTIFICATE'] = __file__
 
 test_dir = os.path.dirname(os.path.realpath(__file__))
 
