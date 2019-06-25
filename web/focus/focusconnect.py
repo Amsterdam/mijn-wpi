@@ -56,6 +56,7 @@ class FocusConnection:
         except ConnectTimeout:
             # do not relog the error, because the error has a object address in it, it is a new error every time.
             logger.error('Failed to establish a connection with Focus: Connection Time Out')
+            return None
         except Exception as error:
             logger.error('Failed to establish a connection with Focus: {}'.format(str(error)))
             return None
