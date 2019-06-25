@@ -9,7 +9,7 @@ import logging
 import xmltodict
 import base64
 
-from requests import Session
+from requests import Session, ConnectTimeout
 from requests.auth import HTTPBasicAuth
 from zeep import Client
 from zeep.transports import Transport
@@ -53,6 +53,9 @@ class FocusConnection:
             client = Client(wsdl=self._config['wsdl'], transport=transport)
 
             return client
+        except ConnectTimeout:
+            # do not relog the error, because the error has a object address in it, it is a new error every time.
+            logger.error('Failed to establish a connection with Focus: Connection Time Out')
         except Exception as error:
             logger.error('Failed to establish a connection with Focus: {}'.format(str(error)))
             return None
