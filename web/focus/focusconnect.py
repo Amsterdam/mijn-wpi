@@ -9,7 +9,7 @@ import logging
 import xmltodict
 import base64
 
-from requests import Session, ConnectTimeout
+from requests import Session, ConnectionError
 from requests.auth import HTTPBasicAuth
 from zeep import Client
 from zeep.transports import Transport
