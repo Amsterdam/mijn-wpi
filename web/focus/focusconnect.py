@@ -53,12 +53,12 @@ class FocusConnection:
             client = Client(wsdl=self._config['wsdl'], transport=transport)
 
             return client
-        except ConnectTimeout:
+        except ConnectionError:
             # do not relog the error, because the error has a object address in it, it is a new error every time.
             logger.error('Failed to establish a connection with Focus: Connection Time Out')
             return None
         except Exception as error:
-            logger.error('Failed to establish a connection with Focus: {}'.format(str(error)))
+            logger.error('Failed to establish a connection with Focus: {} {}'.format(type(error), str(error)))
             return None
 
     def reset(self):
