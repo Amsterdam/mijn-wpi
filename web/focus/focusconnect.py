@@ -83,7 +83,12 @@ class FocusConnection:
             # Get raw response as string remove any newlines
             raw_aanvragen = self._client.service.getAanvragen(bsn=bsn).content.decode("utf-8").replace("\n", "")
             # Get the return component out of the SOAP message
-            xml_aanvragen = re.search(r"<return>.*<\/return>", raw_aanvragen).group(0)
+            result = re.search(r"<return>.*<\/return>", raw_aanvragen)
+            if not result:
+                # This can return something else apparently. Lets log this so we can debug this.
+                logger.error('no body? %s' % raw_aanvragen)
+                return []
+            xml_aanvragen = result.group(0)
             # Translate the response to a Dictionary
             aanvragen = xmltodict.parse(xml_aanvragen)["return"]
             # Convert dict types for lists, ints and bools
