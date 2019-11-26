@@ -69,4 +69,3 @@ class DocumentApiTest(FlaskTestCase):
         response = self.client.get('/focus/document?id=1&isBulk=true&isDms=true')
         self.assertEqual(response.data, pdf_document)
         self.assertEqual(response.headers['Content-Disposition'], r'attachment; filename="TestIKB\\TestBulk15.pdf"')
-
