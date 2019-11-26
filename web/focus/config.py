@@ -8,6 +8,9 @@ The actual values are retrieved from shell variables that are stored outside of 
 import os
 
 
+PROJECT_PATH = os.path.abspath(os.path.join(__file__, '..', '..'))
+
+
 def get_variable(v, default_value=None):
     """Try to read variable, If it fails return None or a specified other default value
     :param v: variable name

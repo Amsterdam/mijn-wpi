@@ -96,13 +96,12 @@ class FocusServer:
     def document(self):
         """
         Gets a specific aanvraag document for the BSN that is encoded in the header SAML token
-        The document is identified by its id and wether it is a bulk or document management document (request args)
+        The document is identified by its id and whether it is a bulk or document management document (request args)
         :return:
         """
         id = request.args.get('id', None)
         isBulk = request.args.get('isBulk', "false").lower() == "true"
         isDms = request.args.get('isDms', "false").lower() == "true"
-        isDownload = request.args.get('download', "false").lower() == "true"
 
         try:
             bsn = get_bsn_from_request(request)
@@ -120,12 +119,9 @@ class FocusServer:
             logger.error("Failed to retrieve document: {}".format(str(error)))
             return self._no_connection_response()
 
-        if isDownload:
-            return send_file(
-                io.BytesIO(document['contents']),
-                mimetype=document['mime_type'],
-                as_attachment=True,
-                attachment_filename=document['fileName']
-            )
-
-        return jsonify(document)
+        return send_file(
+            io.BytesIO(document['contents']),
+            mimetype=document['mime_type'],
+            as_attachment=True,
+            attachment_filename=document['fileName']
+        )
