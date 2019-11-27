@@ -42,7 +42,7 @@ def get_document():
         'description': None,
         'disposition': 'attachment',
         'document': None,
-        'fileName': 'TestIKB\\TestBulk15.pdf'
+        'fileName': r'TestIKB\TestBulk15.pdf'
     }
     return document
 
@@ -68,4 +68,4 @@ class DocumentApiTest(FlaskTestCase):
     def test_document_api(self):
         response = self.client.get('/focus/document?id=1&isBulk=true&isDms=true')
         self.assertEqual(response.data, pdf_document)
-        self.assertEqual(response.headers['Content-Disposition'], r'attachment; filename="TestIKB\\TestBulk15.pdf"')
+        self.assertEqual(response.headers['Content-Disposition'], r'attachment; filename="TestIKB\TestBulk15.pdf"')
