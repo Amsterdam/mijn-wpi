@@ -8,7 +8,7 @@ The actual values are retrieved from shell variables that are stored outside of 
 import os
 
 
-PROJECT_PATH = os.path.abspath(os.path.join(__file__, '..', '..'))
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def get_variable(v, default_value=None):

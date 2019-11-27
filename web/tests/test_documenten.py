@@ -10,13 +10,13 @@ os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
 os.environ['FOCUS_WSDL'] = 'focus/focus.wsdl'
 os.environ['TMA_CERTIFICATE'] = __file__
 
-from focus.config import PROJECT_PATH, config, credentials  # noqa: E402  Module level import not at top of fil
-from focus.focusconnect import FocusConnection  # noqa: E402  Module level import not at top of fil
+from focus.config import BASE_PATH, config, credentials  # noqa: E402  Module level import not at top of file
+from focus.focusconnect import FocusConnection  # noqa: E402
 from focus.server import application  # noqa: E402
 
 
 # this document is from acc
-TEST_PDF_PATH = os.path.join(PROJECT_PATH, 'tests', 'test.pdf')
+TEST_PDF_PATH = os.path.join(BASE_PATH, 'tests', 'test.pdf')
 with open(TEST_PDF_PATH, 'rb') as fh:
     pdf_document = fh.read()
 
