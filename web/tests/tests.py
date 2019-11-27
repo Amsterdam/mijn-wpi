@@ -7,13 +7,11 @@ from mock import patch
 import hiro as hiro
 
 
-'''Prepare environment'''
+# Prepare environment
 os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
 os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
 os.environ['FOCUS_WSDL'] = 'focus/focus.wsdl'
 os.environ['TMA_CERTIFICATE'] = __file__
-
-test_dir = os.path.dirname(os.path.realpath(__file__))
 
 
 from focus.config import config, credentials  # noqa: E402  Module level import not at top of file

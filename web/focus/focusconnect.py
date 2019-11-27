@@ -7,7 +7,6 @@ The connection exposes the aanvragen and document methods of the underlying Focu
 import re
 import logging
 import xmltodict
-import base64
 
 from requests import Session, ConnectionError
 from requests.auth import HTTPBasicAuth
@@ -86,7 +85,7 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_aanvragen)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error('no body? %s' % raw_aanvragen)
+                logger.error("no body? %s" % raw_aanvragen)
                 return []
             xml_aanvragen = result.group(0)
             # Translate the response to a Dictionary
@@ -111,8 +110,7 @@ class FocusConnection:
 
         # Convert the result to a dictionary for the specified keys
         document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
-        # Convert the file contents to a base64 encoded string
-        document["contents"] = base64.b64encode(result["dataHandler"]).decode('utf-8')
+        document["contents"] = result["dataHandler"]
         # Provide for a MIME-type
         document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"
 
