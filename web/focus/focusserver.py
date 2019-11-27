@@ -5,9 +5,7 @@ The server uses the Focus connection class to handle the physical connection wit
 The server interprets requests, execute the corresponding action and return JSON responses
 """
 import logging
-import io
-from flask import jsonify, request, Response
-from flask import send_file
+from flask import jsonify, request, Response, make_response
 
 from focus.saml import get_bsn_from_request
 
@@ -119,9 +117,10 @@ class FocusServer:
             logger.error("Failed to retrieve document: {}".format(str(error)))
             return self._no_connection_response()
 
-        return send_file(
-            io.BytesIO(document['contents']),
-            mimetype=document['mime_type'],
-            as_attachment=True,
-            attachment_filename=document['fileName']
-        )
+        # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
+        # Craft a manual request instead
+        response = make_response(document["contents"])
+        response.headers["Content-Disposition"] = f'attachment; filename="{document["fileName"]}"'  # make sure it is a download
+        response.headers["Content-Type"] = document["mime_type"]
+
+        return response
