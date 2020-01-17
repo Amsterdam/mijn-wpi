@@ -19,4 +19,4 @@ COPY .flake8 /app/
 COPY ./tests /app/tests
 
 USER datapunt
-CMD uwsgi
+CMD uwsgi --ini /app/uwsgi.ini
