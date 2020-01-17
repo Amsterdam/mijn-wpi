@@ -140,5 +140,5 @@ def convert_aanvragen(aanvragen, url_root):
         raise error
 
     stappen = [len(product['processtappen']) for product in producten if 'processtappen' in product]
-    logger.info("Aantal producten: %i, Stappen: %i" % (len(producten), sum(stappen)))
+    print("Aantal producten: %i, Stappen: %i" % (len(producten), sum(stappen)))
     return producten
