@@ -86,7 +86,7 @@ class FocusServer:
                 url_root=request.script_root
             )
         except Exception as error:
-            logger.error("Failed to retrieve aanvragen: {}".format(str(error)))
+            logger.error("Failed to retrieve aanvragen: {} {}".format(type(error), str(error)))
             return self._no_connection_response()
 
         return jsonify(aanvragen)
@@ -114,7 +114,7 @@ class FocusServer:
                 isDms=isDms
             )
         except Exception as error:
-            logger.error("Failed to retrieve document: {}".format(str(error)))
+            logger.error("Failed to retrieve document: {} {}".format(type(error), str(error)))
             return self._no_connection_response()
 
         # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
