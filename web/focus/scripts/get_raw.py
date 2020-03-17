@@ -12,7 +12,24 @@ bsn = "123456789"
 
 with focus_connection._client.options(raw_response=True):
     raw_aanvragen = focus_connection._client.service.getAanvragen(bsn=bsn)
-
+    content_bytesio = BytesIO(raw_aanvragen.content)
+    tree = etree.parse(content_bytesio)
+    formatted_xml = etree.tostring(tree, pretty_print=True)
+    print(formatted_xml.decode())
+    #
+    raw_aanvragen = focus_connection._client.service.getJaaropgaven(bsn=bsn)
+    content_bytesio = BytesIO(raw_aanvragen.content)
+    tree = etree.parse(content_bytesio)
+    formatted_xml = etree.tostring(tree, pretty_print=True)
+    print(formatted_xml.decode())
+    #
+    raw_aanvragen = focus_connection._client.service.getStadspas(bsn=bsn)
+    content_bytesio = BytesIO(raw_aanvragen.content)
+    tree = etree.parse(content_bytesio)
+    formatted_xml = etree.tostring(tree, pretty_print=True)
+    print(formatted_xml.decode())
+    #
+    raw_aanvragen = focus_connection._client.service.getUitkeringspecificaties(bsn=bsn)
     content_bytesio = BytesIO(raw_aanvragen.content)
     tree = etree.parse(content_bytesio)
     formatted_xml = etree.tostring(tree, pretty_print=True)

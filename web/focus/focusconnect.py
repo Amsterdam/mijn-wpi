@@ -13,7 +13,7 @@ from requests.auth import HTTPBasicAuth
 from zeep import Client
 from zeep.transports import Transport
 
-from focus.focusinterpreter import convert_aanvragen
+from focus.focusinterpreter import convert_aanvragen, convert_jaaropgaven, convert_uitkeringspecificaties
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +95,32 @@ class FocusConnection:
 
         return aanvragen
 
+
+    def jaaropgaven(self, bsn, url_root):
+        with self._client.options(raw_response=True):
+            raw_jaaropgaven = self._client.service.getJaaropgaven(bsn=bsn).content.decode("utf-8").replace("\n", "")
+            result = re.search(r"<return>.*<\/return>", raw_jaaropgaven)
+            if not result:
+                # This can return something else apparently. Lets log this so we can debug this.
+                logger.error("no body jaaropgaven? %s" % raw_jaaropgaven)
+                return []
+            xml_jaaropgaven = result.group(0)
+            jaaropgaven = convert_jaaropgaven(xml_jaaropgaven, url_root)
+            # print(">>>>", jaaropgaven)
+            return jaaropgaven
+
+    def uitkeringspecificaties(self, bsn, url_root):
+        with self._client.options(raw_response=True):
+            raw_specificaties = self._client.service.getUitkeringspecificaties(bsn=bsn).content.decode("utf-8").replace("\n", "")
+            result = re.search(r"<return>.*<\/return>", raw_specificaties)
+            if not result:
+                # This can return something else apparently. Lets log this so we can debug this.
+                logger.error("no body uitkeringspec? %s" % raw_specificaties)
+                return []
+            xml_uitkeringspec = result.group(0)
+            uitkeringspecificaties = convert_uitkeringspecificaties(xml_uitkeringspec, url_root)
+            return uitkeringspecificaties
+
     def document(self, bsn, id, isBulk, isDms):
         """
         Retrieve a document from Focus
@@ -115,3 +141,4 @@ class FocusConnection:
         document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"
 
         return document
+

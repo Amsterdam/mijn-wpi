@@ -7,6 +7,7 @@ See also the convert_aanvragen method for a more detailed explanation.
 import logging
 
 from focus.config import urls
+from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
@@ -120,6 +121,8 @@ def convert_aanvragen(aanvragen, url_root):
     :return: The aanvragen response object
     """
     # Remove the BSN number from the response!
+    # from pprint import pprint
+    # pprint(aanvragen)
     del aanvragen["bsn"]
 
     # Return the list of aanvraag producten
@@ -142,3 +145,67 @@ def convert_aanvragen(aanvragen, url_root):
     stappen = [len(product['processtappen']) for product in producten if 'processtappen' in product]
     print("Aantal producten: %i, Stappen: %i" % (len(producten), sum(stappen)))
     return producten
+
+
+# {
+#  title: string | ReactNode;
+#  datePublished: string;
+#  id: string;
+#  url: string;
+#  type: FocusInkomenSpecificatieType;
+#  isAnnualStatement: boolean;
+# }
+# FocusInkomenSpecificatieType =
+#   | 'IOAZ'
+#   | 'BBS'
+#   | 'WKO'
+#   | 'IOAW'
+#   | 'STIMREG'
+#   | 'BIBI'
+#   | 'PART'
+#   | 'BBZ';
+def convert_jaaropgaven(jaaropgaven_xml, document_root):
+    jaar_opgaven_list = []
+    tree = BeautifulSoup(jaaropgaven_xml, features="lxml-xml")
+    documents = tree.find_all('document')
+    for doc in documents:
+        id = doc.id.text
+        url = f"{document_root}?id={id}&isBulk=false&isDms=false"
+
+        new_doc = {
+            'title': doc.documentCode.omschrijving.text,
+            'datePublished': doc.einddatumDocument.text,
+            'id': id,
+            'url': url,
+            'type': '',  # niet van belang
+            'isAnnualStatement': True,
+        }
+        # print("=====", new_doc)
+        jaar_opgaven_list.append(new_doc)
+
+    return jaar_opgaven_list
+
+    # uitkeringspecificatie is maandelijks
+
+
+
+def convert_uitkeringspecificaties(uitkeringspec_xml, document_root):
+    jaar_opgaven_list = []
+    tree = BeautifulSoup(uitkeringspec_xml, features="lxml-xml")
+    documents = tree.find_all('document')
+    for doc in documents:
+        id = doc.id.text
+        url = f"{document_root}?id={id}&isBulk=false&isDms=false"
+
+        new_doc = {
+            'title': doc.documentCode.omschrijving.text,
+            'datePublished': doc.einddatumDocument.text,
+            'id': id,
+            'url': url,
+            'type': '',  # niet van belang
+            'isAnnualStatement': True,
+        }
+        print("=====", new_doc)
+        jaar_opgaven_list.append(new_doc)
+
+    return jaar_opgaven_list
