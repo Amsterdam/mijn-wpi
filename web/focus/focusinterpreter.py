@@ -121,8 +121,6 @@ def convert_aanvragen(aanvragen, url_root):
     :return: The aanvragen response object
     """
     # Remove the BSN number from the response!
-    # from pprint import pprint
-    # pprint(aanvragen)
     del aanvragen["bsn"]
 
     # Return the list of aanvraag producten
@@ -180,13 +178,11 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
             'type': '',  # niet van belang
             'isAnnualStatement': True,
         }
-        # print("=====", new_doc)
         jaar_opgaven_list.append(new_doc)
 
     return jaar_opgaven_list
 
     # uitkeringspecificatie is maandelijks
-
 
 
 def convert_uitkeringspecificaties(uitkeringspec_xml, document_root):
@@ -203,9 +199,8 @@ def convert_uitkeringspecificaties(uitkeringspec_xml, document_root):
             'id': id,
             'url': url,
             'type': '',  # niet van belang
-            'isAnnualStatement': True,
+            'isAnnualStatement': False,
         }
-        print("=====", new_doc)
         jaar_opgaven_list.append(new_doc)
 
     return jaar_opgaven_list

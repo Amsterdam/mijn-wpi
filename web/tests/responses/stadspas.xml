@@ -1,0 +1,183 @@
+<S:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <env:Header>
+        <work:WorkContext xmlns:work="http://oracle.com/weblogic/soap/workarea/">d</work:WorkContext>
+    </env:Header>
+    <S:Body>
+        <ns0:getStadspasResponse xmlns:ns0="https://example.com/">
+            <return>
+                <administratienummer>8800000002</administratienummer>
+                <bsn>123456789</bsn>
+                <fondsen>
+                    <fonds>
+                        <besluit>toekenning</besluit>
+                        <bron>17</bron>
+                        <dienstnr>1</dienstnr>
+                        <dtbegin>2016-09-01T00:00:00+02:00</dtbegin>
+                        <dteinde>2017-08-31T00:00:00+02:00</dteinde>
+                        <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                        <id>171204</id>
+                        <indHoofdklant>1</indHoofdklant>
+                        <psonId>9900000002</psonId>
+                        <recordStatus>0</recordStatus>
+                        <refCode>
+                            <bron>17</bron>
+                            <code>3551</code>
+                            <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                            <naam>FONDS_SOORT</naam>
+                            <waardeBron>Stadspas klant</waardeBron>
+                            <waardeKba>Stadspas klant</waardeKba>
+                        </refCode>
+                        <soortFonds>3551</soortFonds>
+                    </fonds>
+                    <fonds>
+                        <besluit>toekenning</besluit>
+                        <bron>17</bron>
+                        <dienstnr>1</dienstnr>
+                        <dtbegin>2016-09-01T00:00:00+02:00</dtbegin>
+                        <dteinde>2017-08-31T00:00:00+02:00</dteinde>
+                        <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                        <id>171205</id>
+                        <indHoofdklant>1</indHoofdklant>
+                        <psonId>9900000002</psonId>
+                        <recordStatus>0</recordStatus>
+                        <refCode>
+                            <bron>17</bron>
+                            <code>3555</code>
+                            <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                            <naam>FONDS_SOORT</naam>
+                            <waardeBron>Stadspas extra korting klant</waardeBron>
+                            <waardeKba>Aanbiedingen klant (geeft recht op gratis ID)</waardeKba>
+                        </refCode>
+                        <soortFonds>3555</soortFonds>
+                    </fonds>
+                    <fonds>
+                        <besluit>toekenning</besluit>
+                        <bron>17</bron>
+                        <dienstnr>2</dienstnr>
+                        <dtbegin>2014-09-01T00:00:00+02:00</dtbegin>
+                        <dteinde>2015-08-31T00:00:00+02:00</dteinde>
+                        <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                        <id>513352</id>
+                        <indHoofdklant>1</indHoofdklant>
+                        <psonId>9900000002</psonId>
+                        <recordStatus>0</recordStatus>
+                        <refCode>
+                            <bron>17</bron>
+                            <code>3551</code>
+                            <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                            <naam>FONDS_SOORT</naam>
+                            <waardeBron>Stadspas klant</waardeBron>
+                            <waardeKba>Stadspas klant</waardeKba>
+                        </refCode>
+                        <soortFonds>3551</soortFonds>
+                    </fonds>
+                    <fonds>
+                        <besluit>toekenning</besluit>
+                        <bron>17</bron>
+                        <dienstnr>2</dienstnr>
+                        <dtbegin>2014-09-01T00:00:00+02:00</dtbegin>
+                        <dteinde>2015-08-31T00:00:00+02:00</dteinde>
+                        <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                        <id>513353</id>
+                        <indHoofdklant>1</indHoofdklant>
+                        <psonId>9900000002</psonId>
+                        <recordStatus>0</recordStatus>
+                        <refCode>
+                            <bron>17</bron>
+                            <code>3555</code>
+                            <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                            <naam>FONDS_SOORT</naam>
+                            <waardeBron>Stadspas extra korting klant</waardeBron>
+                            <waardeKba>Aanbiedingen klant (geeft recht op gratis ID)</waardeKba>
+                        </refCode>
+                        <soortFonds>3555</soortFonds>
+                    </fonds>
+                    <fonds>
+                        <besluit>toekenning</besluit>
+                        <bron>17</bron>
+                        <dienstnr>3</dienstnr>
+                        <dtbegin>2015-09-01T00:00:00+02:00</dtbegin>
+                        <dteinde>2016-08-31T00:00:00+02:00</dteinde>
+                        <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                        <id>775356</id>
+                        <indHoofdklant>1</indHoofdklant>
+                        <psonId>9900000002</psonId>
+                        <recordStatus>0</recordStatus>
+                        <refCode>
+                            <bron>17</bron>
+                            <code>3551</code>
+                            <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                            <naam>FONDS_SOORT</naam>
+                            <waardeBron>Stadspas klant</waardeBron>
+                            <waardeKba>Stadspas klant</waardeKba>
+                        </refCode>
+                        <soortFonds>3551</soortFonds>
+                    </fonds>
+                    <fonds>
+                        <besluit>toekenning</besluit>
+                        <bron>17</bron>
+                        <dienstnr>3</dienstnr>
+                        <dtbegin>2015-09-01T00:00:00+02:00</dtbegin>
+                        <dteinde>2016-08-31T00:00:00+02:00</dteinde>
+                        <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                        <id>775357</id>
+                        <indHoofdklant>1</indHoofdklant>
+                        <psonId>9900000002</psonId>
+                        <recordStatus>0</recordStatus>
+                        <refCode>
+                            <bron>17</bron>
+                            <code>3555</code>
+                            <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                            <naam>FONDS_SOORT</naam>
+                            <waardeBron>Stadspas extra korting klant</waardeBron>
+                            <waardeKba>Aanbiedingen klant (geeft recht op gratis ID)</waardeKba>
+                        </refCode>
+                        <soortFonds>3555</soortFonds>
+                    </fonds>
+                    <fonds>
+                        <besluit>toekenning</besluit>
+                        <bron>17</bron>
+                        <dienstnr>5</dienstnr>
+                        <dtbegin>2017-09-01T00:00:00+02:00</dtbegin>
+                        <dteinde>2018-08-31T00:00:00+02:00</dteinde>
+                        <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                        <id>1463175</id>
+                        <indHoofdklant>1</indHoofdklant>
+                        <psonId>9900000002</psonId>
+                        <recordStatus>0</recordStatus>
+                        <refCode>
+                            <bron>17</bron>
+                            <code>3555</code>
+                            <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                            <naam>FONDS_SOORT</naam>
+                            <waardeBron>Stadspas extra korting klant</waardeBron>
+                            <waardeKba>Aanbiedingen klant (geeft recht op gratis ID)</waardeKba>
+                        </refCode>
+                        <soortFonds>3555</soortFonds>
+                    </fonds>
+                    <fonds>
+                        <besluit>toekenning</besluit>
+                        <bron>17</bron>
+                        <dienstnr>5</dienstnr>
+                        <dtbegin>2017-09-01T00:00:00+02:00</dtbegin>
+                        <dteinde>2018-08-31T00:00:00+02:00</dteinde>
+                        <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                        <id>1463174</id>
+                        <indHoofdklant>1</indHoofdklant>
+                        <psonId>9900000002</psonId>
+                        <recordStatus>0</recordStatus>
+                        <refCode>
+                            <bron>17</bron>
+                            <code>3551</code>
+                            <geldigVan>1900-01-01T00:00:00+01:00</geldigVan>
+                            <naam>FONDS_SOORT</naam>
+                            <waardeBron>Stadspas klant</waardeBron>
+                            <waardeKba>Stadspas klant</waardeKba>
+                        </refCode>
+                        <soortFonds>3551</soortFonds>
+                    </fonds>
+                </fondsen>
+            </return>
+        </ns0:getStadspasResponse>
+    </S:Body>
+</S:Envelope>

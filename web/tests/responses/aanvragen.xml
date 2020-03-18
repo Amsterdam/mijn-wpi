@@ -1,0 +1,291 @@
+<S:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <env:Header>
+        <work:WorkContext xmlns:work="http://oracle.com/weblogic/soap/workarea/">c</work:WorkContext>
+    </env:Header>
+    <S:Body>
+        <ns0:getAanvragenResponse xmlns:ns0="http://example.com/">
+            <return>
+                <bsn>123456789</bsn>
+                <soortProduct>
+                    <naam>Participatiewet</naam>
+                    <product>
+                        <dienstverleningstermijn>21</dienstverleningstermijn>
+                        <inspanningsperiode>28</inspanningsperiode>
+                        <naam>Levensonderhoud</naam>
+                        <processtappen>
+                            <aanvraag>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                                <document>
+                                    <id>60000000000004</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag WWB (GALO)</omschrijving>
+                                </document>
+                            </aanvraag>
+                            <beslissing>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                                <document>
+                                    <id>660000000000005</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Afwijzen Levensonderhoud (BIJ)</omschrijving>
+                                </document>
+                            </beslissing>
+                            <bezwaar/>
+                            <herstelTermijn/>
+                            <inBehandeling>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                            </inBehandeling>
+                        </processtappen>
+                        <typeBesluit>Toekenning</typeBesluit>
+                    </product>
+                    <product>
+                        <dienstverleningstermijn>21</dienstverleningstermijn>
+                        <inspanningsperiode>28</inspanningsperiode>
+                        <naam>Levensonderhoud</naam>
+                        <processtappen>
+                            <aanvraag>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                                <document>
+                                    <id>660000000000006</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag WWB (GALO)</omschrijving>
+                                </document>
+                            </aanvraag>
+                            <beslissing>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                                <document>
+                                    <id>660000000000007</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Afwijzen Levensonderhoud </omschrijving>
+                                </document>
+                                <reden>Test LO</reden>
+                            </beslissing>
+                            <bezwaar/>
+                            <herstelTermijn/>
+                            <inBehandeling>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                            </inBehandeling>
+                        </processtappen>
+                        <typeBesluit>Afwijzing</typeBesluit>
+                    </product>
+                    <product>
+                        <dienstverleningstermijn>21</dienstverleningstermijn>
+                        <inspanningsperiode>28</inspanningsperiode>
+                        <naam>Levensonderhoud</naam>
+                        <processtappen>
+                            <aanvraag>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                                <document>
+                                    <id>660000000000008</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag WWB (GALO)</omschrijving>
+                                </document>
+                            </aanvraag>
+                            <beslissing>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                                <document>
+                                    <id>660000000000009</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Toekennen Levensonderhoud (BIJ)</omschrijving>
+                                </document>
+                            </beslissing>
+                            <bezwaar/>
+                            <herstelTermijn>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                                <document>
+                                    <id>4400000002</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Formulier Inlichtingen partner</omschrijving>
+                                </document>
+                                <aantalDagenHerstelTermijn>20</aantalDagenHerstelTermijn>
+                            </herstelTermijn>
+                            <inBehandeling>
+                                <datum>2019-01-01T15:05:51+02:00</datum>
+                            </inBehandeling>
+                        </processtappen>
+                        <typeBesluit>Toekenning</typeBesluit>
+                    </product>
+                    <product>
+                        <dienstverleningstermijn>21</dienstverleningstermijn>
+                        <inspanningsperiode>28</inspanningsperiode>
+                        <naam>Levensonderhoud</naam>
+                        <processtappen>
+                            <aanvraag>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>660000000000010</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag WWB (GALO)</omschrijving>
+                                </document>
+                                <document>
+                                    <id>660000000000019</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag WWB (GALO)</omschrijving>
+                                </document>
+                            </aanvraag>
+                            <beslissing>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>660000000000011</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Niet in behandeling nemen </omschrijving>
+                                </document>
+                            </beslissing>
+                            <bezwaar/>
+                            <herstelTermijn>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>4400000003</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraagformulier WWB (kort)</omschrijving>
+                                </document>
+                                <aantalDagenHerstelTermijn>15</aantalDagenHerstelTermijn>
+                            </herstelTermijn>
+                            <inBehandeling>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                            </inBehandeling>
+                        </processtappen>
+                        <typeBesluit>Buiten Behandeling</typeBesluit>
+                    </product>
+                </soortProduct>
+                <soortProduct>
+                    <naam>Minimafonds</naam>
+                    <product>
+                        <dienstverleningstermijn>56</dienstverleningstermijn>
+                        <naam>Stadspas</naam>
+                        <processtappen>
+                            <aanvraag>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>4400000004</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (papier)</omschrijving>
+                                </document>
+                                <document>
+                                    <id>4400000005</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (balie)</omschrijving>
+                                </document>
+                                <document>
+                                    <id>4400000006</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (digitaal)</omschrijving>
+                                </document>
+                            </aanvraag>
+                            <beslissing/>
+                            <bezwaar/>
+                            <herstelTermijn/>
+                            <inBehandeling/>
+                        </processtappen>
+                    </product>
+                    <product>
+                        <dienstverleningstermijn>56</dienstverleningstermijn>
+                        <naam>Stadspas</naam>
+                        <processtappen>
+                            <aanvraag>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>4400000004</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (papier)</omschrijving>
+                                </document>
+                                <document>
+                                    <id>4400000005</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (balie)</omschrijving>
+                                </document>
+                                <document>
+                                    <id>4400000006</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (digitaal)</omschrijving>
+                                </document>
+                            </aanvraag>
+                            <beslissing>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>660000000000021</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Stadspas Besluit [afwijzing of toekenning]</omschrijving>
+                                </document>
+                            </beslissing>
+                            <bezwaar/>
+                            <herstelTermijn>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>660000000000020</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Verzoek om informatie, hersteltermijn</omschrijving>
+                                </document>
+                                <aantalDagenHerstelTermijn>20</aantalDagenHerstelTermijn>
+                            </herstelTermijn>
+                            <inBehandeling>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                            </inBehandeling>
+                        </processtappen>
+                        <typeBesluit>Toekenning</typeBesluit>
+                    </product>
+                    <product>
+                        <dienstverleningstermijn>56</dienstverleningstermijn>
+                        <naam>Stadspas</naam>
+                        <processtappen>
+                            <aanvraag>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>4400000004</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (papier)</omschrijving>
+                                </document>
+                                <document>
+                                    <id>4400000005</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (balie)</omschrijving>
+                                </document>
+                                <document>
+                                    <id>4400000006</id>
+                                    <isBulk>true</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Aanvraag Stadspas (digitaal)</omschrijving>
+                                </document>
+                            </aanvraag>
+                            <beslissing/>
+                            <bezwaar/>
+                            <herstelTermijn>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                                <document>
+                                    <id>660000000000020</id>
+                                    <isBulk>false</isBulk>
+                                    <isDms>false</isDms>
+                                    <omschrijving>Verzoek om informatie, hersteltermijn</omschrijving>
+                                </document>
+                                <aantalDagenHerstelTermijn>10</aantalDagenHerstelTermijn>
+                            </herstelTermijn>
+                            <inBehandeling>
+                                <datum>2019-01-01T15:05:52+02:00</datum>
+                            </inBehandeling>
+                        </processtappen>
+                    </product>
+                </soortProduct>
+            </return>
+        </ns0:getAanvragenResponse>
+    </S:Body>
+</S:Envelope>

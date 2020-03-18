@@ -21,29 +21,22 @@ from focus.server import application  # noqa: E402
 class JaaropgavenTest(TestCase):
     def test_connection(self):
         focus_connection = FocusConnection(config, credentials)
-        focus_connection.jaaropgaven(bsn=1234, url_root='/')
-        pass
+        result = focus_connection.jaaropgaven(bsn=1234, url_root='/')
+        print(">>>>>>", result)
+
+        assert False
 
 
-# # @patch('focus.focusconnect.Client', new=MockClient)
-# class DocumentTest(TestCase):
-#     def test_focus_connection_document(self):
-#         focus_connection = FocusConnection(config, credentials)
-#
-#         doc = focus_connection.document(id=1, bsn="12345", isBulk=True, isDms=False)
-#         self.assertEqual(doc['fileName'], 'TestIKB\\TestBulk15.pdf')
-#         self.assertEqual(doc['mime_type'], 'application/pdf')
-#         self.assertEqual(doc['contents'], pdf_document)
+@patch('focus.focusconnect.Client', new=MockClient)
+# side step decoding the BSN from SAML token
+@patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
+class DocumentApiTest(FlaskTestCase):
+    def create_app(self):
+        return application
 
+    def test_combined_api(self):
+        response = self.client.get('/focus/combined')
 
-# @patch('focus.focusconnect.Client', new=MockClient)
-# # side step decoding the BSN from SAML token
-# @patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
-# class DocumentApiTest(FlaskTestCase):
-#     def create_app(self):
-#         return application
-#
-#     def test_document_api(self):
-#         response = self.client.get('/focus/document?id=1&isBulk=true&isDms=true')
-#         self.assertEqual(response.data, pdf_document)
-#         self.assertEqual(response.headers['Content-Disposition'], r'attachment; filename="TestIKB\TestBulk15.pdf"')
+        from pprint import pprint
+        pprint(response.json)
+        assert False

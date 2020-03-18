@@ -106,7 +106,6 @@ class FocusConnection:
                 return []
             xml_jaaropgaven = result.group(0)
             jaaropgaven = convert_jaaropgaven(xml_jaaropgaven, url_root)
-            # print(">>>>", jaaropgaven)
             return jaaropgaven
 
     def uitkeringspecificaties(self, bsn, url_root):
