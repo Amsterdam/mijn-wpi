@@ -8,7 +8,7 @@ import hiro as hiro
 
 
 # Prepare environment
-from web.tests.mocks import MockClient
+from tests.mocks import MockClient
 
 os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
 os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'

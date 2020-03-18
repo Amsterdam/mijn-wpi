@@ -95,7 +95,6 @@ class FocusConnection:
 
         return aanvragen
 
-
     def jaaropgaven(self, bsn, url_root):
         with self._client.options(raw_response=True):
             raw_jaaropgaven = self._client.service.getJaaropgaven(bsn=bsn).content.decode("utf-8").replace("\n", "")
@@ -140,4 +139,3 @@ class FocusConnection:
         document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"
 
         return document
-

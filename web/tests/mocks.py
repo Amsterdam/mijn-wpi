@@ -1,7 +1,7 @@
 # Mock the soap client
 import os
 
-from web.focus.config import BASE_PATH
+from focus.config import BASE_PATH
 
 
 class MockClient:
@@ -30,6 +30,7 @@ class MockService:
 
     def getUitkeringspecificaties(self, bsn):
         return MockResponse(reply=uitkeringspecificaties_response)
+
 
 class MockResponse:
     def __init__(self, reply):

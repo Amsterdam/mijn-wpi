@@ -108,8 +108,9 @@ class FocusServer:
                     "uitkeringspecificaties": uitkeringspec,
                 }
             }
-        except:
-            pass
+        except Exception as error:
+            logger.error("Failed to retrieve aanvragen: {} {}".format(type(error), str(error)))
+            return self._no_connection_response()
 
     def document(self):
         """

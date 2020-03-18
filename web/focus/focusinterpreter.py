@@ -145,14 +145,6 @@ def convert_aanvragen(aanvragen, url_root):
     return producten
 
 
-# {
-#  title: string | ReactNode;
-#  datePublished: string;
-#  id: string;
-#  url: string;
-#  type: FocusInkomenSpecificatieType;
-#  isAnnualStatement: boolean;
-# }
 # FocusInkomenSpecificatieType =
 #   | 'IOAZ'
 #   | 'BBS'
