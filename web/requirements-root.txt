@@ -18,6 +18,7 @@ connexion
 zeep==2.4.0
 # to convert the soap xml to a dict
 xmltodict
+beautifulsoup4
 
 # testing tools
 hiro

@@ -48,7 +48,8 @@ urls = {
     'health': "/status/health",
     'data': "/status/data",
     'aanvragen': "/focus/aanvragen",
-    'document': "/focus/document"
+    'document': "/focus/document",
+    'combined': "/focus/combined",
 }
 
 

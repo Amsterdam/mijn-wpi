@@ -87,5 +87,10 @@ def document():
     return server().document()
 
 
+@application.route(urls["combined"])
+def combined():
+    return server().combined()
+
+
 if __name__ == "__main__":
     application.run()

@@ -1,0 +1,72 @@
+<S:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <env:Header>
+    <work:WorkContext xmlns:work="http://oracle.com/weblogic/soap/workarea/">a</work:WorkContext>
+  </env:Header>
+  <S:Body>
+    <ns0:getJaaropgavenResponse xmlns:ns0="http://example.com/">
+      <return>
+        <document>
+          <bron>17</bron>
+          <dcdeId>172065</dcdeId>
+          <dcteId>660000000010020</dcteId>
+          <documentCode>
+            <autorisatieCategorie>1</autorisatieCategorie>
+            <bron>17</bron>
+            <code>2065</code>
+            <documentCategorie>110</documentCategorie>
+            <documentSoort>10</documentSoort>
+            <dossierDeel>2</dossierDeel>
+            <dossierType>1</dossierType>
+            <geldigVan>2005-12-21T15:19:48+01:00</geldigVan>
+            <id>172065</id>
+            <kolom>Inkomen</kolom>
+            <omschrijving>Jaaropgave</omschrijving>
+            <werksoort>Inkomen</werksoort>
+          </documentCode>
+          <documentLocatie>
+            <bron>17</bron>
+            <id>660000000010020</id>
+            <locatie>TestIKB\TEST 20.pdf</locatie>
+          </documentLocatie>
+          <einddatumDocument>2011-01-28T00:00:00+01:00</einddatumDocument>
+          <geldigVan>2011-01-28T20:52:38+01:00</geldigVan>
+          <id>95330222</id>
+          <indDefinitief>J</indDefinitief>
+          <mdkrId>17batch</mdkrId>
+          <psonId>9900000004</psonId>
+        </document>
+        <document>
+          <bron>17</bron>
+          <centraalPrinten>1</centraalPrinten>
+          <dcdeId>172065</dcdeId>
+          <dcteId>660000000010021</dcteId>
+          <documentCode>
+            <autorisatieCategorie>1</autorisatieCategorie>
+            <bron>17</bron>
+            <code>2065</code>
+            <documentCategorie>110</documentCategorie>
+            <documentSoort>10</documentSoort>
+            <dossierDeel>2</dossierDeel>
+            <dossierType>1</dossierType>
+            <geldigVan>2005-12-21T15:19:48+01:00</geldigVan>
+            <id>172065</id>
+            <kolom>Inkomen</kolom>
+            <omschrijving>Jaaropgave</omschrijving>
+            <werksoort>Inkomen</werksoort>
+          </documentCode>
+          <documentLocatie>
+            <bron>17</bron>
+            <id>660000000010021</id>
+            <locatie>TestIKB\TEST 21.pdf</locatie>
+          </documentLocatie>
+          <einddatumDocument>2019-01-04T00:00:00+01:00</einddatumDocument>
+          <geldigVan>2019-01-04T20:53:03+01:00</geldigVan>
+          <id>20021871</id>
+          <indDefinitief>J</indDefinitief>
+          <mdkrId>17batch</mdkrId>
+          <psonId>9900000004</psonId>
+        </document>
+      </return>
+    </ns0:getJaaropgavenResponse>
+  </S:Body>
+</S:Envelope>

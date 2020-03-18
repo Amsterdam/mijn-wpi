@@ -91,6 +91,27 @@ class FocusServer:
 
         return jsonify(aanvragen)
 
+    def combined(self):
+        """ Gets all jaaropgaven for the BSN that is encoded in the header SAML token. """
+        try:
+            bsn = get_bsn_from_request(request)
+        except Exception as error:
+            return self._parameter_error_response(error)
+
+        try:
+            jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
+            uitkeringspec = self._focus_connection.uitkeringspecificaties(bsn=bsn, url_root=request.script_root)
+            return {
+                "status": "OK",
+                "data": {
+                    "jaaropgaven": jaaropgaven,
+                    "uitkeringspecificaties": uitkeringspec,
+                }
+            }
+        except Exception as error:
+            logger.error("Failed to retrieve aanvragen: {} {}".format(type(error), str(error)))
+            return self._no_connection_response()
+
     def document(self):
         """
         Gets a specific aanvraag document for the BSN that is encoded in the header SAML token

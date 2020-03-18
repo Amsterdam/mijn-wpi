@@ -5,46 +5,16 @@ from unittest import TestCase
 from flask_testing import TestCase as FlaskTestCase
 from mock import patch
 
+from tests.mocks import MockClient, pdf_document
+
 os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
 os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
 os.environ['FOCUS_WSDL'] = 'focus/focus.wsdl'
 os.environ['TMA_CERTIFICATE'] = __file__
 
-from focus.config import BASE_PATH, config, credentials  # noqa: E402  Module level import not at top of file
+from focus.config import config, credentials  # noqa: E402  Module level import not at top of file
 from focus.focusconnect import FocusConnection  # noqa: E402
 from focus.server import application  # noqa: E402
-
-
-# this document is from acc
-TEST_PDF_PATH = os.path.join(BASE_PATH, 'tests', 'test.pdf')
-with open(TEST_PDF_PATH, 'rb') as fh:
-    pdf_document = fh.read()
-
-
-# Mock the soap client
-class MockClient:
-    def __init__(self, wsdl, transport):
-        self.service = MockService()
-
-
-class MockService:
-    def getDocument(self, bsn, id, isBulk, isDms):
-        return get_document()
-
-
-def get_document():
-    # obtained from acc
-    document = {
-        'contentID': None,
-        'contentLanguage': [],
-        'contentMD5': None,
-        'dataHandler': pdf_document,
-        'description': None,
-        'disposition': 'attachment',
-        'document': None,
-        'fileName': r'TestIKB\TestBulk15.pdf'
-    }
-    return document
 
 
 @patch('focus.focusconnect.Client', new=MockClient)
