@@ -29,7 +29,7 @@ class MockService:
         return MockResponse(reply=aanvragen_response)
 
     def getUitkeringspecificaties(self, bsn):
-        return MockResponse(reply=uitkeringspecificaties_response)
+        return MockResponse(reply=uitkeringsspecificaties_response)
 
 
 class MockResponse:
@@ -54,9 +54,9 @@ AANVRAGEN_RESPONSE_PATH = os.path.join(BASE_PATH, 'tests', 'responses', 'aanvrag
 with open(AANVRAGEN_RESPONSE_PATH, 'rb') as fp:
     aanvragen_response = fp.read()
 
-INKOMENSSPECIFICATIES_RESPONSE_PATH = os.path.join(BASE_PATH, 'tests', 'responses', 'uitkeringspecificaties.xml')
+INKOMENSSPECIFICATIES_RESPONSE_PATH = os.path.join(BASE_PATH, 'tests', 'responses', 'uitkeringsspecificaties.xml')
 with open(INKOMENSSPECIFICATIES_RESPONSE_PATH, 'rb') as fp:
-    uitkeringspecificaties_response = fp.read()
+    uitkeringsspecificaties_response = fp.read()
 
 
 def get_document():

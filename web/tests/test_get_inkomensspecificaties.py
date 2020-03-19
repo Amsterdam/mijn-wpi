@@ -16,10 +16,10 @@ from focus.focusconnect import FocusConnection  # noqa: E402
 
 
 @patch('focus.focusconnect.Client', new=MockClient)
-class UitkeringspecificatiesTests(TestCase):
+class UitkeringsspecificatiesTests(TestCase):
     def test_connection(self):
         focus_connection = FocusConnection(config, credentials)
-        result = focus_connection.uitkeringspecificaties(bsn=1234, url_root='/')
+        result = focus_connection.uitkeringsspecificaties(bsn=1234, url_root='/')
 
         expected = [
             {

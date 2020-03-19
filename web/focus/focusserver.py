@@ -100,12 +100,12 @@ class FocusServer:
 
         try:
             jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
-            uitkeringspec = self._focus_connection.uitkeringspecificaties(bsn=bsn, url_root=request.script_root)
+            uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
             return {
                 "status": "OK",
                 "data": {
                     "jaaropgaven": jaaropgaven,
-                    "uitkeringspecificaties": uitkeringspec,
+                    "uitkeringsspecificaties": uitkeringsspec,
                 }
             }
         except Exception as error:

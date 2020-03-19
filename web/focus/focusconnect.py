@@ -13,7 +13,7 @@ from requests.auth import HTTPBasicAuth
 from zeep import Client
 from zeep.transports import Transport
 
-from focus.focusinterpreter import convert_aanvragen, convert_jaaropgaven, convert_uitkeringspecificaties
+from focus.focusinterpreter import convert_aanvragen, convert_jaaropgaven, convert_uitkeringsspecificaties
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +107,7 @@ class FocusConnection:
             jaaropgaven = convert_jaaropgaven(xml_jaaropgaven, url_root)
             return jaaropgaven
 
-    def uitkeringspecificaties(self, bsn, url_root):
+    def uitkeringsspecificaties(self, bsn, url_root):
         with self._client.options(raw_response=True):
             raw_specificaties = self._client.service.getUitkeringspecificaties(bsn=bsn).content.decode("utf-8").replace("\n", "")
             result = re.search(r"<return>.*<\/return>", raw_specificaties)
@@ -116,8 +116,8 @@ class FocusConnection:
                 logger.error("no body uitkeringspec? %s" % raw_specificaties)
                 return []
             xml_uitkeringspec = result.group(0)
-            uitkeringspecificaties = convert_uitkeringspecificaties(xml_uitkeringspec, url_root)
-            return uitkeringspecificaties
+            uitkeringsspecificaties = convert_uitkeringsspecificaties(xml_uitkeringspec, url_root)
+            return uitkeringsspecificaties
 
     def document(self, bsn, id, isBulk, isDms):
         """

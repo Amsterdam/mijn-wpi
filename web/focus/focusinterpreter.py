@@ -177,7 +177,7 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
     # uitkeringspecificatie is maandelijks
 
 
-def convert_uitkeringspecificaties(uitkeringspec_xml, document_root):
+def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
     jaar_opgaven_list = []
     tree = BeautifulSoup(uitkeringspec_xml, features="lxml-xml")
     documents = tree.find_all('document')
