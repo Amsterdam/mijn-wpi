@@ -73,7 +73,7 @@ class CombinedApiTest(FlaskTestCase):
                         'datePublished': '2019-04-19T00:00:00+02:00',
                         'id': '172013',
                         'title': 'Uitkeringsspecificatie',
-                        'type': '',
+                        'type': 'Participatiewet',
                         'url': 'focus/document?id=172013&isBulk=false&isDms=false'
                     },
                     {

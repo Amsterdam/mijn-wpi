@@ -27,7 +27,7 @@ class UitkeringspecificatiesTests(TestCase):
                 'datePublished': '2019-04-19T00:00:00+02:00',
                 'id': '172013',
                 'url': '/focus/document?id=172013&isBulk=false&isDms=false',
-                'type': '',
+                'type': 'Participatiewet',
             },
             {
                 'title': 'Uitkeringsspecificatie',
