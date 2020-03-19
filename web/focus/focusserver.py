@@ -103,7 +103,7 @@ class FocusServer:
             uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
             return {
                 "status": "OK",
-                "data": {
+                "content": {
                     "jaaropgaven": jaaropgaven,
                     "uitkeringsspecificaties": uitkeringsspec,
                 }
