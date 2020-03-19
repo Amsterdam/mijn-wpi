@@ -26,17 +26,15 @@ class UitkeringspecificatiesTests(TestCase):
                 'title': 'Uitkeringsspecificatie',
                 'datePublished': '2019-04-19T00:00:00+02:00',
                 'id': '172013',
-                'url': '/?id=172013&isBulk=false&isDms=false',
-                'type': '',
-                'isAnnualStatement': False
+                'url': '/focus/document?id=172013&isBulk=false&isDms=false',
+                'type': 'Participatiewet',
             },
             {
                 'title': 'Uitkeringsspecificatie',
                 'datePublished': '2014-01-24T00:00:00+01:00',
                 'id': '172013',
-                'url': '/?id=172013&isBulk=false&isDms=false',
+                'url': '/focus/document?id=172013&isBulk=false&isDms=false',
                 'type': '',
-                'isAnnualStatement': False
             }
         ]
 
