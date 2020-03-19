@@ -168,7 +168,7 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
             'datePublished': doc.einddatumDocument.text,
             'id': id,
             'url': url,
-            'type': '',  # niet van belang
+            'type': '',
         }
         jaar_opgaven_list.append(new_doc)
 
@@ -185,13 +185,18 @@ def convert_uitkeringspecificaties(uitkeringspec_xml, document_root):
         id = doc.id.text
         doc_url = urls['document'][1:]
         url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
+        doc_type = doc.variant
+        if doc_type:
+            doc_type = doc_type.text
+        else:
+            doc_type = ''
 
         new_doc = {
             'title': doc.documentCode.omschrijving.text,
             'datePublished': doc.einddatumDocument.text,
             'id': id,
             'url': url,
-            'type': '',  # niet van belang
+            'type': doc_type,
         }
         jaar_opgaven_list.append(new_doc)
 
