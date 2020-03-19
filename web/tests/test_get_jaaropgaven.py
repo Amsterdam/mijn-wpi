@@ -51,7 +51,7 @@ class CombinedApiTest(FlaskTestCase):
     def test_combined_api(self):
         response = self.client.get('/focus/combined')
         expected = {
-            'data': {
+            'content': {
                 'jaaropgaven': [
                     {
                         'datePublished': '2011-01-28T00:00:00+01:00',
