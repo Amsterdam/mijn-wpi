@@ -160,7 +160,8 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
     documents = tree.find_all('document')
     for doc in documents:
         id = doc.id.text
-        url = f"{document_root}?id={id}&isBulk=false&isDms=false"
+        doc_url = urls['document'][1:]
+        url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
 
         new_doc = {
             'title': doc.documentCode.omschrijving.text,
@@ -168,7 +169,6 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
             'id': id,
             'url': url,
             'type': '',  # niet van belang
-            'isAnnualStatement': True,
         }
         jaar_opgaven_list.append(new_doc)
 
@@ -183,7 +183,8 @@ def convert_uitkeringspecificaties(uitkeringspec_xml, document_root):
     documents = tree.find_all('document')
     for doc in documents:
         id = doc.id.text
-        url = f"{document_root}?id={id}&isBulk=false&isDms=false"
+        doc_url = urls['document'][1:]
+        url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
 
         new_doc = {
             'title': doc.documentCode.omschrijving.text,
@@ -191,7 +192,6 @@ def convert_uitkeringspecificaties(uitkeringspec_xml, document_root):
             'id': id,
             'url': url,
             'type': '',  # niet van belang
-            'isAnnualStatement': False,
         }
         jaar_opgaven_list.append(new_doc)
 

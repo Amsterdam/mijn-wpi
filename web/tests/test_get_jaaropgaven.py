@@ -26,18 +26,16 @@ class JaaropgavenTest(TestCase):
             {
                 'datePublished': '2011-01-28T00:00:00+01:00',
                 'id': '172065',
-                'isAnnualStatement': True,
                 'title': 'Jaaropgave',
                 'type': '',
-                'url': '/?id=172065&isBulk=false&isDms=false'
+                'url': '/focus/document?id=172065&isBulk=false&isDms=false'
             },
             {
                 'datePublished': '2019-01-04T00:00:00+01:00',
                 'id': '172065',
-                'isAnnualStatement': True,
                 'title': 'Jaaropgave',
                 'type': '',
-                'url': '/?id=172065&isBulk=false&isDms=false'
+                'url': '/focus/document?id=172065&isBulk=false&isDms=false'
             }
         ]
 
@@ -58,36 +56,32 @@ class CombinedApiTest(FlaskTestCase):
                     {
                         'datePublished': '2011-01-28T00:00:00+01:00',
                         'id': '172065',
-                        'isAnnualStatement': True,
                         'title': 'Jaaropgave',
                         'type': '',
-                        'url': '?id=172065&isBulk=false&isDms=false'
+                        'url': 'focus/document?id=172065&isBulk=false&isDms=false'
                     },
                     {
                         'datePublished': '2019-01-04T00:00:00+01:00',
                         'id': '172065',
-                        'isAnnualStatement': True,
                         'title': 'Jaaropgave',
                         'type': '',
-                        'url': '?id=172065&isBulk=false&isDms=false'
+                        'url': 'focus/document?id=172065&isBulk=false&isDms=false'
                     }
                 ],
                 'uitkeringspecificaties': [
                     {
                         'datePublished': '2019-04-19T00:00:00+02:00',
                         'id': '172013',
-                        'isAnnualStatement': False,
                         'title': 'Uitkeringsspecificatie',
                         'type': '',
-                        'url': '?id=172013&isBulk=false&isDms=false'
+                        'url': 'focus/document?id=172013&isBulk=false&isDms=false'
                     },
                     {
                         'datePublished': '2014-01-24T00:00:00+01:00',
                         'id': '172013',
-                        'isAnnualStatement': False,
                         'title': 'Uitkeringsspecificatie',
                         'type': '',
-                        'url': '?id=172013&isBulk=false&isDms=false'
+                        'url': 'focus/document?id=172013&isBulk=false&isDms=false'
                     }
                 ]
             },
