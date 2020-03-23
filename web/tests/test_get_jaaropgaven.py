@@ -25,17 +25,17 @@ class JaaropgavenTest(TestCase):
         expected = [
             {
                 'datePublished': '2011-01-28T00:00:00+01:00',
-                'id': '172065',
+                'id': '95330222',
                 'title': 'Jaaropgave',
                 'type': '',
-                'url': '/focus/document?id=172065&isBulk=false&isDms=false'
+                'url': '/focus/document?id=95330222&isBulk=false&isDms=false'
             },
             {
                 'datePublished': '2019-01-04T00:00:00+01:00',
-                'id': '172065',
+                'id': '20021871',
                 'title': 'Jaaropgave',
                 'type': '',
-                'url': '/focus/document?id=172065&isBulk=false&isDms=false'
+                'url': '/focus/document?id=20021871&isBulk=false&isDms=false'
             }
         ]
 
