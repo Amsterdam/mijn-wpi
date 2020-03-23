@@ -145,6 +145,10 @@ def convert_aanvragen(aanvragen, url_root):
     return producten
 
 
+def get_document_id(doc):
+    return next(item for item in filter(lambda item: item.name == 'id', doc.children)).string
+
+
 # FocusInkomenSpecificatieType =
 #   | 'IOAZ'
 #   | 'BBS'
@@ -158,11 +162,8 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
     jaar_opgaven_list = []
     tree = BeautifulSoup(jaaropgaven_xml, features="lxml-xml")
     documents = tree.select('document')
-
     for doc in documents:
-
-        id = next(item for item in filter(lambda item: item.name == 'id', doc.children))
-
+        id = get_document_id(doc)
         doc_url = urls['document'][1:]
         url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
 
@@ -183,9 +184,9 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
 def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
     jaar_opgaven_list = []
     tree = BeautifulSoup(uitkeringspec_xml, features="lxml-xml")
-    documents = tree.find_all('document')
+    documents = tree.select('document')
     for doc in documents:
-        id = doc.id.text
+        id = get_document_id(doc)
         doc_url = urls['document'][1:]
         url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
         doc_type = doc.variant
