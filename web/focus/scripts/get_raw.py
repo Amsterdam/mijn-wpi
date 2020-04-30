@@ -34,3 +34,9 @@ with focus_connection._client.options(raw_response=True):
     tree = etree.parse(content_bytesio)
     formatted_xml = etree.tostring(tree, pretty_print=True)
     print(formatted_xml.decode())
+
+    raw_aanvragen = focus_connection._client.service.getEAanvraagTOZO(bsn=bsn)
+    content_bytesio = BytesIO(raw_aanvragen.content)
+    tree = etree.parse(content_bytesio)
+    formatted_xml = etree.tostring(tree, pretty_print=True)
+    print(formatted_xml.decode())
