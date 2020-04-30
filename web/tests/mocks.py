@@ -3,6 +3,8 @@ import os
 
 from focus.config import BASE_PATH
 
+RESPONSES_PATH = os.path.join(BASE_PATH, 'tests', 'responses')
+
 
 class MockClient:
     def __init__(self, wsdl, transport):
@@ -31,6 +33,9 @@ class MockService:
     def getUitkeringspecificaties(self, bsn):
         return MockResponse(reply=uitkeringsspecificaties_response)
 
+    def getEAanvraagTOZO(self, bsn):
+        return MockResponse(reply=tozo_documenten_response)
+
 
 class MockResponse:
     def __init__(self, reply):
@@ -46,17 +51,21 @@ TEST_PDF_PATH = os.path.join(BASE_PATH, 'tests', 'test.pdf')
 with open(TEST_PDF_PATH, 'rb') as fh:
     pdf_document = fh.read()
 
-JAAROPGAVEN_RESPONSE_PATH = os.path.join(BASE_PATH, 'tests', 'responses', 'jaaropgaven.xml')
+JAAROPGAVEN_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'jaaropgaven.xml')
 with open(JAAROPGAVEN_RESPONSE_PATH, 'rb') as fp:
     jaaropgaven_reponse = fp.read()
 
-AANVRAGEN_RESPONSE_PATH = os.path.join(BASE_PATH, 'tests', 'responses', 'aanvragen.xml')
+AANVRAGEN_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'aanvragen.xml')
 with open(AANVRAGEN_RESPONSE_PATH, 'rb') as fp:
     aanvragen_response = fp.read()
 
-INKOMENSSPECIFICATIES_RESPONSE_PATH = os.path.join(BASE_PATH, 'tests', 'responses', 'uitkeringsspecificaties.xml')
+INKOMENSSPECIFICATIES_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'uitkeringsspecificaties.xml')
 with open(INKOMENSSPECIFICATIES_RESPONSE_PATH, 'rb') as fp:
     uitkeringsspecificaties_response = fp.read()
+
+TOZO_DOCUMENTEN_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'tozo_documenten.xml')
+with open(TOZO_DOCUMENTEN_RESPONSE_PATH, 'rb') as fp:
+    tozo_documenten_response = fp.read()
 
 
 def get_document():

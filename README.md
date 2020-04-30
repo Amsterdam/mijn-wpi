@@ -153,3 +153,6 @@ Direct dependencies are specified in `requirements-root.txt`. These should not h
 
 # TMA test certificates were generated with:
 `openssl req -x509 -nodes -days 365 -newkey rsa:512 -keyout test_tma_cert.key -out test_tma_cert.crt`
+
+# Fetching WSDL
+`curl https://$FOCUS_USERNAME:$FOCUS_PASSWORD@<url of web service>?WSDL`

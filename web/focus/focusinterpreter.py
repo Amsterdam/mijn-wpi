@@ -194,10 +194,38 @@ def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
         new_doc = {
             'title': doc.documentCode.omschrijving.text,
             'datePublished': doc.einddatumDocument.text,
-            'id': id,
             'url': url,
             'type': doc_type,
         }
         jaar_opgaven_list.append(new_doc)
 
     return jaar_opgaven_list
+
+
+def convert_e_aanvraag_TOZO(xml, document_root):
+    jaar_opgaven_list = []
+    tree = BeautifulSoup(xml, features="lxml-xml")
+    documents = tree.find_all('documentgegevens')
+    for doc in documents:
+        id = doc.documentId.text
+        doc_url = urls['document'][1:]
+        bulk = doc.isBulk.text
+        dms = doc.isDms.text
+        url = f"{document_root}{doc_url}?id={id}&isBulk={bulk}&isDms={dms}"
+
+        # id -> documentId
+        # url -> focus / document?id = 4400000004 & isBulk = true & isDms = false
+        # datePublished -> datumDocument
+        # type -> documentCode
+        # description -> documentOmschrijving
+        new_doc = {
+            'id': id,
+            'datePublished': doc.datumDocument.text,
+            'url': url,
+            'type': doc.documentCode.text,
+            'description': doc.documentOmschrijving.text,
+        }
+        jaar_opgaven_list.append(new_doc)
+
+    return jaar_opgaven_list
+    pass
