@@ -104,7 +104,7 @@ class FocusServer:
             tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
             return {
                 "status": "OK",
-                "data": {
+                "content": {
                     "jaaropgaven": jaaropgaven,
                     "uitkeringsspecificaties": uitkeringsspec,
                     "tozodocumenten": tozo_documents,
