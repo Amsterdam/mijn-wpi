@@ -146,7 +146,7 @@ def convert_aanvragen(aanvragen, url_root):
 
 
 def get_document_id(doc):
-    return next(item for item in filter(lambda item: item.name == 'id', doc.children)).string
+    return doc.find('id', recursive=False).string
 
 
 # FocusInkomenSpecificatieType =
