@@ -1,0 +1,102 @@
+<S:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <env:Header>
+        <work:WorkContext xmlns:work="http://oracle.com/weblogic/soap/workarea/"></work:WorkContext>
+    </env:Header>
+    <S:Body>
+        <ns0:getEAanvraagTOZOResponse xmlns:ns0="https://example.com/">
+            <return>
+                <bsn>1337</bsn>
+                <documentgegevens>
+                    <datumDocument>2020-03-31T18:59:46+02:00</datumDocument>
+                    <documentCodes>
+                        <documentCategorie>
+                            <documentCategorieCode>116</documentCategorieCode>
+                            <documentCategorieNaam>Aanvraag</documentCategorieNaam>
+                        </documentCategorie>
+                        <documentCode>E-AANVR-TOZO</documentCode>
+                        <documentCodeId>770</documentCodeId>
+                        <documentOmschrijving>Tegemoetkoming Ondernemers en Zelfstandigen</documentOmschrijving>
+                    </documentCodes>
+                    <documentId>4400000031</documentId>
+                    <isBulk>true</isBulk>
+                    <isDms>false</isDms>
+                </documentgegevens>
+                <documentgegevens>
+                    <datumDocument>2020-03-26T15:18:44+01:00</datumDocument>
+                    <documentCodes>
+                        <documentCategorie>
+                            <documentCategorieCode>116</documentCategorieCode>
+                            <documentCategorieNaam>Aanvraag</documentCategorieNaam>
+                        </documentCategorie>
+                        <documentCode>E-AANVR-KBBZ</documentCode>
+                        <documentCodeId>756</documentCodeId>
+                        <documentOmschrijving>Verkorte Aanvraag BBZ</documentOmschrijving>
+                    </documentCodes>
+                    <documentId>4400000024</documentId>
+                    <isBulk>true</isBulk>
+                    <isDms>false</isDms>
+                </documentgegevens>
+                <documentgegevens>
+                    <datumDocument>2020-03-18T23:09:58+01:00</datumDocument>
+                    <documentCodes>
+                        <documentCategorie>
+                            <documentCategorieCode>116</documentCategorieCode>
+                            <documentCategorieNaam>Aanvraag</documentCategorieNaam>
+                        </documentCategorie>
+                        <documentCode>E-AANVR-DGB</documentCode>
+                        <documentCodeId>734</documentCodeId>
+                        <documentOmschrijving>Ondernemerscheck zelfstandigen</documentOmschrijving>
+                    </documentCodes>
+                    <documentId>4400000020</documentId>
+                    <isBulk>true</isBulk>
+                    <isDms>false</isDms>
+                </documentgegevens>
+                <documentgegevens>
+                    <datumDocument>2020-03-31T00:21:51+02:00</datumDocument>
+                    <documentCodes>
+                        <documentCategorie>
+                            <documentCategorieCode>116</documentCategorieCode>
+                            <documentCategorieNaam>Aanvraag</documentCategorieNaam>
+                        </documentCategorie>
+                        <documentCode>E-AANVR-TOZO</documentCode>
+                        <documentCodeId>770</documentCodeId>
+                        <documentOmschrijving>Tegemoetkoming Ondernemers en Zelfstandigen</documentOmschrijving>
+                    </documentCodes>
+                    <documentId>4400000030</documentId>
+                    <isBulk>true</isBulk>
+                    <isDms>false</isDms>
+                </documentgegevens>
+                <documentgegevens>
+                    <datumDocument>2020-03-22T00:26:10+01:00</datumDocument>
+                    <documentCodes>
+                        <documentCategorie>
+                            <documentCategorieCode>116</documentCategorieCode>
+                            <documentCategorieNaam>Aanvraag</documentCategorieNaam>
+                        </documentCategorie>
+                        <documentCode>E-AANVR-BBZ</documentCode>
+                        <documentCodeId>678</documentCodeId>
+                        <documentOmschrijving>Aanvraag BBZ</documentOmschrijving>
+                    </documentCodes>
+                    <documentId>4400000022</documentId>
+                    <isBulk>true</isBulk>
+                    <isDms>false</isDms>
+                </documentgegevens>
+                <documentgegevens>
+                    <datumDocument>2020-03-31T00:04:34+02:00</datumDocument>
+                    <documentCodes>
+                        <documentCategorie>
+                            <documentCategorieCode>116</documentCategorieCode>
+                            <documentCategorieNaam>Aanvraag</documentCategorieNaam>
+                        </documentCategorie>
+                        <documentCode>E-AANVR-TOZO</documentCode>
+                        <documentCodeId>770</documentCodeId>
+                        <documentOmschrijving>Tegemoetkoming Ondernemers en Zelfstandigen</documentOmschrijving>
+                    </documentCodes>
+                    <documentId>4400000029</documentId>
+                    <isBulk>true</isBulk>
+                    <isDms>false</isDms>
+                </documentgegevens>
+            </return>
+        </ns0:getEAanvraagTOZOResponse>
+    </S:Body>
+</S:Envelope>

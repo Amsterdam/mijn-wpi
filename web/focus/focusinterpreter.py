@@ -196,6 +196,7 @@ def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
             doc_type = ''
 
         new_doc = {
+            'id': id,
             'title': doc.documentCode.omschrijving.text,
             'datePublished': doc.einddatumDocument.text,
             'url': url,
