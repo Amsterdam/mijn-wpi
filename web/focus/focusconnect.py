@@ -121,12 +121,11 @@ class FocusConnection:
 
     def EAanvragenTozo(self, bsn, url_root):
         with self._client.options(raw_response=True):
-
-            raw_specificaties = self._client.service.getEAanvraagTOZO(bsn=bsn).content.decode("utf-8").replace("\n", "")
-            result = re.search(r"<return>.*<\/return>", raw_specificaties)
+            raw_tozo_documente = self._client.service.getEAanvraagTOZO(bsn=bsn).content.decode("utf-8").replace("\n", "")
+            result = re.search(r"<return>.*<\/return>", raw_tozo_documente)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body getEAanvraagTOZO? %s" % raw_specificaties)
+                logger.error("no body getEAanvraagTOZO? %s" % raw_tozo_documente)
                 return []
             xml = result.group(0)
             tozo_documenten = convert_e_aanvraag_TOZO(xml, url_root)

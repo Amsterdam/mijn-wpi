@@ -218,11 +218,6 @@ def convert_e_aanvraag_TOZO(xml, document_root):
         dms = doc.isDms.text
         url = f"{document_root}{doc_url}?id={id}&isBulk={bulk}&isDms={dms}"
 
-        # id -> documentId
-        # url -> focus / document?id = 4400000004 & isBulk = true & isDms = false
-        # datePublished -> datumDocument
-        # type -> documentCode
-        # description -> documentOmschrijving
         new_doc = {
             'id': id,
             'datePublished': doc.datumDocument.text,
@@ -233,4 +228,3 @@ def convert_e_aanvraag_TOZO(xml, document_root):
         jaar_opgaven_list.append(new_doc)
 
     return jaar_opgaven_list
-    pass
