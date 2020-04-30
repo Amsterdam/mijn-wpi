@@ -21,8 +21,6 @@ class TozoDocumentenTests(TestCase):
         self.maxDiff = None
         focus_connection = FocusConnection(config, credentials)
         result = focus_connection.EAanvragenTozo(bsn=1234, url_root='/')
-        from pprint import pprint
-        pprint(result)
         expected = [
             {
                 'datePublished': '2020-03-31T18:59:46+02:00',
