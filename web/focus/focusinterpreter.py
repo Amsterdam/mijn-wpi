@@ -146,7 +146,7 @@ def convert_aanvragen(aanvragen, url_root):
 
 
 def get_document_id(doc):
-    return next(item for item in filter(lambda item: item.name == 'id', doc.children)).string
+    return doc.find('id', recursive=False).string
 
 
 # FocusInkomenSpecificatieType =
@@ -196,11 +196,34 @@ def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
             doc_type = ''
 
         new_doc = {
+            'id': id,
             'title': doc.documentCode.omschrijving.text,
             'datePublished': doc.einddatumDocument.text,
-            'id': id,
             'url': url,
             'type': doc_type,
+        }
+        jaar_opgaven_list.append(new_doc)
+
+    return jaar_opgaven_list
+
+
+def convert_e_aanvraag_TOZO(xml, document_root):
+    jaar_opgaven_list = []
+    tree = BeautifulSoup(xml, features="lxml-xml")
+    documents = tree.find_all('documentgegevens')
+    for doc in documents:
+        id = doc.documentId.text
+        doc_url = urls['document'][1:]
+        bulk = doc.isBulk.text
+        dms = doc.isDms.text
+        url = f"{document_root}{doc_url}?id={id}&isBulk={bulk}&isDms={dms}"
+
+        new_doc = {
+            'id': id,
+            'datePublished': doc.datumDocument.text,
+            'url': url,
+            'type': doc.documentCode.text,
+            'description': doc.documentOmschrijving.text,
         }
         jaar_opgaven_list.append(new_doc)
 
