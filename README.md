@@ -155,4 +155,4 @@ Direct dependencies are specified in `requirements-root.txt`. These should not h
 `openssl req -x509 -nodes -days 365 -newkey rsa:512 -keyout test_tma_cert.key -out test_tma_cert.crt`
 
 # Fetching WSDL
-`curl https://$FOCUS_USERNAME:$FOCUS_PASSWORD@<url of web service>?WSDL`
+`curl https://$FOCUS_USERNAME:$FOCUS_PASSWORD@$(grep "<soap:address location=" $FOCUS_WSDL | cut -d '"' -f 2 | cut -d '/' -f 3-)?WSDL -k && echo`
