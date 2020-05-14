@@ -80,14 +80,12 @@ class FocusServer:
         except Exception as error:
             return self._parameter_error_response(error)
 
-        try:
-            aanvragen = self._focus_connection.aanvragen(
-                bsn=bsn,
-                url_root=request.script_root
-            )
-        except Exception as error:
-            logger.error("Failed to retrieve aanvragen: {} {}".format(type(error), str(error)))
-            return self._no_connection_response()
+        aanvragen = self._focus_connection.aanvragen(
+            bsn=bsn,
+            url_root=request.script_root
+        )
+            # logger.error("Failed to retrieve aanvragen: {} {}".format(type(error), str(error)))
+            # return self._no_connection_response()
 
         return jsonify(aanvragen)
 
