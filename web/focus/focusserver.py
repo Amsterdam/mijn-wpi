@@ -84,8 +84,6 @@ class FocusServer:
             bsn=bsn,
             url_root=request.script_root
         )
-            # logger.error("Failed to retrieve aanvragen: {} {}".format(type(error), str(error)))
-            # return self._no_connection_response()
 
         return jsonify(aanvragen)
 
