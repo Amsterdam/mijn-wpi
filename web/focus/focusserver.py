@@ -101,13 +101,13 @@ class FocusServer:
         try:
             jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
             uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
-            tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
+            # tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
             return {
                 "status": "OK",
                 "content": {
                     "jaaropgaven": jaaropgaven,
                     "uitkeringsspecificaties": uitkeringsspec,
-                    "tozodocumenten": tozo_documents,
+                    # "tozodocumenten": tozo_documents,
                 }
             }
         except Exception as error:
