@@ -207,9 +207,8 @@ def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
     return jaar_opgaven_list
 
 
-def convert_e_aanvraag_TOZO(xml, document_root):
+def convert_e_aanvraag_TOZO(tree, document_root):
     jaar_opgaven_list = []
-    tree = BeautifulSoup(xml, features="lxml-xml")
     documents = tree.find_all('documentgegevens')
     for doc in documents:
         id = doc.documentId.text

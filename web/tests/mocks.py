@@ -20,6 +20,20 @@ class MockClient:
         pass
 
 
+class MockClientEmpties:
+    def __init__(self, wsdl, transport):
+        self.service = MockServiceEmpties()
+
+    def options(self, *args, **kwargs):
+        return self
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+
 class MockService:
     def getDocument(self, bsn, id, isBulk, isDms):
         return get_document()
@@ -35,6 +49,23 @@ class MockService:
 
     def getEAanvraagTOZO(self, bsn):
         return MockResponse(reply=tozo_documenten_response)
+
+
+class MockServiceEmpties:
+    def getDocument(self, bsn, id, isBulk, isDms):
+        return get_document()
+
+    # def getJaaropgaven(self, bsn):
+    #     return MockResponse(reply=jaaropgaven_reponse)
+    #
+    # def getAanvragen(self, bsn):
+    #     return MockResponse(reply=aanvragen_response)
+    #
+    # def getUitkeringspecificaties(self, bsn):
+    #     return MockResponse(reply=uitkeringsspecificaties_response)
+
+    def getEAanvraagTOZO(self, bsn):
+        return MockResponse(reply=tozo_documenten_empty_response)
 
 
 class MockResponse:
@@ -66,6 +97,10 @@ with open(INKOMENSSPECIFICATIES_RESPONSE_PATH, 'rb') as fp:
 TOZO_DOCUMENTEN_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'tozo_documenten.xml')
 with open(TOZO_DOCUMENTEN_RESPONSE_PATH, 'rb') as fp:
     tozo_documenten_response = fp.read()
+
+TOZO_DOCUMENTEN_EMPTY_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'tozo_documenten_empty.xml')
+with open(TOZO_DOCUMENTEN_EMPTY_RESPONSE_PATH, 'rb') as fp:
+    tozo_documenten_empty_response = fp.read()
 
 
 def get_document():

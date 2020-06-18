@@ -4,7 +4,7 @@ from unittest import TestCase
 # Prepare environment
 from mock import patch
 
-from tests.mocks import MockClient
+from tests.mocks import MockClient, MockClientEmpties
 
 os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
 os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
@@ -67,3 +67,13 @@ class TozoDocumentenTests(TestCase):
         ]
 
         self.assertEqual(result, expected)
+
+
+@patch('focus.focusconnect.Client', new=MockClientEmpties)
+class TozoDocumentenEmptyTests(TestCase):
+    def test_connection(self):
+        self.maxDiff = None
+        focus_connection = FocusConnection(config, credentials)
+        result = focus_connection.EAanvragenTozo(bsn=1234, url_root='/')
+
+        self.assertEqual(result, [])

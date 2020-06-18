@@ -7,6 +7,7 @@ The connection exposes the aanvragen and document methods of the underlying Focu
 import re
 import logging
 import xmltodict
+from bs4 import BeautifulSoup
 
 from requests import Session, ConnectionError
 from requests.auth import HTTPBasicAuth
@@ -110,6 +111,7 @@ class FocusConnection:
     def uitkeringsspecificaties(self, bsn, url_root):
         with self._client.options(raw_response=True):
             raw_specificaties = self._client.service.getUitkeringspecificaties(bsn=bsn).content.decode("utf-8").replace("\n", "")
+
             result = re.search(r"<return>.*<\/return>", raw_specificaties)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
@@ -121,14 +123,12 @@ class FocusConnection:
 
     def EAanvragenTozo(self, bsn, url_root):
         with self._client.options(raw_response=True):
-            raw_tozo_documente = self._client.service.getEAanvraagTOZO(bsn=bsn).content.decode("utf-8").replace("\n", "")
-            result = re.search(r"<return>.*<\/return>", raw_tozo_documente)
-            if not result:
-                # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body getEAanvraagTOZO? %s" % raw_tozo_documente)
+            raw_tozo_documenten = self._client.service.getEAanvraagTOZO(bsn=bsn).content.decode("utf-8").replace("\n", "")
+            tree = BeautifulSoup(raw_tozo_documenten, features="lxml-xml")
+            aanvragen = tree.find('getEAanvraagTOZOResponse')
+            if len(aanvragen) == 0:
                 return []
-            xml = result.group(0)
-            tozo_documenten = convert_e_aanvraag_TOZO(xml, url_root)
+            tozo_documenten = convert_e_aanvraag_TOZO(tree, url_root)
             return tozo_documenten
 
     def document(self, bsn, id, isBulk, isDms):
