@@ -85,7 +85,8 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_aanvragen)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body? %s" % raw_aanvragen)
+                body = re.search(r"<S:Body>.*<\/S:Body>", raw_aanvragen)
+                logger.error("no body? %s" % body)
                 return []
             xml_aanvragen = result.group(0)
             # Translate the response to a Dictionary
@@ -101,7 +102,8 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_jaaropgaven)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body jaaropgaven? %s" % raw_jaaropgaven)
+                body = re.search(r"<S:Body>.*<\/S:Body>", raw_jaaropgaven)
+                logger.error("no body jaaropgaven? %s" % body)
                 return []
             xml_jaaropgaven = result.group(0)
             jaaropgaven = convert_jaaropgaven(xml_jaaropgaven, url_root)
@@ -113,7 +115,8 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_specificaties)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body uitkeringspec? %s" % raw_specificaties)
+                body = re.search(r"<S:Body>.*<\/S:Body>", raw_specificaties)
+                logger.error("no body uitkeringspec? %s" % body)
                 return []
             xml_uitkeringspec = result.group(0)
             uitkeringsspecificaties = convert_uitkeringsspecificaties(xml_uitkeringspec, url_root)
@@ -125,7 +128,8 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_tozo_documente)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body getEAanvraagTOZO? %s" % raw_tozo_documente)
+                body = re.search(r"<S:Body>.*<\/S:Body>", raw_tozo_documente)
+                logger.error("no body getEAanvraagTOZO? %s" % body)
                 return []
             xml = result.group(0)
             tozo_documenten = convert_e_aanvraag_TOZO(xml, url_root)
