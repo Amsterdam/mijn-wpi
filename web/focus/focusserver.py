@@ -8,6 +8,7 @@ import logging
 from flask import jsonify, request, Response, make_response
 
 from focus.saml import get_bsn_from_request
+from requests import ConnectionError
 
 logger = logging.getLogger(__name__)
 
@@ -85,8 +86,11 @@ class FocusServer:
                 bsn=bsn,
                 url_root=request.script_root
             )
+        except ConnectionError as error:
+            logger.exception("Failed to retrieve aanvragen: {}".format(type(error)), exc_info=error)
+            return self._no_connection_response()
         except Exception as error:
-            logger.error("Failed to retrieve aanvragen: {} {}".format(type(error), str(error)))
+            logger.exception("Failed to retrieve aanvragen (unknown error): {} {}".format(type(error), str(error)), exc_info=error)
             return self._no_connection_response()
 
         return jsonify(aanvragen)
@@ -110,8 +114,11 @@ class FocusServer:
                     "tozodocumenten": tozo_documents,
                 }
             }
+        except ConnectionError as error:
+            logger.exception("Failed to retrieve combined: {}".format(type(error)), exc_info=error)
+            return self._no_connection_response()
         except Exception as error:
-            logger.error("Failed to retrieve aanvragen: {} {}".format(type(error), str(error)))
+            logger.exception("Failed to retrieve combined (unknown error): {} {}".format(type(error), str(error)), exc_info=error)
             return self._no_connection_response()
 
     def document(self):
@@ -136,8 +143,11 @@ class FocusServer:
                 isBulk=isBulk,
                 isDms=isDms
             )
+        except ConnectionError as error:
+            logger.exception("Failed to retrieve document: {}".format(type(error)), exc_info=error)
+            return self._no_connection_response()
         except Exception as error:
-            logger.error("Failed to retrieve document: {} {}".format(type(error), str(error)))
+            logger.exception("Failed to retrieve document: {} {}".format(type(error), str(error)), exc_info=error)
             return self._no_connection_response()
 
         # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
