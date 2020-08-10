@@ -127,6 +127,7 @@ class FocusConnection:
             tree = BeautifulSoup(raw_tozo_documenten, features="lxml-xml")
             aanvragen = tree.find('getEAanvraagTOZOResponse')
             if not aanvragen:
+                logger.error("no body EAanvragenTozo? %s" % raw_tozo_documenten)
                 return []
             tozo_documenten = convert_e_aanvraag_TOZO(tree, url_root)
             return tozo_documenten
