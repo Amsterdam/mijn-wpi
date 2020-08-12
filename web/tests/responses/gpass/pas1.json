@@ -1,0 +1,25 @@
+{
+  "id": 999999,
+  "pasnummer": 6666666666666,
+  "pasnummer_volledig": "6666666666666666666",
+  "categorie": "Amsterdamse Digitale Stadspas",
+  "categorie_code": "A",
+  "expiry_date": "2020-08-31T23:59:59.000Z",
+  "actief": true,
+  "passoort": {
+    "id": 11,
+    "naam": "Digitale Stadspas"
+  },
+  "originele_pas": {
+    "id": 888888,
+    "pasnummer": 8888888888888,
+    "pasnummer_volledig": "8888888888888888888",
+    "categorie": "Amsterdamse Digitale Stadspas",
+    "categorie_code": "A",
+    "passoort": {
+      "id": 11,
+      "naam": "Digitale Stadspas"
+    }
+  },
+  "budgetten": []
+}
