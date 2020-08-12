@@ -14,7 +14,7 @@ from requests.auth import HTTPBasicAuth
 from zeep import Client
 from zeep.transports import Transport
 
-from focus.focusinterpreter import convert_aanvragen, convert_jaaropgaven, convert_uitkeringsspecificaties, convert_e_aanvraag_TOZO
+from focus.focusinterpreter import convert_aanvragen, convert_jaaropgaven, convert_uitkeringsspecificaties, convert_e_aanvraag_TOZO, convert_stadspas
 
 logger = logging.getLogger(__name__)
 
@@ -131,6 +131,19 @@ class FocusConnection:
                 return []
             tozo_documenten = convert_e_aanvraag_TOZO(tree, url_root)
             return tozo_documenten
+
+    def stadspas(self, bsn, url_root):
+        with self._client.options(raw_response=True):
+            raw_stadspas = self._client.service.getStadspas(bsn=bsn).content.decode("utf-8").replace("\n", "")
+            tree = BeautifulSoup(raw_stadspas, features="lxml-xml")
+            stadspas = tree.find('getStadspasResponse')
+            if not stadspas:
+                logger.error("no body getStadspas? %s" % raw_stadspas)
+                return []
+            admin_number = convert_stadspas(tree, url_root)
+
+            return admin_number
+
 
     def document(self, bsn, id, isBulk, isDms):
         """

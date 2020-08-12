@@ -227,3 +227,10 @@ def convert_e_aanvraag_TOZO(tree, document_root):
         jaar_opgaven_list.append(new_doc)
 
     return jaar_opgaven_list
+
+
+def convert_stadspas(tree, document_root):
+    stadspas = None
+    administratienummer = tree.find("administratienummer")
+
+

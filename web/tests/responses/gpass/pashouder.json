@@ -1,0 +1,78 @@
+{
+  "id": "11111111111111",
+  "has_account": false,
+  "initialen": "A",
+  "achternaam": "Achternaam",
+  "geslacht": "V",
+  "geboortedatum": "1970-01-01T00:00:00.000Z",
+  "mailing": true,
+  "adressen": [
+    {
+      "id": 111111,
+      "adres_type": "Woonadres",
+      "straat": "Straat",
+      "huisnummer": 1,
+      "huisnummer_letter": "",
+      "huisnummer_toevoeging": "",
+      "postcode": "1011PN",
+      "plaats": {
+        "id": 64,
+        "naam": "Amsterdam",
+        "gemeente": "Amsterdam"
+      }
+    },
+    {
+      "id": 222222,
+      "adres_type": "Postadres",
+      "straat": "Straat",
+      "huisnummer": 1,
+      "huisnummer_letter": "",
+      "huisnummer_toevoeging": "",
+      "postcode": "1011PN",
+      "plaats": {
+        "id": 64,
+        "naam": "Amsterdam",
+        "gemeente": "Amsterdam"
+      }
+    }
+  ],
+  "passen": [
+    {
+      "id": 333333,
+      "pasnummer": 444444444444,
+      "pasnummer_volledig": "4444444444444444444",
+      "categorie": "Amsterdamse Digitale Stadspas",
+      "categorie_code": "A",
+      "actief": false,
+      "expiry_date": "2020-04-01T23:59:59.000Z",
+      "passoort": {
+        "id": 11,
+        "naam": "Digitale Stadspas"
+      }
+    },
+    {
+      "id": 555555,
+      "pasnummer": 6666666666666,
+      "pasnummer_volledig": "6666666666666666666",
+      "categorie": "Amsterdamse Digitale Stadspas",
+      "categorie_code": "A",
+      "actief": true,
+      "expiry_date": "2020-08-31T23:59:59.000Z",
+      "passoort": {
+        "id": 11,
+        "naam": "Digitale Stadspas"
+      },
+      "originele_pas": {
+        "id": 777777,
+        "pasnummer": 7777777777777,
+        "pasnummer_volledig": "7777777777777777777",
+        "categorie": "Amsterdamse Digitale Stadspas",
+        "categorie_code": "A",
+        "passoort": {
+          "id": 11,
+          "naam": "Digitale Stadspas"
+        }
+      }
+    }
+  ]
+}

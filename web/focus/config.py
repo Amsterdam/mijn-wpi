@@ -50,9 +50,18 @@ urls = {
     'aanvragen': "/focus/aanvragen",
     'document': "/focus/document",
     'combined': "/focus/combined",
+    'stadspassaldo': "/focus/stadspassaldo"
 }
 
 
 def get_TMA_certificate():
     with open(get_variable('TMA_CERTIFICATE'), 'r') as f:
         return f.read()
+
+
+def get_gpass_bearer_token():
+    get_variable('MIJN_GPASS_TOKEN')
+
+
+def get_gpass_api_location():
+    get_variable('MIJN_GPASS_API_LOCATION')
