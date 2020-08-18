@@ -221,6 +221,7 @@ def convert_e_aanvraag_TOZO(tree, document_root):
             'id': id,
             'datePublished': doc.datumDocument.text,
             'url': url,
+            'documentCodeId': doc.documentCodeId.text,
             'type': doc.documentCode.text,
             'description': doc.documentOmschrijving.text,
         }

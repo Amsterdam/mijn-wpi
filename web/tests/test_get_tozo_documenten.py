@@ -26,6 +26,7 @@ class TozoDocumentenTests(TestCase):
                 'datePublished': '2020-03-31T18:59:46+02:00',
                 'description': 'Tegemoetkoming Ondernemers en Zelfstandigen',
                 'id': '4400000031',
+                'documentCodeId': '770',
                 'type': 'E-AANVR-TOZO',
                 'url': '/focus/document?id=4400000031&isBulk=true&isDms=false'
             },
@@ -33,6 +34,7 @@ class TozoDocumentenTests(TestCase):
                 'datePublished': '2020-03-26T15:18:44+01:00',
                 'description': 'Verkorte Aanvraag BBZ',
                 'id': '4400000024',
+                'documentCodeId': '756',
                 'type': 'E-AANVR-KBBZ',
                 'url': '/focus/document?id=4400000024&isBulk=true&isDms=false'
             },
@@ -40,6 +42,7 @@ class TozoDocumentenTests(TestCase):
                 'datePublished': '2020-03-18T23:09:58+01:00',
                 'description': 'Ondernemerscheck zelfstandigen',
                 'id': '4400000020',
+                'documentCodeId': '734',
                 'type': 'E-AANVR-DGB',
                 'url': '/focus/document?id=4400000020&isBulk=true&isDms=false'
             },
@@ -47,6 +50,7 @@ class TozoDocumentenTests(TestCase):
                 'datePublished': '2020-03-31T00:21:51+02:00',
                 'description': 'Tegemoetkoming Ondernemers en Zelfstandigen',
                 'id': '4400000030',
+                'documentCodeId': '770',
                 'type': 'E-AANVR-TOZO',
                 'url': '/focus/document?id=4400000030&isBulk=true&isDms=false'
             },
@@ -54,6 +58,7 @@ class TozoDocumentenTests(TestCase):
                 'datePublished': '2020-03-22T00:26:10+01:00',
                 'description': 'Aanvraag BBZ',
                 'id': '4400000022',
+                'documentCodeId': '678',
                 'type': 'E-AANVR-BBZ',
                 'url': '/focus/document?id=4400000022&isBulk=true&isDms=false'
             },
@@ -61,6 +66,7 @@ class TozoDocumentenTests(TestCase):
                 'datePublished': '2020-03-31T00:04:34+02:00',
                 'description': 'Tegemoetkoming Ondernemers en Zelfstandigen',
                 'id': '4400000029',
+                'documentCodeId': '770',
                 'type': 'E-AANVR-TOZO',
                 'url': '/focus/document?id=4400000029&isBulk=true&isDms=false'
             }
