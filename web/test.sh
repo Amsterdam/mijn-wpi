@@ -10,4 +10,4 @@ echo "Running coverage tests"
 export COVERAGE_FILE=/tmp/.coverage
 coverage erase
 coverage run -m unittest
-coverage report --include=./focus/*.py --fail-under=82
+coverage report --include=./focus/*.py --fail-under=81
