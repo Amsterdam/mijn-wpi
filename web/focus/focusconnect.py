@@ -130,7 +130,8 @@ class FocusConnection:
                 try:
                     faultsstring = tree.find('faultstring')
                     logger.debug(faultsstring)
-                except Exception:
+                except Exception as e:
+                    logger.exception(e)
                     pass
                 logger.error("no body EAanvragenTozo? %s" % raw_tozo_documenten)
                 return []
