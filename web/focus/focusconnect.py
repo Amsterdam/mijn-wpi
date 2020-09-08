@@ -151,11 +151,18 @@ class FocusConnection:
         # Get the document
         result = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
 
+        if result is None:
+            logger.info("Result is None")
+            # try raw
+            with self._client.options(raw_response=True):
+                raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms).content
+                logger.info(len(raw_document))
+
         # Convert the result to a dictionary for the specified keys
         try:
             document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
         except Exception as e:
-            logger.error("Document error %s %s" % (type(e), result))
+            logger.error("More Document error %s %s" % (type(e), result))
             raise e
         document["contents"] = result["dataHandler"]
         # Provide for a MIME-type
