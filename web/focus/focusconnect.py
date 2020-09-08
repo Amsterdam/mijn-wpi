@@ -155,7 +155,7 @@ class FocusConnection:
         try:
             document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
         except Exception as e:
-            logger.error("Document error", type(e), result)
+            logger.error("Document error %s %s" % (type(e), result))
             raise e
         document["contents"] = result["dataHandler"]
         # Provide for a MIME-type
