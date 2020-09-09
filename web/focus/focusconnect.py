@@ -158,7 +158,6 @@ class FocusConnection:
                 raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms).content
                 logger.error(raw_document)
 
-
         # Convert the result to a dictionary for the specified keys
         try:
             document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
