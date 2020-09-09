@@ -156,7 +156,8 @@ class FocusConnection:
             # try raw
             with self._client.options(raw_response=True):
                 raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms).content
-                logger.error(raw_document)
+                logger.error(len(raw_document))
+
 
         # Convert the result to a dictionary for the specified keys
         try:
