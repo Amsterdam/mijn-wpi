@@ -17,7 +17,7 @@ isBulk = argv[4]
 
 print("Getting doc", bsn, docid, isDms, isBulk)
 
-with focus_connection._client.settings(raw_response=True):
+with focus_connection._client.settings(raw_response=True, extra_http_headers={'Accept': 'application/xop+xml'}):
     raw_doc = focus_connection._client.service.getDocument(id=docid, bsn=bsn, isBulk=isBulk, isDms=isDms)
     content_bytesio = BytesIO(raw_doc.content)
     tree = etree.parse(content_bytesio)

@@ -146,16 +146,16 @@ class FocusConnection:
         :param isDms: boolean
         :return: Dictionary
         """
+        header_value = {'Accept': 'application/xop+xml'}
 
         # Get the document
-        result = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
+        with self._client.settings(extra_http_headers=header_value):
+            result = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
 
         if result is None:
             logger.error("Result is None")
             # try raw
-            header_value = {'Accept': 'application/xop+xml'}
             with self._client.settings(raw_response=True, extra_http_headers=header_value):
-                # client.service.Method(_soapheaders=[header_value])
                 raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms).content
                 logger.error(len(raw_document))
 
