@@ -8,6 +8,30 @@ from focus.focusconnect import FocusConnection
 
 focus_connection = FocusConnection(config, credentials)
 
+import logging.config
+
+logging.config.dictConfig({
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '%(name)s: %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'zeep.transports': {
+            'level': 'DEBUG',
+            'propagate': True,
+            'handlers': ['console'],
+        },
+    }
+})
 
 bsn = argv[1]
 docid = argv[2]
@@ -22,4 +46,4 @@ with focus_connection._client.settings(raw_response=True, extra_http_headers={'A
     content_bytesio = BytesIO(raw_doc.content)
     tree = etree.parse(content_bytesio)
     formatted_xml = etree.tostring(tree, pretty_print=True)
-    print(formatted_xml.decode())
+    print("\n\n-----\n\n", formatted_xml.decode())
