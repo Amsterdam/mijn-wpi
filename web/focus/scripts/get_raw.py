@@ -10,7 +10,7 @@ focus_connection = FocusConnection(config, credentials)
 bsn = "123456789"
 
 
-with focus_connection._client.options(raw_response=True):
+with focus_connection._client.settings(raw_response=True):
     raw_aanvragen = focus_connection._client.service.getAanvragen(bsn=bsn)
     content_bytesio = BytesIO(raw_aanvragen.content)
     tree = etree.parse(content_bytesio)

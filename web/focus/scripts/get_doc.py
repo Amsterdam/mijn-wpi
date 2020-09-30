@@ -12,11 +12,11 @@ focus_connection = FocusConnection(config, credentials)
 bsn = argv[1]
 docid = argv[2]
 
-isDms = argv[3] == "true"
-isBulk = argv[4] == "true"
+isDms = argv[3]
+isBulk = argv[4]
 
 
-with focus_connection._client.options(raw_response=True):
+with focus_connection._client.settings(raw_response=True):
     raw_doc = focus_connection._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
     content_bytesio = BytesIO(raw_doc.content)
     tree = etree.parse(content_bytesio)

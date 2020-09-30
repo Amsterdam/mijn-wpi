@@ -78,7 +78,7 @@ class FocusConnection:
         :return: Dictionary
         """
 
-        with self._client.options(raw_response=True):
+        with self._client.settings(raw_response=True):
             # Get raw response as string remove any newlines
             raw_aanvragen = self._client.service.getAanvragen(bsn=bsn).content.decode("utf-8").replace("\n", "")
             # Get the return component out of the SOAP message
@@ -96,7 +96,7 @@ class FocusConnection:
         return aanvragen
 
     def jaaropgaven(self, bsn, url_root):
-        with self._client.options(raw_response=True):
+        with self._client.settings(raw_response=True):
             raw_jaaropgaven = self._client.service.getJaaropgaven(bsn=bsn).content.decode("utf-8").replace("\n", "")
             result = re.search(r"<return>.*<\/return>", raw_jaaropgaven)
             if not result:
@@ -108,7 +108,7 @@ class FocusConnection:
             return jaaropgaven
 
     def uitkeringsspecificaties(self, bsn, url_root):
-        with self._client.options(raw_response=True):
+        with self._client.settings(raw_response=True):
             raw_specificaties = self._client.service.getUitkeringspecificaties(bsn=bsn).content.decode("utf-8").replace("\n", "")
 
             result = re.search(r"<return>.*<\/return>", raw_specificaties)
@@ -121,7 +121,7 @@ class FocusConnection:
             return uitkeringsspecificaties
 
     def EAanvragenTozo(self, bsn, url_root):
-        with self._client.options(raw_response=True):
+        with self._client.settings(raw_response=True):
             raw_tozo_documenten = self._client.service.getEAanvraagTOZO(bsn=bsn).content.decode("utf-8").replace("\n", "")
             tree = BeautifulSoup(raw_tozo_documenten, features="lxml-xml")
             aanvragen = tree.find('getEAanvraagTOZOResponse')
@@ -153,7 +153,9 @@ class FocusConnection:
         if result is None:
             logger.error("Result is None")
             # try raw
-            with self._client.options(raw_response=True):
+            header_value = {'Accept': 'application/xop+xml'}
+            with self._client.settings(raw_response=True, extra_http_headers=header_value):
+                # client.service.Method(_soapheaders=[header_value])
                 raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms).content
                 logger.error(len(raw_document))
 
