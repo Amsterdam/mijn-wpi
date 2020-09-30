@@ -1,5 +1,6 @@
 from io import BytesIO
 from sys import argv
+import logging.config
 
 from lxml import etree
 
@@ -8,7 +9,6 @@ from focus.focusconnect import FocusConnection
 
 focus_connection = FocusConnection(config, credentials)
 
-import logging.config
 
 logging.config.dictConfig({
     'version': 1,
