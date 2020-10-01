@@ -132,7 +132,6 @@ class FocusConnection:
                 except Exception as e:
                     logger.exception(e)
                     pass
-                logger.error("no body EAanvragenTozo? %s" % raw_tozo_documenten)
                 return []
             tozo_documenten = convert_e_aanvraag_TOZO(tree, url_root)
             return tozo_documenten
