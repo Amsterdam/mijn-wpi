@@ -44,10 +44,11 @@ class FocusConnection:
         session = Session()
         session.auth = HTTPBasicAuth(self._credentials['username'], self._credentials['password'])
 
-        timeout = 30    # Timeout period for getting WSDL and operations in seconds
+        timeout = 9    # Timeout period for getting WSDL and operations in seconds
 
         try:
             transport = Transport(session=session, timeout=timeout, operation_timeout=timeout)
+            transport.logger.setLevel('DEBUG')
 
             client = Client(wsdl=self._config['wsdl'], transport=transport)
 
@@ -163,13 +164,9 @@ class FocusConnection:
             document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
         except Exception as e:
             logger.error("More Document error %s %s" % (type(e), result))
-            raise e
-        try:
-            document["contents"] = result["dataHandler"]
-        except Exception as e:
-            # has attachments?
             logger.error(f"Has attachments? {bool(result.attachments)}, {len(result.attachments)}")
             raise e
+
         # Provide for a MIME-type
         document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"
 
