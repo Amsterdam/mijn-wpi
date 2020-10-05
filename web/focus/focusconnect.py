@@ -48,7 +48,6 @@ class FocusConnection:
 
         try:
             transport = Transport(session=session, timeout=timeout, operation_timeout=timeout)
-            transport.logger.setLevel('DEBUG')
 
             client = Client(wsdl=self._config['wsdl'], transport=transport)
 
