@@ -156,7 +156,7 @@ class FocusConnection:
             # try raw
             with self._client.settings(raw_response=True, extra_http_headers=header_value):
                 raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms).content
-                logger.error(len(raw_document))
+                logger.error("document message length", len(raw_document))
 
         # Convert the result to a dictionary for the specified keys
         try:
