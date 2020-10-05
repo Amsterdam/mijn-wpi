@@ -164,7 +164,12 @@ class FocusConnection:
         except Exception as e:
             logger.error("More Document error %s %s" % (type(e), result))
             raise e
-        document["contents"] = result["dataHandler"]
+        try:
+            document["contents"] = result["dataHandler"]
+        except Exception as e:
+            # has attachments?
+            logger.error(f"Has attachments? {bool(result.attachments)}, {len(result.attachments)}")
+            raise e
         # Provide for a MIME-type
         document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"
 
