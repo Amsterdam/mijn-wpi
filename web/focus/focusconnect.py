@@ -155,15 +155,15 @@ class FocusConnection:
             logger.error("Result is None")
             # try raw
             with self._client.settings(raw_response=True, extra_http_headers=header_value):
-                raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms).content
-                logger.error("document message length", len(raw_document))
+                raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
+                logger.error("document message length", len(raw_document.content))
+                logger.error(f"Has attachments? {bool(raw_document.attachments)}, {len(raw_document.attachments)}")
 
         # Convert the result to a dictionary for the specified keys
         try:
             document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
         except Exception as e:
             logger.error("More Document error %s %s" % (type(e), result))
-            logger.error(f"Has attachments? {bool(result.attachments)}, {len(result.attachments)}")
             raise e
 
         document["contents"] = result["dataHandler"]
