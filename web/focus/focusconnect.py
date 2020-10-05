@@ -166,6 +166,7 @@ class FocusConnection:
             logger.error(f"Has attachments? {bool(result.attachments)}, {len(result.attachments)}")
             raise e
 
+        document["contents"] = result["dataHandler"]
         # Provide for a MIME-type
         document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"
 
