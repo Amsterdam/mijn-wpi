@@ -4,7 +4,7 @@ import os.path
 from flask_testing import TestCase as FlaskTestCase
 from mock import patch
 
-from .mocks import MockClient
+from .mocks import MockClient, get_response_mock
 
 os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
 os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
@@ -16,6 +16,8 @@ from focus.server import application  # noqa: E402
 
 @patch('focus.focusconnect.Client', new=MockClient)
 @patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)  # side step decoding the BSN from SAML token
+@patch('focus.gpass_connect.requests.get', get_response_mock)
+@patch('focus.focusserver.get_gpass_api_location', lambda : 'http://localhost')
 class CombinedApiTest(FlaskTestCase):
     def create_app(self):
         return application
