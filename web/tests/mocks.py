@@ -123,10 +123,14 @@ def _load_fixture(json_file_name):
         return json.load(fh)
 
 
+def _load_fixture_as_bytes(json_file_name):
+    with open(os.path.join(RESPONSES_PATH, json_file_name)) as fh:
+        return fh.read()
+
 mocked_get_urls_tuple = (
     (
         "http://localhost/decosweb/aspx/api/v1/items/32charsstringxxxxxxxxxxxxxxxxxxx/folders?select=title,mark,text45,subject1,text9,text11,text12,text13,text6,date6,text7,text10,date7,text8,document_date,date5,processed,dfunction&top=10",
-        _load_fixture('stadspas.xml')
+        _load_fixture_as_bytes('stadspas.xml')
     ),
 )
 mocked_get_urls = dict(mocked_get_urls_tuple)
