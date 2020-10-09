@@ -51,6 +51,9 @@ class MockService:
     def getEAanvraagTOZO(self, bsn):
         return MockResponse(reply=tozo_documenten_response)
 
+    def getStadspas(self, bsn):
+        return MockResponse(reply=stadspas_response)
+
 
 class MockServiceEmpties:
     def getDocument(self, bsn, id, isBulk, isDms):
@@ -116,6 +119,10 @@ with open(TOZO_DOCUMENTEN_RESPONSE_PATH, 'rb') as fp:
 TOZO_DOCUMENTEN_EMPTY_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'tozo_documenten_empty.xml')
 with open(TOZO_DOCUMENTEN_EMPTY_RESPONSE_PATH, 'rb') as fp:
     tozo_documenten_empty_response = fp.read()
+
+STADSPAS_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'stadspas.xml')
+with open(STADSPAS_RESPONSE_PATH, 'rb') as fp:
+    stadspas_response = fp.read()
 
 
 def _load_fixture(json_file_name):
