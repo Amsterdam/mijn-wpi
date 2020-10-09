@@ -42,10 +42,9 @@ class FocusConnection:
         logger.info('Establishing a connection with Focus')
 
         session = Session()
-        session.verify = self._config['session_verify']
         session.auth = HTTPBasicAuth(self._credentials['username'], self._credentials['password'])
 
-        timeout = 30    # Timeout period for getting WSDL and operations in seconds
+        timeout = 9    # Timeout period for getting WSDL and operations in seconds
 
         try:
             transport = Transport(session=session, timeout=timeout, operation_timeout=timeout)
@@ -53,9 +52,9 @@ class FocusConnection:
             client = Client(wsdl=self._config['wsdl'], transport=transport)
 
             return client
-        except ConnectionError:
+        except ConnectionError as e:
             # do not relog the error, because the error has a object address in it, it is a new error every time.
-            logger.error('Failed to establish a connection with Focus: Connection Time Out')
+            logger.error(f'Failed to establish a connection with Focus: Connection Time Out ({type(e)})')
             return None
         except Exception as error:
             logger.error('Failed to establish a connection with Focus: {} {}'.format(type(error), str(error)))
@@ -79,7 +78,7 @@ class FocusConnection:
         :return: Dictionary
         """
 
-        with self._client.options(raw_response=True):
+        with self._client.settings(raw_response=True):
             # Get raw response as string remove any newlines
             raw_aanvragen = self._client.service.getAanvragen(bsn=bsn).content.decode("utf-8").replace("\n", "")
             # Get the return component out of the SOAP message
@@ -97,7 +96,7 @@ class FocusConnection:
         return aanvragen
 
     def jaaropgaven(self, bsn, url_root):
-        with self._client.options(raw_response=True):
+        with self._client.settings(raw_response=True):
             raw_jaaropgaven = self._client.service.getJaaropgaven(bsn=bsn).content.decode("utf-8").replace("\n", "")
             result = re.search(r"<return>.*<\/return>", raw_jaaropgaven)
             if not result:
@@ -109,7 +108,7 @@ class FocusConnection:
             return jaaropgaven
 
     def uitkeringsspecificaties(self, bsn, url_root):
-        with self._client.options(raw_response=True):
+        with self._client.settings(raw_response=True):
             raw_specificaties = self._client.service.getUitkeringspecificaties(bsn=bsn).content.decode("utf-8").replace("\n", "")
 
             result = re.search(r"<return>.*<\/return>", raw_specificaties)
@@ -122,12 +121,17 @@ class FocusConnection:
             return uitkeringsspecificaties
 
     def EAanvragenTozo(self, bsn, url_root):
-        with self._client.options(raw_response=True):
+        with self._client.settings(raw_response=True):
             raw_tozo_documenten = self._client.service.getEAanvraagTOZO(bsn=bsn).content.decode("utf-8").replace("\n", "")
             tree = BeautifulSoup(raw_tozo_documenten, features="lxml-xml")
             aanvragen = tree.find('getEAanvraagTOZOResponse')
             if not aanvragen:
-                logger.error("no body EAanvragenTozo? %s" % raw_tozo_documenten)
+                try:
+                    faultsstring = tree.find('faultstring')
+                    logger.debug(faultsstring)
+                except Exception as e:
+                    logger.exception(e)
+                    pass
                 return []
             tozo_documenten = convert_e_aanvraag_TOZO(tree, url_root)
             return tozo_documenten
@@ -154,12 +158,27 @@ class FocusConnection:
         :param isDms: boolean
         :return: Dictionary
         """
+        header_value = {'Accept': 'application/xop+xml'}
 
         # Get the document
-        result = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
+        with self._client.settings(extra_http_headers=header_value):
+            result = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
+
+        if result is None:
+            logger.error("Result is None")
+            # try raw
+            with self._client.settings(raw_response=True, extra_http_headers=header_value):
+                raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
+                logger.error("document message length", len(raw_document.content))
+                logger.error(f"Has attachments? {bool(raw_document.attachments)}, {len(raw_document.attachments)}")
 
         # Convert the result to a dictionary for the specified keys
-        document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
+        try:
+            document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
+        except Exception as e:
+            logger.error("More Document error %s %s" % (type(e), result))
+            raise e
+
         document["contents"] = result["dataHandler"]
         # Provide for a MIME-type
         document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"

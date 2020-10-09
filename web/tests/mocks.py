@@ -11,7 +11,7 @@ class MockClient:
     def __init__(self, wsdl, transport):
         self.service = MockService()
 
-    def options(self, *args, **kwargs):
+    def settings(self, *args, **kwargs):
         return self
 
     def __enter__(self):
@@ -25,7 +25,7 @@ class MockClientEmpties:
     def __init__(self, wsdl, transport):
         self.service = MockServiceEmpties()
 
-    def options(self, *args, **kwargs):
+    def settings(self, *args, **kwargs):
         return self
 
     def __enter__(self):
