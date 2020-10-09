@@ -72,7 +72,7 @@ class MockServiceEmpties:
         return MockResponse(reply=tozo_documenten_empty_response)
 
 
-def get_response_mock(self, *args, **kwargs):
+def get_response_mock(*args, **kwargs):
     """ Attempt to get data from mock_get_urls. """
     try:
         res_data = mocked_get_urls[args[0]]
