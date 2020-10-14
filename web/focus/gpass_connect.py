@@ -12,14 +12,13 @@ class GpassConnection:
     def _get(self):
         pass
 
-    def get_stadspas(self, admin_number):
+    def get_stadspashouder(self, admin_number):
         headers = {
             "Authorization": f"AppBearer {self.bearer_token},{admin_number}"
         }
         url = f"{self.api_location}/rest/sales/v1/pashouder"
         print(url)
         print(headers)
-
 
         response = requests.get(url, headers=headers)
         print(response.content)
@@ -44,3 +43,36 @@ class GpassConnection:
             print(response.content)
             print(response.status_code)
             print(json.dumps(response.json(), indent=True))
+
+        return [{
+            "id": "xxx123123123123",
+            "pasnummer": "123123123123",
+            "datumAfloop": "2020-12-12",
+            "naam": "Ramses Rawjingakoli",
+            "budgets": [
+                {
+                    "title": "KLEDING-EN-EDUCATIE",
+                    "assigned": 220,
+                    "balance": 130
+                },
+                {
+                    "title": "SPORT-EN-SPEL",
+                    "assigned": 220,
+                    "balance": 80
+                }
+            ]
+        },
+            {
+                "id": "xxx89899898",
+                "pasnummer": "89899898",
+                "datumAfloop": "2021-04-23",
+                "naam": "Jawh Rawjingakoli",
+                "budgets": [
+                    {
+                        "title": "SPORT-EN-SPEL",
+                        "assigned": 220,
+                        "balance": 80
+                    }
+                ]
+            }
+        ]

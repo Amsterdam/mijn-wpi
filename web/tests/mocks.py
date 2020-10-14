@@ -146,6 +146,10 @@ mocked_get_urls_tuple = (
     (
         "http://localhost/rest/sales/v1/pashouder",
         _load_fixture('gpass/pashouder.json')
+    ),
+    (
+        "http://localhost/rest/sales/v1/pas/6666666666666",
+        _load_fixture('gpass/pas1.json')
     )
 )
 mocked_get_urls = dict(mocked_get_urls_tuple)
