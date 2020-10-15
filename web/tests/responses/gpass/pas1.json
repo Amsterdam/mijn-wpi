@@ -1,6 +1,14 @@
 {
   "actief": true,
-  "budgetten": [],
+  "balance_update_time": "2020-04-02T12:45:41.000Z",
+  "budgetten": [
+    {
+      "budget_assigned": 100,
+      "budget_balance": 0,
+      "code": "AMSEducatie",
+      "omschrijving": "Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020"
+    }
+  ],
   "budgetten_actief": true,
   "categorie": "Amsterdamse Digitale Stadspas",
   "categorie_code": "A",

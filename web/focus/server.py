@@ -98,7 +98,7 @@ def combined():
 def stadspassaldo():
     admin_number = server().stadspas()
     gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
-    stadspas_data = gpass_con.get_stadspashouder()
+    stadspas_data = gpass_con.get_stadspassen()
     return stadspas_data
 
 

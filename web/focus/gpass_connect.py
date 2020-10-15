@@ -1,7 +1,9 @@
 import json
-from builtins import print
+from pprint import pprint
 
 import requests
+
+log_raw = False
 
 
 class GpassConnection:
@@ -9,70 +11,77 @@ class GpassConnection:
         self.api_location = api_location
         self.bearer_token = bearer_token
 
-    def _get(self):
-        pass
-
-    def get_stadspashouder(self, admin_number):
+    def _get(self, url, admin_number):
+        url = f"{self.api_location}{url}"
         headers = {
             "Authorization": f"AppBearer {self.bearer_token},{admin_number}"
         }
-        url = f"{self.api_location}/rest/sales/v1/pashouder"
-        print(url)
-        print(headers)
-
         response = requests.get(url, headers=headers)
-        print(response.content)
-        data = response.json()
+        if log_raw:
+            print("url", url)
+            pprint(response.json())
+        return response
 
-        print(response.status_code)
-        # print(response.json())
+    def _format_budgets(self, budget):
+        return {
+            "description": budget["omschrijving"],
+            "code": budget["code"],
+            "assigned": budget["budget_assigned"],
+            "balance": budget["budget_balance"],
+        }
+
+    def _format_pas_data(self, naam: str, pas: dict):
+        budgets = [self._format_budgets(b) for b in pas['budgetten']]
+
+        return {
+            "id": pas["id"],
+            "pasnummer": pas["pasnummer"],
+            "datumAfloop": pas["expiry_date"],
+            "naam": naam,
+            "budgets": budgets
+        }
+
+    def get_stadspassen(self, admin_number):
+        url = "/rest/sales/v1/pashouder?addsubs=true"
+        response = self._get(url, admin_number)
+        data = response.json()
+        naam = f"{data['initialen']} {data['achternaam']}"
 
         passen = data['passen']
 
-        print(json.dumps(passen, indent=True))
-
         passen = [pas for pas in passen if pas['actief'] is True]
+        passen_result = []
 
         for pas in passen:
-            # pasnummer = pas['pasnummer_volledig']
             pasnummer = pas['pasnummer']
-            url = f'{self.api_location}/rest/sales/v1/pas/{pasnummer}'
-            print(">>", url)
-            print(">>>", headers)
-            response = requests.get(url, headers=headers)
-            print(response.content)
-            print(response.status_code)
-            print(json.dumps(response.json(), indent=True))
+            url = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
+            response = self._get(url, admin_number)
 
-        return [{
-            "id": "xxx123123123123",
-            "pasnummer": "123123123123",
-            "datumAfloop": "2020-12-12",
-            "naam": "Ramses Rawjingakoli",
-            "budgets": [
-                {
-                    "title": "KLEDING-EN-EDUCATIE",
-                    "assigned": 220,
-                    "balance": 130
-                },
-                {
-                    "title": "SPORT-EN-SPEL",
-                    "assigned": 220,
-                    "balance": 80
-                }
-            ]
-        },
-            {
-                "id": "xxx89899898",
-                "pasnummer": "89899898",
-                "datumAfloop": "2021-04-23",
-                "naam": "Jawh Rawjingakoli",
-                "budgets": [
-                    {
-                        "title": "SPORT-EN-SPEL",
-                        "assigned": 220,
-                        "balance": 80
-                    }
-                ]
-            }
-        ]
+            if response.status_code == 200:
+                passen_result.append(self._format_pas_data(naam, response.json()))
+            else:
+                # TODO: implement me
+                pass
+
+        # TODO: also include sub-passen
+        return passen_result
+
+    def _format_transaction(self, transaction):
+        date = transaction['transactiedatum']  # parse and convert to date
+        return {
+            "id": transaction["id"],
+            "title": "title",
+            "amount": transaction["bedrag"],
+            "date": date,
+        }
+
+    def get_transaction(self, admin_number, pas_number):
+        url = f"/rest/transacties/v1/budget?pasnummer={pas_number}"
+        response = self._get(url, admin_number)
+
+        if response.status_code != 200:
+            return  # TODO: implement me
+
+        data = response.json()
+
+        return [self._format_transaction(t )for t in data['transacties']]

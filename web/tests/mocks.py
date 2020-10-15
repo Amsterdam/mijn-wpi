@@ -144,11 +144,11 @@ mocked_get_urls_tuple = (
         _load_fixture_as_bytes('stadspas.xml')
     ),
     (
-        "http://localhost/rest/sales/v1/pashouder",
+        "http://localhost/rest/sales/v1/pashouder?addsubs=true",
         _load_fixture('gpass/pashouder.json')
     ),
     (
-        "http://localhost/rest/sales/v1/pas/6666666666666",
+        "http://localhost/rest/sales/v1/pas/6666666666666?include_balance=true",
         _load_fixture('gpass/pas1.json')
     )
 )
