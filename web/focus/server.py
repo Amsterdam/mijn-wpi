@@ -5,7 +5,11 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 
-from .config import check_env, config, credentials, urls, get_TMA_certificate, SENTRY_DSN
+from focus.gpass_connect import GpassConnection
+
+from focus.crypto import decrypt
+from .config import check_env, config, credentials, urls, get_TMA_certificate, SENTRY_DSN, get_gpass_bearer_token, \
+    get_gpass_api_location
 from .focusconnect import FocusConnection
 from .focusserver import FocusServer
 from flask_limiter import Limiter
@@ -90,6 +94,21 @@ def document():
 @application.route(urls["combined"])
 def combined():
     return server().combined()
+
+
+@application.route(urls["stadspastransacties"])
+def stadspastransactions(encrypted_admin_pasnummer):
+    admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
+
+    gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
+    stadspas_transations = gpass_con.get_transactions(admin_number, stadspas_number)
+    if stadspas_transations is None:
+        return {}, 204
+
+    return {
+        "status": "ok",
+        "content": stadspas_transations,
+    }
 
 
 if __name__ == "__main__":

@@ -7,8 +7,11 @@ The server interprets requests, execute the corresponding action and return JSON
 import logging
 from flask import jsonify, request, Response, make_response
 
-from focus.saml import get_bsn_from_request
+from .gpass_connect import GpassConnection
+from .saml import get_bsn_from_request
 from requests import ConnectionError
+
+from .config import get_gpass_bearer_token, get_gpass_api_location
 
 logger = logging.getLogger(__name__)
 
@@ -97,6 +100,8 @@ class FocusServer:
 
     def combined(self):
         """ Gets all jaaropgaven for the BSN that is encoded in the header SAML token. """
+        gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
+
         try:
             bsn = get_bsn_from_request(request)
         except Exception as error:
@@ -106,12 +111,18 @@ class FocusServer:
             jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
             uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
             tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
+
+            # 2 stage, first get admin number from focus, then data from gpass
+            stadspas_admin_number = self._focus_connection.stadspas(bsn=bsn, url_root=request.script_root)
+            stadspas = gpass_con.get_stadspassen(admin_number=stadspas_admin_number)
+
             return {
                 "status": "OK",
                 "content": {
                     "jaaropgaven": jaaropgaven,
                     "uitkeringsspecificaties": uitkeringsspec,
                     "tozodocumenten": tozo_documents,
+                    "stadspassaldo": stadspas,
                 }
             }
         except ConnectionError as error:

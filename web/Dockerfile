@@ -1,7 +1,5 @@
-FROM amsterdam/python
+FROM amsterdam/python:3.8.2-slim-buster
 MAINTAINER datapunt@amsterdam.nl
-
-ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
