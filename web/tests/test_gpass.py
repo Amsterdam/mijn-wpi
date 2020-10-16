@@ -8,7 +8,7 @@ from focus.gpass_connect import GpassConnection
 from focus.server import application  # noqa: E402
 from focus.crypto import encrypt
 
-from .mocks import MockClient, get_response_mock
+from .mocks import get_response_mock
 
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 

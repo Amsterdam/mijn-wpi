@@ -236,4 +236,3 @@ def convert_stadspas(tree, document_root):
         return administratienummer.text
     else:
         return None
-
