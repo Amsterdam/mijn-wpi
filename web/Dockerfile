@@ -1,4 +1,4 @@
-FROM amsterdam/python:3.8.6-slim-buster
+FROM amsterdam/python:3.8.2-slim-buster
 MAINTAINER datapunt@amsterdam.nl
 
 EXPOSE 8000
