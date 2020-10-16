@@ -17,7 +17,7 @@ from focus.server import application  # noqa: E402
 @patch('focus.focusconnect.Client', new=MockClient)
 @patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)  # side step decoding the BSN from SAML token
 @patch('focus.gpass_connect.requests.get', get_response_mock)
-@patch('focus.focusserver.get_gpass_api_location', lambda : 'http://localhost')
+@patch('focus.focusserver.get_gpass_api_location', lambda: 'http://localhost')
 class CombinedApiTest(FlaskTestCase):
     def create_app(self):
         return application
@@ -57,6 +57,22 @@ class CombinedApiTest(FlaskTestCase):
                         'title': 'Uitkeringsspecificatie',
                         'type': '',
                         'url': 'focus/document?id=30364921&isBulk=false&isDms=false'
+                    }
+                ],
+                'stadspassaldo': [
+                    {
+                        'budgets': [
+                            {
+                                'assigned': 100,
+                                'balance': 0,
+                                'code': 'AMSEducatie',
+                                'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
+                            }
+                        ],
+                        'datumAfloop': '2020-08-31T23:59:59.000Z',
+                        'id': 999999,
+                        'naam': 'A Achternaam',
+                        'pasnummer': 6666666666666
                     }
                 ],
                 'tozodocumenten': [

@@ -94,12 +94,13 @@ def combined():
     return server().combined()
 
 
-@application.route(urls["stadspassaldo"])
-def stadspassaldo():
-    admin_number = server().stadspas()
+@application.route(urls["stadspastransacties"])
+def stadspastransactions():
+    # admin_number = ?
+
     gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
-    stadspas_data = gpass_con.get_stadspassen()
-    return stadspas_data
+    stadspas_transations = gpass_con.get_transactions()
+    return stadspas_transations
 
 
 if __name__ == "__main__":

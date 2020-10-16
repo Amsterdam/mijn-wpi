@@ -74,13 +74,13 @@ class GpassConnection:
             "date": date,
         }
 
-    def get_transaction(self, admin_number, pas_number):
+    def get_transactions(self, admin_number, pas_number):
         url = f"/rest/transacties/v1/budget?pasnummer={pas_number}"
         response = self._get(url, admin_number)
 
         if response.status_code != 200:
-            return  # TODO: implement me
+            return None # TODO: implement me
 
         data = response.json()
 
-        return [self._format_transaction(t )for t in data['transacties']]
+        return [self._format_transaction(t)for t in data['transacties']]

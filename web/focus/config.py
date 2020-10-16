@@ -50,7 +50,7 @@ urls = {
     'aanvragen': "/focus/aanvragen",
     'document': "/focus/document",
     'combined': "/focus/combined",
-    'stadspassaldo': "/focus/stadspassaldo"
+    'stadspastransacties': "/focus/stadspastransacties/<string:encrypted_admin_pasnummer>"
 }
 
 
@@ -60,8 +60,12 @@ def get_TMA_certificate():
 
 
 def get_gpass_bearer_token():
-    get_variable('MIJN_GPASS_TOKEN')
+    get_variable('GPASS_TOKEN')
 
 
 def get_gpass_api_location():
-    get_variable('MIJN_GPASS_API_LOCATION')
+    get_variable('GPASS_API_LOCATION')
+
+
+def get_key():
+    return os.getenv("FERNET_KEY")

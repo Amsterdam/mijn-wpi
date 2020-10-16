@@ -77,7 +77,8 @@ def get_response_mock(*args, **kwargs):
     try:
         res_data = mocked_get_urls[args[0]]
     except KeyError:
-        raise Exception("Url not defined %s", args[0])
+        return MockResponse('', 404)
+        # raise Exception("Url not defined %s", args[0])
     return MockResponse(res_data)
 
 
@@ -150,6 +151,10 @@ mocked_get_urls_tuple = (
     (
         "http://localhost/rest/sales/v1/pas/6666666666666?include_balance=true",
         _load_fixture('gpass/pas1.json')
+    ),
+    (
+        "http://localhost/rest/transacties/v1/budget?pasnummer=6666666666666",
+        _load_fixture("gpass/transactions.json")
     )
 )
 mocked_get_urls = dict(mocked_get_urls_tuple)
