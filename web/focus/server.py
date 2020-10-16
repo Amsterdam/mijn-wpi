@@ -99,11 +99,16 @@ def combined():
 @application.route(urls["stadspastransacties"])
 def stadspastransactions(encrypted_admin_pasnummer):
     admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
-    # admin_number = ?
 
     gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
-    stadspas_transations = gpass_con.get_transactions()
-    return stadspas_transations
+    stadspas_transations = gpass_con.get_transactions(admin_number, stadspas_number)
+    if stadspas_transations is None:
+        return {}, 204
+
+    return {
+        "status": "ok",
+        "content": stadspas_transations,
+    }
 
 
 if __name__ == "__main__":

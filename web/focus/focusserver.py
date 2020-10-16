@@ -129,7 +129,6 @@ class FocusServer:
             logger.exception("Failed to retrieve combined: {}".format(type(error)), exc_info=error)
             return self._no_connection_response()
         except Exception as error:
-            raise
             logger.exception("Failed to retrieve combined (unknown error): {} {}".format(type(error), str(error)), exc_info=error)
             return self._no_connection_response()
 

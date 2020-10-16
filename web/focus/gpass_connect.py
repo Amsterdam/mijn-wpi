@@ -84,7 +84,7 @@ class GpassConnection:
         response = self._get(url, admin_number)
 
         if response.status_code != 200:
-            return None # TODO: implement me
+            return None
 
         data = response.json()
 
