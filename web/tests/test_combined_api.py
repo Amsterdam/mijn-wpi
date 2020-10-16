@@ -14,10 +14,14 @@ os.environ['TMA_CERTIFICATE'] = __file__
 from focus.server import application  # noqa: E402
 
 
+TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
+
+
 @patch('focus.focusconnect.Client', new=MockClient)
 @patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)  # side step decoding the BSN from SAML token
 @patch('focus.gpass_connect.requests.get', get_response_mock)
 @patch('focus.focusserver.get_gpass_api_location', lambda: 'http://localhost')
+@patch("focus.crypto.get_key", lambda: TESTKEY)
 class CombinedApiTest(FlaskTestCase):
     def create_app(self):
         return application
@@ -72,7 +76,8 @@ class CombinedApiTest(FlaskTestCase):
                         'datumAfloop': '2020-08-31T23:59:59.000Z',
                         'id': 999999,
                         'naam': 'A Achternaam',
-                        'pasnummer': 6666666666666
+                        'pasnummer': 6666666666666,
+                        # 'url_transactions': '/focus/stadspastransacties/...'
                     }
                 ],
                 'tozodocumenten': [
@@ -129,4 +134,10 @@ class CombinedApiTest(FlaskTestCase):
             'status': 'OK'
         }
 
-        self.assertEqual(response.json, expected)
+        response_json = response.json
+
+        self.assertTrue(response_json["content"]["stadspassaldo"][0]["url_transactions"].startswith('/focus/stadspastransacties/'))
+        # remove url, it has a timebased factor in it.
+        del(response_json["content"]["stadspassaldo"][0]["url_transactions"])
+
+        self.assertEqual(response_json, expected)

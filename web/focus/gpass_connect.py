@@ -2,6 +2,8 @@ from pprint import pprint
 
 import requests
 
+from focus.crypto import encrypt
+
 log_raw = False
 
 
@@ -29,15 +31,18 @@ class GpassConnection:
             "balance": budget["budget_balance"],
         }
 
-    def _format_pas_data(self, naam: str, pas: dict):
+    def _format_pas_data(self, naam: str, pas: dict, admin_number: str):
         budgets = [self._format_budgets(b) for b in pas['budgetten']]
+
+        encrypted_admin_pas = encrypt(admin_number, pas["pasnummer"])
 
         return {
             "id": pas["id"],
             "pasnummer": pas["pasnummer"],
             "datumAfloop": pas["expiry_date"],
             "naam": naam,
-            "budgets": budgets
+            "budgets": budgets,
+            "url_transactions": f"/focus/stadspastransacties/{encrypted_admin_pas}"
         }
 
     def get_stadspassen(self, admin_number):
@@ -57,7 +62,7 @@ class GpassConnection:
             response = self._get(url, admin_number)
 
             if response.status_code == 200:
-                passen_result.append(self._format_pas_data(naam, response.json()))
+                passen_result.append(self._format_pas_data(naam, response.json(), admin_number))
             else:
                 # TODO: implement me
                 pass

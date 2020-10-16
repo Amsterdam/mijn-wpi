@@ -6,6 +6,8 @@ from flask import Flask, send_from_directory
 from flask_cors import CORS
 
 from focus.gpass_connect import GpassConnection
+
+from focus.crypto import decrypt
 from .config import check_env, config, credentials, urls, get_TMA_certificate, SENTRY_DSN, get_gpass_bearer_token, \
     get_gpass_api_location
 from .focusconnect import FocusConnection
@@ -95,7 +97,8 @@ def combined():
 
 
 @application.route(urls["stadspastransacties"])
-def stadspastransactions():
+def stadspastransactions(encrypted_admin_pasnummer):
+    admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
     # admin_number = ?
 
     gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())

@@ -112,6 +112,7 @@ class FocusServer:
             uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
             tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
 
+            # 2 stage, first get admin number from focus, then data from gpass
             stadspas_admin_number = self._focus_connection.stadspas(bsn=bsn, url_root=request.script_root)
             stadspas = gpass_con.get_stadspassen(admin_number=stadspas_admin_number)
 
