@@ -1,4 +1,4 @@
-FROM amsterdam/python:3.8.2-slim-buster
+FROM amsterdam/python:3.8.2-buster
 MAINTAINER datapunt@amsterdam.nl
 
 
@@ -8,7 +8,6 @@ WORKDIR /app
 
 
 COPY requirements.txt /app/
-RUN pip install uwsgi
 RUN pip install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
