@@ -5,7 +5,8 @@ MAINTAINER datapunt@amsterdam.nl
 EXPOSE 8000
 
 WORKDIR /app
-
+# remove this when the 3.8.6-buster image is fixed
+ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
