@@ -1,12 +1,14 @@
 FROM amsterdam/python:3.8.2-slim-buster
 MAINTAINER datapunt@amsterdam.nl
 
+
 EXPOSE 8000
 
 WORKDIR /app
 
 
 COPY requirements.txt /app/
+RUN pip install uwsgi
 RUN pip install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
