@@ -12,14 +12,14 @@ class GpassConnection:
         self.api_location = api_location
         self.bearer_token = bearer_token
 
-    def _get(self, url, admin_number):
-        url = f"{self.api_location}{url}"
+    def _get(self, path, admin_number):
+        path = f"{self.api_location}{path}"
         headers = {
             "Authorization": f"AppBearer {self.bearer_token},{admin_number}"
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(path, headers=headers)
         if log_raw:
-            print("url", url)
+            print("url", path)
             pprint(response.json())
         return response
 
@@ -46,8 +46,8 @@ class GpassConnection:
         }
 
     def get_stadspassen(self, admin_number):
-        url = "/rest/sales/v1/pashouder?addsubs=true"
-        response = self._get(url, admin_number)
+        path = "/rest/sales/v1/pashouder?addsubs=true"
+        response = self._get(path, admin_number)
         data = response.json()
         naam = f"{data['initialen']} {data['achternaam']}"
 
@@ -58,8 +58,8 @@ class GpassConnection:
 
         for pas in passen:
             pasnummer = pas['pasnummer']
-            url = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
-            response = self._get(url, admin_number)
+            path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
+            response = self._get(path, admin_number)
 
             if response.status_code == 200:
                 passen_result.append(self._format_pas_data(naam, response.json(), admin_number))
@@ -80,8 +80,8 @@ class GpassConnection:
         }
 
     def get_transactions(self, admin_number, pas_number):
-        url = f"/rest/transacties/v1/budget?pasnummer={pas_number}"
-        response = self._get(url, admin_number)
+        path = f"/rest/transacties/v1/budget?pasnummer={pas_number}"
+        response = self._get(path, admin_number)
 
         if response.status_code != 200:
             return None

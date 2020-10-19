@@ -60,11 +60,11 @@ def get_TMA_certificate():
 
 
 def get_gpass_bearer_token():
-    get_variable('GPASS_TOKEN')
+    return get_variable('GPASS_TOKEN')
 
 
 def get_gpass_api_location():
-    get_variable('GPASS_API_LOCATION')
+    return get_variable('GPASS_API_LOCATION')
 
 
 def get_key():
