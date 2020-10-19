@@ -31,7 +31,7 @@ for i in aanvragen + jaaropvragen + uitkeringsspecificaties:
     with focus_connection._client.settings(raw_response=True, extra_http_headers={'Accept': 'application/xop+xml'}):
         raw_doc = focus_connection._client.service.getDocument(id=docId, bsn=bsn, isBulk=isBulk, isDms=isDms)
         tree = BeautifulSoup(raw_doc.content, features="lxml-xml")
-        data =tree.find('dataHandler')
+        data = tree.find('dataHandler')
         filedata = str(data.text)
         print("data?", bool(filedata), '           ', filedata[:20], ' ... ', filedata[-10:])
         print("\n\n")
