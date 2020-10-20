@@ -32,6 +32,9 @@ for i in aanvragen + jaaropvragen + uitkeringsspecificaties:
         raw_doc = focus_connection._client.service.getDocument(id=docId, bsn=bsn, isBulk=isBulk, isDms=isDms)
         tree = BeautifulSoup(raw_doc.content, features="lxml-xml")
         data = tree.find('dataHandler')
-        filedata = str(data.text)
-        print("data?", bool(filedata), '           ', filedata[:20], ' ... ', filedata[-10:])
+        try:
+            filedata = str(data.text)
+            print("data?", bool(filedata), '           ', filedata[:20], ' ... ', filedata[-10:])
+        except Exception as e:
+            print("data?", False, '           ', type(e), e)
         print("\n\n")
