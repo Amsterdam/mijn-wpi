@@ -12,6 +12,7 @@ bsn = sys.argv[1]
 aanvragen = focus_connection.aanvragen(bsn=bsn, url_root='/')
 jaaropvragen = focus_connection.jaaropgaven(bsn=bsn, url_root='/')
 uitkeringsspecificaties = focus_connection.uitkeringsspecificaties(bsn=bsn, url_root='/')
+tozo_documents = focus_connection.EAanvragenTozo(bsn=bsn, url_root='/')
 
 print(f"Aanvragen: {len(aanvragen)}.  jaaropgaven: {len(jaaropvragen)}  uitkeringsspecificaties: {len(uitkeringsspecificaties)}\n",)
 
@@ -48,7 +49,7 @@ for i in aanvragen:  # noqa C901
                         print("  data?", False, '           ', type(e), e)
                     print("\n\n")
 
-for i in jaaropvragen + uitkeringsspecificaties:
+for i in jaaropvragen + uitkeringsspecificaties + tozo_documents:
     print("id:", i['id'])
     print("type:", i['type'])
     print("url:", i['url'])
