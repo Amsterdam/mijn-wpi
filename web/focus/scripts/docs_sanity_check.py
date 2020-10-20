@@ -17,7 +17,38 @@ print(f"Aanvragen: {len(aanvragen)}.  jaaropgaven: {len(jaaropvragen)}  uitkerin
 
 commands = []
 
-for i in aanvragen + jaaropvragen + uitkeringsspecificaties:
+for i in aanvragen:
+    naam = i['naam']
+    processtappen = i['processtappen']
+    type = "{0} - {1}".format(i['soortProduct'], i['typeBesluit'])
+    print("Naam: {0}".format(naam))
+    print("type: {0}".format(type))
+    print("documenten: ", len(processtappen))
+    for stap_naam in processtappen.keys():
+      stap = processtappen[stap_naam]
+      if stap and 'document' in stap and stap['document']:
+        doc_list = stap['document']
+        for doc in doc_list:
+          docId = doc["id"]
+          isBulk = doc['isBulk']
+          isDms = doc['isDms']
+          print("  id:", docId)
+          print("  omschrijving:", doc['omschrijving'])
+          print("  url:", doc['$ref'])
+          command = f'python focus/scripts/get_doc.py {bsn} {docId} {isDms} {isBulk}'
+          print("  command:", command)
+          with focus_connection._client.settings(raw_response=True, extra_http_headers={'Accept': 'application/xop+xml'}):
+              raw_doc = focus_connection._client.service.getDocument(id=docId, bsn=bsn, isBulk=isBulk, isDms=isDms)
+              tree = BeautifulSoup(raw_doc.content, features="lxml-xml")
+              data = tree.find('dataHandler')
+              try:
+                  filedata = str(data.text)
+                  print("  data?", bool(filedata), '           ', filedata[:20], ' ... ', filedata[-10:])
+              except Exception as e:
+                  print("  data?", False, '           ', type(e), e)
+              print("\n\n")
+
+for i in jaaropvragen + uitkeringsspecificaties:
     print("id:", i['id'])
     print("type:", i['type'])
     print("url:", i['url'])
