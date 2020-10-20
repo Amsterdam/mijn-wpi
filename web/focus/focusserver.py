@@ -98,9 +98,19 @@ class FocusServer:
 
         return jsonify(aanvragen)
 
+    def _collect_stadspas_data(self, bsn):
+        # 2 stage, first get admin number from focus, then data from gpass
+        gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
+
+        stadspas_admin_number = self._focus_connection.stadspas(bsn=bsn, url_root=request.script_root)
+        stadspas = None
+        if stadspas_admin_number:
+            stadspas = gpass_con.get_stadspassen(admin_number=stadspas_admin_number)
+
+        return stadspas
+
     def combined(self):
         """ Gets all jaaropgaven for the BSN that is encoded in the header SAML token. """
-        gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
 
         try:
             bsn = get_bsn_from_request(request)
@@ -111,13 +121,7 @@ class FocusServer:
             jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
             uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
             tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
-
-            # 2 stage, first get admin number from focus, then data from gpass
-            stadspas_admin_number = self._focus_connection.stadspas(bsn=bsn, url_root=request.script_root)
-            if stadspas_admin_number:
-                stadspas = gpass_con.get_stadspassen(admin_number=stadspas_admin_number)
-            else:
-                stadspas = None
+            stadspas = self._collect_stadspas_data(bsn)
 
             return {
                 "status": "OK",
