@@ -131,7 +131,6 @@ class FocusConnection:
                     logger.debug(faultsstring)
                 except Exception as e:
                     logger.exception(e)
-                    pass
                 return []
             tozo_documenten = convert_e_aanvraag_TOZO(tree, url_root)
             return tozo_documenten
@@ -168,7 +167,7 @@ class FocusConnection:
             # try raw
             with self._client.settings(raw_response=True, extra_http_headers=header_value):
                 raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
-                logger.error("document message length", len(raw_document.content))
+                logger.error(f"document message length {len(raw_document.content)}")
                 logger.error(f"Has attachments? {bool(raw_document.attachments)}, {len(raw_document.attachments)}")
 
         # Convert the result to a dictionary for the specified keys
