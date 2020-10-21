@@ -21,9 +21,9 @@ commands = []
 for i in aanvragen:  # noqa C901
     naam = i['naam']
     processtappen = i['processtappen']
-    type = "{0} - {1}".format(i['soortProduct'], i['typeBesluit'])
-    print("Naam: {0}".format(naam))
-    print("type: {0}".format(type))
+    type = f"{i['soortProduct']} - {i['typeBesluit']}"
+    print(f"Naam: {naam}")
+    print(f"type: {type}")
     print("documenten: ", len(processtappen))
     for stap_naam in processtappen.keys():
         stap = processtappen[stap_naam]
