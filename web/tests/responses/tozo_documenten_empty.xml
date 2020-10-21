@@ -4,6 +4,6 @@
         <work:WorkContext xmlns:work="http://oracle.com/weblogic/soap/workarea/">rO0ABXdUAB13ZWJsb2dpYy5hcHAuT25saW5lS2xhbnRCZWVsZAAAANYAAAAjd2VibG9naWMud29ya2FyZWEuU3RyaW5nV29ya0NvbnRleHQABjEuMC4xOAAA</work:WorkContext>
     </env:Header>
     <S:Body>
-        <ns0:getEAanvraagTOZOResponse xmlns:ns0="http://webservice.onlineklantbeeld.dwi.amsterdam.nl/"/>
+        <ns0:getEAanvraagTOZOResponse xmlns:ns0="http://localhost/"/>
     </S:Body>
 </S:Envelope>

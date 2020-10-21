@@ -4,6 +4,7 @@ This module represents a connection with Focus.
 The connection can be established, re-established (reset method)
 The connection exposes the aanvragen and document methods of the underlying Focus SOAP API
 """
+import base64
 import re
 import logging
 import xmltodict
@@ -141,7 +142,11 @@ class FocusConnection:
             tree = BeautifulSoup(raw_stadspas, features="lxml-xml")
             stadspas = tree.find('getStadspasResponse')
             if not stadspas:
-                logger.error("no body getStadspas? %s" % raw_stadspas)
+                try:
+                    faultsstring = tree.find('faultstring')
+                    logger.error(f"Focus fault string  {faultsstring.text}")
+                except Exception as e:
+                    logger.exception(e)
                 return []
             admin_number = convert_stadspas(tree, url_root)
 
@@ -159,26 +164,18 @@ class FocusConnection:
         header_value = {'Accept': 'application/xop+xml'}
 
         # Get the document
-        with self._client.settings(extra_http_headers=header_value):
-            result = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
+        with self._client.settings(raw_response=True, extra_http_headers=header_value):
+            raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
 
-        if result is None:
-            logger.error("Result is None")
-            # try raw
-            with self._client.settings(raw_response=True, extra_http_headers=header_value):
-                raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
-                logger.error(f"document message length {len(raw_document.content)}")
-                logger.error(f"Has attachments? {bool(raw_document.attachments)}, {len(raw_document.attachments)}")
+        tree = BeautifulSoup(raw_document.content, features="lxml-xml")
+        data = tree.find('dataHandler').text
+        filename = tree.find('fileName').text
+        mime_type = "application/pdf" if ".pdf" in filename else "application/octet-stream"
 
-        # Convert the result to a dictionary for the specified keys
-        try:
-            document = dict([(attr, result[attr]) for attr in ["description", "fileName"]])
-        except Exception as e:
-            logger.error("More Document error %s %s" % (type(e), result))
-            raise e
-
-        document["contents"] = result["dataHandler"]
-        # Provide for a MIME-type
-        document["mime_type"] = "application/pdf" if ".pdf" in document["fileName"] else "application/octet-stream"
+        document = {
+            "fileName": filename,
+            "contents": base64.b64decode(data),
+            "mime_type": mime_type,
+        }
 
         return document

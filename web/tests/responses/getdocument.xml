@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<S:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Header>
+        <Action xmlns="http://www.w3.org/2005/08/addressing">http://localhost/OnlineKlantBeeld/getDocumentResponse</Action>
+        <MessageID xmlns="http://www.w3.org/2005/08/addressing">uuid:WLS2:server:Burger_Webservices:</MessageID>
+        <RelatesTo xmlns="http://www.w3.org/2005/08/addressing">urn:uuid:e</RelatesTo>
+        <To xmlns="http://www.w3.org/2005/08/addressing">http://www.w3.org/2005/08/addressing/anonymous</To>
+        <work:WorkContext xmlns:work="http://oracle.com/weblogic/soap/workarea/">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</work:WorkContext>
+    </S:Header>
+    <S:Body>
+        <ns0:getDocumentResponse xmlns:ns0="http://localhost/">
+            <return>
+                <dataHandler></dataHandler>
+                <disposition>attachment</disposition>
+                <fileName>TestIKB\TestBulk15.pdf</fileName>
+            </return>
+        </ns0:getDocumentResponse>
+    </S:Body>
+</S:Envelope>

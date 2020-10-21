@@ -1,4 +1,5 @@
 # Mock the soap client
+import base64
 import json
 import os
 
@@ -37,7 +38,7 @@ class MockClientEmpties:
 
 class MockService:
     def getDocument(self, bsn, id, isBulk, isDms):
-        return get_document()
+        return MockResponse(reply=get_document())
 
     def getJaaropgaven(self, bsn):
         return MockResponse(reply=jaaropgaven_reponse)
@@ -161,15 +162,9 @@ mocked_get_urls = dict(mocked_get_urls_tuple)
 
 
 def get_document():
-    # obtained from acc
-    document = {
-        'contentID': None,
-        'contentLanguage': [],
-        'contentMD5': None,
-        'dataHandler': pdf_document,
-        'description': None,
-        'disposition': 'attachment',
-        'document': None,
-        'fileName': r'TestIKB\TestBulk15.pdf'
-    }
-    return document
+    xml = _load_fixture_as_bytes('getdocument.xml')
+    pdf_document_encoded = base64.b64encode(pdf_document).decode()
+
+    xml = xml.replace("<dataHandler></dataHandler>", "<dataHandler>{}</dataHandler>".format(pdf_document_encoded))
+
+    return xml
