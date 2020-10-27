@@ -63,23 +63,23 @@ class CombinedApiTest(FlaskTestCase):
                         'url': 'focus/document?id=30364921&isBulk=false&isDms=false'
                     }
                 ],
-                'stadspassaldo': [
-                    {
-                        'budgets': [
-                            {
-                                'assigned': 100,
-                                'balance': 0,
-                                'code': 'AMSEducatie',
-                                'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
-                            }
-                        ],
-                        'datumAfloop': '2020-08-31T23:59:59.000Z',
-                        'id': 999999,
-                        'naam': 'A Achternaam',
-                        'pasnummer': 6666666666666,
-                        # 'url_transactions': '/focus/stadspastransacties/...'
-                    }
-                ],
+                # 'stadspassaldo': [
+                #     {
+                #         'budgets': [
+                #             {
+                #                 'assigned': 100,
+                #                 'balance': 0,
+                #                 'code': 'AMSEducatie',
+                #                 'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
+                #             }
+                #         ],
+                #         'datumAfloop': '2020-08-31T23:59:59.000Z',
+                #         'id': 999999,
+                #         'naam': 'A Achternaam',
+                #         'pasnummer': 6666666666666,
+                #         # 'url_transactions': '/focus/stadspastransacties/...'
+                #     }
+                # ],
                 'tozodocumenten': [
                     {
                         'datePublished': '2020-03-31T18:59:46+02:00',
@@ -136,8 +136,8 @@ class CombinedApiTest(FlaskTestCase):
 
         response_json = response.json
 
-        self.assertTrue(response_json["content"]["stadspassaldo"][0]["url_transactions"].startswith('/focus/stadspastransacties/'))
+        # self.assertTrue(response_json["content"]["stadspassaldo"][0]["url_transactions"].startswith('/focus/stadspastransacties/'))
         # remove url, it has a timebased factor in it.
-        del(response_json["content"]["stadspassaldo"][0]["url_transactions"])
+        # del(response_json["content"]["stadspassaldo"][0]["url_transactions"])
 
         self.assertEqual(response_json, expected)
