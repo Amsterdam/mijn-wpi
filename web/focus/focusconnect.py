@@ -168,7 +168,10 @@ class FocusConnection:
             raw_document = self._client.service.getDocument(id=id, bsn=bsn, isBulk=isBulk, isDms=isDms)
 
         tree = BeautifulSoup(raw_document.content, features="lxml-xml")
-        data = tree.find('dataHandler').text
+        data_element = tree.find('dataHandler')
+        if not data_element:
+            return None
+        data = data_element.text
         filename = tree.find('fileName').text
         mime_type = "application/pdf" if ".pdf" in filename else "application/octet-stream"
 

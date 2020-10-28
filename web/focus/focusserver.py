@@ -175,6 +175,9 @@ class FocusServer:
 
         # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
         # Craft a manual request instead
+        if document is None:
+            logger.error("Document empty")
+            return "Document not received from source.", 404
         response = make_response(document["contents"])
         response.headers["Content-Disposition"] = f'attachment; filename="{document["fileName"]}"'  # make sure it is a download
         response.headers["Content-Type"] = document["mime_type"]
