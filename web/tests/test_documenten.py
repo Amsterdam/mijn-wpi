@@ -5,7 +5,7 @@ from unittest import TestCase
 from flask_testing import TestCase as FlaskTestCase
 from mock import patch
 
-from tests.mocks import MockClient, pdf_document, MockClientEmpties
+from tests.mocks import MockClient, pdf_document
 
 os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
 os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
