@@ -5,7 +5,7 @@ from unittest import TestCase
 from flask_testing import TestCase as FlaskTestCase
 from mock import patch
 
-from tests.mocks import MockClient, pdf_document
+from tests.mocks import MockClient, pdf_document, MockClientEmpties
 
 os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
 os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
@@ -28,9 +28,9 @@ class DocumentTest(TestCase):
         self.assertEqual(doc['contents'], pdf_document)
 
 
-@patch('focus.focusconnect.Client', new=MockClient)
 # side step decoding the BSN from SAML token
 @patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
+@patch('focus.focusconnect.Client', new=MockClient)
 class DocumentApiTest(FlaskTestCase):
     def create_app(self):
         return application
@@ -39,3 +39,15 @@ class DocumentApiTest(FlaskTestCase):
         response = self.client.get('/focus/document?id=1&isBulk=true&isDms=true')
         self.assertEqual(response.data, pdf_document)
         self.assertEqual(response.headers['Content-Disposition'], r'attachment; filename="TestIKB\TestBulk15.pdf"')
+
+
+# @patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
+# @patch('focus.focusconnect.Client', new=MockClientEmpties)
+# class DocumentEmptyApiTest(FlaskTestCase):
+#     def create_app(self):
+#         return application
+#
+#     def test_empty_document_api(self):
+#         print("test empty")
+#         response = self.client.get('/focus/document?id=1&isBulk=true&isDms=true')
+#         print("response", response.data)

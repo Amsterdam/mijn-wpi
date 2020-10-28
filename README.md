@@ -11,7 +11,6 @@ See also (https://dokuwiki.datapunt.amsterdam.nl/doku.php?id=start:focus)
 
 * python 3.6
 * docker-compose
-* Secure VPN connection (provided by Infra)
 
 # Setup
 
@@ -72,15 +71,6 @@ NOTE: When running the docker, the path to the WSDL and TMA certificate should b
 /app/focus/focus.\<acc or prd>.wsdl and /app/focus/tma.cert.txt  #TODO
 
 # Docker
-
-The docker container will start a VPN connection and the web server.
-
-In order to start the VPN server the following two variables should be defined:
-
-    export OPENVPNUSER=
-    export OPENVPNUSER_PASSWORD=
-
-The values can be obtained from the infra department or be found in the Openstack configuration for this project.
 
 Use `docker-compose` to start a local Api server.
 

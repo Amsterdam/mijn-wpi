@@ -58,7 +58,7 @@ class MockService:
 
 class MockServiceEmpties:
     def getDocument(self, bsn, id, isBulk, isDms):
-        return get_document()
+        return MockResponse(reply=get_empty_document)
 
     # def getJaaropgaven(self, bsn):
     #     return MockResponse(reply=jaaropgaven_reponse)
@@ -68,6 +68,9 @@ class MockServiceEmpties:
     #
     # def getUitkeringspecificaties(self, bsn):
     #     return MockResponse(reply=uitkeringsspecificaties_response)
+
+    def getStadspas(self, bsn):
+        return MockResponse(reply=stadspas_response)
 
     def getEAanvraagTOZO(self, bsn):
         return MockResponse(reply=tozo_documenten_empty_response)
@@ -102,8 +105,8 @@ class MockResponse:
 
 # this document is from acc
 TEST_PDF_PATH = os.path.join(BASE_PATH, 'tests', 'test.pdf')
-with open(TEST_PDF_PATH, 'rb') as fh:
-    pdf_document = fh.read()
+with open(TEST_PDF_PATH, 'rb') as fp:
+    pdf_document = fp.read()
 
 JAAROPGAVEN_RESPONSE_PATH = os.path.join(RESPONSES_PATH, 'jaaropgaven.xml')
 with open(JAAROPGAVEN_RESPONSE_PATH, 'rb') as fp:
@@ -131,13 +134,13 @@ with open(STADSPAS_RESPONSE_PATH, 'rb') as fp:
 
 
 def _load_fixture(json_file_name):
-    with open(os.path.join(RESPONSES_PATH, json_file_name)) as fh:
-        return json.load(fh)
+    with open(os.path.join(RESPONSES_PATH, json_file_name)) as fp:
+        return json.load(fp)
 
 
 def _load_fixture_as_bytes(file_name):
-    with open(os.path.join(RESPONSES_PATH, file_name)) as fh:
-        return fh.read()
+    with open(os.path.join(RESPONSES_PATH, file_name)) as fp:
+        return fp.read()
 
 
 mocked_get_urls_tuple = (
@@ -159,6 +162,11 @@ mocked_get_urls_tuple = (
     )
 )
 mocked_get_urls = dict(mocked_get_urls_tuple)
+
+
+def get_empty_document():
+    xml = _load_fixture_as_bytes('getdocument.xml')
+    return xml
 
 
 def get_document():
