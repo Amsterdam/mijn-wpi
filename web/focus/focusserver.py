@@ -102,7 +102,7 @@ class FocusServer:
         # 2 stage, first get admin number from focus, then data from gpass
         gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
 
-        stadspas_admin_number = self._focus_connection.stadspas(bsn=bsn, url_root=request.script_root)
+        stadspas_admin_number = self._focus_connection.stadspas(bsn=bsn)
 
         # pad to 10 chars, add a static "gemeente code"
         stadspas_admin_number = str(stadspas_admin_number).zfill(10)

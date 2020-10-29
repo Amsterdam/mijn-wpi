@@ -230,7 +230,7 @@ def convert_e_aanvraag_TOZO(tree, document_root):
     return jaar_opgaven_list
 
 
-def convert_stadspas(tree, document_root):
+def convert_stadspas(tree):
     administratienummer = tree.find("administratienummer")
     if administratienummer:
         return administratienummer.text

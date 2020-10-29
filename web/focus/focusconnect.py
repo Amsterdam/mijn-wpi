@@ -139,7 +139,7 @@ class FocusConnection:
             tozo_documenten = convert_e_aanvraag_TOZO(tree, url_root)
             return tozo_documenten
 
-    def stadspas(self, bsn, url_root):
+    def stadspas(self, bsn):
         with self._client.settings(raw_response=True):
             raw_stadspas = self._client.service.getStadspas(bsn=bsn).content.decode("utf-8").replace("\n", "")
             tree = BeautifulSoup(raw_stadspas, features="lxml-xml")
@@ -153,7 +153,7 @@ class FocusConnection:
                 except Exception as e:
                     logger.exception(e)
                 return []
-            admin_number = convert_stadspas(tree, url_root)
+            admin_number = convert_stadspas(tree)
 
             return admin_number
 
