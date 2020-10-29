@@ -4,7 +4,7 @@ import requests
 
 from focus.crypto import encrypt
 
-log_raw = False
+LOG_RAW = False
 
 
 class GpassConnection:
@@ -18,8 +18,8 @@ class GpassConnection:
             "Authorization": f"AppBearer {self.bearer_token},{admin_number}"
         }
         response = requests.get(path, headers=headers)
-        if log_raw:
-            print("url", path)
+        if LOG_RAW:
+            print("url", path, "adminnumber", admin_number)
             pprint(response.json())
         return response
 
