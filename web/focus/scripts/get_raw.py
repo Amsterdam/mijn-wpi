@@ -1,3 +1,4 @@
+import sys
 from io import BytesIO
 
 from lxml import etree
@@ -7,7 +8,7 @@ from focus.focusconnect import FocusConnection
 
 focus_connection = FocusConnection(config, credentials)
 
-bsn = "123456789"
+bsn = sys.argv[1]
 
 
 with focus_connection._client.settings(raw_response=True):
