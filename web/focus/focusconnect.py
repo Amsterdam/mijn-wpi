@@ -20,6 +20,9 @@ from .focusinterpreter import convert_aanvragen, convert_jaaropgaven, convert_ui
 logger = logging.getLogger(__name__)
 
 
+LOG_RAW = False
+
+
 class FocusConnection:
     """ This class encapsulates the (SOAP) connection with Focus"""
 
@@ -140,6 +143,8 @@ class FocusConnection:
         with self._client.settings(raw_response=True):
             raw_stadspas = self._client.service.getStadspas(bsn=bsn).content.decode("utf-8").replace("\n", "")
             tree = BeautifulSoup(raw_stadspas, features="lxml-xml")
+            if LOG_RAW:
+                print(tree.prettify())
             stadspas = tree.find('getStadspasResponse')
             if not stadspas:
                 try:
