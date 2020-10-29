@@ -1,12 +1,12 @@
 import sys
 
-from ..focusconnect import FocusConnection
+from focus.focusconnect import FocusConnection
 
 import focus.focusconnect
 import focus.gpass_connect
 
-from ..config import config, credentials, get_TMA_certificate
-from ..focusserver import FocusServer
+from focus.config import config, credentials, get_TMA_certificate
+from focus.focusserver import FocusServer
 
 bsn = sys.argv[1]
 
