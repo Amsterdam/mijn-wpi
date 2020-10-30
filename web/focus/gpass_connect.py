@@ -19,7 +19,8 @@ class GpassConnection:
         }
         response = requests.get(path, headers=headers)
         if LOG_RAW:
-            print("url", path, "adminnumber", admin_number)
+            print("url", path, "adminnumber", admin_number, self.bearer_token)
+            print("status", response.status_code)
             pprint(response.json())
         return response
 
@@ -48,6 +49,9 @@ class GpassConnection:
     def get_stadspassen(self, admin_number):
         path = "/rest/sales/v1/pashouder?addsubs=true"
         response = self._get(path, admin_number)
+        if response.status_code != 200:
+            # unknown user results in a invalid token?
+            return []
         data = response.json()
         naam = f"{data['initialen']} {data['achternaam']}"
 
