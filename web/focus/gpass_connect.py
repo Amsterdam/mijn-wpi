@@ -42,7 +42,7 @@ class GpassConnection:
             "datumAfloop": pas["expiry_date"],
             "naam": naam,
             "budgets": budgets,
-            "url_transactions": f"/focus/stadspastransacties/{encrypted_admin_pas}"
+            "urlTransactions": f"/focus/stadspastransacties/{encrypted_admin_pas}"
         }
 
     def get_stadspassen(self, admin_number):
