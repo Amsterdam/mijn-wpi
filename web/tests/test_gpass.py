@@ -46,9 +46,9 @@ class GpassConnectionTest(TestCase):
             }
         ]
 
-        self.assertTrue(result[0]["url_transactions"].startswith('/focus/stadspastransacties/'))
+        self.assertTrue(result[0]["urlTransactions"].startswith('/focus/stadspastransacties/'))
         # remove url, it has a timebased factor in it.
-        del(result[0]["url_transactions"])
+        del(result[0]["urlTransactions"])
 
         self.assertEqual(result, expected)
 
