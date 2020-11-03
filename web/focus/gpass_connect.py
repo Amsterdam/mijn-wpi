@@ -38,7 +38,6 @@ class GpassConnection:
     def _format_pas_data(self, naam: str, pas: dict, admin_number: str):
         budgets = [self._format_budgets(b, admin_number, pas["pasnummer"]) for b in pas['budgetten']]
 
-
         return {
             "id": pas["id"],
             "pasnummer": pas["pasnummer"],
