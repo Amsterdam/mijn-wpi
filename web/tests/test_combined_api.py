@@ -84,9 +84,23 @@ class CombinedApiTest(FlaskTestCase):
                             'id': 999999,
                             'naam': 'A Achternaam',
                             'pasnummer': 6666666666666,
-                            # 'urlTransactions': '/focus/stadspastransacties/...'
+                        },
+                        {
+                            'budgets': [
+                                {
+                                    'assigned': 100,
+                                    'balance': 0,
+                                    'code': 'AMSEducatie',
+                                    'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020',
+                                    # 'urlTransactions': '/api/focus/stadspastransacties/...'
+                                }
+                            ],
+                            'datumAfloop': '2020-08-31T23:59:59.000Z',
+                            'id': 999999,
+                            'naam': 'J Achternaam3',
+                            'pasnummer': 6666666666666
                         }
-                    ],
+                    ]
                 },
                 'tozodocumenten': [
                     {
@@ -138,15 +152,18 @@ class CombinedApiTest(FlaskTestCase):
                         'url': 'focus/document?id=4400000029&isBulk=true&isDms=false'
                     }
                 ]
+
             },
             'status': 'OK'
         }
 
         response_json = response.json
 
-        self.assertTrue(response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"].startswith(
-            '/api/focus/stadspastransacties/'))
+        self.assertTrue(
+            response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"].startswith(
+                '/api/focus/stadspastransacties/'))
         # remove url, it has a timebased factor in it.
         del (response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"])
+        del (response_json["content"]["stadspassaldo"]["stadspassen"][1]['budgets'][0]["urlTransactions"])
 
         self.assertEqual(response_json, expected)

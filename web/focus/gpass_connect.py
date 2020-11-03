@@ -53,9 +53,16 @@ class GpassConnection:
             # unknown user results in a invalid token?
             return []
         data = response.json()
-        naam = f"{data['initialen']} {data['achternaam']}"
 
-        passen = data['passen']
+        passes = self._format_pasholder(data, admin_number)
+        for sub_holder in data['sub_pashouders']:
+            passes += self._format_pasholder(sub_holder, admin_number)
+
+        return passes
+
+    def _format_pasholder(self, pas_holder, admin_number):
+        naam = f"{pas_holder['initialen']} {pas_holder['achternaam']}"
+        passen = pas_holder['passen']
 
         passen = [pas for pas in passen if pas['actief'] is True]
         passen_result = []
