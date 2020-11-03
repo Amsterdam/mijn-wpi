@@ -12,7 +12,7 @@ con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
 result = con.get_stadspassen(admin_number)
 print(result)
 
-pas_number = decrypt(result[0]['url_transactions'].rsplit('/', 1)[1])[0]
+pas_number = decrypt(result[0]['url_transactions'].rsplit('/', 1)[1])[1]
 print("Pas number", pas_number)
 
 result = con.get_transactions(admin_number, pas_number)

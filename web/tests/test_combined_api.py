@@ -84,7 +84,7 @@ class CombinedApiTest(FlaskTestCase):
                             'id': 999999,
                             'naam': 'A Achternaam',
                             'pasnummer': 6666666666666,
-                            # 'url_transactions': '/focus/stadspastransacties/...'
+                            # 'urlTransactions': '/focus/stadspastransacties/...'
                         }
                     ],
                 },
@@ -144,9 +144,9 @@ class CombinedApiTest(FlaskTestCase):
 
         response_json = response.json
 
-        self.assertTrue(response_json["content"]["stadspassaldo"]["stadspassen"][0]["urlTransactions"].startswith(
-            '/focus/stadspastransacties/'))
+        self.assertTrue(response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"].startswith(
+            '/api/focus/stadspastransacties/'))
         # remove url, it has a timebased factor in it.
-        del (response_json["content"]["stadspassaldo"]["stadspassen"][0]["urlTransactions"])
+        del (response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"])
 
         self.assertEqual(response_json, expected)

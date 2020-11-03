@@ -24,18 +24,20 @@ class GpassConnection:
             pprint(response.json())
         return response
 
-    def _format_budgets(self, budget):
+    def _format_budgets(self, budget, admin_number, pas_number):
+        encrypted_admin_pas = encrypt(budget['code'], admin_number, pas_number)
+
         return {
             "description": budget["omschrijving"],
             "code": budget["code"],
             "assigned": budget["budget_assigned"],
             "balance": budget["budget_balance"],
+            "urlTransactions": f"/api/focus/stadspastransacties/{encrypted_admin_pas}"
         }
 
     def _format_pas_data(self, naam: str, pas: dict, admin_number: str):
-        budgets = [self._format_budgets(b) for b in pas['budgetten']]
+        budgets = [self._format_budgets(b, admin_number, pas["pasnummer"]) for b in pas['budgetten']]
 
-        encrypted_admin_pas = encrypt(admin_number, pas["pasnummer"])
 
         return {
             "id": pas["id"],
@@ -43,7 +45,6 @@ class GpassConnection:
             "datumAfloop": pas["expiry_date"],
             "naam": naam,
             "budgets": budgets,
-            "urlTransactions": f"/focus/stadspastransacties/{encrypted_admin_pas}"
         }
 
     def get_stadspassen(self, admin_number):
@@ -83,8 +84,8 @@ class GpassConnection:
             "date": date,
         }
 
-    def get_transactions(self, admin_number, pas_number):
-        path = f"/rest/transacties/v1/budget?pasnummer={pas_number}"
+    def get_transactions(self, admin_number, pas_number, budget_code):
+        path = f"/rest/transacties/v1/budget?pasnummer={pas_number}&budgetcode={budget_code}"
         response = self._get(path, admin_number)
 
         if response.status_code != 200:

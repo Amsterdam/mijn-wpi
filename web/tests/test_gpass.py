@@ -41,21 +41,23 @@ class GpassConnectionTest(TestCase):
                         'code': 'AMSEducatie',
                         'assigned': 100,
                         'balance': 0
+                        # urlTransactions: /api/focus/stadspastransacties/...
                     }
                 ]
             }
         ]
 
-        self.assertTrue(result[0]["urlTransactions"].startswith('/focus/stadspastransacties/'))
+        self.assertTrue(result[0]["budgets"][0]["urlTransactions"].startswith('/api/focus/stadspastransacties/'))
         # remove url, it has a timebased factor in it.
-        del(result[0]["urlTransactions"])
+        del(result[0]["budgets"][0]["urlTransactions"])
 
         self.assertEqual(result, expected)
 
     def test_get_transactions(self):
-        pas_number = 6666666666666
+        pas_number = '6666666666666'
+        budget_code = 'aaa'
         con = self._get_connection()
-        result = con.get_transactions(self.admin_number, pas_number)
+        result = con.get_transactions(self.admin_number, pas_number, budget_code)
 
         expected = [
             {
@@ -70,7 +72,7 @@ class GpassConnectionTest(TestCase):
     def test_get_transactions_wrong_pas_number(self):
         pas_number = 11111
         con = self._get_connection()
-        result = con.get_transactions(self.admin_number, pas_number)
+        result = con.get_transactions(self.admin_number, pas_number, budget_code='aaa')
         self.assertEqual(result, None)
 
 
@@ -80,6 +82,7 @@ class GpassConnectionTest(TestCase):
 class GpassApiTest(FlaskTestCase):
     admin_number = '111111111'
     pas_number = '6666666666666'
+    budget_code = 'aaa'
 
     def create_app(self):
         return application
@@ -87,7 +90,7 @@ class GpassApiTest(FlaskTestCase):
     # stadpassen data is in the combined api
 
     def test_get_transactions(self):
-        encrypted = encrypt(self.admin_number, self.pas_number)
+        encrypted = encrypt(self.budget_code, self.admin_number, self.pas_number)
         response = self.client.get(f'/focus/stadspastransacties/{encrypted}')
 
         expected = {
