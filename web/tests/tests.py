@@ -298,8 +298,8 @@ class TestInterpreter(TestCase):
                             "aanvraag": {
                                 "_id": 0,
                                 "document": [{
-                                    "$ref": "http://xyz.com/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": 1,
+                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                    "id": "1",
                                     "isBulk": False,
                                     "isDms": True
                                 }]
@@ -307,7 +307,7 @@ class TestInterpreter(TestCase):
                         }
                     }
                 ],
-                "url_root": "http://xyz.com/"
+                "url_root": "http://localhost/"
             },
             {
                 "input": {
@@ -349,8 +349,8 @@ class TestInterpreter(TestCase):
                                 "_id": 0,
                                 "datum": "123",
                                 "document": [{
-                                    "$ref": "http://xyz.com/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": 1,
+                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                    "id": '1',
                                     "isBulk": False,
                                     "isDms": True
                                 }]
@@ -359,8 +359,8 @@ class TestInterpreter(TestCase):
                                 "_id": 3,
                                 "datum": "123",
                                 "document": [{
-                                    "$ref": "http://xyz.com/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": 1,
+                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                    "id": '1',
                                     "isBulk": False,
                                     "isDms": True
                                 }]
@@ -368,7 +368,7 @@ class TestInterpreter(TestCase):
                         }
                     }
                 ],
-                "url_root": "http://xyz.com/"
+                "url_root": "http://localhost/"
             },
             {
                 "input": {
@@ -411,8 +411,8 @@ class TestInterpreter(TestCase):
                                 "_id": 0,
                                 "datum": "234",
                                 "document": [{
-                                    "$ref": "http://xyz.com/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": 1,
+                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                    "id": "1",
                                     "isBulk": False,
                                     "isDms": True
                                 }]
@@ -421,7 +421,7 @@ class TestInterpreter(TestCase):
                                 "_id": 3,
                                 "datum": "123",
                                 "document": [{
-                                    "$ref": "http://xyz.com/focus/document?id=1&isBulk=false&isDms=true",
+                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
                                     "id": '1',
                                     "isBulk": False,
                                     "isDms": True
@@ -430,7 +430,7 @@ class TestInterpreter(TestCase):
                         }
                     }
                 ],
-                'url_root': "http://xyz.com/"
+                'url_root': "http://localhost/"
             }
         ]
 
