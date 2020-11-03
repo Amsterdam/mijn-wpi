@@ -422,7 +422,7 @@ class TestInterpreter(TestCase):
                                 "datum": "123",
                                 "document": [{
                                     "$ref": "http://xyz.com/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": 1,
+                                    "id": '1',
                                     "isBulk": False,
                                     "isDms": True
                                 }]

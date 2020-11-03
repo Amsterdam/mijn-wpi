@@ -15,6 +15,13 @@ from focus.config import urls
 logger = logging.getLogger(__name__)
 
 
+def _to_str(obj, key):
+    value = obj.get(key, None)
+    if value is not None:
+        obj[key] = str(value).strip()
+    return obj
+
+
 def _to_int(obj, key):
     return _to_type(obj, key, lambda s: int(s))
 
@@ -76,7 +83,7 @@ def _convert_document(document, url_root):
     :return: None
     """
     document["$ref"] = _get_document_ref(document, url_root)
-    _to_int(document, "id")
+    _to_str(document, "id")
     _to_bool(document, "isBulk")
     _to_bool(document, "isDms")
 
