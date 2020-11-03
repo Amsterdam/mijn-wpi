@@ -1,6 +1,8 @@
 import os
+from datetime import datetime
 from unittest import TestCase
 
+from hiro import Timeline
 from mock import patch
 
 from .mocks import MockClient
@@ -14,6 +16,7 @@ from focus.config import config, credentials  # noqa: E402  Module level import 
 from focus.focusconnect import FocusConnection  # noqa: E402
 
 
+@Timeline(start=datetime(2017, 5, 1, 1, 1, 1))
 @patch('focus.focusconnect.Client', new=MockClient)
 class StadspasTest(TestCase):
     def test_get(self):

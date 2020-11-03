@@ -102,17 +102,22 @@ class FocusServer:
         # 2 stage, first get admin number from focus, then data from gpass
         gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
 
-        stadspas_admin_number = self._focus_connection.stadspas(bsn=bsn)
+        stadspas_data = self._focus_connection.stadspas(bsn=bsn)
+        if not stadspas_data:
+            return None
 
         # pad to 10 chars, add a static "gemeente code"
-        stadspas_admin_number = str(stadspas_admin_number).zfill(10)
+        stadspas_admin_number = str(stadspas_data['adminstratienummer']).zfill(10)
         stadspas_admin_number = f'0363{stadspas_admin_number}'
 
         stadspas = None
         if stadspas_admin_number:
             stadspas = gpass_con.get_stadspassen(admin_number=stadspas_admin_number)
 
-        return stadspas
+        return {
+            "stadspassen": stadspas,
+            "hoofdpashouder": stadspas_data["hoofdpashouder"]
+        }
 
     def combined(self):
         """ Gets all jaaropgaven for the BSN that is encoded in the header SAML token. """

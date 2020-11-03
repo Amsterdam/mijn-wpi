@@ -1,7 +1,10 @@
 import os.path
 
 # Prepare environment
+from datetime import datetime
+
 from flask_testing import TestCase as FlaskTestCase
+from hiro import Timeline
 from mock import patch
 
 from .mocks import MockClient, get_response_mock
@@ -12,7 +15,6 @@ os.environ['FOCUS_WSDL'] = 'focus/focus.wsdl'
 os.environ['TMA_CERTIFICATE'] = __file__
 
 from focus.server import application  # noqa: E402
-
 
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
@@ -28,7 +30,10 @@ class CombinedApiTest(FlaskTestCase):
 
     def test_combined_api(self):
         self.maxDiff = None
-        response = self.client.get('/focus/combined')
+
+        with Timeline(start=datetime(2017, 5, 1, 1, 1, 1)):
+            response = self.client.get('/focus/combined')
+
         expected = {
             'content': {
                 'jaaropgaven': [
@@ -63,23 +68,26 @@ class CombinedApiTest(FlaskTestCase):
                         'url': 'focus/document?id=30364921&isBulk=false&isDms=false'
                     }
                 ],
-                'stadspassaldo': [
-                    {
-                        'budgets': [
-                            {
-                                'assigned': 100,
-                                'balance': 0,
-                                'code': 'AMSEducatie',
-                                'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
-                            }
-                        ],
-                        'datumAfloop': '2020-08-31T23:59:59.000Z',
-                        'id': 999999,
-                        'naam': 'A Achternaam',
-                        'pasnummer': 6666666666666,
-                        # 'url_transactions': '/focus/stadspastransacties/...'
-                    }
-                ],
+                'stadspassaldo': {
+                    'hoofdpashouder': True,
+                    "stadspassen": [
+                        {
+                            'budgets': [
+                                {
+                                    'assigned': 100,
+                                    'balance': 0,
+                                    'code': 'AMSEducatie',
+                                    'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
+                                }
+                            ],
+                            'datumAfloop': '2020-08-31T23:59:59.000Z',
+                            'id': 999999,
+                            'naam': 'A Achternaam',
+                            'pasnummer': 6666666666666,
+                            # 'url_transactions': '/focus/stadspastransacties/...'
+                        }
+                    ],
+                },
                 'tozodocumenten': [
                     {
                         'datePublished': '2020-03-31T18:59:46+02:00',
@@ -136,8 +144,9 @@ class CombinedApiTest(FlaskTestCase):
 
         response_json = response.json
 
-        self.assertTrue(response_json["content"]["stadspassaldo"][0]["urlTransactions"].startswith('/focus/stadspastransacties/'))
+        self.assertTrue(response_json["content"]["stadspassaldo"]["stadspassen"][0]["urlTransactions"].startswith(
+            '/focus/stadspastransacties/'))
         # remove url, it has a timebased factor in it.
-        del(response_json["content"]["stadspassaldo"][0]["urlTransactions"])
+        del (response_json["content"]["stadspassaldo"]["stadspassen"][0]["urlTransactions"])
 
         self.assertEqual(response_json, expected)

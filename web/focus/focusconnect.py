@@ -152,10 +152,10 @@ class FocusConnection:
                     logger.error(f"Focus fault string  {faultsstring.text}")
                 except Exception as e:
                     logger.exception(e)
-                return []
-            admin_number = convert_stadspas(tree)
+                return False
+            data = convert_stadspas(tree)
 
-            return admin_number
+            return data
 
     def document(self, bsn, id, isBulk, isDms):
         """

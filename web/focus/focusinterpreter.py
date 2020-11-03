@@ -5,9 +5,12 @@ See also the convert_aanvragen method for a more detailed explanation.
 
 """
 import logging
+from datetime import date
+
+from bs4 import BeautifulSoup
+from dateutil import parser
 
 from focus.config import urls
-from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
@@ -230,9 +233,46 @@ def convert_e_aanvraag_TOZO(tree, document_root):
     return jaar_opgaven_list
 
 
+def has_groene_stip(fondsen):
+    # Client needs to have a "toekenning" of a certain type
+    passed = False
+    for f in fondsen:
+        besluit = f.find("besluit").text
+        if besluit != "toekenning":
+            continue
+
+        soort_fonds = f.find("soortFonds").text
+        if soort_fonds not in ["3555", "3556", "3557", "3558"]:
+            continue
+
+        start = parser.isoparse(f.find("dtbegin").text).date()
+        end = parser.isoparse(f.find("dteinde").text).date()
+
+        today = date.today()
+        if not (start < today < end):
+            continue
+
+        passed = True
+        break
+
+    return passed
+
+
 def convert_stadspas(tree):
-    administratienummer = tree.find("administratienummer")
-    if administratienummer:
-        return administratienummer.text
-    else:
+    administratienummer_node = tree.find("administratienummer")
+    if not administratienummer_node:
         return None
+
+    adminstratienummer = administratienummer_node.text
+    fondsen = tree.find('fondsen').find_all('fonds', recursive=False)
+    passed = has_groene_stip(fondsen)
+
+    hoofdpashouder = True  # TODO: implement me
+
+    if not passed:
+        return {}
+
+    return {
+        "adminstratienummer": adminstratienummer,
+        "hoofdpashouder": hoofdpashouder,
+    }

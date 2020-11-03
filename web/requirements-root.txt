@@ -1,6 +1,7 @@
 --extra-index-url https://nexus.secure.amsterdam.nl/repository/pypi-hosted/simple
 requests
 lxml
+python-dateutil
 
 # flask and plugins
 flask
