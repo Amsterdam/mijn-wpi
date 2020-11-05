@@ -274,12 +274,16 @@ def convert_stadspas(tree):
     fondsen = tree.find('fondsen').find_all('fonds', recursive=False)
     passed = has_groene_stip(fondsen)
 
-    hoofdpashouder = True  # TODO: implement me
+    partnerpas = False
+    for fonds in fondsen:
+        soort = fonds.find("soortFonds").text
+        if soort == "3556":
+            partnerpas = True
 
     if not passed:
         return {}
 
     return {
         "adminstratienummer": adminstratienummer,
-        "hoofdpashouder": hoofdpashouder,
+        "isPartnerpas": partnerpas,
     }

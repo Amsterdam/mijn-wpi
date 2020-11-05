@@ -69,7 +69,7 @@ class CombinedApiTest(FlaskTestCase):
                     }
                 ],
                 'stadspassaldo': {
-                    'hoofdpashouder': True,
+                    'isPartnerpas': True,
                     "stadspassen": [
                         {
                             'budgets': [

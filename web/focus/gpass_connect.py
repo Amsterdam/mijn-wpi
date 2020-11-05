@@ -50,6 +50,7 @@ class GpassConnection:
         path = "/rest/sales/v1/pashouder?addsubs=true"
         response = self._get(path, admin_number)
         if response.status_code != 200:
+            print("status code", response.status_code)
             # unknown user results in a invalid token?
             return []
         data = response.json()
