@@ -1,4 +1,5 @@
 import sys
+from pprint import pprint
 
 from focus.focusconnect import FocusConnection
 
@@ -18,3 +19,5 @@ focus_connection = FocusConnection(config, credentials)
 focus_server = FocusServer(focus_connection, get_TMA_certificate())
 
 stadspas = focus_server._collect_stadspas_data(bsn)
+print("\n\nStadspas:")
+pprint(stadspas)

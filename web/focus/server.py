@@ -12,11 +12,6 @@ from .config import check_env, config, credentials, urls, get_TMA_certificate, S
     get_gpass_api_location
 from .focusconnect import FocusConnection
 from .focusserver import FocusServer
-from flask_limiter import Limiter
-
-
-def global_limiter():
-    return "global_limiter"
 
 
 if SENTRY_DSN:
@@ -28,12 +23,6 @@ if SENTRY_DSN:
 
 
 application = Flask(__name__)
-limiter = Limiter(
-    application,
-    key_func=global_limiter,
-    default_limits=["5 per 1 second"]
-)
-
 
 logger = logging.getLogger(__name__)
 
@@ -70,13 +59,11 @@ def swagger_yaml():
 
 
 @application.route(urls["health"])
-@limiter.exempt
 def status_health():
     return server().health()
 
 
 @application.route(urls["data"])
-@limiter.exempt
 def status_data():
     return server().status_data()
 
