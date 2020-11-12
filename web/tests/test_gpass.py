@@ -80,7 +80,7 @@ class GpassConnectionTest(TestCase):
         expected = [
             {
                 'id': 1,
-                'title': 'title',
+                'title': 'Fietsenwinkel - B.V.',
                 'amount': 20.0,
                 'date': '2020-10-05T04:01:01.0000000'
             }
@@ -117,7 +117,7 @@ class GpassApiTest(FlaskTestCase):
                     'amount': 20.0,
                     'date': '2020-10-05T04:01:01.0000000',
                     'id': 1,
-                    'title': 'title'
+                    'title': 'Fietsenwinkel - B.V.'
                 }
             ],
             'status': 'ok'
