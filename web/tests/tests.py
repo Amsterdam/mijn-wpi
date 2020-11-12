@@ -4,7 +4,6 @@ import json
 
 from flask_testing.utils import TestCase
 from mock import patch
-import hiro as hiro
 
 
 # Prepare environment
