@@ -86,7 +86,7 @@ class GpassConnection:
         date = transaction['transactiedatum']  # parse and convert to date
         return {
             "id": transaction["id"],
-            "title": "title",
+            "title": transaction['budget']['aanbieder']['naam'],
             "amount": transaction["bedrag"],
             "date": date,
         }
