@@ -70,7 +70,7 @@ class GpassConnection:
 
         for pas in passen:
             pasnummer = pas['pasnummer']
-            path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
+            path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true&sub_transactions=true'
             response = self._get(path, admin_number)
 
             if response.status_code == 200:
