@@ -153,8 +153,12 @@ mocked_get_urls_tuple = (
         _load_fixture('gpass/pashouder.json')
     ),
     (
-        "http://localhost/rest/sales/v1/pas/6666666666666?include_balance=true",
+        "http://localhost/rest/sales/v1/pas/6011012604737?include_balance=true&sub_transactions=true",
         _load_fixture('gpass/pas1.json')
+    ),
+    (
+        "http://localhost/rest/sales/v1/pas/6666666666666?include_balance=true&sub_transactions=true",
+        _load_fixture('gpass/pas2.json')
     ),
     (
         "http://localhost/rest/transacties/v1/budget?pasnummer=6666666666666&budgetcode=aaa",
