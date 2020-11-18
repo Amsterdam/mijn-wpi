@@ -173,8 +173,6 @@ class CombinedApiTest(FlaskTestCase):
         }
 
         response_json = response.json
-        from pprint import pprint
-        pprint(response_json)
         self.assertTrue(
             response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"].startswith(
                 '/api/focus/stadspastransacties/'))
