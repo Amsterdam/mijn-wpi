@@ -70,7 +70,7 @@ class GpassConnection:
 
         for pas in passen:
             pasnummer = pas['pasnummer']
-            path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true&sub_transactions=true'
+            path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
             response = self._get(path, admin_number)
 
             if response.status_code == 200:
@@ -92,7 +92,7 @@ class GpassConnection:
         }
 
     def get_transactions(self, admin_number, pas_number, budget_code):
-        path = f"/rest/transacties/v1/budget?pasnummer={pas_number}&budgetcode={budget_code}"
+        path = f"/rest/transacties/v1/budget?pasnummer={pas_number}&budgetcode={budget_code}&sub_transactions=true"
         response = self._get(path, admin_number)
 
         if response.status_code != 200:
