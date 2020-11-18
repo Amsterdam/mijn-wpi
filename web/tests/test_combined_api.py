@@ -83,7 +83,7 @@ class CombinedApiTest(FlaskTestCase):
                             'datumAfloop': '2020-08-31T23:59:59.000Z',
                             'id': 999997,
                             'naam': 'A Achternaam',
-                            'pasnummer': 6011012604737,
+                            'pasnummer': '6011012604737',
                         },
                         {
                             'budgets': [
@@ -98,7 +98,7 @@ class CombinedApiTest(FlaskTestCase):
                             'datumAfloop': '2020-08-31T23:59:59.000Z',
                             'id': 999999,
                             'naam': 'P achternaam2',
-                            'pasnummer': 6666666666666
+                            'pasnummer': '6666666666666666666'
                         },
                         {
                             'budgets': [
@@ -113,7 +113,7 @@ class CombinedApiTest(FlaskTestCase):
                             'datumAfloop': '2020-08-31T23:59:59.000Z',
                             'id': 999997,
                             'naam': 'J Achternaam3',
-                            'pasnummer': 6011012604737
+                            'pasnummer': '6011012604737'
                         }
                     ]
                 },
