@@ -68,55 +68,55 @@ class CombinedApiTest(FlaskTestCase):
                         'url': 'focus/document?id=30364921&isBulk=false&isDms=false'
                     }
                 ],
-                # 'stadspassaldo': {
-                #     'isPartnerpas': False,
-                #     "stadspassen": [
-                #         {
-                #             'budgets': [
-                #                 {
-                #                     'assigned': 100,
-                #                     'balance': 0,
-                #                     'code': 'AMSEducatie',
-                #                     'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
-                #                 }
-                #             ],
-                #             'datumAfloop': '2020-08-31T23:59:59.000Z',
-                #             'id': 999997,
-                #             'naam': 'A Achternaam',
-                #             'pasnummer': '6011012604737',
-                #         },
-                #         {
-                #             'budgets': [
-                #                 {
-                #                     'assigned': 100,
-                #                     'balance': 0,
-                #                     'code': 'AMSEducatie',
-                #                     'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020',
-                #                     # 'urlTransactions': '/api/focus/stadspastransacties/...'
-                #                 }
-                #             ],
-                #             'datumAfloop': '2020-08-31T23:59:59.000Z',
-                #             'id': 999999,
-                #             'naam': 'P achternaam2',
-                #             'pasnummer': '6666666666666666666'
-                #         },
-                #         {
-                #             'budgets': [
-                #                 {
-                #                     'assigned': 100,
-                #                     'balance': 0,
-                #                     'code': 'AMSEducatie',
-                #                     'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020',
-                #                     # 'urlTransactions': '/api/focus/stadspastransacties/...'
-                #                 }
-                #             ],
-                #             'datumAfloop': '2020-08-31T23:59:59.000Z',
-                #             'id': 999997,
-                #             'naam': 'J Achternaam3',
-                #             'pasnummer': '6011012604737'
-                #         }
-                #     ]
-                # },
+                'stadspassaldo': {
+                    'isPartnerpas': False,
+                    "stadspassen": [
+                        {
+                            'budgets': [
+                                {
+                                    'assigned': 100,
+                                    'balance': 0,
+                                    'code': 'AMSEducatie',
+                                    'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
+                                }
+                            ],
+                            'datumAfloop': '2020-08-31T23:59:59.000Z',
+                            'id': 999997,
+                            'naam': 'A Achternaam',
+                            'pasnummer': '6011012604737',
+                        },
+                        {
+                            'budgets': [
+                                {
+                                    'assigned': 100,
+                                    'balance': 0,
+                                    'code': 'AMSEducatie',
+                                    'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020',
+                                    # 'urlTransactions': '/api/focus/stadspastransacties/...'
+                                }
+                            ],
+                            'datumAfloop': '2020-08-31T23:59:59.000Z',
+                            'id': 999999,
+                            'naam': 'P achternaam2',
+                            'pasnummer': '6666666666666666666'
+                        },
+                        {
+                            'budgets': [
+                                {
+                                    'assigned': 100,
+                                    'balance': 0,
+                                    'code': 'AMSEducatie',
+                                    'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020',
+                                    # 'urlTransactions': '/api/focus/stadspastransacties/...'
+                                }
+                            ],
+                            'datumAfloop': '2020-08-31T23:59:59.000Z',
+                            'id': 999997,
+                            'naam': 'J Achternaam3',
+                            'pasnummer': '6011012604737'
+                        }
+                    ]
+                },
                 'tozodocumenten': [
                     {
                         'datePublished': '2020-03-31T18:59:46+02:00',
@@ -173,12 +173,12 @@ class CombinedApiTest(FlaskTestCase):
         }
 
         response_json = response.json
-        # self.assertTrue(
-        #     response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"].startswith(
-        #         '/api/focus/stadspastransacties/'))
-        # # remove url, it has a timebased factor in it.
-        # del (response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"])
-        # del (response_json["content"]["stadspassaldo"]["stadspassen"][1]['budgets'][0]["urlTransactions"])
-        # del (response_json["content"]["stadspassaldo"]["stadspassen"][2]['budgets'][0]["urlTransactions"])
+        self.assertTrue(
+            response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"].startswith(
+                '/api/focus/stadspastransacties/'))
+        # remove url, it has a timebased factor in it.
+        del (response_json["content"]["stadspassaldo"]["stadspassen"][0]['budgets'][0]["urlTransactions"])
+        del (response_json["content"]["stadspassaldo"]["stadspassen"][1]['budgets'][0]["urlTransactions"])
+        del (response_json["content"]["stadspassaldo"]["stadspassen"][2]['budgets'][0]["urlTransactions"])
 
         self.assertEqual(response_json, expected)
