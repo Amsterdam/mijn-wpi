@@ -41,7 +41,7 @@ class DocumentApiTest(FlaskTestCase):
         self.assertEqual(response.headers['Content-Disposition'], r'attachment; filename="TestIKB\TestBulk15.pdf"')
 
 
-# @patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
+# @patch('focus.focusserver.get_bsn_from_request', new=lambda s: '123456789')
 # @patch('focus.focusconnect.Client', new=MockClientEmpties)
 # class DocumentEmptyApiTest(FlaskTestCase):
 #     def create_app(self):
