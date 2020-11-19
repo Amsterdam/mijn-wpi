@@ -116,7 +116,7 @@ class FocusServer:
 
         return {
             "stadspassen": stadspas,
-            "isPartnerpas": stadspas_data["isPartnerpas"]
+            "type": stadspas_data["type"]
         }
 
     def combined(self):
