@@ -131,7 +131,7 @@ class FocusServer:
             jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
             uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
             tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
-            stadspas = self._collect_stadspas_data(bsn)
+            # stadspas = self._collect_stadspas_data(bsn)
 
             return {
                 "status": "OK",
@@ -139,7 +139,7 @@ class FocusServer:
                     "jaaropgaven": jaaropgaven,
                     "uitkeringsspecificaties": uitkeringsspec,
                     "tozodocumenten": tozo_documents,
-                    "stadspassaldo": stadspas,
+                    # "stadspassaldo": stadspas,
                 }
             }
         except ConnectionError as error:
