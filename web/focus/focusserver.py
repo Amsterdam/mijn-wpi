@@ -164,6 +164,10 @@ class FocusServer:
         except Exception as error:
             return self._parameter_error_response(error)
 
+        if bsn[0] == '0':
+            bsn = bsn[1:]
+            logger.error("stripped leading 0")
+
         try:
             document = self._focus_connection.document(
                 bsn=bsn,
