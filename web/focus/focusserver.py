@@ -182,11 +182,12 @@ class FocusServer:
             logger.exception("Failed to retrieve document: {} {}".format(type(error), str(error)), exc_info=error)
             return self._no_connection_response()
 
-        # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
-        # Craft a manual request instead
         if document is None:
             logger.error(f"Document empty. type bsn: {type(bsn)} {len(bsn)}  type id: {type(id)}")
             return "Document not received from source.", 404
+
+        # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
+        # Craft a manual request instead
         response = make_response(document["contents"])
         response.headers["Content-Disposition"] = f'attachment; filename="{document["fileName"]}"'  # make sure it is a download
         response.headers["Content-Type"] = document["mime_type"]
