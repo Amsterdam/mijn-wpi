@@ -29,7 +29,7 @@ class DocumentTest(TestCase):
 
 
 # side step decoding the BSN from SAML token
-@patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
+@patch('focus.focusserver.get_bsn_from_request', new=lambda s: '123456789')
 @patch('focus.focusconnect.Client', new=MockClient)
 class DocumentApiTest(FlaskTestCase):
     def create_app(self):
