@@ -68,7 +68,7 @@ class GpassConnection:
 
     def _format_pasholder(self, pas_holder, admin_number):
         try:
-            naam = f"{pas_holder['initialen']} {pas_holder['achternaam']}"
+            naam = pas_holder['volledige_naam']
         except KeyError as e:
             logger.error(f"{type(e)} avaiable: {pas_holder.keys()}")
             raise e
