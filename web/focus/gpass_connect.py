@@ -1,3 +1,4 @@
+import logging
 from pprint import pprint
 
 import requests
@@ -5,6 +6,8 @@ import requests
 from focus.crypto import encrypt
 
 LOG_RAW = False
+
+logger = logging.getLogger(__name__)
 
 
 class GpassConnection:
@@ -64,7 +67,12 @@ class GpassConnection:
         return passes
 
     def _format_pasholder(self, pas_holder, admin_number):
-        naam = f"{pas_holder['initialen']} {pas_holder['achternaam']}"
+        try:
+            naam = f"{pas_holder['initialen']} {pas_holder['achternaam']}"
+        except KeyError as e:
+            logger.error(f"{type(e)} avaiable: {pas_holder.keys()}")
+            raise e
+
         passen = pas_holder['passen']
 
         passen = [pas for pas in passen if pas['actief'] is True]
