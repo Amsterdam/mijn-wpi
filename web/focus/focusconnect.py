@@ -16,6 +16,7 @@ from zeep import Client
 from zeep.transports import Transport
 
 from .focusinterpreter import convert_aanvragen, convert_jaaropgaven, convert_uitkeringsspecificaties, convert_e_aanvraag_TOZO, convert_stadspas
+from .measure_time import MeasureTime
 
 logger = logging.getLogger(__name__)
 
@@ -141,7 +142,8 @@ class FocusConnection:
 
     def stadspas(self, bsn):
         with self._client.settings(raw_response=True):
-            raw_stadspas = self._client.service.getStadspas(bsn=bsn).content.decode("utf-8").replace("\n", "")
+            with MeasureTime("soap stadspas"):
+                raw_stadspas = self._client.service.getStadspas(bsn=bsn).content.decode("utf-8").replace("\n", "")
             tree = BeautifulSoup(raw_stadspas, features="lxml-xml")
             if LOG_RAW:
                 print(tree.prettify())
