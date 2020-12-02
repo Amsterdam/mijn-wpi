@@ -26,7 +26,7 @@ class MeasureTime:
         self._start_time = time.perf_counter()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        end = self._start_time = time.perf_counter()
+        end = time.perf_counter()
         print("Elapsed", self.name, end - self._start_time)
 
 
