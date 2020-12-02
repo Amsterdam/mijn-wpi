@@ -5,10 +5,10 @@ The server uses the Focus connection class to handle the physical connection wit
 The server interprets requests, execute the corresponding action and return JSON responses
 """
 import logging
-import time
 
 from flask import jsonify, request, Response, make_response
 
+from .measure_time import MeasureTime
 from .gpass_connect import GpassConnection
 from .saml import get_bsn_from_request
 from requests import ConnectionError
@@ -16,18 +16,6 @@ from requests import ConnectionError
 from .config import get_gpass_bearer_token, get_gpass_api_location
 
 logger = logging.getLogger(__name__)
-
-
-class MeasureTime:
-    def __init__(self, name: str):
-        self.name = name
-
-    def __enter__(self):
-        self._start_time = time.perf_counter()
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        end = time.perf_counter()
-        print("Elapsed", self.name, end - self._start_time)
 
 
 class FocusServer:

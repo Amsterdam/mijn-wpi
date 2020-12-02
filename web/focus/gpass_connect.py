@@ -5,6 +5,8 @@ import requests
 
 from focus.crypto import encrypt
 
+from focus.measure_time import MeasureTime
+
 LOG_RAW = False
 
 logger = logging.getLogger(__name__)
@@ -51,7 +53,8 @@ class GpassConnection:
 
     def get_stadspassen(self, admin_number):
         path = "/rest/sales/v1/pashouder?addsubs=true"
-        response = self._get(path, admin_number)
+        with MeasureTime(path):
+            response = self._get(path, admin_number)
         if response.status_code != 200:
             print("status code", response.status_code)
             # unknown user results in a invalid token?
@@ -78,10 +81,11 @@ class GpassConnection:
         passen = [pas for pas in passen if pas['actief'] is True]
         passen_result = []
 
-        for pas in passen:
+        for i, pas in enumerate(passen):
             pasnummer = pas['pasnummer']
             path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
-            response = self._get(path, admin_number)
+            with MeasureTime(f"get pas data i: {i}"):
+                response = self._get(path, admin_number)
 
             if response.status_code == 200:
                 passen_result.append(self._format_pas_data(naam, response.json(), admin_number))
@@ -103,7 +107,8 @@ class GpassConnection:
 
     def get_transactions(self, admin_number, pas_number, budget_code):
         path = f"/rest/transacties/v1/budget?pasnummer={pas_number}&budgetcode={budget_code}&sub_transactions=true"
-        response = self._get(path, admin_number)
+        with MeasureTime("get transactions"):
+            response = self._get(path, admin_number)
 
         if response.status_code != 200:
             return None
