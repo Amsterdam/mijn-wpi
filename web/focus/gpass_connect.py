@@ -22,7 +22,8 @@ class GpassConnection:
         headers = {
             "Authorization": f"AppBearer {self.bearer_token},{admin_number}"
         }
-        response = requests.get(path, headers=headers)
+        # stricter limit, it all needs to arrive within 9 seconds in the frontend.
+        response = requests.get(path, headers=headers, timeout=5)
         if LOG_RAW:
             print("url", path, "adminnumber", admin_number, self.bearer_token)
             print("status", response.status_code)
