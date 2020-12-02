@@ -142,7 +142,7 @@ class FocusConnection:
 
     def stadspas(self, bsn):
         with self._client.settings(raw_response=True):
-            with MeasureTime("soap stadspas"):
+            with MeasureTime("stadspas soap"):
                 raw_stadspas = self._client.service.getStadspas(bsn=bsn).content.decode("utf-8").replace("\n", "")
             tree = BeautifulSoup(raw_stadspas, features="lxml-xml")
             if LOG_RAW:

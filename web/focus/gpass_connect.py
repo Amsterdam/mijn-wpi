@@ -53,7 +53,7 @@ class GpassConnection:
 
     def get_stadspassen(self, admin_number):
         path = "/rest/sales/v1/pashouder?addsubs=true"
-        with MeasureTime(path):
+        with MeasureTime(f"stadspas gpas {path}"):
             response = self._get(path, admin_number)
         if response.status_code != 200:
             print("status code", response.status_code)
@@ -84,7 +84,7 @@ class GpassConnection:
         for i, pas in enumerate(passen):
             pasnummer = pas['pasnummer']
             path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
-            with MeasureTime(f"get pas data i: {i}"):
+            with MeasureTime(f"stadspas gpas pas data i: {i}"):
                 response = self._get(path, admin_number)
 
             if response.status_code == 200:
@@ -107,7 +107,7 @@ class GpassConnection:
 
     def get_transactions(self, admin_number, pas_number, budget_code):
         path = f"/rest/transacties/v1/budget?pasnummer={pas_number}&budgetcode={budget_code}&sub_transactions=true"
-        with MeasureTime("get transactions"):
+        with MeasureTime("stadspas gpas get transactions"):
             response = self._get(path, admin_number)
 
         if response.status_code != 200:
