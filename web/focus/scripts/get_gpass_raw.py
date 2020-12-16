@@ -7,9 +7,16 @@ from focus.crypto import decrypt
 
 import focus.gpass_connect
 
+from focus.utils import volledig_administratienummer
+
 focus.gpass_connect.LOG_RAW = True
 
 admin_number = sys.argv[1]
+
+if not admin_number.startswith("0363"):
+    # pad
+    admin_number = volledig_administratienummer(admin_number)
+
 
 con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
 

@@ -14,6 +14,7 @@ from .saml import get_bsn_from_request
 from requests import ConnectionError
 
 from .config import get_gpass_bearer_token, get_gpass_api_location
+from .utils import volledig_administratienummer
 
 logger = logging.getLogger(__name__)
 
@@ -108,9 +109,7 @@ class FocusServer:
         if not stadspas_data:
             return None
 
-        # pad to 10 chars, add a static "gemeente code"
-        stadspas_admin_number = str(stadspas_data['adminstratienummer']).zfill(10)
-        stadspas_admin_number = f'0363{stadspas_admin_number}'
+        stadspas_admin_number = volledig_administratienummer(stadspas_data['adminstratienummer'])
 
         stadspas = None
         if stadspas_admin_number:
