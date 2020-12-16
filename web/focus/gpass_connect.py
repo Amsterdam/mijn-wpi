@@ -27,6 +27,7 @@ class GpassConnection:
         if LOG_RAW:
             print("url", path, "adminnumber", admin_number, self.bearer_token)
             print("status", response.status_code)
+            print("REC", end='')
             pprint(response.json())
         return response
 
@@ -73,9 +74,13 @@ class GpassConnection:
     def _format_pasholder(self, pas_holder, admin_number):
         try:
             naam = pas_holder['volledige_naam']
-        except KeyError as e:
-            logger.error(f"{type(e)} avaiable: {pas_holder.keys()}")
-            raise e
+        except KeyError:
+            # TODO: remove me when gpass prod is updated to provide volledige_naam
+            try:
+                naam = f'{pas_holder["initialen"]} {pas_holder["achternaam"]}'
+            except KeyError as e:
+                logger.error(f"{type(e)} avaiable: {pas_holder.keys()}")
+                raise e
 
         passen = pas_holder['passen']
 
