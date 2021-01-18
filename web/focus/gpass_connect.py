@@ -1,10 +1,15 @@
+import logging
 from pprint import pprint
 
 import requests
 
 from focus.crypto import encrypt
 
+from focus.measure_time import MeasureTime
+
 LOG_RAW = False
+
+logger = logging.getLogger(__name__)
 
 
 class GpassConnection:
@@ -17,10 +22,12 @@ class GpassConnection:
         headers = {
             "Authorization": f"AppBearer {self.bearer_token},{admin_number}"
         }
-        response = requests.get(path, headers=headers)
+        # stricter limit, it all needs to arrive within 9 seconds in the frontend.
+        response = requests.get(path, headers=headers, timeout=5)
         if LOG_RAW:
             print("url", path, "adminnumber", admin_number, self.bearer_token)
             print("status", response.status_code)
+            print("REC", end='')
             pprint(response.json())
         return response
 
@@ -40,7 +47,7 @@ class GpassConnection:
 
         return {
             "id": pas["id"],
-            "pasnummer": pas["pasnummer"],
+            "pasnummer": pas["pasnummer_volledig"],
             "datumAfloop": pas["expiry_date"],
             "naam": naam,
             "budgets": budgets,
@@ -48,12 +55,15 @@ class GpassConnection:
 
     def get_stadspassen(self, admin_number):
         path = "/rest/sales/v1/pashouder?addsubs=true"
-        response = self._get(path, admin_number)
+        with MeasureTime(f"stadspas gpas {path}"):
+            response = self._get(path, admin_number)
         if response.status_code != 200:
             print("status code", response.status_code)
             # unknown user results in a invalid token?
             return []
         data = response.json()
+        if not data:
+            return []
 
         passes = self._format_pasholder(data, admin_number)
         for sub_holder in data['sub_pashouders']:
@@ -62,16 +72,26 @@ class GpassConnection:
         return passes
 
     def _format_pasholder(self, pas_holder, admin_number):
-        naam = f"{pas_holder['initialen']} {pas_holder['achternaam']}"
+        try:
+            naam = pas_holder['volledige_naam']
+        except KeyError:
+            # TODO: remove me when gpass prod is updated to provide volledige_naam
+            try:
+                naam = f'{pas_holder["initialen"]} {pas_holder["achternaam"]}'
+            except KeyError as e:
+                logger.error(f"{type(e)} avaiable: {pas_holder.keys()}")
+                raise e
+
         passen = pas_holder['passen']
 
         passen = [pas for pas in passen if pas['actief'] is True]
         passen_result = []
 
-        for pas in passen:
+        for i, pas in enumerate(passen):
             pasnummer = pas['pasnummer']
             path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
-            response = self._get(path, admin_number)
+            with MeasureTime(f"stadspas gpas pas data i: {i}"):
+                response = self._get(path, admin_number)
 
             if response.status_code == 200:
                 passen_result.append(self._format_pas_data(naam, response.json(), admin_number))
@@ -92,8 +112,9 @@ class GpassConnection:
         }
 
     def get_transactions(self, admin_number, pas_number, budget_code):
-        path = f"/rest/transacties/v1/budget?pasnummer={pas_number}&budgetcode={budget_code}"
-        response = self._get(path, admin_number)
+        path = f"/rest/transacties/v1/budget?pasnummer={pas_number}&budgetcode={budget_code}&sub_transactions=true"
+        with MeasureTime("stadspas gpas get transactions"):
+            response = self._get(path, admin_number)
 
         if response.status_code != 200:
             return None

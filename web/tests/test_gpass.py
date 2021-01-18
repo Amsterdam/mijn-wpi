@@ -31,19 +31,31 @@ class GpassConnectionTest(TestCase):
 
         expected = [
             {
-                'id': 999999,
-                'pasnummer': 6666666666666,
-                'datumAfloop': '2020-08-31T23:59:59.000Z',
-                'naam': 'A Achternaam',
                 'budgets': [
                     {
-                        'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020',
-                        'code': 'AMSEducatie',
                         'assigned': 100,
-                        'balance': 0
-                        # urlTransactions: /api/focus/stadspastransacties/...
+                        'balance': 0,
+                        'code': 'AMSEducatie',
+                        'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
                     }
-                ]
+                ],
+                'datumAfloop': '2020-08-31T23:59:59.000Z',
+                'id': 999997,
+                'naam': 'J. Doe',
+                'pasnummer': '6011012604737'},
+            {
+                'budgets': [
+                    {
+                        'assigned': 100,
+                        'balance': 0,
+                        'code': 'AMSEducatie',
+                        'description': 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
+                    }
+                ],
+                'datumAfloop': '2020-08-31T23:59:59.000Z',
+                'id': 999999,
+                'naam': 'P Achternaam2',
+                'pasnummer': '6666666666666666666'
             },
             {
                 'budgets': [
@@ -53,14 +65,13 @@ class GpassConnectionTest(TestCase):
                         'code': 'AMSEducatie',
                         'description': 'Educatie budget, voor iedereen uit de gemeente '
                                        'amsterdam en geboren tussen 1-1-2004 en '
-                                       '1-1-2020',
-                        # 'urlTransactions': '/api/focus/stadspastransacties/...'
+                                       '1-1-2020'
                     }
                 ],
                 'datumAfloop': '2020-08-31T23:59:59.000Z',
-                'id': 999999,
+                'id': 999997,
                 'naam': 'J Achternaam3',
-                'pasnummer': 6666666666666
+                'pasnummer': '6011012604737'
             }
         ]
 
@@ -68,6 +79,7 @@ class GpassConnectionTest(TestCase):
         # remove url, it has a timebased factor in it.
         del (result[0]["budgets"][0]["urlTransactions"])
         del (result[1]["budgets"][0]["urlTransactions"])
+        del (result[2]["budgets"][0]["urlTransactions"])
 
         self.assertEqual(result, expected)
 

@@ -1,0 +1,34 @@
+{
+  "actief": true,
+  "balance_update_time": "2020-04-02T12:45:41.000Z",
+  "budgetten": [
+    {
+      "budget_assigned": 100,
+      "budget_balance": 0,
+      "code": "AMSEducatie",
+      "omschrijving": "Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020"
+    }
+  ],
+  "budgetten_actief": true,
+  "categorie": "Amsterdamse Digitale Stadspas",
+  "categorie_code": "A",
+  "expiry_date": "2020-08-31T23:59:59.000Z",
+  "id": 999997,
+  "originele_pas": {
+    "categorie": "Amsterdamse Digitale Stadspas",
+    "categorie_code": "A",
+    "id": 888886,
+    "pasnummer": 8888888888886,
+    "pasnummer_volledig": "8888888888888888886",
+    "passoort": {
+      "id": 11,
+      "naam": "Digitale Stadspas"
+    }
+  },
+  "pasnummer": 6011012604737,
+  "pasnummer_volledig": "6011012604737",
+  "passoort": {
+    "id": 11,
+    "naam": "Digitale Stadspas"
+  }
+}

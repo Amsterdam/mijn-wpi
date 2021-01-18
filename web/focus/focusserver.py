@@ -5,13 +5,16 @@ The server uses the Focus connection class to handle the physical connection wit
 The server interprets requests, execute the corresponding action and return JSON responses
 """
 import logging
+
 from flask import jsonify, request, Response, make_response
 
+from .measure_time import MeasureTime
 from .gpass_connect import GpassConnection
 from .saml import get_bsn_from_request
 from requests import ConnectionError
 
 from .config import get_gpass_bearer_token, get_gpass_api_location
+from .utils import volledig_administratienummer
 
 logger = logging.getLogger(__name__)
 
@@ -106,9 +109,7 @@ class FocusServer:
         if not stadspas_data:
             return None
 
-        # pad to 10 chars, add a static "gemeente code"
-        stadspas_admin_number = str(stadspas_data['adminstratienummer']).zfill(10)
-        stadspas_admin_number = f'0363{stadspas_admin_number}'
+        stadspas_admin_number = volledig_administratienummer(stadspas_data['adminstratienummer'])
 
         stadspas = None
         if stadspas_admin_number:
@@ -116,7 +117,7 @@ class FocusServer:
 
         return {
             "stadspassen": stadspas,
-            "isPartnerpas": stadspas_data["isPartnerpas"]
+            "type": stadspas_data["type"]
         }
 
     def combined(self):
@@ -128,10 +129,14 @@ class FocusServer:
             return self._parameter_error_response(error)
 
         try:
-            jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
-            uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
-            tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
-            stadspas = self._collect_stadspas_data(bsn)
+            with MeasureTime("jaaropgaven"):
+                jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
+            with MeasureTime("uitkeringspecificaties"):
+                uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
+            with MeasureTime("tozo documenten"):
+                tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
+            with MeasureTime("stadspas"):
+                stadspas = self._collect_stadspas_data(bsn)
 
             return {
                 "status": "OK",
@@ -178,11 +183,12 @@ class FocusServer:
             logger.exception("Failed to retrieve document: {} {}".format(type(error), str(error)), exc_info=error)
             return self._no_connection_response()
 
+        if document is None:
+            logger.error(f"Document empty. type bsn: {type(bsn)} {len(bsn)}  type id: {type(id)}")
+            return "Document not received from source.", 404
+
         # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
         # Craft a manual request instead
-        if document is None:
-            logger.error(f"Document empty. type bsn: {type(bsn)}  type id: {type(id)}")
-            return "Document not received from source.", 404
         response = make_response(document["contents"])
         response.headers["Content-Disposition"] = f'attachment; filename="{document["fileName"]}"'  # make sure it is a download
         response.headers["Content-Type"] = document["mime_type"]
