@@ -4,7 +4,6 @@ import json
 
 from flask_testing.utils import TestCase
 from mock import patch
-import hiro as hiro
 
 
 # Prepare environment
@@ -114,54 +113,6 @@ class TestConnection(TestCase):
 
 
 @patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
-@patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
-class TestRateLimiter(TestCase):
-    def create_app(self):
-        return application
-
-    def setUp(self):
-        application.extensions['limiter'].reset()
-
-    @patch('focus.focusconnect.FocusConnection.aanvragen', new=lambda s, bsn, url_root: {'aap': 'noot'})
-    def test_limiter(self):
-        url = 'focus/aanvragen'
-
-        # make sure the limiter is enabled
-        self.assertTrue(application.extensions['limiter'].enabled)
-
-        # do requests up to the limit, should not limit
-        with hiro.Timeline().freeze() as timeline:
-            for i in range(5):
-                response = self.client.get(url)
-                self.assert200(response)
-
-            # do one more, should limit
-            response = self.client.get(url)
-            self.assertStatus(response, 429)
-
-            # 2 seconds later it should work again
-            timeline.forward(2)
-
-            for i in range(5):
-                response = self.client.get(url)
-                self.assert200(response)
-
-    def test_health_exempt(self):
-        """ Make sure that the health check is not limited. """
-        self.assertTrue(application.extensions['limiter'].enabled)
-
-        with hiro.Timeline().freeze():
-            for i in range(20):  # more than 5 / second
-                response = self.client.get('/status/data')
-                self.assert200(response)
-
-        with hiro.Timeline().freeze():
-            for i in range(20):  # more than 5 / second
-                response = self.client.get('/status/health')
-                self.assert200(response)
-
-
-@patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
 @patch('focus.focusconnect.FocusConnection._initialize_client', new=lambda s: "Alive")
 class TestHealth(TestCase):
     def create_app(self):
@@ -183,14 +134,7 @@ class TestHealth(TestCase):
 class TestData(TestCase):
     def create_app(self):
         focus.server.focus_server = None
-        application.extensions['limiter'].enabled = False
         return application
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        application.extensions['limiter'].enabled = True
 
     @patch('focus.focusconnect.FocusConnection._initialize_client', new=lambda s: "Dummy")
     def test_data_with_connection(self):

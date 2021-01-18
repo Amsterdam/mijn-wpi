@@ -6,7 +6,6 @@ python-dateutil
 # flask and plugins
 flask
 flask_cors
-flask_limiter
 flask_testing
 
 # TMA token verification tools
