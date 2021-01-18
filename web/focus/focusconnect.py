@@ -97,7 +97,7 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_aanvragen)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                self._log_soap_faultstring("no body?", raw_aanvragen)
+                self._log_soap_faultstring(raw_aanvragen, "no body?")
                 return []
             xml_aanvragen = result.group(0)
             # Translate the response to a Dictionary
@@ -113,7 +113,7 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_jaaropgaven)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                self._log_soap_faultstring("no body jaaropgaven?", raw_jaaropgaven)
+                self._log_soap_faultstring(raw_jaaropgaven, "no body jaaropgaven?")
                 return []
             xml_jaaropgaven = result.group(0)
             jaaropgaven = convert_jaaropgaven(xml_jaaropgaven, url_root)
@@ -126,7 +126,7 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_specificaties)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                self._log_soap_faultstring("no body uitkeringspec?", raw_specificaties)
+                self._log_soap_faultstring(raw_specificaties, "no body uitkeringspec?")
                 return []
             xml_uitkeringspec = result.group(0)
             uitkeringsspecificaties = convert_uitkeringsspecificaties(xml_uitkeringspec, url_root)
@@ -156,7 +156,7 @@ class FocusConnection:
                 print(tree.prettify())
             stadspas = tree.find('getStadspasResponse')
             if not stadspas:
-                self._log_soap_faultstring('no stadspas?', raw_stadspas)
+                self._log_soap_faultstring(raw_stadspas, 'no stadspas?')
             data = convert_stadspas(tree)
 
             return data
