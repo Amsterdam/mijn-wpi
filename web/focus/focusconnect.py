@@ -81,7 +81,7 @@ class FocusConnection:
             faultstring = result.group(0)
 
             # remove the ever changing number
-            faultstring = re.sub(r'nl.amsterdam.dwi.onlineklantbeeld.model.DocumentLocatie#\d+', faultstring, 'nl.amsterdam.dwi.onlineklantbeeld.model.DocumentLocatie')
+            faultstring = re.sub(r'nl.amsterdam.dwi.onlineklantbeeld.model.DocumentLocatie#\d+', 'nl.amsterdam.dwi.onlineklantbeeld.model.DocumentLocatie',  faultstring)
 
             logger.error(f'{prefix} {faultstring}')
         else:
