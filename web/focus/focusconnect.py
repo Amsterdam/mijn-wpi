@@ -78,7 +78,12 @@ class FocusConnection:
     def _log_soap_faultstring(self, raw_xml, prefix=''):
         result = re.search(r'<faultstring>.*<\/faultstring>', raw_xml)
         if result:
-            logger.error(f'{prefix} {result.group(0)}')
+            faultstring = result.group(0)
+
+            # remove the ever changing number
+            faultstring = re.sub('nl.amsterdam.dwi.onlineklantbeeld.model.DocumentLocatie#\d+', faultstring, 'nl.amsterdam.dwi.onlineklantbeeld.model.DocumentLocatie')
+
+            logger.error(f'{prefix} {faultstring}')
         else:
             logger.error(f'{prefix} {raw_xml}')
 
