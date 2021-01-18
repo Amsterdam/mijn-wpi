@@ -75,6 +75,13 @@ class FocusConnection:
         """
         return self._client is not None
 
+    def _log_soap_faultstring(self, raw_xml, prefix=''):
+        result = re.search(r'<faultstring>.*<\/faultstring>', raw_xml)
+        if result:
+            logger.error(f'{prefix} {result.group(0)}')
+        else:
+            logger.error(f'{prefix} {raw_xml}')
+
     def aanvragen(self, bsn, url_root):
         """
         Retrieve the aanvragen from Focus
@@ -90,7 +97,7 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_aanvragen)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body? %s" % raw_aanvragen)
+                self._log_soap_faultstring("no body?", raw_aanvragen)
                 return []
             xml_aanvragen = result.group(0)
             # Translate the response to a Dictionary
@@ -106,7 +113,7 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_jaaropgaven)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body jaaropgaven? %s" % raw_jaaropgaven)
+                self._log_soap_faultstring("no body jaaropgaven?", raw_jaaropgaven)
                 return []
             xml_jaaropgaven = result.group(0)
             jaaropgaven = convert_jaaropgaven(xml_jaaropgaven, url_root)
@@ -119,7 +126,7 @@ class FocusConnection:
             result = re.search(r"<return>.*<\/return>", raw_specificaties)
             if not result:
                 # This can return something else apparently. Lets log this so we can debug this.
-                logger.error("no body uitkeringspec? %s" % raw_specificaties)
+                self._log_soap_faultstring("no body uitkeringspec?", raw_specificaties)
                 return []
             xml_uitkeringspec = result.group(0)
             uitkeringsspecificaties = convert_uitkeringsspecificaties(xml_uitkeringspec, url_root)
@@ -149,12 +156,7 @@ class FocusConnection:
                 print(tree.prettify())
             stadspas = tree.find('getStadspasResponse')
             if not stadspas:
-                try:
-                    faultsstring = tree.find('faultstring')
-                    logger.error(f"Focus fault string  {faultsstring.text}")
-                except Exception as e:
-                    logger.exception(e)
-                return False
+                self._log_soap_faultstring('no stadspas?', raw_stadspas)
             data = convert_stadspas(tree)
 
             return data
