@@ -193,12 +193,13 @@ class FocusConnection:
                 return None
         else:
             data = data_element.text
+            data = base64.b64decode(data)
             filename = tree.find('fileName').text
         mime_type = "application/pdf" if ".pdf" in filename else "application/octet-stream"
 
         document = {
             "fileName": filename,
-            "contents": base64.b64decode(data),
+            "contents": data,
             "mime_type": mime_type,
         }
 
