@@ -39,10 +39,10 @@ class GpassConnection:
             "code": budget["code"],
             "assigned": budget["budget_assigned"],
             "balance": budget["budget_balance"],
-            "urlTransactions": f"/api/focus/stadspastransacties/{encrypted_admin_pas}"
+            "urlTransactions": f"/api/focus/stadspastransacties/{encrypted_admin_pas}",
         }
 
-    def _format_pas_data(self, naam: str, pas: dict, admin_number: str):
+    def _format_pas_data(self, naam: str, pas: dict, admin_number: str, pas_houdertype: str):
         budgets = [self._format_budgets(b, admin_number, pas["pasnummer"]) for b in pas['budgetten']]
 
         return {
@@ -51,6 +51,7 @@ class GpassConnection:
             "datumAfloop": pas["expiry_date"],
             "naam": naam,
             "budgets": budgets,
+            "pashouderType": pas_houdertype,
         }
 
     def get_stadspassen(self, admin_number):
@@ -65,13 +66,13 @@ class GpassConnection:
         if not data:
             return []
 
-        passes = self._format_pasholder(data, admin_number)
+        passes = self._format_pasholder(data, admin_number, 'hoofdpashouder')
         for sub_holder in data['sub_pashouders']:
-            passes += self._format_pasholder(sub_holder, admin_number)
+            passes += self._format_pasholder(sub_holder, admin_number, 'subPashouder')
 
         return passes
 
-    def _format_pasholder(self, pas_holder, admin_number):
+    def _format_pasholder(self, pas_holder, admin_number, pashouder_type):
         try:
             naam = pas_holder['volledige_naam']
         except KeyError:
@@ -94,7 +95,7 @@ class GpassConnection:
                 response = self._get(path, admin_number)
 
             if response.status_code == 200:
-                passen_result.append(self._format_pas_data(naam, response.json(), admin_number))
+                passen_result.append(self._format_pas_data(naam, response.json(), admin_number, pashouder_type))
             else:
                 # TODO: implement me
                 pass

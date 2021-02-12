@@ -42,7 +42,9 @@ class GpassConnectionTest(TestCase):
                 'datumAfloop': '2020-08-31T23:59:59.000Z',
                 'id': 999997,
                 'naam': 'J. Doe',
-                'pasnummer': '6011012604737'},
+                'pasnummer': '6011012604737',
+                'pashouderType': 'hoofdpashouder',
+            },
             {
                 'budgets': [
                     {
@@ -55,7 +57,8 @@ class GpassConnectionTest(TestCase):
                 'datumAfloop': '2020-08-31T23:59:59.000Z',
                 'id': 999999,
                 'naam': 'P Achternaam2',
-                'pasnummer': '6666666666666666666'
+                'pasnummer': '6666666666666666666',
+                'pashouderType': 'subPashouder',
             },
             {
                 'budgets': [
@@ -71,8 +74,9 @@ class GpassConnectionTest(TestCase):
                 'datumAfloop': '2020-08-31T23:59:59.000Z',
                 'id': 999997,
                 'naam': 'J Achternaam3',
-                'pasnummer': '6011012604737'
-            }
+                'pasnummer': '6011012604737',
+                'pashouderType': 'subPashouder',
+        }
         ]
 
         self.assertTrue(result[0]["budgets"][0]["urlTransactions"].startswith('/api/focus/stadspastransacties/'))
