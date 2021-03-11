@@ -173,4 +173,160 @@ paths:
       summary: Returns OK when the Api server is alive (which is the case if this method gets executed...)
       tags:
         - focus
+  /focus/combined:
+    get:
+      responses:
+        200:
+          description: a combination of several data sources
+          schema:
+            properties:
+              'status':
+                type: string
+                example: 'OK'
+              content:
+                type: object
+                properties:
+                  jaaropgaven:
+                    type: object
+                    properties:
+                      datePublished:
+                        type: string
+                        format: date
+                        example: '2019-04-19T00:00:00+02:00'
+                      id:
+                        type: string
+                        example: '95330222'
+                      title:
+                        type: string
+                        example: 'jaaropgave'
+                      type:
+                        type: string
+                      url:
+                        type: string
+                        example: 'focus/document?id=95330222&isBulk=false&isDms=false'
+                  uitkeringsspecificaties:
+                    type: object
+                    properties:
+                      datePublished:
+                        type: string
+                        format: date
+                        example: '2019-04-19T00:00:00+02:00'
+                      id:
+                        type: string
+                        example: '95330222'
+                      title:
+                        type: string
+                        example: 'Uitkeringsspecificatie'
+                      type:
+                        type: string
+                        example: 'Participatiewet'
+                      url:
+                        type: string
+                        example: 'focus/document?id=95330222&isBulk=false&isDms=false'
+                  tozodocumenten:
+                    type: object
+                    properties:
+                      datePublished:
+                        type: string
+                        format: date
+                        example: '2019-04-19T00:00:00+02:00'
+                      'description':
+                        type: string
+                        example: 'Tegemoetkoming Ondernemers en Zelfstandigen'
+                      id:
+                        type: string
+                        example: '95330222'
+                      'documentCodeId':
+                        type: string
+                        example: '756'
+                      type:
+                        type: string
+                        example: 'E-AANVR-KBBZ'
+                      url:
+                        type: string
+                        example: 'focus/document?id=95330222&isBulk=false&isDms=false'
+
+                  stadspassaldo:
+                    type: object
+                    properties:
+                      stadspassen:
+                        type: object
+                        properties:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              'datumAfloop':
+                                type: string
+                                format: 'date-time'
+                                example: '2020-08-31T23:59:59.000Z'
+                              'id':
+                                type: number
+                                example: 999999,
+                              'naam':
+                                type: string
+                                example: 'P Achternaam2'
+                              'pasnummer':
+                                type: string
+                                example: '6666666666666666666'
+                              'pashouderType':
+                                type: string
+                                example: 'subPashouder'
+                              budgets:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    assigned:
+                                      type: number
+                                      example: 100
+                                    balance:
+                                      type: number
+                                      example: 50
+                                    code:
+                                      type: string
+                                      example: 'AMSEducatie'
+                                    description:
+                                      type: string
+                                      example: 'Educatie budget, voor iedereen uit de gemeente amsterdam en geboren tussen 1-1-2004 en 1-1-2020'
+                                    urlTransactions:
+                                      type: string
+                                      description: optional url to get the stadspas transactions
+                                      example: "/api/focus/stadspastransacties/..."
+  /focus/stadspastransacties/{encrypted_admin_pasnummer}:
+    parameters: [
+      {
+        name: encrypted_admin_pasnummer,
+        in: path,
+        required: true,
+        type: string,
+      }
+    ]
+
+    get:
+      description: ""
+      responses:
+        '200':
+          description: ""
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "ok"
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    amount:
+                      type: number
+                    date:
+                      type: number
+                      format: date-time
+
 swagger: '2.0'
