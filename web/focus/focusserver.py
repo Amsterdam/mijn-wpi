@@ -39,9 +39,7 @@ class FocusServer:
         """
         self._focus_connection.reset()
         return Response(
-            'Focus connectivity failed',
-            content_type='text/plain',
-            status=500
+            "Focus connectivity failed", content_type="text/plain", status=500
         )
 
     @staticmethod
@@ -50,9 +48,7 @@ class FocusServer:
         Returns a response telling that the supplied parameter is incorrect
         """
         return Response(
-            'Parameter error: {}'.format(message),
-            content_type='text/plain',
-            status=422
+            "Parameter error: {}".format(message), content_type="text/plain", status=422
         )
 
     @staticmethod
@@ -61,7 +57,7 @@ class FocusServer:
         If the server responds to this message (which is always does) it is considered alive (healthy)
         :return: OK
         """
-        return Response('OK', content_type='text/plain')
+        return Response("OK", content_type="text/plain")
 
     def status_data(self):
         """
@@ -70,8 +66,7 @@ class FocusServer:
         """
         try:
             if self._focus_connection.is_alive():
-                return Response('Connectivity to Focus OK',
-                                content_type='text/plain')
+                return Response("Connectivity to Focus OK", content_type="text/plain")
         except Exception:
             pass
 
@@ -89,14 +84,20 @@ class FocusServer:
 
         try:
             aanvragen = self._focus_connection.aanvragen(
-                bsn=bsn,
-                url_root=request.script_root
+                bsn=bsn, url_root=request.script_root
             )
         except ConnectionError as error:
-            logger.exception("Failed to retrieve aanvragen: {}".format(type(error)), exc_info=error)
+            logger.exception(
+                "Failed to retrieve aanvragen: {}".format(type(error)), exc_info=error
+            )
             return self._no_connection_response()
         except Exception as error:
-            logger.exception("Failed to retrieve aanvragen (unknown error): {} {}".format(type(error), str(error)), exc_info=error)
+            logger.exception(
+                "Failed to retrieve aanvragen (unknown error): {} {}".format(
+                    type(error), str(error)
+                ),
+                exc_info=error,
+            )
             return self._no_connection_response()
 
         return jsonify(aanvragen)
@@ -109,19 +110,18 @@ class FocusServer:
         if not stadspas_data:
             return None
 
-        stadspas_admin_number = volledig_administratienummer(stadspas_data['adminstratienummer'])
+        stadspas_admin_number = volledig_administratienummer(
+            stadspas_data["adminstratienummer"]
+        )
 
-        stadspas = None
+        stadspassen = []
         if stadspas_admin_number:
-            stadspas = gpass_con.get_stadspassen(admin_number=stadspas_admin_number)
+            stadspassen = gpass_con.get_stadspassen(admin_number=stadspas_admin_number)
 
-        return {
-            "stadspassen": stadspas,
-            "type": stadspas_data["type"]
-        }
+        return {"stadspassen": stadspassen, "type": stadspas_data["type"]}
 
     def combined(self):
-        """ Gets all jaaropgaven for the BSN that is encoded in the header SAML token. """
+        """Gets all jaaropgaven for the BSN that is encoded in the header SAML token."""
 
         try:
             bsn = get_bsn_from_request(request)
@@ -130,11 +130,17 @@ class FocusServer:
 
         try:
             with MeasureTime("jaaropgaven"):
-                jaaropgaven = self._focus_connection.jaaropgaven(bsn=bsn, url_root=request.script_root)
+                jaaropgaven = self._focus_connection.jaaropgaven(
+                    bsn=bsn, url_root=request.script_root
+                )
             with MeasureTime("uitkeringspecificaties"):
-                uitkeringsspec = self._focus_connection.uitkeringsspecificaties(bsn=bsn, url_root=request.script_root)
+                uitkeringsspec = self._focus_connection.uitkeringsspecificaties(
+                    bsn=bsn, url_root=request.script_root
+                )
             with MeasureTime("tozo documenten"):
-                tozo_documents = self._focus_connection.EAanvragenTozo(bsn=bsn, url_root=request.script_root)
+                tozo_documents = self._focus_connection.EAanvragenTozo(
+                    bsn=bsn, url_root=request.script_root
+                )
             with MeasureTime("stadspas"):
                 stadspas = self._collect_stadspas_data(bsn)
 
@@ -145,13 +151,20 @@ class FocusServer:
                     "uitkeringsspecificaties": uitkeringsspec,
                     "tozodocumenten": tozo_documents,
                     "stadspassaldo": stadspas,
-                }
+                },
             }
         except ConnectionError as error:
-            logger.exception("Failed to retrieve combined: {}".format(type(error)), exc_info=error)
+            logger.exception(
+                "Failed to retrieve combined: {}".format(type(error)), exc_info=error
+            )
             return self._no_connection_response()
         except Exception as error:
-            logger.exception("Failed to retrieve combined (unknown error): {} {}".format(type(error), str(error)), exc_info=error)
+            logger.exception(
+                "Failed to retrieve combined (unknown error): {} {}".format(
+                    type(error), str(error)
+                ),
+                exc_info=error,
+            )
             return self._no_connection_response()
 
     def document(self):
@@ -160,9 +173,9 @@ class FocusServer:
         The document is identified by its id and whether it is a bulk or document management document (request args)
         :return:
         """
-        id = request.args.get('id', None)
-        isBulk = request.args.get('isBulk', "false").lower() == "true"
-        isDms = request.args.get('isDms', "false").lower() == "true"
+        id = request.args.get("id", None)
+        isBulk = request.args.get("isBulk", "false").lower() == "true"
+        isDms = request.args.get("isDms", "false").lower() == "true"
 
         try:
             bsn = get_bsn_from_request(request)
@@ -171,26 +184,32 @@ class FocusServer:
 
         try:
             document = self._focus_connection.document(
-                bsn=bsn,
-                id=id,
-                isBulk=isBulk,
-                isDms=isDms
+                bsn=bsn, id=id, isBulk=isBulk, isDms=isDms
             )
         except ConnectionError as error:
-            logger.exception("Failed to retrieve document: {}".format(type(error)), exc_info=error)
+            logger.exception(
+                "Failed to retrieve document: {}".format(type(error)), exc_info=error
+            )
             return self._no_connection_response()
         except Exception as error:
-            logger.exception("Failed to retrieve document: {} {}".format(type(error), str(error)), exc_info=error)
+            logger.exception(
+                "Failed to retrieve document: {} {}".format(type(error), str(error)),
+                exc_info=error,
+            )
             return self._no_connection_response()
 
         if document is None:
-            logger.error(f"Document empty. type bsn: {type(bsn)} {len(bsn)}  type id: {type(id)}")
+            logger.error(
+                f"Document empty. type bsn: {type(bsn)} {len(bsn)}  type id: {type(id)}"
+            )
             return "Document not received from source.", 404
 
         # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
         # Craft a manual request instead
         response = make_response(document["contents"])
-        response.headers["Content-Disposition"] = f'attachment; filename="{document["fileName"]}"'  # make sure it is a download
+        response.headers[
+            "Content-Disposition"
+        ] = f'attachment; filename="{document["fileName"]}"'  # make sure it is a download
         response.headers["Content-Type"] = document["mime_type"]
 
         return response
