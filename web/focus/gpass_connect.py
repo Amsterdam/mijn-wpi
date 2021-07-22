@@ -19,31 +19,32 @@ class GpassConnection:
 
     def _get(self, path, admin_number):
         path = f"{self.api_location}{path}"
-        headers = {
-            "Authorization": f"AppBearer {self.bearer_token},{admin_number}"
-        }
+        headers = {"Authorization": f"AppBearer {self.bearer_token},{admin_number}"}
         # stricter limit, it all needs to arrive within 9 seconds in the frontend.
         response = requests.get(path, headers=headers, timeout=5)
         if LOG_RAW:
             print("url", path, "adminnumber", admin_number, self.bearer_token)
             print("status", response.status_code)
-            print("REC", end='')
+            print("REC", end="")
             pprint(response.json())
         return response
 
     def _format_budgets(self, budget, admin_number, pas_number):
-        encrypted_admin_pas = encrypt(budget['code'], admin_number, pas_number)
+        encrypted_admin_pas = encrypt(budget["code"], admin_number, pas_number)
 
         return {
             "description": budget["omschrijving"],
             "code": budget["code"],
             "assigned": budget["budget_assigned"],
             "balance": budget["budget_balance"],
-            "urlTransactions": f"/api/focus/stadspastransacties/{encrypted_admin_pas}"
+            "urlTransactions": f"/api/focus/stadspastransacties/{encrypted_admin_pas}",
         }
 
     def _format_pas_data(self, naam: str, pas: dict, admin_number: str):
-        budgets = [self._format_budgets(b, admin_number, pas["pasnummer"]) for b in pas['budgetten']]
+        budgets = [
+            self._format_budgets(b, admin_number, pas["pasnummer"])
+            for b in pas["budgetten"]
+        ]
 
         return {
             "id": pas["id"],
@@ -62,39 +63,41 @@ class GpassConnection:
             # unknown user results in a invalid token?
             return []
         data = response.json()
-        if not data:
+        if not data or not data["sub_pashouders"]:
             return []
 
         passes = self._format_pasholder(data, admin_number)
-        for sub_holder in data['sub_pashouders']:
+        for sub_holder in data["sub_pashouders"]:
             passes += self._format_pasholder(sub_holder, admin_number)
 
         return passes
 
     def _format_pasholder(self, pas_holder, admin_number):
         try:
-            naam = pas_holder['volledige_naam']
+            naam = pas_holder["volledige_naam"]
         except KeyError:
             # TODO: remove me when gpass prod is updated to provide volledige_naam
             try:
                 naam = f'{pas_holder["initialen"]} {pas_holder["achternaam"]}'
             except KeyError as e:
-                logger.error(f"{type(e)} avaiable: {pas_holder.keys()}")
+                logger.error(f"{type(e)} available: {pas_holder.keys()}")
                 raise e
 
-        passen = pas_holder['passen']
+        passen = pas_holder["passen"]
 
-        passen = [pas for pas in passen if pas['actief'] is True]
+        passen = [pas for pas in passen if pas["actief"] is True]
         passen_result = []
 
         for i, pas in enumerate(passen):
-            pasnummer = pas['pasnummer']
-            path = f'/rest/sales/v1/pas/{pasnummer}?include_balance=true'
+            pasnummer = pas["pasnummer"]
+            path = f"/rest/sales/v1/pas/{pasnummer}?include_balance=true"
             with MeasureTime(f"stadspas gpas pas data i: {i}"):
                 response = self._get(path, admin_number)
 
             if response.status_code == 200:
-                passen_result.append(self._format_pas_data(naam, response.json(), admin_number))
+                passen_result.append(
+                    self._format_pas_data(naam, response.json(), admin_number)
+                )
             else:
                 # TODO: implement me
                 pass
@@ -103,10 +106,10 @@ class GpassConnection:
         return passen_result
 
     def _format_transaction(self, transaction):
-        date = transaction['transactiedatum']  # parse and convert to date
+        date = transaction["transactiedatum"]  # parse and convert to date
         return {
             "id": transaction["id"],
-            "title": transaction['budget']['aanbieder']['naam'],
+            "title": transaction["budget"]["aanbieder"]["naam"],
             "amount": transaction["bedrag"],
             "date": date,
         }
@@ -121,4 +124,4 @@ class GpassConnection:
 
         data = response.json()
 
-        return [self._format_transaction(t)for t in data['transacties']]
+        return [self._format_transaction(t) for t in data["transacties"]]
