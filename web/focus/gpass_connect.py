@@ -38,6 +38,7 @@ class GpassConnection:
             "assigned": budget["budget_assigned"],
             "balance": budget["budget_balance"],
             "urlTransactions": f"/api/focus/stadspastransacties/{encrypted_admin_pas}",
+            "datumAfloop": budget["expiry_date"],
         }
 
     def _format_pas_data(self, naam: str, pas: dict, admin_number: str):
