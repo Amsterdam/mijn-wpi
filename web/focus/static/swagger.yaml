@@ -292,8 +292,12 @@ paths:
                                     urlTransactions:
                                       type: string
                                       description: optional url to get the stadspas transactions
-                                      example: "/api/focus/stadspastransacties/..."
-  /focus/stadspastransacties/{encrypted_admin_pasnummer}:
+                                      example: "/api/focus/stadspastransacties/{encrypted_admin_pasnummer}"
+                                    datumAfloop:
+                                      type: string
+                                      format: 'date-time'
+                                      example: '2020-08-31T23:59:59.000Z'
+ /focus/stadspastransacties/{encrypted_admin_pasnummer}:
     parameters: [
       {
         name: encrypted_admin_pasnummer,
