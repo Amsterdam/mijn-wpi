@@ -8,17 +8,23 @@ from flask_cors import CORS
 from focus.gpass_connect import GpassConnection
 
 from focus.crypto import decrypt
-from .config import check_env, config, credentials, urls, get_TMA_certificate, SENTRY_DSN, get_gpass_bearer_token, \
-    get_gpass_api_location
+from .config import (
+    check_env,
+    config,
+    credentials,
+    urls,
+    get_TMA_certificate,
+    SENTRY_DSN,
+    get_gpass_bearer_token,
+    get_gpass_api_location,
+)
 from .focusconnect import FocusConnection
 from .focusserver import FocusServer
 
 
 if SENTRY_DSN:
     sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        integrations=[FlaskIntegration()],
-        with_locals=False
+        dsn=SENTRY_DSN, integrations=[FlaskIntegration()], with_locals=False
     )
 
 
@@ -55,7 +61,7 @@ def server():
 
 @application.route(urls["swagger"])
 def swagger_yaml():
-    return send_from_directory('static', 'swagger.yaml')
+    return send_from_directory("static", "swagger.yaml")
 
 
 @application.route(urls["health"])
@@ -88,7 +94,9 @@ def stadspastransactions(encrypted_admin_pasnummer):
     budget_code, admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
 
     gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
-    stadspas_transations = gpass_con.get_transactions(admin_number, stadspas_number, budget_code)
+    stadspas_transations = gpass_con.get_transactions(
+        admin_number, stadspas_number, budget_code
+    )
     if stadspas_transations is None:
         return {}, 204
 

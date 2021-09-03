@@ -108,7 +108,10 @@ def _convert_product(product, url_root):
         processtap = processtappen.get(stap, None)
         if processtap is not None:
             processtap["_id"] = idx_stap
-            if most_recent is None or processtap["datum"] >= processtappen[most_recent]["datum"]:
+            if (
+                most_recent is None
+                or processtap["datum"] >= processtappen[most_recent]["datum"]
+            ):
                 # Take most recent step. When equal highest id goes before any lower id
                 most_recent = stap
             _to_list(processtap, "document")
@@ -147,16 +150,20 @@ def convert_aanvragen(aanvragen, url_root):
                 _convert_product(product, url_root)
                 producten.append(product)
     except Exception as error:
-        logger.error('Failed to convert aanvragen: {}'.format(str(error)))
+        logger.error("Failed to convert aanvragen: {}".format(str(error)))
         raise error
 
-    stappen = [len(product['processtappen']) for product in producten if 'processtappen' in product]
+    stappen = [
+        len(product["processtappen"])
+        for product in producten
+        if "processtappen" in product
+    ]
     print("Aantal producten: %i, Stappen: %i" % (len(producten), sum(stappen)))
     return producten
 
 
 def get_document_id(doc):
-    return doc.find('id', recursive=False).string
+    return doc.find("id", recursive=False).string
 
 
 # FocusInkomenSpecificatieType =
@@ -171,18 +178,18 @@ def get_document_id(doc):
 def convert_jaaropgaven(jaaropgaven_xml, document_root):
     jaar_opgaven_list = []
     tree = BeautifulSoup(jaaropgaven_xml, features="lxml-xml")
-    documents = tree.select('document')
+    documents = tree.select("document")
     for doc in documents:
         id = get_document_id(doc)
-        doc_url = urls['document'][1:]
+        doc_url = urls["document"][1:]
         url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
 
         new_doc = {
-            'title': doc.documentCode.omschrijving.text,
-            'datePublished': doc.einddatumDocument.text,
-            'id': id,
-            'url': url,
-            'type': '',
+            "title": doc.documentCode.omschrijving.text,
+            "datePublished": doc.einddatumDocument.text,
+            "id": id,
+            "url": url,
+            "type": "",
         }
         jaar_opgaven_list.append(new_doc)
 
@@ -194,23 +201,23 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
 def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
     jaar_opgaven_list = []
     tree = BeautifulSoup(uitkeringspec_xml, features="lxml-xml")
-    documents = tree.select('document')
+    documents = tree.select("document")
     for doc in documents:
         id = get_document_id(doc)
-        doc_url = urls['document'][1:]
+        doc_url = urls["document"][1:]
         url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
         doc_type = doc.variant
         if doc_type:
             doc_type = doc_type.text
         else:
-            doc_type = ''
+            doc_type = ""
 
         new_doc = {
-            'id': id,
-            'title': doc.documentCode.omschrijving.text,
-            'datePublished': doc.einddatumDocument.text,
-            'url': url,
-            'type': doc_type,
+            "id": id,
+            "title": doc.documentCode.omschrijving.text,
+            "datePublished": doc.einddatumDocument.text,
+            "url": url,
+            "type": doc_type,
         }
         jaar_opgaven_list.append(new_doc)
 
@@ -219,21 +226,21 @@ def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
 
 def convert_e_aanvraag_TOZO(tree, document_root):
     jaar_opgaven_list = []
-    documents = tree.find_all('documentgegevens')
+    documents = tree.find_all("documentgegevens")
     for doc in documents:
         id = doc.documentId.text
-        doc_url = urls['document'][1:]
+        doc_url = urls["document"][1:]
         bulk = doc.isBulk.text
         dms = doc.isDms.text
         url = f"{document_root}{doc_url}?id={id}&isBulk={bulk}&isDms={dms}"
 
         new_doc = {
-            'id': id,
-            'datePublished': doc.datumDocument.text,
-            'url': url,
-            'documentCodeId': doc.documentCodeId.text,
-            'type': doc.documentCode.text,
-            'description': doc.documentOmschrijving.text,
+            "id": id,
+            "datePublished": doc.datumDocument.text,
+            "url": url,
+            "documentCodeId": doc.documentCodeId.text,
+            "type": doc.documentCode.text,
+            "description": doc.documentOmschrijving.text,
         }
         jaar_opgaven_list.append(new_doc)
 
@@ -271,7 +278,7 @@ def convert_stadspas(tree):
         return None
 
     adminstratienummer = administratienummer_node.text
-    fondsen = tree.find('fondsen').find_all('fonds', recursive=False)
+    fondsen = tree.find("fondsen").find_all("fonds", recursive=False)
     passed = has_groene_stip(fondsen)
 
     pas_type = None

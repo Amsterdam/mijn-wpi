@@ -25,46 +25,53 @@ def check_env():
     """
     Checks if all required environment variables have been set
     """
-    missing_vars = [v for v in ['FOCUS_USERNAME', 'FOCUS_PASSWORD', 'FOCUS_WSDL', 'TMA_CERTIFICATE']
-                    if not get_variable(v)]
+    missing_vars = [
+        v
+        for v in ["FOCUS_USERNAME", "FOCUS_PASSWORD", "FOCUS_WSDL", "TMA_CERTIFICATE"]
+        if not get_variable(v)
+    ]
     if missing_vars:
-        raise Exception('Missing environment variables {}'.format(', '.join(missing_vars)))
+        raise Exception(
+            "Missing environment variables {}".format(", ".join(missing_vars))
+        )
 
 
 config = {
-    'wsdl': get_variable('FOCUS_WSDL'),
-    'session_verify': get_variable('FOCUS_CERTIFICATE', False)  # Default don't check the certificate
+    "wsdl": get_variable("FOCUS_WSDL"),
+    "session_verify": get_variable(
+        "FOCUS_CERTIFICATE", False
+    ),  # Default don't check the certificate
 }
 
 credentials = {
-    'username': get_variable('FOCUS_USERNAME'),
-    'password': get_variable('FOCUS_PASSWORD')
+    "username": get_variable("FOCUS_USERNAME"),
+    "password": get_variable("FOCUS_PASSWORD"),
 }
 
-SENTRY_DSN = get_variable('SENTRY_DSN')
+SENTRY_DSN = get_variable("SENTRY_DSN")
 
 urls = {
-    'swagger': "/focus/swagger.yaml",
-    'health': "/status/health",
-    'data': "/status/data",
-    'aanvragen': "/focus/aanvragen",
-    'document': "/focus/document",
-    'combined': "/focus/combined",
-    'stadspastransacties': "/focus/stadspastransacties/<string:encrypted_admin_pasnummer>"
+    "swagger": "/focus/swagger.yaml",
+    "health": "/status/health",
+    "data": "/status/data",
+    "aanvragen": "/focus/aanvragen",
+    "document": "/focus/document",
+    "combined": "/focus/combined",
+    "stadspastransacties": "/focus/stadspastransacties/<string:encrypted_admin_pasnummer>",
 }
 
 
 def get_TMA_certificate():
-    with open(get_variable('TMA_CERTIFICATE'), 'r') as f:
+    with open(get_variable("TMA_CERTIFICATE"), "r") as f:
         return f.read()
 
 
 def get_gpass_bearer_token():
-    return get_variable('GPASS_TOKEN')
+    return get_variable("GPASS_TOKEN")
 
 
 def get_gpass_api_location():
-    return get_variable('GPASS_API_LOCATION')
+    return get_variable("GPASS_API_LOCATION")
 
 
 def get_key():

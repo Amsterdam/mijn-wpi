@@ -14,7 +14,9 @@ focus.gpass_connect.LOG_RAW = True
 
 admin_number = sys.argv[1]
 
-if len(admin_number) != 14:  # adminnumber padded to 10, 4 digit city code prefixed makes 14
+if (
+    len(admin_number) != 14
+):  # adminnumber padded to 10, 4 digit city code prefixed makes 14
     # pad
     admin_number = volledig_administratienummer(admin_number)
 
@@ -25,7 +27,7 @@ result = con.get_stadspassen(admin_number)
 print("\n ---\nstadspassen:")
 pprint(result)
 
-pas_number = decrypt(result[0]['urlTransactions'].rsplit('/', 1)[1])[1]
+pas_number = decrypt(result[0]["urlTransactions"].rsplit("/", 1)[1])[1]
 print("Pas number", pas_number)
 
 result = con.get_transactions(admin_number, pas_number)
