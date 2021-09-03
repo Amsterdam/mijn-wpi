@@ -249,27 +249,20 @@ def convert_e_aanvraag_TOZO(tree, document_root):
 
 def has_groene_stip(fondsen):
     # Client needs to have a "toekenning" of a certain type
-    passed = False
     for f in fondsen:
-        besluit = f.find("besluit").text
-        if besluit != "toekenning":
-            continue
+        is_toegekend = f.find("besluit").text == "toekenning"
+        is_correct_fonds = f.find("soortFonds").text in ["3555", "3556", "3557", "3558"]
 
-        soort_fonds = f.find("soortFonds").text
-        if soort_fonds not in ["3555", "3556", "3557", "3558"]:
-            continue
+        # Temporarily disable check on Toekenning
+        # start = parser.isoparse(f.find("dtbegin").text).date()
+        # end = parser.isoparse(f.find("dteinde").text).date()
+        # is_actueel_besluit = start < today < end
+        # if is_toegekend and is_correct_fonds and is_actueel_besluit:
 
-        start = parser.isoparse(f.find("dtbegin").text).date()
-        end = parser.isoparse(f.find("dteinde").text).date()
+        if is_toegekend and is_correct_fonds:
+            return True
 
-        today = date.today()
-        if not (start < today < end):
-            continue
-
-        passed = True
-        break
-
-    return passed
+    return False
 
 
 def convert_stadspas(tree):
@@ -277,15 +270,19 @@ def convert_stadspas(tree):
     if not administratienummer_node:
         return None
 
-    adminstratienummer = administratienummer_node.text
     fondsen = tree.find("fondsen").find_all("fonds", recursive=False)
-    passed = has_groene_stip(fondsen)
+    has_pas = has_groene_stip(fondsen)
 
+    if not has_pas:
+        return None
+
+    adminstratienummer = administratienummer_node.text
     pas_type = None
+
     for fonds in fondsen:
         soort = fonds.find("soortFonds").text
-
         besluit = fonds.find("besluit").text
+
         if besluit != "toekenning":
             continue
 
@@ -295,9 +292,6 @@ def convert_stadspas(tree):
             pas_type = "partner"
         elif soort == "3557":
             pas_type = "kind"
-
-    if not passed:
-        return {}
 
     return {
         "adminstratienummer": adminstratienummer,
