@@ -5,10 +5,12 @@ See also the convert_aanvragen method for a more detailed explanation.
 
 """
 import logging
-from datetime import date
+
+# from datetime import date
 
 from bs4 import BeautifulSoup
-from dateutil import parser
+
+# from dateutil import parser
 
 from focus.config import urls
 
