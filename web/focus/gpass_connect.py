@@ -64,12 +64,14 @@ class GpassConnection:
             # unknown user results in a invalid token?
             return []
         data = response.json()
-        if not data or not data["sub_pashouders"]:
+        if not data:
             return []
 
         passes = self._format_pasholder(data, admin_number)
-        for sub_holder in data["sub_pashouders"]:
-            passes += self._format_pasholder(sub_holder, admin_number)
+
+        if data["sub_pashouders"]:
+            for sub_holder in data["sub_pashouders"]:
+                passes += self._format_pasholder(sub_holder, admin_number)
 
         return passes
 
