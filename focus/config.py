@@ -51,7 +51,6 @@ credentials = {
 SENTRY_DSN = get_variable("SENTRY_DSN")
 
 urls = {
-    "swagger": "/focus/swagger.yaml",
     "health": "/status/health",
     "data": "/status/data",
     "aanvragen": "/focus/aanvragen",

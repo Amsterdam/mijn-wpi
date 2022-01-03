@@ -59,11 +59,6 @@ def server():
     return focus_server
 
 
-@application.route(urls["swagger"])
-def swagger_yaml():
-    return send_from_directory("static", "swagger.yaml")
-
-
 @application.route(urls["health"])
 def status_health():
     return server().health()
