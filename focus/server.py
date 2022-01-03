@@ -2,7 +2,7 @@ import logging
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
-from flask import Flask send_from_directory
+from flask import Flask
 from flask_cors import CORS
 
 from focus.gpass_connect import GpassConnection
