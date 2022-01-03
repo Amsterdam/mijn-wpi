@@ -13,7 +13,7 @@ RUN rm requirements.txt
 
 COPY ./focus /app/focus
 
-COPY test.sh /app
+COPY test.sh /app/
 COPY .flake8 /app/
 COPY ./tests /app/tests
 
