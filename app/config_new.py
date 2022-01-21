@@ -38,7 +38,7 @@ FOCUS_CERTIFICATE = os.getenv("FOCUS_CERTIFICATE", False)
 FOCUS_USERNAME = os.getenv("FOCUS_USERNAME")
 FOCUS_PASSWORD = os.getenv("FOCUS_PASSWORD")
 
-FOCUS_DOCUMENT_ENDPOINT = "/focus/document"
+FOCUS_DOCUMENT_PATH = "focus/document"
 
 zeep_config = {"wsdl": FOCUS_WDSL, "session_verify": FOCUS_CERTIFICATE}
 

@@ -8,7 +8,7 @@ from app.gpass_service import get_transactions
 from app.utils import decrypt, get_bsn_from_request, success_response_json
 
 from app.config_new import (
-    FOCUS_DOCUMENT_ENDPOINT,
+    FOCUS_DOCUMENT_PATH,
     SENTRY_DSN,
     CustomJSONEncoder,
     focus_credentials,
@@ -42,7 +42,7 @@ def aanvragen():
     return get_server().aanvragen(bsn)
 
 
-@application.route(FOCUS_DOCUMENT_ENDPOINT)
+@application.route(f"/{FOCUS_DOCUMENT_PATH}")
 def document():
     bsn = get_bsn_from_request()
     return get_server().document(bsn)

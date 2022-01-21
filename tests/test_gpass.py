@@ -123,7 +123,7 @@ class GpassApiTest(FocusApiTestApp):
                     "title": "Fietsenwinkel - B.V.",
                 }
             ],
-            "status": "ok",
+            "status": "OK",
         }
 
         self.assertEqual(response.status_code, 200)

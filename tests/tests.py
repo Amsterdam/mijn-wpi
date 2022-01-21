@@ -70,24 +70,6 @@ class TestHealth(FocusApiTestApp):
         self.assertEqual(response.status_code, 200)
 
 
-class TestData(FocusApiTestApp):
-    @patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Dummy")
-    def test_data_with_connection(self):
-        """
-        The connection should be marked as available when a client is set
-        """
-        response = self.client.get("/status/data")
-        self.assertEqual(response.status_code, 200)
-
-    @patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: None)
-    def test_data_without_connection(self):
-        """
-        The connection is not available in test mode, expect 500
-        """
-        response = self.client.get("/status/data")
-        self.assertEqual(response.status_code, 500)
-
-
 class TestInterpreter(FocusApiTestApp):
     def test_to_array(self):
         self.assertEqual(_to_list({}, "x"), {"x": []})
