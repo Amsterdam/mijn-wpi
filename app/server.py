@@ -5,13 +5,13 @@ from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from app.gpass_service import get_transactions
-from app.utils import decrypt, get_bsn_from_request
+from app.utils import decrypt, get_bsn_from_request, success_response_json
 
 from app.config_new import (
+    FOCUS_DOCUMENT_ENDPOINT,
     SENTRY_DSN,
     CustomJSONEncoder,
     focus_credentials,
-    urls,
     zeep_config,
 )
 from app.focusconnect import FocusConnection
@@ -31,46 +31,36 @@ def get_server():
     return FocusServer(focus_connection)
 
 
-@application.route(urls["health"])
+@application.route("/status/health")
 def status_health():
-    return get_server().health()
+    return success_response_json("OK")
 
 
-@application.route(urls["data"])
-def status_data():
-    return get_server().status_data()
-
-
-@application.route(urls["aanvragen"])
+@application.route("/focus/aanvragen")
 def aanvragen():
     bsn = get_bsn_from_request()
     return get_server().aanvragen(bsn)
 
 
-@application.route(urls["document"])
+@application.route(FOCUS_DOCUMENT_ENDPOINT)
 def document():
     bsn = get_bsn_from_request()
     return get_server().document(bsn)
 
 
-@application.route(urls["combined"])
+@application.route("/focus/combined")
 def combined():
     bsn = get_bsn_from_request()
     return get_server().combined(bsn)
 
 
-@application.route(urls["stadspastransacties"])
+@application.route("/focus/stadspastransacties/<string:encrypted_admin_pasnummer>")
 def stadspastransactions(encrypted_admin_pasnummer):
     budget_code, admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
 
     stadspas_transations = get_transactions(admin_number, stadspas_number, budget_code)
-    if stadspas_transations is None:
-        return {}, 204
 
-    return {
-        "status": "ok",
-        "content": stadspas_transations,
-    }
+    return success_response_json(stadspas_transations)
 
 
 if __name__ == "__main__":

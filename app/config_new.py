@@ -69,14 +69,3 @@ class CustomJSONEncoder(JSONEncoder):
             return obj.isoformat()
 
         return JSONEncoder.default(self, obj)
-
-
-# Deprecated
-urls = {
-    "health": "/status/health",
-    "data": "/status/data",
-    "aanvragen": "/focus/aanvragen",
-    "document": "/focus/document",
-    "combined": "/focus/combined",
-    "stadspastransacties": "/focus/stadspastransacties/<string:encrypted_admin_pasnummer>",
-}

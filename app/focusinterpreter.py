@@ -5,14 +5,9 @@ See also the convert_aanvragen method for a more detailed explanation.
 
 """
 import logging
-
-# from datetime import date
-
 from bs4 import BeautifulSoup
 
-# from dateutil import parser
-
-from app.config_new import urls
+from app.config_new import FOCUS_DOCUMENT_ENDPOINT
 
 
 def _to_str(obj, key):
@@ -67,7 +62,7 @@ def _get_document_ref(document, url_root="/"):
              e.g. "/focus/document?id=12&isBulk=true&isDms=false"
     """
     return "{}?id={}&isBulk={}&isDms={}".format(
-        url_root + urls["document"][1:],
+        url_root + FOCUS_DOCUMENT_ENDPOINT,
         document["id"],
         document["isBulk"],
         document["isDms"],
@@ -181,8 +176,9 @@ def convert_jaaropgaven(jaaropgaven_xml, document_root):
     documents = tree.select("document")
     for doc in documents:
         id = get_document_id(doc)
-        doc_url = urls["document"][1:]
-        url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
+        url = (
+            f"{document_root}{FOCUS_DOCUMENT_ENDPOINT}?id={id}&isBulk=false&isDms=false"
+        )
 
         new_doc = {
             "title": doc.documentCode.omschrijving.text,
@@ -204,7 +200,7 @@ def convert_uitkeringsspecificaties(uitkeringspec_xml, document_root):
     documents = tree.select("document")
     for doc in documents:
         id = get_document_id(doc)
-        doc_url = urls["document"][1:]
+        doc_url = FOCUS_DOCUMENT_ENDPOINT
         url = f"{document_root}{doc_url}?id={id}&isBulk=false&isDms=false"
         doc_type = doc.variant
         if doc_type:
@@ -229,7 +225,7 @@ def convert_e_aanvraag_TOZO(tree, document_root):
     documents = tree.find_all("documentgegevens")
     for doc in documents:
         id = doc.documentId.text
-        doc_url = urls["document"][1:]
+        doc_url = FOCUS_DOCUMENT_ENDPOINT
         bulk = doc.isBulk.text
         dms = doc.isDms.text
         url = f"{document_root}{doc_url}?id={id}&isBulk={bulk}&isDms={dms}"

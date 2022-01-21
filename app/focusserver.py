@@ -53,19 +53,6 @@ class FocusServer:
         """
         return Response("OK", content_type="text/plain")
 
-    def status_data(self):
-        """
-        If the connection with the Focus SOAP API is alive it is assumed that the data is available
-        :return: Response
-        """
-        try:
-            if self._focus_connection.is_alive():
-                return Response("Connectivity to Focus OK", content_type="text/plain")
-        except Exception:
-            pass
-
-        return self._no_connection_response()
-
     def aanvragen(self, bsn):
         """
         Gets all running and past aanvragen for the BSN that is encoded in the header SAML token
