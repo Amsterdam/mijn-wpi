@@ -22,7 +22,6 @@ from .focusinterpreter import (
     convert_e_aanvraag_TOZO,
     convert_stadspas,
 )
-from .measure_time import MeasureTime
 
 logger = logging.getLogger(__name__)
 
@@ -192,12 +191,11 @@ class FocusConnection:
 
     def stadspas(self, bsn):
         with self._client.settings(raw_response=True):
-            with MeasureTime("stadspas soap"):
-                raw_stadspas = (
-                    self._client.service.getStadspas(bsn=bsn)
-                    .content.decode("utf-8")
-                    .replace("\n", "")
-                )
+            raw_stadspas = (
+                self._client.service.getStadspas(bsn=bsn)
+                .content.decode("utf-8")
+                .replace("\n", "")
+            )
             tree = BeautifulSoup(raw_stadspas, features="lxml-xml")
             if LOG_RAW:
                 print(tree.prettify())

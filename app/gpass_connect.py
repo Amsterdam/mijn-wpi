@@ -5,8 +5,6 @@ import requests
 
 from app.crypto import encrypt
 
-from app.measure_time import MeasureTime
-
 LOG_RAW = False
 
 logger = logging.getLogger(__name__)
@@ -57,8 +55,7 @@ class GpassConnection:
 
     def get_stadspassen(self, admin_number):
         path = "/rest/sales/v1/pashouder?addsubs=true"
-        with MeasureTime(f"stadspas gpas {path}"):
-            response = self._get(path, admin_number)
+        response = self._get(path, admin_number)
         if response.status_code != 200:
             print("status code", response.status_code)
             # unknown user results in a invalid token?
@@ -94,8 +91,7 @@ class GpassConnection:
         for i, pas in enumerate(passen):
             pasnummer = pas["pasnummer"]
             path = f"/rest/sales/v1/pas/{pasnummer}?include_balance=true"
-            with MeasureTime(f"stadspas gpas pas data i: {i}"):
-                response = self._get(path, admin_number)
+            response = self._get(path, admin_number)
 
             if response.status_code == 200:
                 passen_result.append(
@@ -119,8 +115,7 @@ class GpassConnection:
 
     def get_transactions(self, admin_number, pas_number, budget_code):
         path = f"/rest/transacties/v1/budget?pasnummer={pas_number}&budgetcode={budget_code}&sub_transactions=true"
-        with MeasureTime("stadspas gpas get transactions"):
-            response = self._get(path, admin_number)
+        response = self._get(path, admin_number)
 
         if response.status_code != 200:
             return None

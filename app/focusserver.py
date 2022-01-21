@@ -8,7 +8,6 @@ import logging
 
 from flask import jsonify, request, Response, make_response
 
-from .measure_time import MeasureTime
 from .gpass_connect import GpassConnection
 from .saml import get_bsn_from_request
 from requests import ConnectionError
@@ -129,20 +128,16 @@ class FocusServer:
             return self._parameter_error_response(error)
 
         try:
-            with MeasureTime("jaaropgaven"):
-                jaaropgaven = self._focus_connection.jaaropgaven(
-                    bsn=bsn, url_root=request.script_root
-                )
-            with MeasureTime("uitkeringspecificaties"):
-                uitkeringsspec = self._focus_connection.uitkeringsspecificaties(
-                    bsn=bsn, url_root=request.script_root
-                )
-            with MeasureTime("tozo documenten"):
-                tozo_documents = self._focus_connection.EAanvragenTozo(
-                    bsn=bsn, url_root=request.script_root
-                )
-            with MeasureTime("stadspas"):
-                stadspas = self._collect_stadspas_data(bsn)
+            jaaropgaven = self._focus_connection.jaaropgaven(
+                bsn=bsn, url_root=request.script_root
+            )
+            uitkeringsspec = self._focus_connection.uitkeringsspecificaties(
+                bsn=bsn, url_root=request.script_root
+            )
+            tozo_documents = self._focus_connection.EAanvragenTozo(
+                bsn=bsn, url_root=request.script_root
+            )
+            stadspas = self._collect_stadspas_data(bsn)
 
             return {
                 "status": "OK",
