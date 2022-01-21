@@ -1,33 +1,25 @@
 from unittest import TestCase
 
 # Prepare environment
-from flask_testing import TestCase as FlaskTestCase
 from mock import patch
 
-from app.gpass_service import GpassConnection
-from app.server import application  # noqa: E402
 from app.crypto import encrypt
+from app.gpass_service import get_stadspassen, get_transactions
+from tests.focus_test_app import FocusApiTestApp
 
 from .mocks import get_response_mock
 
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
+@patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
 @patch("app.gpass_service.requests.get", get_response_mock)
-@patch("app.server.get_gpass_api_location", lambda: "http://localhost")
 @patch("app.crypto.get_key", lambda: TESTKEY)
-class GpassConnectionTest(TestCase):
+class GpassServiceTest(TestCase):
     admin_number = "111111111"
 
-    def setUp(self) -> None:
-        pass
-
-    def _get_connection(self):
-        return GpassConnection("http://localhost", "token")
-
     def test_get_stadspassen(self):
-        con = self._get_connection()
-        result = con.get_stadspassen(self.admin_number)
+        result = get_stadspassen(self.admin_number)
 
         expected = [
             {
@@ -92,8 +84,7 @@ class GpassConnectionTest(TestCase):
     def test_get_transactions(self):
         pas_number = "6666666666666"
         budget_code = "aaa"
-        con = self._get_connection()
-        result = con.get_transactions(self.admin_number, pas_number, budget_code)
+        result = get_transactions(self.admin_number, pas_number, budget_code)
 
         expected = [
             {
@@ -107,23 +98,17 @@ class GpassConnectionTest(TestCase):
 
     def test_get_transactions_wrong_pas_number(self):
         pas_number = 11111
-        con = self._get_connection()
-        result = con.get_transactions(self.admin_number, pas_number, budget_code="aaa")
-        self.assertEqual(result, None)
+        result = get_transactions(self.admin_number, pas_number, budget_code="aaa")
+        self.assertEqual(result, [])
 
 
+@patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
 @patch("app.gpass_service.requests.get", get_response_mock)
-@patch("app.server.get_gpass_api_location", lambda: "http://localhost")
 @patch("app.crypto.get_key", lambda: TESTKEY)
-class GpassApiTest(FlaskTestCase):
+class GpassApiTest(FocusApiTestApp):
     admin_number = "111111111"
     pas_number = "6666666666666"
     budget_code = "aaa"
-
-    def create_app(self):
-        return application
-
-    # stadpassen data is in the combined api
 
     def test_get_transactions(self):
         encrypted = encrypt(self.budget_code, self.admin_number, self.pas_number)
@@ -141,5 +126,5 @@ class GpassApiTest(FlaskTestCase):
             "status": "ok",
         }
 
-        self.assert200(response)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, expected)

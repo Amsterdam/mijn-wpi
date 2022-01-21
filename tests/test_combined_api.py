@@ -1,11 +1,10 @@
+import json
 import os.path
 
 # Prepare environment
-from datetime import datetime
-
-from flask_testing import TestCase as FlaskTestCase
-from hiro import Timeline
 from mock import patch
+
+from tests.focus_test_app import FocusApiTestApp, get_fake_tma_cert
 
 from .mocks import MockClient, get_response_mock
 
@@ -14,27 +13,25 @@ os.environ["FOCUS_PASSWORD"] = "FOCUS_PASSWORD"
 os.environ["FOCUS_WSDL"] = "focus/focus.wsdl"
 os.environ["TMA_CERTIFICATE"] = __file__
 
-from app.server import application  # noqa: E402
-
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
-@patch("app.focusconnect.Client", new=MockClient)
 @patch(
-    "app.focusserver.get_bsn_from_request", new=lambda s: 123456789
+    "app.focusserver.get_bsn_from_request", lambda s: 123456789
 )  # side step decoding the BSN from SAML token
+@patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
+@patch("app.server.get_TMA_certificate", get_fake_tma_cert)
+@patch(
+    "app.focusserver.get_bsn_from_request", lambda s: 123456789
+)  # side step decoding the BSN from SAML token
+@patch("app.focusconnect.Client", new=MockClient)
 @patch("app.gpass_service.requests.get", get_response_mock)
-@patch("app.focusserver.get_gpass_api_location", lambda: "http://localhost")
 @patch("app.crypto.get_key", lambda: TESTKEY)
-class CombinedApiTest(FlaskTestCase):
-    def create_app(self):
-        return application
-
+class CombinedApiTest(FocusApiTestApp):
     def test_combined_api(self):
         self.maxDiff = None
 
-        with Timeline(start=datetime(2017, 5, 1, 1, 1, 1)):
-            response = self.client.get("/focus/combined")
+        response = self.client.get("/focus/combined")
 
         expected = {
             "content": {
@@ -175,18 +172,22 @@ class CombinedApiTest(FlaskTestCase):
         }
 
         response_json = response.json
+
         self.assertTrue(
             response_json["content"]["stadspassaldo"]["stadspassen"][0]["budgets"][0][
                 "urlTransactions"
             ].startswith("/api/focus/stadspastransacties/")
         )
+
         # remove url, it has a timebased factor in it.
         del response_json["content"]["stadspassaldo"]["stadspassen"][0]["budgets"][0][
             "urlTransactions"
         ]
+
         del response_json["content"]["stadspassaldo"]["stadspassen"][1]["budgets"][0][
             "urlTransactions"
         ]
+
         del response_json["content"]["stadspassaldo"]["stadspassen"][2]["budgets"][0][
             "urlTransactions"
         ]

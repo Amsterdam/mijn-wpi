@@ -1,9 +1,9 @@
-import os
 import json
+import os
+from unittest import TestCase
 
-from flask_testing.utils import TestCase
 from mock import patch
-
+from tests.focus_test_app import FocusApiTestApp
 
 # Prepare environment
 from tests.mocks import MockClient
@@ -14,20 +14,9 @@ os.environ["FOCUS_WSDL"] = "focus/focus.wsdl"
 os.environ["TMA_CERTIFICATE"] = __file__
 
 
-from app.config import (
-    config,
-    credentials,
-)  # noqa: E402  Module level import not at top of file
-from app.focusconnect import FocusConnection  # noqa: E402
-from app.focusinterpreter import (
-    _to_list,
-    _to_int,
-    _to_bool,
-    convert_aanvragen,
-)  # noqa: E402
-from app.server import application  # noqa: E402
-import app.server  # noqa: E402
-
+from app.config import config, credentials
+from app.focusconnect import FocusConnection
+from app.focusinterpreter import _to_bool, _to_int, _to_list, convert_aanvragen
 
 unencrypted_saml_token = b"""
 <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="234567890" Version="2.0">
@@ -42,19 +31,11 @@ unencrypted_saml_token = b"""
 """
 
 
-def get_fake_tma_cert():
-    return "fake cert"
-
-
 @patch(
     "app.focusconnect.FocusConnection.aanvragen",
     new=lambda s, bsn, url_root: {"aap": "noot"},
 )
-@patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
-class TestApiNoToken(TestCase):
-    def create_app(self):
-        return application
-
+class TestApiNoToken(FocusApiTestApp):
     def test_aanvragen_no_saml_token(self):
         """
         BSN saml token is a required header attribute
@@ -64,14 +45,10 @@ class TestApiNoToken(TestCase):
         self.assertEqual(response.data, b"Parameter error: Missing SAML token")
 
 
-@patch("app.server.get_TMA_certificate", new=get_fake_tma_cert)
-@patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
 # side step decoding the BSN from SAML token
 @patch("app.focusserver.get_bsn_from_request", new=lambda s: 123456789)
 @patch("app.focusconnect.Client", new=MockClient)
-class TestApi(TestCase):
-    def create_app(self):
-        return application
+class TestApi(FocusApiTestApp):
 
     # def test_aanvragen(self):
     #     """
@@ -94,26 +71,8 @@ class TestApi(TestCase):
         result = json.loads(response.data)
         self.assertEqual(result["aap"], "noot")
 
-    def test_cors_header(self):
-        """
-        CORS should be enabled
-        :return:
-        """
-        resp = self.client.get(
-            "/status/health", headers={"Origin": "http://fee-fi-foo.fum"}
-        )
-        self.assertTrue("Access-Control-Allow-Origin" in resp.headers)
-        self.assertEqual("*", resp.headers["Access-Control-Allow-Origin"])
 
-
-@patch("app.server.get_TMA_certificate", new=get_fake_tma_cert)
 class TestConnection(TestCase):
-    def create_app(self):
-        return application
-
-    def setUp(self):
-        pass
-
     @patch.object(FocusConnection, "_initialize_client")
     def test_service_set_up(self, mocked_set_client):
         """
@@ -124,15 +83,7 @@ class TestConnection(TestCase):
         self.assertTrue(mocked_set_client.called)
 
 
-@patch("app.server.get_TMA_certificate", new=get_fake_tma_cert)
-@patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
-class TestHealth(TestCase):
-    def create_app(self):
-        return application
-
-    def setUp(self):
-        pass
-
+class TestHealth(FocusApiTestApp):
     def test_health(self):
         """
         Simple respond OK when the API is up
@@ -142,12 +93,7 @@ class TestHealth(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-@patch("app.server.get_TMA_certificate", new=get_fake_tma_cert)
-class TestData(TestCase):
-    def create_app(self):
-        app.server.focus_server = None
-        return application
-
+class TestData(FocusApiTestApp):
     @patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Dummy")
     def test_data_with_connection(self):
         """
@@ -165,13 +111,7 @@ class TestData(TestCase):
         self.assertEqual(response.status_code, 500)
 
 
-class TestInterpreter(TestCase):
-    def create_app(self):
-        return application
-
-    def setUp(self):
-        pass
-
+class TestInterpreter(FocusApiTestApp):
     def test_to_array(self):
         self.assertEqual(_to_list({}, "x"), {"x": []})
         self.assertEqual(_to_list({"x": []}, "x"), {"x": []})

@@ -2,8 +2,8 @@ import os.path
 from unittest import TestCase
 
 # Prepare environment
-from flask_testing import TestCase as FlaskTestCase
 from mock import patch
+from tests.focus_test_app import FocusApiTestApp
 
 from tests.mocks import MockClient, pdf_document
 
@@ -17,7 +17,6 @@ from app.config import (
     credentials,
 )  # noqa: E402  Module level import not at top of file
 from app.focusconnect import FocusConnection  # noqa: E402
-from app.server import application  # noqa: E402
 
 
 @patch("app.focusconnect.Client", new=MockClient)
@@ -34,10 +33,7 @@ class DocumentTest(TestCase):
 # side step decoding the BSN from SAML token
 @patch("app.focusserver.get_bsn_from_request", new=lambda s: "123456789")
 @patch("app.focusconnect.Client", new=MockClient)
-class DocumentApiTest(FlaskTestCase):
-    def create_app(self):
-        return application
-
+class DocumentApiTest(FocusApiTestApp):
     def test_document_api(self):
         response = self.client.get("/focus/document?id=1&isBulk=true&isDms=true")
         self.assertEqual(response.data, pdf_document)
@@ -45,15 +41,3 @@ class DocumentApiTest(FlaskTestCase):
             response.headers["Content-Disposition"],
             r'attachment; filename="TestIKB\TestBulk15.pdf"',
         )
-
-
-# @patch('focus.focusserver.get_bsn_from_request', new=lambda s: '123456789')
-# @patch('focus.focusconnect.Client', new=MockClientEmpties)
-# class DocumentEmptyApiTest(FlaskTestCase):
-#     def create_app(self):
-#         return application
-#
-#     def test_empty_document_api(self):
-#         print("test empty")
-#         response = self.client.get('/focus/document?id=1&isBulk=true&isDms=true')
-#         print("response", response.data)

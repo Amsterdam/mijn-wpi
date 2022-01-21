@@ -6,13 +6,11 @@ The server interprets requests, execute the corresponding action and return JSON
 """
 import logging
 
-from flask import jsonify, request, Response, make_response
-
-from .gpass_service import GpassConnection
-from .saml import get_bsn_from_request
+from flask import Response, jsonify, make_response, request
 from requests import ConnectionError
 
-from .config import get_gpass_bearer_token, get_gpass_api_location
+from .gpass_service import get_stadspassen
+from .saml import get_bsn_from_request
 from .utils import volledig_administratienummer
 
 logger = logging.getLogger(__name__)
@@ -103,8 +101,6 @@ class FocusServer:
 
     def _collect_stadspas_data(self, bsn):
         # 2 stage, first get admin number from focus, then data from gpass
-        gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
-
         stadspas_data = self._focus_connection.stadspas(bsn=bsn)
         if not stadspas_data:
             return None
@@ -115,7 +111,7 @@ class FocusServer:
 
         stadspassen = []
         if stadspas_admin_number:
-            stadspassen = gpass_con.get_stadspassen(admin_number=stadspas_admin_number)
+            stadspassen = get_stadspassen(admin_number=stadspas_admin_number)
 
         return {"stadspassen": stadspassen, "type": stadspas_data["type"]}
 

@@ -21,19 +21,19 @@ def get_variable(v, default_value=None):
     return value if value is not None else default_value
 
 
-def check_env():
-    """
-    Checks if all required environment variables have been set
-    """
-    missing_vars = [
-        v
-        for v in ["FOCUS_USERNAME", "FOCUS_PASSWORD", "FOCUS_WSDL", "TMA_CERTIFICATE"]
-        if not get_variable(v)
-    ]
-    if missing_vars:
-        raise Exception(
-            "Missing environment variables {}".format(", ".join(missing_vars))
-        )
+# def check_env():
+#     """
+#     Checks if all required environment variables have been set
+#     """
+#     missing_vars = [
+#         v
+#         for v in ["FOCUS_USERNAME", "FOCUS_PASSWORD", "FOCUS_WSDL", "TMA_CERTIFICATE"]
+#         if not get_variable(v)
+#     ]
+#     if missing_vars:
+#         raise Exception(
+#             "Missing environment variables {}".format(", ".join(missing_vars))
+#         )
 
 
 config = {
@@ -67,10 +67,6 @@ def get_TMA_certificate():
 
 def get_gpass_bearer_token():
     return get_variable("GPASS_TOKEN")
-
-
-def get_gpass_api_location():
-    return get_variable("GPASS_API_LOCATION")
 
 
 def get_key():

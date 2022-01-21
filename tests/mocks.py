@@ -78,6 +78,7 @@ class MockServiceEmpties:
 
 def get_response_mock(*args, **kwargs):
     """Attempt to get data from mock_get_urls."""
+    print(args[0])
     try:
         res_data = mocked_get_urls[args[0]]
     except KeyError:
@@ -101,6 +102,9 @@ class MockResponse:
 
     def json(self):
         return self.data
+
+    def raise_for_status(self):
+        return
 
 
 # this document is from acc

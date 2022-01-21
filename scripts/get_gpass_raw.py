@@ -1,13 +1,9 @@
 import sys
 from pprint import pprint
 
-from app.config import get_gpass_api_location, get_gpass_bearer_token
-from app.gpass_service import GpassConnection
-
-from app.crypto import decrypt
-
 import app.gpass_service
-
+from app.crypto import decrypt
+from app.gpass_service import get_stadspassen, get_transactions
 from app.utils import volledig_administratienummer
 
 app.gpass_service.LOG_RAW = True
@@ -21,15 +17,13 @@ if (
     admin_number = volledig_administratienummer(admin_number)
 
 
-con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
-
-result = con.get_stadspassen(admin_number)
+result = get_stadspassen(admin_number)
 print("\n ---\nstadspassen:")
 pprint(result)
 
 pas_number = decrypt(result[0]["urlTransactions"].rsplit("/", 1)[1])[1]
 print("Pas number", pas_number)
 
-result = con.get_transactions(admin_number, pas_number)
+result = get_transactions(admin_number, pas_number)
 print("\n ---\npas transactions", pas_number)
 pprint(result)

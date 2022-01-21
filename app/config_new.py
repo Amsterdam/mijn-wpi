@@ -12,6 +12,8 @@ from tma_saml.exceptions import (
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
+TMA_CERTIFICATE = os.getenv("TMA_CERTIFICATE")
+
 # Sentry configuration.
 SENTRY_DSN = os.getenv("SENTRY_DSN")
 SENTRY_ENV = os.getenv("SENTRY_ENVIRONMENT")
@@ -46,7 +48,7 @@ focus_credentials = {
 }
 
 # GPASS
-GPASS_TOKEN = os.getenv("GPASS_TOKEN")
+GPASS_API_TOKEN = os.getenv("GPASS_TOKEN")
 GPASS_API_LOCATION = os.getenv("GPASS_API_LOCATION")
 GPASS_FERNET_ENCRYPTION_KEY = os.getenv("FERNET_KEY")
 
@@ -67,3 +69,14 @@ class CustomJSONEncoder(JSONEncoder):
             return obj.isoformat()
 
         return JSONEncoder.default(self, obj)
+
+
+# Deprecated
+urls = {
+    "health": "/status/health",
+    "data": "/status/data",
+    "aanvragen": "/focus/aanvragen",
+    "document": "/focus/document",
+    "combined": "/focus/combined",
+    "stadspastransacties": "/focus/stadspastransacties/<string:encrypted_admin_pasnummer>",
+}

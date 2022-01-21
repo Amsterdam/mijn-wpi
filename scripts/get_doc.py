@@ -48,4 +48,3 @@ with focus_connection._client.settings(
     content_bytesio = BytesIO(raw_doc.content)
     tree = etree.parse(content_bytesio)
     formatted_xml = etree.tostring(tree, pretty_print=True)
-    print("\n\n-----\n\n", formatted_xml.decode())

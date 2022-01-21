@@ -1,97 +1,67 @@
-import logging
+from email.mime import application
+
 import sentry_sdk
+from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
 
-from flask import Flask
-from flask_cors import CORS
-
-from app.gpass_service import GpassConnection
-
+from app.config import get_TMA_certificate
 from app.crypto import decrypt
-from .config import (
-    check_env,
-    config,
-    credentials,
-    urls,
-    get_TMA_certificate,
+from app.gpass_service import get_transactions
+
+from .config_new import (
     SENTRY_DSN,
-    get_gpass_bearer_token,
-    get_gpass_api_location,
+    CustomJSONEncoder,
+    focus_credentials,
+    urls,
+    zeep_config,
 )
 from .focusconnect import FocusConnection
 from .focusserver import FocusServer
 
+application = Flask(__name__)
+application.json_encoder = CustomJSONEncoder
 
-if SENTRY_DSN:
+if SENTRY_DSN:  # pragma: no cover
     sentry_sdk.init(
         dsn=SENTRY_DSN, integrations=[FlaskIntegration()], with_locals=False
     )
 
 
-application = Flask(__name__)
-
-logger = logging.getLogger(__name__)
-
-log_handler = logging.StreamHandler()
-application.logger.addHandler(log_handler)
-
-CORS(app=application, send_wildcard=True)
-
-# Main
-# Check the environment, will raise an exception if the server is not supplied with sufficient info
-check_env()
-# Initialize server to None, instantiate on first call to focus_server
-focus_server = None
-
-
-def server():
-    """
-    Gets a server to execute the request.
-    If the server is not alive (failing connection) a new server is created automatically
-    :return:
-    """
-    global focus_server
-    if focus_server is None or not focus_server.is_alive():
-        # Establish a (new) connection with the FOCUS system
-        focus_connection = FocusConnection(config, credentials)
-        # Serve the FOCUS requests that are exposed by this server
-        focus_server = FocusServer(focus_connection, get_TMA_certificate())
-    return focus_server
+def get_server():
+    focus_connection = FocusConnection(zeep_config, focus_credentials)
+    return FocusServer(focus_connection, get_TMA_certificate())
 
 
 @application.route(urls["health"])
 def status_health():
-    return server().health()
+    return get_server().health()
 
 
 @application.route(urls["data"])
 def status_data():
-    return server().status_data()
+    return get_server().status_data()
 
 
 @application.route(urls["aanvragen"])
 def aanvragen():
-    return server().aanvragen()
+    return get_server().aanvragen()
 
 
 @application.route(urls["document"])
 def document():
-    return server().document()
+    return get_server().document()
 
 
 @application.route(urls["combined"])
 def combined():
-    return server().combined()
+    return get_server().combined()
 
 
 @application.route(urls["stadspastransacties"])
 def stadspastransactions(encrypted_admin_pasnummer):
     budget_code, admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
 
-    gpass_con = GpassConnection(get_gpass_api_location(), get_gpass_bearer_token())
-    stadspas_transations = gpass_con.get_transactions(
-        admin_number, stadspas_number, budget_code
-    )
+    stadspas_transations = get_transactions(admin_number, stadspas_number, budget_code)
     if stadspas_transations is None:
         return {}, 204
 
