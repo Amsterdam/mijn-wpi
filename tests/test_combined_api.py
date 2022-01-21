@@ -1,10 +1,9 @@
-import json
 import os.path
 
 # Prepare environment
 from mock import patch
 
-from tests.focus_test_app import FocusApiTestApp, get_fake_tma_cert
+from tests.focus_test_app import FocusApiTestApp
 
 from .mocks import MockClient, get_response_mock
 
