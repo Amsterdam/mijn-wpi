@@ -18,4 +18,5 @@ COPY test.sh /api/
 COPY .flake8 /api/
 
 USER datapunt
-CMD uwsgi --ini /api/uwsgi.ini
+
+CMD ["docker-run.sh"]
