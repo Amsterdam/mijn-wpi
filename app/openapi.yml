@@ -1,0 +1,397 @@
+openapi: 3.0.3
+info:
+  title: Focus API
+  description: Koppel api tussen WPI (Focus) en Mijn Amsterdam
+  version: 2.0.0
+paths:
+  /focus/aanvragen:
+    get:
+      parameters:
+        - name: x-saml-attribute-token1
+          in: header
+          description: TMA encoded BSN
+          required: true
+          schema:
+            type: string
+      description:
+        Alle lopende en afgehandelde aanvragen voor een bepaalde persoon
+        geidentificeerd door een BSN nummer
+      responses:
+        "200":
+          description: |
+            Lopende en Afgeronde Aanvragen
+
+            De processtappen per product zijn:
+            -- aanvraag
+            -- inBehandeling
+            -- herstelTermijn
+            -- beslissing
+            -- bezwaar
+
+            Als er geen data beschikbaar is voor een bepaalde processtap is de waarde null
+
+            Alle data die wordt ontvangen uit de focus API worden door de API geretourneerd
+
+            Er worden in de API tevens een aantal attributen toegevoegd aan het originele bericht uit de focus API.
+
+            _id
+            Aanvragen worden gekenmerkt door een soort product, bv Participatiewet en productnaam, bv Levensonderhoud
+            Dit komt terug in de _id, bv 0-1 welke een combinatie is van de index van het soort product (0) en het product (1)
+
+            Bij een processtap is de _id de index van de processtap op volgorde zoals bovenstaand bij processtappen is toegelicht.
+
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Aanvraag"
+                  status:
+                    type: string
+                    enum:
+                      - "OK"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /focus/document:
+    get:
+      description: Geeft een bij een aanvraag behorend document terug voor een bepaalde persoon geidentificeerd door een BSN nummer
+      parameters:
+        - name: id
+          in: query
+          description: document id
+          required: true
+          schema:
+            type: integer
+        - name: isBulk
+          in: query
+          description: Tells if the document is a bulk document
+          schema:
+            type: boolean
+            default: false
+        - name: isDms
+          in: query
+          description: Tells if the document is a DMS (Document Management System) document
+          schema:
+            type: boolean
+            default: false
+        - name: x-saml-attribute-token1
+          in: header
+          description: TMA encoded BSN
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: |
+            Document contents (base64 encoded string), filename and description
+            - description
+            Short description of the document (normally null)
+            - fileName
+            Name of the file, including extension, e.g. doc.pdf
+            - contents
+            Base64 encoded contents
+            - mime_type
+            MIME type (application/pdf voor pdf documenten, anders application/octet-stream)
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: byte
+            application/octet-stream:
+              schema:
+                type: string
+                format: byte
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /status/health:
+    get:
+      summary: returns "OK"
+      responses:
+        "200":
+          description: Returns "OK"
+          content:
+            application/json:
+              schema:
+                type: string
+                enum:
+                  - "OK"
+  /focus/combined:
+    get:
+      parameters:
+        - name: x-saml-attribute-token1
+          in: header
+          description: TMA encoded BSN
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: a combination of several data sources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: object
+                    properties:
+                      jaaropgaven:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Jaaropgave"
+                      stadspassaldo:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - hoofpashouder
+                              - partner
+                              - kind
+                          stadspassen:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/Stadspas"
+                      tozodocumenten:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Document"
+                      uitkeringsspecificaties:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Uitkeringsspecificatie"
+                  status:
+                    type: string
+                    enum:
+                      - "OK"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /focus/stadspastransacties/{encrypted_admin_pasnummer}:
+    get:
+      parameters:
+        - name: x-saml-attribute-token1
+          in: header
+          description: TMA encoded BSN
+          required: true
+          schema:
+            type: string
+        - name: encrypted_admin_pasnummer
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns a list of transactions coupled to a stadspass.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                    enum:
+                      - "OK"
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/StadspasTransaction"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    Aanvraag:
+      type: object
+      properties:
+        _id:
+          type: string
+        dienstverleningstermijn:
+          type: integer
+        inspanningsperiode:
+          type: integer
+        naam:
+          type: string
+          enum:
+            - Levensonderhoud
+            - Stadspas
+        typeBesluit:
+          type: string
+        soortProduct:
+          type: string
+          enum:
+            - Participatiewet
+            - Minimafonds
+        processtappen:
+          type: object
+          properties:
+            aanvraag:
+              $ref: "#/components/schemas/AanvraagProcesStap"
+            beslissing:
+              $ref: "#/components/schemas/AanvraagProcesStap"
+            bezwaar:
+              $ref: "#/components/schemas/AanvraagProcesStap"
+            herstelTermijn:
+              $ref: "#/components/schemas/AanvraagProcesStap"
+            inBehandeling:
+              $ref: "#/components/schemas/AanvraagProcesStap"
+    AanvraagProcesStap:
+      type: object
+      nullable: true
+      properties:
+        _id:
+          type: string
+        datum:
+          type: string
+          format: date-time
+        reden:
+          type: string
+        document:
+          items:
+            $ref: "#/components/schemas/AanvraagProcesStapDocumentReferentie"
+    AanvraagProcesStapDocumentReferentie:
+      properties:
+        $ref:
+          type: string
+        id:
+          type: string
+        isBulk:
+          type: boolean
+        isDms:
+          type: boolean
+        omschrijving:
+          type: string
+    StadspasTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        amount:
+          type: number
+        date:
+          $ref: "#/components/schemas/Date"
+    Jaaropgave:
+      type: object
+      properties:
+        datePublished:
+          type: string
+          format: date
+          example: "2019-04-19"
+        id:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          example: "focus/document?id=95330222&isBulk=false&isDms=false"
+    Stadspas:
+      type: object
+      properties:
+        datumAfloop:
+          $ref: "#/components/schemas/DateTime"
+        id:
+          type: number
+        naam:
+          type: string
+        pasnummer:
+          type: string
+        budgets:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadspasBudget"
+    StadspasBudget:
+      type: object
+      properties:
+        assigned:
+          type: number
+        balance:
+          type: number
+        code:
+          type: string
+        description:
+          type: string
+        urlTransactions:
+          type: string
+          description: optional url to get the stadspas transactions
+          example: "/api/focus/stadspastransacties/{encrypted_admin_pasnummer}"
+        datumAfloop:
+          $ref: "#/components/schemas/DateTime"
+    Document:
+      type: object
+      properties:
+        datePublished:
+          $ref: "#/components/schemas/Date"
+        description:
+          type: string
+        id:
+          type: string
+        documentCodeId:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+          example: "focus/document?id=95330222&isBulk=false&isDms=false"
+    Uitkeringsspecificatie:
+      type: object
+      properties:
+        datePublished:
+          $ref: "#/components/schemas/Date"
+        id:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          example: "focus/document?id=95330222&isBulk=false&isDms=false"
+    Date:
+      type: string
+      format: date
+      example: "2020-06-16"
+      nullable: true
+    Time:
+      type: string
+      example: "10:15"
+      nullable: true
+    DateTime:
+      type: string
+      format: date-time
+      example: "2020-06-08T00:00:00"
+      nullable: true
+    Kenteken:
+      type: string
+      example: "aa-11-aa"
+      nullable: true
+    Location:
+      type: string
+      nullable: true
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - "ERROR"
+        message:
+          type: string
