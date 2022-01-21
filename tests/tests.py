@@ -1,4 +1,3 @@
-import json
 import os
 from unittest import TestCase
 
@@ -31,24 +30,6 @@ unencrypted_saml_token = b"""
 """
 
 
-# side step decoding the BSN from SAML token
-@patch("app.server.get_bsn_from_request", lambda: 123456789)
-@patch("app.focusconnect.Client", new=MockClient)
-class TestApi(FocusApiTestApp):
-    @patch(
-        "app.focusconnect.FocusConnection.aanvragen",
-        new=lambda s, bsn, url_root: {"aap": "noot"},
-    )
-    def test_verhuizingen_with_connection(self):
-        """
-        Expect a result with meldingen
-        """
-        response = self.client.get("/focus/aanvragen")
-        self.assertEqual(response.status_code, 200)
-        result = json.loads(response.data)
-        self.assertEqual(result["aap"], "noot")
-
-
 class TestConnection(TestCase):
     @patch.object(FocusConnection, "_initialize_client")
     def test_service_set_up(self, mocked_set_client):
@@ -58,16 +39,6 @@ class TestConnection(TestCase):
         """
         FocusConnection(zeep_config, focus_credentials)
         self.assertTrue(mocked_set_client.called)
-
-
-class TestHealth(FocusApiTestApp):
-    def test_health(self):
-        """
-        Simple respond OK when the API is up
-        :return:
-        """
-        response = self.client.get("/status/health")
-        self.assertEqual(response.status_code, 200)
 
 
 class TestInterpreter(FocusApiTestApp):
