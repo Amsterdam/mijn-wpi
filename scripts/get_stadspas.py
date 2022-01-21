@@ -3,14 +3,14 @@ from pprint import pprint
 
 import app.focusconnect
 import app.gpass_service
-from app import config_new, credentials
+from app.config import zeep_config, focus_credentials
 from app.focusconnect import FocusConnection
 from app.focusserver import FocusServer
 from app.utils import decrypt
 
 bsn = sys.argv[1]
 
-focus_connection = FocusConnection(config_new, credentials)
+focus_connection = FocusConnection(zeep_config, focus_credentials)
 # Serve the FOCUS requests that are exposed by this server
 focus_server = FocusServer(focus_connection)
 

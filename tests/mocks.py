@@ -3,7 +3,7 @@ import base64
 import json
 import os
 
-from app.config_new import BASE_PATH
+from app.config import BASE_PATH
 
 RESPONSES_PATH = os.path.join(BASE_PATH, "../", "tests", "responses")
 

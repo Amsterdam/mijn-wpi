@@ -14,7 +14,7 @@ from app.utils import (
     success_response_json,
 )
 
-from app.config_new import (
+from app.config import (
     FOCUS_DOCUMENT_PATH,
     IS_DEV,
     SENTRY_DSN,

@@ -7,7 +7,7 @@ See also the convert_aanvragen method for a more detailed explanation.
 import logging
 from bs4 import BeautifulSoup
 
-from app.config_new import FOCUS_DOCUMENT_PATH
+from app.config import FOCUS_DOCUMENT_PATH
 
 
 def _to_str(obj, key):

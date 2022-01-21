@@ -1,6 +1,6 @@
 from cryptography.fernet import Fernet
 
-from app.config_new import GPASS_FERNET_ENCRYPTION_KEY
+from app.config import GPASS_FERNET_ENCRYPTION_KEY
 import os
 from datetime import date, datetime
 from functools import wraps
@@ -22,7 +22,7 @@ from tma_saml.tma_saml import get_user_type
 from tma_saml.user_type import UserType
 from yaml import load
 
-from app.config_new import (
+from app.config import (
     BASE_PATH,
     ENABLE_OPENAPI_VALIDATION,
 )

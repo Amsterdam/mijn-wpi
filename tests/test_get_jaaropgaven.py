@@ -11,7 +11,7 @@ os.environ["FOCUS_PASSWORD"] = "FOCUS_PASSWORD"
 os.environ["FOCUS_WSDL"] = "focus/focus.wsdl"
 os.environ["TMA_CERTIFICATE"] = __file__
 
-from app.config_new import (
+from app.config import (
     zeep_config,
     focus_credentials,
 )  # noqa: E402  Module level import not at top of file

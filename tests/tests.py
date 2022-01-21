@@ -13,7 +13,7 @@ os.environ["FOCUS_WSDL"] = "focus/focus.wsdl"
 os.environ["TMA_CERTIFICATE"] = __file__
 
 
-from app.config_new import zeep_config, focus_credentials
+from app.config import zeep_config, focus_credentials
 from app.focusconnect import FocusConnection
 from app.focusinterpreter import _to_bool, _to_int, _to_list, convert_aanvragen
 

@@ -2,7 +2,7 @@ import logging
 
 import requests
 
-from app.config_new import API_REQUEST_TIMEOUT, GPASS_API_LOCATION, GPASS_API_TOKEN
+from app.config import API_REQUEST_TIMEOUT, GPASS_API_LOCATION, GPASS_API_TOKEN
 from app.utils import encrypt
 
 
