@@ -2,7 +2,7 @@ import sys
 from pprint import pprint
 
 import app.gpass_service
-from app.crypto import decrypt
+from app.utils import decrypt
 from app.gpass_service import get_stadspassen, get_transactions
 from app.utils import volledig_administratienummer
 

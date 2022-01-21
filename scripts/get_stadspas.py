@@ -8,7 +8,7 @@ from app.config import (
     credentials,
     get_TMA_certificate,
 )
-from app.crypto import decrypt
+from app.utils import decrypt
 from app.focusconnect import FocusConnection
 from app.focusserver import FocusServer
 

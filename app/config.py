@@ -63,11 +63,3 @@ urls = {
 def get_TMA_certificate():
     with open(get_variable("TMA_CERTIFICATE"), "r") as f:
         return f.read()
-
-
-def get_gpass_bearer_token():
-    return get_variable("GPASS_TOKEN")
-
-
-def get_key():
-    return os.getenv("FERNET_KEY")

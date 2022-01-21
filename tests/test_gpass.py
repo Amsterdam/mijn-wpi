@@ -3,7 +3,7 @@ from unittest import TestCase
 # Prepare environment
 from mock import patch
 
-from app.crypto import encrypt
+from app.utils import encrypt
 from app.gpass_service import get_stadspassen, get_transactions
 from tests.focus_test_app import FocusApiTestApp
 
@@ -14,7 +14,7 @@ TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 @patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
 @patch("app.gpass_service.requests.get", get_response_mock)
-@patch("app.crypto.get_key", lambda: TESTKEY)
+@patch("app.utils.GPASS_FERNET_ENCRYPTION_KEY", TESTKEY)
 class GpassServiceTest(TestCase):
     admin_number = "111111111"
 
@@ -104,7 +104,7 @@ class GpassServiceTest(TestCase):
 
 @patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
 @patch("app.gpass_service.requests.get", get_response_mock)
-@patch("app.crypto.get_key", lambda: TESTKEY)
+@patch("app.utils.GPASS_FERNET_ENCRYPTION_KEY", TESTKEY)
 class GpassApiTest(FocusApiTestApp):
     admin_number = "111111111"
     pas_number = "6666666666666"

@@ -4,7 +4,7 @@ from pprint import pprint
 import requests
 
 from app.config_new import API_REQUEST_TIMEOUT, GPASS_API_LOCATION, GPASS_API_TOKEN
-from app.crypto import encrypt
+from app.utils import encrypt
 
 LOG_RAW = False
 

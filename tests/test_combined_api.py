@@ -26,7 +26,7 @@ TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 )  # side step decoding the BSN from SAML token
 @patch("app.focusconnect.Client", new=MockClient)
 @patch("app.gpass_service.requests.get", get_response_mock)
-@patch("app.crypto.get_key", lambda: TESTKEY)
+@patch("app.utils.GPASS_FERNET_ENCRYPTION_KEY", TESTKEY)
 class CombinedApiTest(FocusApiTestApp):
     def test_combined_api(self):
         self.maxDiff = None

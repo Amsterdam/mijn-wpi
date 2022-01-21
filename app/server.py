@@ -5,7 +5,7 @@ from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from app.config import get_TMA_certificate
-from app.crypto import decrypt
+from app.utils import decrypt
 from app.gpass_service import get_transactions
 
 from .config_new import (
