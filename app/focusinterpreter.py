@@ -14,8 +14,6 @@ from bs4 import BeautifulSoup
 
 from app.config_new import urls
 
-logger = logging.getLogger(__name__)
-
 
 def _to_str(obj, key):
     value = obj.get(key, None)
@@ -152,7 +150,7 @@ def convert_aanvragen(aanvragen, url_root):
                 _convert_product(product, url_root)
                 producten.append(product)
     except Exception as error:
-        logger.error("Failed to convert aanvragen: {}".format(str(error)))
+        logging.error("Failed to convert aanvragen: {}".format(str(error)))
         raise error
 
     stappen = [

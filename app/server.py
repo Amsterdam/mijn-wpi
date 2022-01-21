@@ -7,15 +7,15 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from app.gpass_service import get_transactions
 from app.utils import decrypt, get_bsn_from_request
 
-from .config_new import (
+from app.config_new import (
     SENTRY_DSN,
     CustomJSONEncoder,
     focus_credentials,
     urls,
     zeep_config,
 )
-from .focusconnect import FocusConnection
-from .focusserver import FocusServer
+from app.focusconnect import FocusConnection
+from app.focusserver import FocusServer
 
 application = Flask(__name__)
 application.json_encoder = CustomJSONEncoder

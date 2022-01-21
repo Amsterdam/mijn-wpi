@@ -1,14 +1,9 @@
 import logging
-from pprint import pprint
 
 import requests
 
 from app.config_new import API_REQUEST_TIMEOUT, GPASS_API_LOCATION, GPASS_API_TOKEN
 from app.utils import encrypt
-
-LOG_RAW = False
-
-logger = logging.getLogger(__name__)
 
 
 def send_request(path, admin_number):
@@ -72,7 +67,7 @@ def format_stadspassen(stadspas_owner, admin_number):
         try:
             naam = f'{stadspas_owner["initialen"]} {stadspas_owner["achternaam"]}'
         except KeyError as e:
-            logger.error(f"{type(e)} available: {stadspas_owner.keys()}")
+            logging.error(f"{type(e)} available: {stadspas_owner.keys()}")
             raise e
 
     stadspassen_actief = [

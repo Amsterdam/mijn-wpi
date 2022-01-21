@@ -6,8 +6,6 @@ from app.utils import decrypt
 from app.gpass_service import get_stadspassen, get_transactions
 from app.utils import volledig_administratienummer
 
-app.gpass_service.LOG_RAW = True
-
 admin_number = sys.argv[1]
 
 if (

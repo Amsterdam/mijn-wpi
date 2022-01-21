@@ -15,18 +15,13 @@ from requests.auth import HTTPBasicAuth
 from zeep import Client
 from zeep.transports import Transport
 
-from .focusinterpreter import (
+from app.focusinterpreter import (
     convert_aanvragen,
     convert_jaaropgaven,
     convert_uitkeringsspecificaties,
     convert_e_aanvraag_TOZO,
     convert_stadspas,
 )
-
-logger = logging.getLogger(__name__)
-
-
-LOG_RAW = False
 
 
 class FocusConnection:
@@ -49,7 +44,7 @@ class FocusConnection:
         The resulting service should be registered by the caller with the object in self._client
         :return: Object
         """
-        logger.info("Establishing a connection with Focus")
+        logging.info("Establishing a connection with Focus")
 
         session = Session()
         session.auth = HTTPBasicAuth(
@@ -68,12 +63,12 @@ class FocusConnection:
             return client
         except ConnectionError as e:
             # do not relog the error, because the error has a object address in it, it is a new error every time.
-            logger.error(
+            logging.error(
                 f"Failed to establish a connection with Focus: Connection Time Out ({type(e)})"
             )
             return None
         except Exception as error:
-            logger.error(
+            logging.error(
                 "Failed to establish a connection with Focus: {} {}".format(
                     type(error), str(error)
                 )
@@ -102,9 +97,9 @@ class FocusConnection:
                 faultstring,
             )
 
-            logger.error(f"{prefix} {faultstring}")
+            logging.error(f"{prefix} {faultstring}")
         else:
-            logger.error(f"{prefix} {raw_xml}")
+            logging.error(f"{prefix} {raw_xml}")
 
     def aanvragen(self, bsn, url_root):
         """
@@ -182,9 +177,9 @@ class FocusConnection:
             if not aanvragen:
                 try:
                     faultsstring = tree.find("faultstring")
-                    logger.debug(faultsstring)
+                    logging.debug(faultsstring)
                 except Exception as e:
-                    logger.exception(e)
+                    logging.exception(e)
                 return []
             tozo_documenten = convert_e_aanvraag_TOZO(tree, url_root)
             return tozo_documenten
@@ -197,11 +192,11 @@ class FocusConnection:
                 .replace("\n", "")
             )
             tree = BeautifulSoup(raw_stadspas, features="lxml-xml")
-            if LOG_RAW:
-                print(tree.prettify())
             stadspas = tree.find("getStadspasResponse")
+
             if not stadspas:
                 self._log_soap_faultstring(raw_stadspas, "no stadspas?")
+
             data = convert_stadspas(tree)
 
             return data
@@ -232,7 +227,7 @@ class FocusConnection:
             if doc and doc["dataHandler"]:
                 data = doc["dataHandler"]
                 filename = doc["fileName"]
-                logger.error("fallback document method is used")
+                logging.error("fallback document method is used")
             else:
                 return None
         else:

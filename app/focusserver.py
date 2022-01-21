@@ -11,9 +11,7 @@ from requests import ConnectionError
 
 from app.utils import volledig_administratienummer
 
-from .gpass_service import get_stadspassen
-
-logger = logging.getLogger(__name__)
+from app.gpass_service import get_stadspassen
 
 
 class FocusServer:
@@ -79,12 +77,12 @@ class FocusServer:
                 bsn=bsn, url_root=request.script_root
             )
         except ConnectionError as error:
-            logger.exception(
+            logging.exception(
                 "Failed to retrieve aanvragen: {}".format(type(error)), exc_info=error
             )
             return self._no_connection_response()
         except Exception as error:
-            logger.exception(
+            logging.exception(
                 "Failed to retrieve aanvragen (unknown error): {} {}".format(
                     type(error), str(error)
                 ),
@@ -135,12 +133,12 @@ class FocusServer:
                 },
             }
         except ConnectionError as error:
-            logger.exception(
+            logging.exception(
                 "Failed to retrieve combined: {}".format(type(error)), exc_info=error
             )
             return self._no_connection_response()
         except Exception as error:
-            logger.exception(
+            logging.exception(
                 "Failed to retrieve combined (unknown error): {} {}".format(
                     type(error), str(error)
                 ),
@@ -163,19 +161,19 @@ class FocusServer:
                 bsn=bsn, id=id, isBulk=isBulk, isDms=isDms
             )
         except ConnectionError as error:
-            logger.exception(
+            logging.exception(
                 "Failed to retrieve document: {}".format(type(error)), exc_info=error
             )
             return self._no_connection_response()
         except Exception as error:
-            logger.exception(
+            logging.exception(
                 "Failed to retrieve document: {} {}".format(type(error), str(error)),
                 exc_info=error,
             )
             return self._no_connection_response()
 
         if document is None:
-            logger.error(
+            logging.error(
                 f"Document empty. type bsn: {type(bsn)} {len(bsn)}  type id: {type(id)}"
             )
             return "Document not received from source.", 404

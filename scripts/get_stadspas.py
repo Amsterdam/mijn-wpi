@@ -10,9 +10,6 @@ from app.utils import decrypt
 
 bsn = sys.argv[1]
 
-app.focusconnect.LOG_RAW = True
-app.gpass_service.LOG_RAW = True
-
 focus_connection = FocusConnection(config_new, credentials)
 # Serve the FOCUS requests that are exposed by this server
 focus_server = FocusServer(focus_connection)
