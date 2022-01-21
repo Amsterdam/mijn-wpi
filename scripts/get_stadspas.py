@@ -1,12 +1,12 @@
 import sys
 from pprint import pprint
 
-import app.focusconnect
-import app.gpass_service
-from app.config import zeep_config, focus_credentials
+from app.gpass_service import get_transactions
+from app.config import focus_credentials, zeep_config
 from app.focusconnect import FocusConnection
 from app.focusserver import FocusServer
 from app.utils import decrypt
+from tests.test_gpass import GpassServiceTest
 
 bsn = sys.argv[1]
 
@@ -25,8 +25,6 @@ if stadspas["stadspassen"]:
         transactions_url.rsplit("/", 1)[1]
     )
 
-    transactions = app.gpass_service.get_transactions(
-        admin_number, stadspas_number, budget_code
-    )
+    transactions = get_transactions(admin_number, stadspas_number, budget_code)
     print("=== transactions result:")
     pprint(transactions)
