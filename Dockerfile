@@ -14,9 +14,10 @@ RUN rm requirements.txt
 COPY ./app /api/app
 
 COPY uwsgi.ini /api/
+COPY docker-run.sh /api/
 COPY test.sh /api/
 COPY .flake8 /api/
 
 USER datapunt
 
-CMD ["docker-run.sh"]
+CMD ["/api/docker-run.sh"]
