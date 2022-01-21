@@ -1,16 +1,25 @@
 from email.mime import application
+import logging
+from urllib.error import HTTPError
 
 import sentry_sdk
 from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from app.gpass_service import get_transactions
-from app.utils import decrypt, get_bsn_from_request, success_response_json
+from app.utils import (
+    decrypt,
+    error_response_json,
+    get_bsn_from_request,
+    success_response_json,
+)
 
 from app.config_new import (
     FOCUS_DOCUMENT_PATH,
+    IS_DEV,
     SENTRY_DSN,
     CustomJSONEncoder,
+    TMAException,
     focus_credentials,
     zeep_config,
 )
@@ -62,6 +71,33 @@ def stadspastransactions(encrypted_admin_pasnummer):
     stadspas_transations = get_transactions(admin_number, stadspas_number, budget_code)
 
     return success_response_json(stadspas_transations)
+
+
+@application.errorhandler(Exception)
+def handle_error(error):
+
+    error_message_original = str(error)
+
+    msg_tma_exception = "TMA error occurred"
+    msg_request_http_error = "Request error occurred"
+    msg_server_error = "Server error occurred"
+
+    logging.exception(error, extra={"error_message_original": error_message_original})
+
+    if IS_DEV:
+        msg_tma_exception = error_message_original
+        msg_request_http_error = error_message_original
+        msg_server_error = error_message_original
+
+    if isinstance(error, HTTPError):
+        return error_response_json(
+            msg_request_http_error,
+            error.response.status_code,
+        )
+    elif isinstance(error, TMAException):
+        return error_response_json(msg_tma_exception, 400)
+
+    return error_response_json(msg_server_error, 500)
 
 
 if __name__ == "__main__":
