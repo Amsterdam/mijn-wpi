@@ -11,9 +11,9 @@ os.environ["FOCUS_PASSWORD"] = "FOCUS_PASSWORD"
 os.environ["FOCUS_WSDL"] = "focus/focus.wsdl"
 os.environ["TMA_CERTIFICATE"] = __file__
 
-from app.config import (
-    config,
-    credentials,
+from app.config_new import (
+    zeep_config,
+    focus_credentials,
 )  # noqa: E402  Module level import not at top of file
 from app.focusconnect import FocusConnection  # noqa: E402
 
@@ -22,7 +22,7 @@ from app.focusconnect import FocusConnection  # noqa: E402
 class TozoDocumentenTests(TestCase):
     def test_connection(self):
         self.maxDiff = None
-        focus_connection = FocusConnection(config, credentials)
+        focus_connection = FocusConnection(zeep_config, focus_credentials)
         result = focus_connection.EAanvragenTozo(bsn=1234, url_root="/")
         expected = [
             {
@@ -82,7 +82,7 @@ class TozoDocumentenTests(TestCase):
 class TozoDocumentenEmptyTests(TestCase):
     def test_connection(self):
         self.maxDiff = None
-        focus_connection = FocusConnection(config, credentials)
+        focus_connection = FocusConnection(zeep_config, focus_credentials)
         result = focus_connection.EAanvragenTozo(bsn=1234, url_root="/")
 
         self.assertEqual(result, [])

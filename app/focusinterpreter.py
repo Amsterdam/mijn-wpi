@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 # from dateutil import parser
 
-from app.config import urls
+from app.config_new import urls
 
 logger = logging.getLogger(__name__)
 

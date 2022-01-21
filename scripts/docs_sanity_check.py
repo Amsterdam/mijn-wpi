@@ -2,10 +2,10 @@ import sys
 
 from bs4 import BeautifulSoup
 
-from app.config import config, credentials
+from app.config_new import config, credentials
 from app.focusconnect import FocusConnection
 
-focus_connection = FocusConnection(config, credentials)
+focus_connection = FocusConnection(zeep_config, focus_credentials)
 
 bsn = sys.argv[1]
 

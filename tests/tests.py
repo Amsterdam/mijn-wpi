@@ -14,7 +14,7 @@ os.environ["FOCUS_WSDL"] = "focus/focus.wsdl"
 os.environ["TMA_CERTIFICATE"] = __file__
 
 
-from app.config import config, credentials
+from app.config_new import zeep_config, focus_credentials
 from app.focusconnect import FocusConnection
 from app.focusinterpreter import _to_bool, _to_int, _to_list, convert_aanvragen
 
@@ -56,7 +56,7 @@ class TestConnection(TestCase):
         Test if the service is established on object creation time
         :return:
         """
-        FocusConnection(config, credentials)
+        FocusConnection(zeep_config, focus_credentials)
         self.assertTrue(mocked_set_client.called)
 
 

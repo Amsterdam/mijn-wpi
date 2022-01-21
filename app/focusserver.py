@@ -17,14 +17,13 @@ logger = logging.getLogger(__name__)
 
 
 class FocusServer:
-    def __init__(self, focus_connection, tma_certificate):
+    def __init__(self, focus_connection):
         """
         Initializes the Server
         :param focus_connection: The connection to use to access the underlying Focus SOAP API
         :param tma_certificate: The certificate to use to decode SAML tokens (BSN)
         """
         self._focus_connection = focus_connection
-        self._tma_certificate = tma_certificate
 
     def is_alive(self):
         return self._focus_connection.is_alive()

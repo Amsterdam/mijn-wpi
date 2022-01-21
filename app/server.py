@@ -4,9 +4,8 @@ import sentry_sdk
 from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
 
-from app.config import get_TMA_certificate
-from app.utils import decrypt, get_bsn_from_request
 from app.gpass_service import get_transactions
+from app.utils import decrypt, get_bsn_from_request
 
 from .config_new import (
     SENTRY_DSN,
@@ -29,7 +28,7 @@ if SENTRY_DSN:  # pragma: no cover
 
 def get_server():
     focus_connection = FocusConnection(zeep_config, focus_credentials)
-    return FocusServer(focus_connection, get_TMA_certificate())
+    return FocusServer(focus_connection)
 
 
 @application.route(urls["health"])

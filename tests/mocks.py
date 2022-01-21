@@ -3,9 +3,9 @@ import base64
 import json
 import os
 
-from app.config import BASE_PATH
+from app.config_new import BASE_PATH
 
-RESPONSES_PATH = os.path.join(BASE_PATH, "tests", "responses")
+RESPONSES_PATH = os.path.join(BASE_PATH, "../", "tests", "responses")
 
 
 class MockClient:
@@ -108,7 +108,7 @@ class MockResponse:
 
 
 # this document is from acc
-TEST_PDF_PATH = os.path.join(BASE_PATH, "tests", "test.pdf")
+TEST_PDF_PATH = os.path.join(BASE_PATH, "../", "tests", "test.pdf")
 with open(TEST_PDF_PATH, "rb") as fp:
     pdf_document = fp.read()
 

@@ -16,11 +16,7 @@ os.environ["TMA_CERTIFICATE"] = __file__
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
-@patch(
-    "app.server.get_bsn_from_request", lambda: 123456789
-)  # side step decoding the BSN from SAML token
 @patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
-@patch("app.server.get_TMA_certificate", get_fake_tma_cert)
 @patch(
     "app.server.get_bsn_from_request", lambda: 123456789
 )  # side step decoding the BSN from SAML token

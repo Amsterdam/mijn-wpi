@@ -4,10 +4,10 @@ import logging.config
 
 from lxml import etree
 
-from app.config import config, credentials
+from app.config_new import config, credentials
 from app.focusconnect import FocusConnection
 
-focus_connection = FocusConnection(config, credentials)
+focus_connection = FocusConnection(zeep_config, focus_credentials)
 
 
 logging.config.dictConfig(

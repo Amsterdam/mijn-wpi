@@ -3,23 +3,19 @@ from pprint import pprint
 
 import app.focusconnect
 import app.gpass_service
-from app.config import (
-    config,
-    credentials,
-    get_TMA_certificate,
-)
-from app.utils import decrypt
+from app import config_new, credentials
 from app.focusconnect import FocusConnection
 from app.focusserver import FocusServer
+from app.utils import decrypt
 
 bsn = sys.argv[1]
 
 app.focusconnect.LOG_RAW = True
 app.gpass_service.LOG_RAW = True
 
-focus_connection = FocusConnection(config, credentials)
+focus_connection = FocusConnection(config_new, credentials)
 # Serve the FOCUS requests that are exposed by this server
-focus_server = FocusServer(focus_connection, get_TMA_certificate())
+focus_server = FocusServer(focus_connection)
 
 stadspas = focus_server._collect_stadspas_data(bsn)
 
