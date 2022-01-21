@@ -20,7 +20,7 @@ from app.focusconnect import FocusConnection  # noqa: E402
 from app.server import application  # noqa: E402
 
 
-@patch("focus.focusconnect.Client", new=MockClient)
+@patch("app.focusconnect.Client", new=MockClient)
 class DocumentTest(TestCase):
     def test_focus_connection_document(self):
         focus_connection = FocusConnection(config, credentials)
@@ -32,8 +32,8 @@ class DocumentTest(TestCase):
 
 
 # side step decoding the BSN from SAML token
-@patch("focus.focusserver.get_bsn_from_request", new=lambda s: "123456789")
-@patch("focus.focusconnect.Client", new=MockClient)
+@patch("app.focusserver.get_bsn_from_request", new=lambda s: "123456789")
+@patch("app.focusconnect.Client", new=MockClient)
 class DocumentApiTest(FlaskTestCase):
     def create_app(self):
         return application

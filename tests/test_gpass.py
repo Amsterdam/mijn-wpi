@@ -13,9 +13,9 @@ from .mocks import get_response_mock
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
-@patch("focus.gpass_connect.requests.get", get_response_mock)
-@patch("focus.server.get_gpass_api_location", lambda: "http://localhost")
-@patch("focus.crypto.get_key", lambda: TESTKEY)
+@patch("app.gpass_connect.requests.get", get_response_mock)
+@patch("app.server.get_gpass_api_location", lambda: "http://localhost")
+@patch("app.crypto.get_key", lambda: TESTKEY)
 class GpassConnectionTest(TestCase):
     admin_number = "111111111"
 
@@ -112,9 +112,9 @@ class GpassConnectionTest(TestCase):
         self.assertEqual(result, None)
 
 
-@patch("focus.gpass_connect.requests.get", get_response_mock)
-@patch("focus.server.get_gpass_api_location", lambda: "http://localhost")
-@patch("focus.crypto.get_key", lambda: TESTKEY)
+@patch("app.gpass_connect.requests.get", get_response_mock)
+@patch("app.server.get_gpass_api_location", lambda: "http://localhost")
+@patch("app.crypto.get_key", lambda: TESTKEY)
 class GpassApiTest(FlaskTestCase):
     admin_number = "111111111"
     pas_number = "6666666666666"

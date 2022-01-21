@@ -20,7 +20,7 @@ from app.focusconnect import FocusConnection  # noqa: E402
 
 
 @Timeline(start=datetime(2017, 5, 1, 1, 1, 1))
-@patch("focus.focusconnect.Client", new=MockClient)
+@patch("app.focusconnect.Client", new=MockClient)
 class StadspasTest(TestCase):
     def test_get(self):
         focus_connection = FocusConnection(config, credentials)

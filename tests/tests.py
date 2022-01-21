@@ -47,10 +47,10 @@ def get_fake_tma_cert():
 
 
 @patch(
-    "focus.focusconnect.FocusConnection.aanvragen",
+    "app.focusconnect.FocusConnection.aanvragen",
     new=lambda s, bsn, url_root: {"aap": "noot"},
 )
-@patch("focus.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
+@patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
 class TestApiNoToken(TestCase):
     def create_app(self):
         return application
@@ -64,11 +64,11 @@ class TestApiNoToken(TestCase):
         self.assertEqual(response.data, b"Parameter error: Missing SAML token")
 
 
-@patch("focus.server.get_TMA_certificate", new=get_fake_tma_cert)
-@patch("focus.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
+@patch("app.server.get_TMA_certificate", new=get_fake_tma_cert)
+@patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
 # side step decoding the BSN from SAML token
-@patch("focus.focusserver.get_bsn_from_request", new=lambda s: 123456789)
-@patch("focus.focusconnect.Client", new=MockClient)
+@patch("app.focusserver.get_bsn_from_request", new=lambda s: 123456789)
+@patch("app.focusconnect.Client", new=MockClient)
 class TestApi(TestCase):
     def create_app(self):
         return application
@@ -82,7 +82,7 @@ class TestApi(TestCase):
     #     self.assertEqual(response.data, b'Focus connectivity failed')
 
     @patch(
-        "focus.focusconnect.FocusConnection.aanvragen",
+        "app.focusconnect.FocusConnection.aanvragen",
         new=lambda s, bsn, url_root: {"aap": "noot"},
     )
     def test_verhuizingen_with_connection(self):
@@ -106,7 +106,7 @@ class TestApi(TestCase):
         self.assertEqual("*", resp.headers["Access-Control-Allow-Origin"])
 
 
-@patch("focus.server.get_TMA_certificate", new=get_fake_tma_cert)
+@patch("app.server.get_TMA_certificate", new=get_fake_tma_cert)
 class TestConnection(TestCase):
     def create_app(self):
         return application
@@ -124,8 +124,8 @@ class TestConnection(TestCase):
         self.assertTrue(mocked_set_client.called)
 
 
-@patch("focus.server.get_TMA_certificate", new=get_fake_tma_cert)
-@patch("focus.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
+@patch("app.server.get_TMA_certificate", new=get_fake_tma_cert)
+@patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
 class TestHealth(TestCase):
     def create_app(self):
         return application
@@ -142,15 +142,13 @@ class TestHealth(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-@patch("focus.server.get_TMA_certificate", new=get_fake_tma_cert)
+@patch("app.server.get_TMA_certificate", new=get_fake_tma_cert)
 class TestData(TestCase):
     def create_app(self):
         app.server.focus_server = None
         return application
 
-    @patch(
-        "focus.focusconnect.FocusConnection._initialize_client", new=lambda s: "Dummy"
-    )
+    @patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: "Dummy")
     def test_data_with_connection(self):
         """
         The connection should be marked as available when a client is set
@@ -158,7 +156,7 @@ class TestData(TestCase):
         response = self.client.get("/status/data")
         self.assertEqual(response.status_code, 200)
 
-    @patch("focus.focusconnect.FocusConnection._initialize_client", new=lambda s: None)
+    @patch("app.focusconnect.FocusConnection._initialize_client", new=lambda s: None)
     def test_data_without_connection(self):
         """
         The connection is not available in test mode, expect 500

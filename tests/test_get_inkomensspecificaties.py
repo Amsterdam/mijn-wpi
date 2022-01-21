@@ -18,7 +18,7 @@ from app.config import (
 from app.focusconnect import FocusConnection  # noqa: E402
 
 
-@patch("focus.focusconnect.Client", new=MockClient)
+@patch("app.focusconnect.Client", new=MockClient)
 class UitkeringsspecificatiesTests(TestCase):
     def test_connection(self):
         focus_connection = FocusConnection(config, credentials)

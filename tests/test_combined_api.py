@@ -19,13 +19,13 @@ from app.server import application  # noqa: E402
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
-@patch("focus.focusconnect.Client", new=MockClient)
+@patch("app.focusconnect.Client", new=MockClient)
 @patch(
-    "focus.focusserver.get_bsn_from_request", new=lambda s: 123456789
+    "app.focusserver.get_bsn_from_request", new=lambda s: 123456789
 )  # side step decoding the BSN from SAML token
-@patch("focus.gpass_connect.requests.get", get_response_mock)
-@patch("focus.focusserver.get_gpass_api_location", lambda: "http://localhost")
-@patch("focus.crypto.get_key", lambda: TESTKEY)
+@patch("app.gpass_connect.requests.get", get_response_mock)
+@patch("app.focusserver.get_gpass_api_location", lambda: "http://localhost")
+@patch("app.crypto.get_key", lambda: TESTKEY)
 class CombinedApiTest(FlaskTestCase):
     def create_app(self):
         return application

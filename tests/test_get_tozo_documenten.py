@@ -18,7 +18,7 @@ from app.config import (
 from app.focusconnect import FocusConnection  # noqa: E402
 
 
-@patch("focus.focusconnect.Client", new=MockClient)
+@patch("app.focusconnect.Client", new=MockClient)
 class TozoDocumentenTests(TestCase):
     def test_connection(self):
         self.maxDiff = None
@@ -78,7 +78,7 @@ class TozoDocumentenTests(TestCase):
         self.assertEqual(result, expected)
 
 
-@patch("focus.focusconnect.Client", new=MockClientEmpties)
+@patch("app.focusconnect.Client", new=MockClientEmpties)
 class TozoDocumentenEmptyTests(TestCase):
     def test_connection(self):
         self.maxDiff = None
