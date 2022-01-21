@@ -33,14 +33,14 @@ ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", "1")
 API_REQUEST_TIMEOUT = 30
 
 # Focus
-FOCUS_WDSL = os.getenv("FOCUS_WDSL")
+FOCUS_WSDL = os.getenv("FOCUS_WSDL")
 FOCUS_CERTIFICATE = os.getenv("FOCUS_CERTIFICATE", False)
 FOCUS_USERNAME = os.getenv("FOCUS_USERNAME")
 FOCUS_PASSWORD = os.getenv("FOCUS_PASSWORD")
 
 FOCUS_DOCUMENT_PATH = "focus/document"
 
-zeep_config = {"wsdl": FOCUS_WDSL, "session_verify": FOCUS_CERTIFICATE}
+zeep_config = {"wsdl": FOCUS_WSDL, "session_verify": FOCUS_CERTIFICATE}
 
 focus_credentials = {
     "username": FOCUS_USERNAME,
