@@ -4,7 +4,7 @@ from unittest import TestCase
 from flask_testing import TestCase as FlaskTestCase
 from mock import patch
 
-from app.gpass_connect import GpassConnection
+from app.gpass_service import GpassConnection
 from app.server import application  # noqa: E402
 from app.crypto import encrypt
 
@@ -13,7 +13,7 @@ from .mocks import get_response_mock
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
-@patch("app.gpass_connect.requests.get", get_response_mock)
+@patch("app.gpass_service.requests.get", get_response_mock)
 @patch("app.server.get_gpass_api_location", lambda: "http://localhost")
 @patch("app.crypto.get_key", lambda: TESTKEY)
 class GpassConnectionTest(TestCase):
@@ -112,7 +112,7 @@ class GpassConnectionTest(TestCase):
         self.assertEqual(result, None)
 
 
-@patch("app.gpass_connect.requests.get", get_response_mock)
+@patch("app.gpass_service.requests.get", get_response_mock)
 @patch("app.server.get_gpass_api_location", lambda: "http://localhost")
 @patch("app.crypto.get_key", lambda: TESTKEY)
 class GpassApiTest(FlaskTestCase):

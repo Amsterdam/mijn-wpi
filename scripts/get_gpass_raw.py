@@ -2,15 +2,15 @@ import sys
 from pprint import pprint
 
 from app.config import get_gpass_api_location, get_gpass_bearer_token
-from app.gpass_connect import GpassConnection
+from app.gpass_service import GpassConnection
 
 from app.crypto import decrypt
 
-import app.gpass_connect
+import app.gpass_service
 
 from app.utils import volledig_administratienummer
 
-app.gpass_connect.LOG_RAW = True
+app.gpass_service.LOG_RAW = True
 
 admin_number = sys.argv[1]
 

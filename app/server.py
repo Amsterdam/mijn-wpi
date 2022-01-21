@@ -5,7 +5,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from flask import Flask
 from flask_cors import CORS
 
-from app.gpass_connect import GpassConnection
+from app.gpass_service import GpassConnection
 
 from app.crypto import decrypt
 from .config import (

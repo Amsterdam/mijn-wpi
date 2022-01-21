@@ -8,7 +8,7 @@ import logging
 
 from flask import jsonify, request, Response, make_response
 
-from .gpass_connect import GpassConnection
+from .gpass_service import GpassConnection
 from .saml import get_bsn_from_request
 from requests import ConnectionError
 
