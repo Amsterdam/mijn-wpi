@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
 COPY ./app /api/app
+COPY ./focus /api/focus
 
 COPY uwsgi.ini /api/
 COPY test.sh /api/
