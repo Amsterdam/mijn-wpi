@@ -4,6 +4,7 @@ LABEL maintainer=datapunt@amsterdam.nl
 EXPOSE 8000
 
 WORKDIR /api
+
 # remove this when the 3.8.6-buster image is fixed
 ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
@@ -11,6 +12,7 @@ COPY requirements.txt /api
 RUN pip install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
+COPY ./scripts /api/scripts
 COPY ./app /api/app
 COPY ./focus /api/focus
 
