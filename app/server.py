@@ -5,7 +5,7 @@ from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 from app.config import get_TMA_certificate
-from app.utils import decrypt
+from app.utils import decrypt, get_bsn_from_request
 from app.gpass_service import get_transactions
 
 from .config_new import (
@@ -44,17 +44,20 @@ def status_data():
 
 @application.route(urls["aanvragen"])
 def aanvragen():
-    return get_server().aanvragen()
+    bsn = get_bsn_from_request()
+    return get_server().aanvragen(bsn)
 
 
 @application.route(urls["document"])
 def document():
-    return get_server().document()
+    bsn = get_bsn_from_request()
+    return get_server().document(bsn)
 
 
 @application.route(urls["combined"])
 def combined():
-    return get_server().combined()
+    bsn = get_bsn_from_request()
+    return get_server().combined(bsn)
 
 
 @application.route(urls["stadspastransacties"])

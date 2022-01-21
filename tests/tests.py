@@ -31,33 +31,10 @@ unencrypted_saml_token = b"""
 """
 
 
-@patch(
-    "app.focusconnect.FocusConnection.aanvragen",
-    new=lambda s, bsn, url_root: {"aap": "noot"},
-)
-class TestApiNoToken(FocusApiTestApp):
-    def test_aanvragen_no_saml_token(self):
-        """
-        BSN saml token is a required header attribute
-        """
-        response = self.client.get("/focus/aanvragen")
-        self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.data, b"Parameter error: Missing SAML token")
-
-
 # side step decoding the BSN from SAML token
-@patch("app.focusserver.get_bsn_from_request", new=lambda s: 123456789)
+@patch("app.server.get_bsn_from_request", lambda: 123456789)
 @patch("app.focusconnect.Client", new=MockClient)
 class TestApi(FocusApiTestApp):
-
-    # def test_aanvragen(self):
-    #     """
-    #     The connection is not available in test mode, expect 500
-    #     """
-    #     response = self.client.get('/focus/aanvragen')
-    #     # self.assertEqual(response.status_code, 500)
-    #     self.assertEqual(response.data, b'Focus connectivity failed')
-
     @patch(
         "app.focusconnect.FocusConnection.aanvragen",
         new=lambda s, bsn, url_root: {"aap": "noot"},

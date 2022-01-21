@@ -9,9 +9,9 @@ import logging
 from flask import Response, jsonify, make_response, request
 from requests import ConnectionError
 
+from app.utils import volledig_administratienummer
+
 from .gpass_service import get_stadspassen
-from .saml import get_bsn_from_request
-from .utils import volledig_administratienummer
 
 logger = logging.getLogger(__name__)
 
@@ -69,15 +69,11 @@ class FocusServer:
 
         return self._no_connection_response()
 
-    def aanvragen(self):
+    def aanvragen(self, bsn):
         """
         Gets all running and past aanvragen for the BSN that is encoded in the header SAML token
         :return:
         """
-        try:
-            bsn = get_bsn_from_request(request)
-        except Exception as error:
-            return self._parameter_error_response(error)
 
         try:
             aanvragen = self._focus_connection.aanvragen(
@@ -115,13 +111,8 @@ class FocusServer:
 
         return {"stadspassen": stadspassen, "type": stadspas_data["type"]}
 
-    def combined(self):
+    def combined(self, bsn):
         """Gets all jaaropgaven for the BSN that is encoded in the header SAML token."""
-
-        try:
-            bsn = get_bsn_from_request(request)
-        except Exception as error:
-            return self._parameter_error_response(error)
 
         try:
             jaaropgaven = self._focus_connection.jaaropgaven(
@@ -158,7 +149,7 @@ class FocusServer:
             )
             return self._no_connection_response()
 
-    def document(self):
+    def document(self, bsn):
         """
         Gets a specific aanvraag document for the BSN that is encoded in the header SAML token
         The document is identified by its id and whether it is a bulk or document management document (request args)
@@ -167,11 +158,6 @@ class FocusServer:
         id = request.args.get("id", None)
         isBulk = request.args.get("isBulk", "false").lower() == "true"
         isDms = request.args.get("isDms", "false").lower() == "true"
-
-        try:
-            bsn = get_bsn_from_request(request)
-        except Exception as error:
-            return self._parameter_error_response(error)
 
         try:
             document = self._focus_connection.document(

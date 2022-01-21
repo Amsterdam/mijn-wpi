@@ -17,12 +17,12 @@ TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
 @patch(
-    "app.focusserver.get_bsn_from_request", lambda s: 123456789
+    "app.server.get_bsn_from_request", lambda: 123456789
 )  # side step decoding the BSN from SAML token
 @patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
 @patch("app.server.get_TMA_certificate", get_fake_tma_cert)
 @patch(
-    "app.focusserver.get_bsn_from_request", lambda s: 123456789
+    "app.server.get_bsn_from_request", lambda: 123456789
 )  # side step decoding the BSN from SAML token
 @patch("app.focusconnect.Client", new=MockClient)
 @patch("app.gpass_service.requests.get", get_response_mock)
