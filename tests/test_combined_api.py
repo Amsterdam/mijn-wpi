@@ -14,7 +14,7 @@ os.environ["FOCUS_PASSWORD"] = "FOCUS_PASSWORD"
 os.environ["FOCUS_WSDL"] = "focus/focus.wsdl"
 os.environ["TMA_CERTIFICATE"] = __file__
 
-from focus.server import application  # noqa: E402
+from app.server import application  # noqa: E402
 
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 

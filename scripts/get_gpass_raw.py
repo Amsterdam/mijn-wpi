@@ -1,16 +1,16 @@
 import sys
 from pprint import pprint
 
-from focus.config import get_gpass_api_location, get_gpass_bearer_token
-from focus.gpass_connect import GpassConnection
+from app.config import get_gpass_api_location, get_gpass_bearer_token
+from app.gpass_connect import GpassConnection
 
-from focus.crypto import decrypt
+from app.crypto import decrypt
 
-import focus.gpass_connect
+import app.gpass_connect
 
-from focus.utils import volledig_administratienummer
+from app.utils import volledig_administratienummer
 
-focus.gpass_connect.LOG_RAW = True
+app.gpass_connect.LOG_RAW = True
 
 admin_number = sys.argv[1]
 

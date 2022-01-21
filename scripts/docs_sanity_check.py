@@ -2,8 +2,8 @@ import sys
 
 from bs4 import BeautifulSoup
 
-from focus.config import config, credentials
-from focus.focusconnect import FocusConnection
+from app.config import config, credentials
+from app.focusconnect import FocusConnection
 
 focus_connection = FocusConnection(config, credentials)
 

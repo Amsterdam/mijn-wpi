@@ -1,6 +1,6 @@
 from cryptography.fernet import Fernet
 
-from focus.config import get_key
+from app.config import get_key
 
 
 def encrypt(budget_code: str, admin_number: str, pas_number) -> str:

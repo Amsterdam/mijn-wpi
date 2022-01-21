@@ -1,4 +1,3 @@
-
 import os
 import json
 
@@ -9,17 +8,25 @@ from mock import patch
 # Prepare environment
 from tests.mocks import MockClient
 
-os.environ['FOCUS_USERNAME'] = 'FOCUS_USERNAME'
-os.environ['FOCUS_PASSWORD'] = 'FOCUS_PASSWORD'
-os.environ['FOCUS_WSDL'] = 'focus/focus.wsdl'
-os.environ['TMA_CERTIFICATE'] = __file__
+os.environ["FOCUS_USERNAME"] = "FOCUS_USERNAME"
+os.environ["FOCUS_PASSWORD"] = "FOCUS_PASSWORD"
+os.environ["FOCUS_WSDL"] = "focus/focus.wsdl"
+os.environ["TMA_CERTIFICATE"] = __file__
 
 
-from focus.config import config, credentials  # noqa: E402  Module level import not at top of file
-from focus.focusconnect import FocusConnection  # noqa: E402
-from focus.focusinterpreter import _to_list, _to_int, _to_bool, convert_aanvragen  # noqa: E402
-from focus.server import application  # noqa: E402
-import focus.server  # noqa: E402
+from app.config import (
+    config,
+    credentials,
+)  # noqa: E402  Module level import not at top of file
+from app.focusconnect import FocusConnection  # noqa: E402
+from app.focusinterpreter import (
+    _to_list,
+    _to_int,
+    _to_bool,
+    convert_aanvragen,
+)  # noqa: E402
+from app.server import application  # noqa: E402
+import app.server  # noqa: E402
 
 
 unencrypted_saml_token = b"""
@@ -39,8 +46,11 @@ def get_fake_tma_cert():
     return "fake cert"
 
 
-@patch('focus.focusconnect.FocusConnection.aanvragen', new=lambda s, bsn, url_root: {'aap': 'noot'})
-@patch('focus.focusconnect.FocusConnection._initialize_client', new=lambda s: "Alive")
+@patch(
+    "focus.focusconnect.FocusConnection.aanvragen",
+    new=lambda s, bsn, url_root: {"aap": "noot"},
+)
+@patch("focus.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
 class TestApiNoToken(TestCase):
     def create_app(self):
         return application
@@ -49,16 +59,16 @@ class TestApiNoToken(TestCase):
         """
         BSN saml token is a required header attribute
         """
-        response = self.client.get('/focus/aanvragen')
+        response = self.client.get("/focus/aanvragen")
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.data, b'Parameter error: Missing SAML token')
+        self.assertEqual(response.data, b"Parameter error: Missing SAML token")
 
 
-@patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
-@patch('focus.focusconnect.FocusConnection._initialize_client', new=lambda s: "Alive")
+@patch("focus.server.get_TMA_certificate", new=get_fake_tma_cert)
+@patch("focus.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
 # side step decoding the BSN from SAML token
-@patch('focus.focusserver.get_bsn_from_request', new=lambda s: 123456789)
-@patch('focus.focusconnect.Client', new=MockClient)
+@patch("focus.focusserver.get_bsn_from_request", new=lambda s: 123456789)
+@patch("focus.focusconnect.Client", new=MockClient)
 class TestApi(TestCase):
     def create_app(self):
         return application
@@ -71,15 +81,18 @@ class TestApi(TestCase):
     #     # self.assertEqual(response.status_code, 500)
     #     self.assertEqual(response.data, b'Focus connectivity failed')
 
-    @patch('focus.focusconnect.FocusConnection.aanvragen', new=lambda s, bsn, url_root: {'aap': 'noot'})
+    @patch(
+        "focus.focusconnect.FocusConnection.aanvragen",
+        new=lambda s, bsn, url_root: {"aap": "noot"},
+    )
     def test_verhuizingen_with_connection(self):
         """
         Expect a result with meldingen
         """
-        response = self.client.get('/focus/aanvragen')
+        response = self.client.get("/focus/aanvragen")
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data)
-        self.assertEqual(result['aap'], 'noot')
+        self.assertEqual(result["aap"], "noot")
 
     def test_cors_header(self):
         """
@@ -87,14 +100,13 @@ class TestApi(TestCase):
         :return:
         """
         resp = self.client.get(
-            '/status/health',
-            headers={'Origin': 'http://fee-fi-foo.fum'}
+            "/status/health", headers={"Origin": "http://fee-fi-foo.fum"}
         )
-        self.assertTrue('Access-Control-Allow-Origin' in resp.headers)
-        self.assertEqual('*', resp.headers['Access-Control-Allow-Origin'])
+        self.assertTrue("Access-Control-Allow-Origin" in resp.headers)
+        self.assertEqual("*", resp.headers["Access-Control-Allow-Origin"])
 
 
-@patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
+@patch("focus.server.get_TMA_certificate", new=get_fake_tma_cert)
 class TestConnection(TestCase):
     def create_app(self):
         return application
@@ -102,7 +114,7 @@ class TestConnection(TestCase):
     def setUp(self):
         pass
 
-    @patch.object(FocusConnection, '_initialize_client')
+    @patch.object(FocusConnection, "_initialize_client")
     def test_service_set_up(self, mocked_set_client):
         """
         Test if the service is established on object creation time
@@ -112,8 +124,8 @@ class TestConnection(TestCase):
         self.assertTrue(mocked_set_client.called)
 
 
-@patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
-@patch('focus.focusconnect.FocusConnection._initialize_client', new=lambda s: "Alive")
+@patch("focus.server.get_TMA_certificate", new=get_fake_tma_cert)
+@patch("focus.focusconnect.FocusConnection._initialize_client", new=lambda s: "Alive")
 class TestHealth(TestCase):
     def create_app(self):
         return application
@@ -126,30 +138,32 @@ class TestHealth(TestCase):
         Simple respond OK when the API is up
         :return:
         """
-        response = self.client.get('/status/health')
+        response = self.client.get("/status/health")
         self.assertEqual(response.status_code, 200)
 
 
-@patch('focus.server.get_TMA_certificate', new=get_fake_tma_cert)
+@patch("focus.server.get_TMA_certificate", new=get_fake_tma_cert)
 class TestData(TestCase):
     def create_app(self):
-        focus.server.focus_server = None
+        app.server.focus_server = None
         return application
 
-    @patch('focus.focusconnect.FocusConnection._initialize_client', new=lambda s: "Dummy")
+    @patch(
+        "focus.focusconnect.FocusConnection._initialize_client", new=lambda s: "Dummy"
+    )
     def test_data_with_connection(self):
         """
         The connection should be marked as available when a client is set
         """
-        response = self.client.get('/status/data')
+        response = self.client.get("/status/data")
         self.assertEqual(response.status_code, 200)
 
-    @patch('focus.focusconnect.FocusConnection._initialize_client', new=lambda s: None)
+    @patch("focus.focusconnect.FocusConnection._initialize_client", new=lambda s: None)
     def test_data_without_connection(self):
         """
         The connection is not available in test mode, expect 500
         """
-        response = self.client.get('/status/data')
+        response = self.client.get("/status/data")
         self.assertEqual(response.status_code, 500)
 
 
@@ -180,16 +194,8 @@ class TestInterpreter(TestCase):
     def test_convert_aanvragen(self):
 
         tests = [
-            {
-                "input": {"bsn": 123},
-                "expected": [],
-                "url_root": ""
-            },
-            {
-                "input": {"bsn": 123, "soortProduct": {}},
-                "expected": [],
-                "url_root": ""
-            },
+            {"input": {"bsn": 123}, "expected": [], "url_root": ""},
+            {"input": {"bsn": 123, "soortProduct": {}}, "expected": [], "url_root": ""},
             {
                 "input": {
                     "bsn": 123,
@@ -197,9 +203,9 @@ class TestInterpreter(TestCase):
                         "naam": "soortProduct",
                         "product": {
                             "dienstverleningstermijn": "30",
-                            "inspanningsperiode": "50"
-                        }
-                    }
+                            "inspanningsperiode": "50",
+                        },
+                    },
                 },
                 "expected": [
                     {
@@ -207,10 +213,10 @@ class TestInterpreter(TestCase):
                         "_meest_recent": None,
                         "soortProduct": "soortProduct",
                         "dienstverleningstermijn": 30,
-                        "inspanningsperiode": 50
+                        "inspanningsperiode": 50,
                     }
                 ],
-                "url_root": ""
+                "url_root": "",
             },
             {
                 "input": {
@@ -225,12 +231,13 @@ class TestInterpreter(TestCase):
                                     "document": {
                                         "id": "1",
                                         "isBulk": "false",
-                                        "isDms": "true"
+                                        "isDms": "true",
                                     }
                                 }
-                            }
-                        }
-                    }},
+                            },
+                        },
+                    },
+                },
                 "expected": [
                     {
                         "_id": "0-0",
@@ -241,17 +248,19 @@ class TestInterpreter(TestCase):
                         "processtappen": {
                             "aanvraag": {
                                 "_id": 0,
-                                "document": [{
-                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": "1",
-                                    "isBulk": False,
-                                    "isDms": True
-                                }]
+                                "document": [
+                                    {
+                                        "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                        "id": "1",
+                                        "isBulk": False,
+                                        "isDms": True,
+                                    }
+                                ],
                             }
-                        }
+                        },
                     }
                 ],
-                "url_root": "http://localhost/"
+                "url_root": "http://localhost/",
             },
             {
                 "input": {
@@ -267,20 +276,21 @@ class TestInterpreter(TestCase):
                                     "document": {
                                         "id": "1",
                                         "isBulk": "false",
-                                        "isDms": "true"
-                                    }
+                                        "isDms": "true",
+                                    },
                                 },
                                 "beslissing": {
                                     "datum": "123",
                                     "document": {
                                         "id": "1",
                                         "isBulk": "false",
-                                        "isDms": "true"
-                                    }
-                                }
-                            }
-                        }
-                    }},
+                                        "isDms": "true",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 "expected": [
                     {
                         "_id": "0-0",
@@ -292,27 +302,31 @@ class TestInterpreter(TestCase):
                             "aanvraag": {
                                 "_id": 0,
                                 "datum": "123",
-                                "document": [{
-                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": '1',
-                                    "isBulk": False,
-                                    "isDms": True
-                                }]
+                                "document": [
+                                    {
+                                        "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                        "id": "1",
+                                        "isBulk": False,
+                                        "isDms": True,
+                                    }
+                                ],
                             },
                             "beslissing": {
                                 "_id": 3,
                                 "datum": "123",
-                                "document": [{
-                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": '1',
-                                    "isBulk": False,
-                                    "isDms": True
-                                }]
-                            }
-                        }
+                                "document": [
+                                    {
+                                        "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                        "id": "1",
+                                        "isBulk": False,
+                                        "isDms": True,
+                                    }
+                                ],
+                            },
+                        },
                     }
                 ],
-                "url_root": "http://localhost/"
+                "url_root": "http://localhost/",
             },
             {
                 "input": {
@@ -328,20 +342,20 @@ class TestInterpreter(TestCase):
                                     "document": {
                                         "id": "1",
                                         "isBulk": "false",
-                                        "isDms": "true"
-                                    }
+                                        "isDms": "true",
+                                    },
                                 },
                                 "beslissing": {
                                     "datum": "123",
                                     "document": {
                                         "id": "1",
                                         "isBulk": "false",
-                                        "isDms": "true"
-                                    }
-                                }
-                            }
-                        }
-                    }
+                                        "isDms": "true",
+                                    },
+                                },
+                            },
+                        },
+                    },
                 },
                 "expected": [
                     {
@@ -354,30 +368,34 @@ class TestInterpreter(TestCase):
                             "aanvraag": {
                                 "_id": 0,
                                 "datum": "234",
-                                "document": [{
-                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": "1",
-                                    "isBulk": False,
-                                    "isDms": True
-                                }]
+                                "document": [
+                                    {
+                                        "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                        "id": "1",
+                                        "isBulk": False,
+                                        "isDms": True,
+                                    }
+                                ],
                             },
                             "beslissing": {
                                 "_id": 3,
                                 "datum": "123",
-                                "document": [{
-                                    "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
-                                    "id": '1',
-                                    "isBulk": False,
-                                    "isDms": True
-                                }]
-                            }
-                        }
+                                "document": [
+                                    {
+                                        "$ref": "http://localhost/focus/document?id=1&isBulk=false&isDms=true",
+                                        "id": "1",
+                                        "isBulk": False,
+                                        "isDms": True,
+                                    }
+                                ],
+                            },
+                        },
                     }
                 ],
-                'url_root': "http://localhost/"
-            }
+                "url_root": "http://localhost/",
+            },
         ]
 
         for values in tests:
-            converted = convert_aanvragen(values['input'], values['url_root'])
-            self.assertEqual(converted, values['expected'])
+            converted = convert_aanvragen(values["input"], values["url_root"])
+            self.assertEqual(converted, values["expected"])

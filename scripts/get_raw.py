@@ -3,8 +3,8 @@ from io import BytesIO
 
 from lxml import etree
 
-from focus.config import config, credentials
-from focus.focusconnect import FocusConnection
+from app.config import config, credentials
+from app.focusconnect import FocusConnection
 
 focus_connection = FocusConnection(config, credentials)
 

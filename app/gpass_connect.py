@@ -3,9 +3,9 @@ from pprint import pprint
 
 import requests
 
-from focus.crypto import encrypt
+from app.crypto import encrypt
 
-from focus.measure_time import MeasureTime
+from app.measure_time import MeasureTime
 
 LOG_RAW = False
 

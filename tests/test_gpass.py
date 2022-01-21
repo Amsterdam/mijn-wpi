@@ -4,9 +4,9 @@ from unittest import TestCase
 from flask_testing import TestCase as FlaskTestCase
 from mock import patch
 
-from focus.gpass_connect import GpassConnection
-from focus.server import application  # noqa: E402
-from focus.crypto import encrypt
+from app.gpass_connect import GpassConnection
+from app.server import application  # noqa: E402
+from app.crypto import encrypt
 
 from .mocks import get_response_mock
 

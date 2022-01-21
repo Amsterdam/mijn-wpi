@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 # from dateutil import parser
 
-from focus.config import urls
+from app.config import urls
 
 logger = logging.getLogger(__name__)
 

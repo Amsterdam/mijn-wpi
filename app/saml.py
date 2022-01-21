@@ -4,7 +4,7 @@ This module interprets and verifies SAML tokens
 """
 from tma_saml import get_digi_d_bsn
 
-from focus.config import get_TMA_certificate
+from app.config import get_TMA_certificate
 
 
 def get_bsn_from_request(request):
