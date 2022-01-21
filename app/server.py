@@ -51,7 +51,8 @@ def document():
 @application.route("/focus/combined")
 def combined():
     bsn = get_bsn_from_request()
-    return get_server().combined(bsn)
+    combined_response_data = get_server().combined(bsn)
+    return success_response_json(combined_response_data)
 
 
 @application.route("/focus/stadspastransacties/<string:encrypted_admin_pasnummer>")

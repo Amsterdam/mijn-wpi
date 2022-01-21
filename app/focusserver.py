@@ -4,10 +4,8 @@ This module represents the Focus API Server
 The server uses the Focus connection class to handle the physical connection with the underlying Focus SOAP API
 The server interprets requests, execute the corresponding action and return JSON responses
 """
-import logging
-
-from flask import Response, jsonify, make_response, request
-from requests import ConnectionError
+from http.client import NOT_FOUND
+from flask import make_response, request
 
 from app.utils import volledig_administratienummer
 
@@ -23,115 +21,52 @@ class FocusServer:
         """
         self._focus_connection = focus_connection
 
-    def is_alive(self):
-        return self._focus_connection.is_alive()
-
-    def _no_connection_response(self):
-        """
-        Returns a response telling that the Focus API is not accessible
-        Reset the connection so that it will be re-established on the next call
-        """
-        self._focus_connection.reset()
-        return Response(
-            "Focus connectivity failed", content_type="text/plain", status=500
-        )
-
-    @staticmethod
-    def _parameter_error_response(message):
-        """
-        Returns a response telling that the supplied parameter is incorrect
-        """
-        return Response(
-            "Parameter error: {}".format(message), content_type="text/plain", status=422
-        )
-
-    @staticmethod
-    def health():
-        """
-        If the server responds to this message (which is always does) it is considered alive (healthy)
-        :return: OK
-        """
-        return Response("OK", content_type="text/plain")
-
     def aanvragen(self, bsn):
         """
         Gets all running and past aanvragen for the BSN that is encoded in the header SAML token
         :return:
         """
 
-        try:
-            aanvragen = self._focus_connection.aanvragen(
-                bsn=bsn, url_root=request.script_root
-            )
-        except ConnectionError as error:
-            logging.exception(
-                "Failed to retrieve aanvragen: {}".format(type(error)), exc_info=error
-            )
-            return self._no_connection_response()
-        except Exception as error:
-            logging.exception(
-                "Failed to retrieve aanvragen (unknown error): {} {}".format(
-                    type(error), str(error)
-                ),
-                exc_info=error,
-            )
-            return self._no_connection_response()
-
-        return jsonify(aanvragen)
+        return self._focus_connection.aanvragen(bsn=bsn, url_root=request.script_root)
 
     def _collect_stadspas_data(self, bsn):
         # 2 stage, first get admin number from focus, then data from gpass
         stadspas_data = self._focus_connection.stadspas(bsn=bsn)
+
         if not stadspas_data:
-            return None
+            return []
 
         stadspas_admin_number = volledig_administratienummer(
             stadspas_data["adminstratienummer"]
         )
 
-        stadspassen = []
-        if stadspas_admin_number:
-            stadspassen = get_stadspassen(admin_number=stadspas_admin_number)
+        if not stadspas_admin_number:
+            return []
+
+        stadspassen = get_stadspassen(admin_number=stadspas_admin_number)
 
         return {"stadspassen": stadspassen, "type": stadspas_data["type"]}
 
     def combined(self, bsn):
         """Gets all jaaropgaven for the BSN that is encoded in the header SAML token."""
 
-        try:
-            jaaropgaven = self._focus_connection.jaaropgaven(
-                bsn=bsn, url_root=request.script_root
-            )
-            uitkeringsspec = self._focus_connection.uitkeringsspecificaties(
-                bsn=bsn, url_root=request.script_root
-            )
-            tozo_documents = self._focus_connection.EAanvragenTozo(
-                bsn=bsn, url_root=request.script_root
-            )
-            stadspas = self._collect_stadspas_data(bsn)
+        jaaropgaven = self._focus_connection.jaaropgaven(
+            bsn=bsn, url_root=request.script_root
+        )
+        uitkeringsspec = self._focus_connection.uitkeringsspecificaties(
+            bsn=bsn, url_root=request.script_root
+        )
+        tozo_documents = self._focus_connection.EAanvragenTozo(
+            bsn=bsn, url_root=request.script_root
+        )
+        stadspas = self._collect_stadspas_data(bsn)
 
-            return {
-                "status": "OK",
-                "content": {
-                    "jaaropgaven": jaaropgaven,
-                    "uitkeringsspecificaties": uitkeringsspec,
-                    "tozodocumenten": tozo_documents,
-                    "stadspassaldo": stadspas,
-                },
-            }
-        except ConnectionError as error:
-            logging.exception(
-                "Failed to retrieve combined: {}".format(type(error)), exc_info=error
-            )
-            return self._no_connection_response()
-        except Exception as error:
-            logging.exception(
-                "Failed to retrieve combined (unknown error): {} {}".format(
-                    type(error), str(error)
-                ),
-                exc_info=error,
-            )
-            return self._no_connection_response()
+        return {
+            "jaaropgaven": jaaropgaven,
+            "uitkeringsspecificaties": uitkeringsspec,
+            "tozodocumenten": tozo_documents,
+            "stadspassaldo": stadspas,
+        }
 
     def document(self, bsn):
         """
@@ -143,29 +78,10 @@ class FocusServer:
         isBulk = request.args.get("isBulk", "false").lower() == "true"
         isDms = request.args.get("isDms", "false").lower() == "true"
 
-        try:
-            document = self._focus_connection.document(
-                bsn=bsn, id=id, isBulk=isBulk, isDms=isDms
-            )
-        except ConnectionError as error:
-            logging.exception(
-                "Failed to retrieve document: {}".format(type(error)), exc_info=error
-            )
-            return self._no_connection_response()
-        except Exception as error:
-            logging.exception(
-                "Failed to retrieve document: {} {}".format(type(error), str(error)),
-                exc_info=error,
-            )
-            return self._no_connection_response()
+        document = self._focus_connection.document(
+            bsn=bsn, id=id, isBulk=isBulk, isDms=isDms
+        )
 
-        if document is None:
-            logging.error(
-                f"Document empty. type bsn: {type(bsn)} {len(bsn)}  type id: {type(id)}"
-            )
-            return "Document not received from source.", 404
-
-        # flask.send_file() won't work with content from memory and uWSGI. It expects a file on disk.
         # Craft a manual request instead
         response = make_response(document["contents"])
         response.headers[

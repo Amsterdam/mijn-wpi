@@ -75,16 +75,6 @@ class FocusConnection:
             )
             return None
 
-    def reset(self):
-        self._client = self._initialize_client()
-
-    def is_alive(self):
-        """
-        Tells whether the connection with Focus is available.
-        :return: boolean
-        """
-        return self._client is not None
-
     def _log_soap_faultstring(self, raw_xml, prefix=""):
         result = re.search(r"<faultstring>.*<\/faultstring>", raw_xml)
         if result:
@@ -220,6 +210,7 @@ class FocusConnection:
 
         tree = BeautifulSoup(raw_document.content, features="lxml-xml")
         data_element = tree.find("dataHandler")
+
         if not data_element:
             doc = self._client.service.getDocument(
                 id=id, bsn=bsn, isBulk=isBulk, isDms=isDms
@@ -229,11 +220,12 @@ class FocusConnection:
                 filename = doc["fileName"]
                 logging.error("fallback document method is used")
             else:
-                return None
+                raise Exception("Requested document is empty")
         else:
             data = data_element.text
             data = base64.b64decode(data)
             filename = tree.find("fileName").text
+
         mime_type = (
             "application/pdf" if ".pdf" in filename else "application/octet-stream"
         )
