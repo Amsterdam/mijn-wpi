@@ -3,19 +3,19 @@ LABEL maintainer=datapunt@amsterdam.nl
 
 EXPOSE 8000
 
-WORKDIR /app
+WORKDIR /api
 # remove this when the 3.8.6-buster image is fixed
 ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
-COPY requirements.txt /app/
+COPY requirements.txt /api
 RUN pip install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
-COPY ./focus /app/focus
+COPY ./app /api/app
 
-COPY test.sh /app/
-COPY .flake8 /app/
-COPY ./tests /app/tests
+COPY uwsgi.ini /api/
+COPY test.sh /api/
+COPY .flake8 /api/
 
 USER datapunt
-CMD uwsgi --ini /app/focus/uwsgi.ini
+CMD uwsgi --ini /api/uwsgi.ini
