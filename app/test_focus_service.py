@@ -138,7 +138,7 @@ class TestFocusBijstandAanvraag(FocusApiTestApp):
 
 class TestFocusStadspasAanvraag(FocusApiTestApp):
 
-    bsn = 12312312399
+    bsn = 99321321321
     product_source = {
         "dienstverleningstermijn": 56,
         "inspanningsperiode": None,
@@ -221,6 +221,74 @@ class TestFocusStadspasAanvraag(FocusApiTestApp):
 
     @patch("app.focus_service.get_client")
     def test_get_aanvraag(self, get_client_mock):
+        mock_client = MockClient(
+            get_aanvragen_response=create_soap_response(
+                "Minimafonds", self.product_source
+            )
+        )
+        get_client_mock.return_value = mock_client
+        response = get_aanvragen(bsn=self.bsn)
+
+        self.assertTrue(len(response) == 1)
+        mock_client.service.getAanvragen.assert_called_with(self.bsn)
+
+        product = response[0]
+        self.assertEqual(product, self.product_transformed)
+
+
+class TestFocusStadspasAanvraag2(FocusApiTestApp):
+
+    bsn = 99321321321
+    product_source = {
+        "dienstverleningstermijn": 56,
+        "inspanningsperiode": None,
+        "naam": "Stadspas",
+        "processtappen": {
+            "aanvraag": {
+                "datum": datetime.datetime(2019, 5, 8, 15, 5, 52),
+                "document": [
+                    {
+                        "id": "4400000013",
+                        "isBulk": True,
+                        "isDms": False,
+                        "omschrijving": "Aanvraag Stadspas (balie)",
+                    }
+                ],
+            },
+            "beslissing": None,
+            "bezwaar": None,
+            "herstelTermijn": None,
+            "inBehandeling": None,
+        },
+        "typeBesluit": None,
+    }
+
+    product_transformed = {
+        "id": "4b46c9865ac4f007b2b0fdd03fd1fbba",
+        "title": "Stadspas",
+        "status": "aanvraag",
+        "decision": None,
+        "datePublished": "2019-05-08T15:05:52",
+        "dateStart": "2019-05-08T15:05:52",
+        "dateEnd": None,
+        "steps": [
+            {
+                "id": "aanvraag",
+                "title": "Aanvraag",
+                "documents": {
+                    "id": "4400000013",
+                    "title": "Aanvraag Stadspas (balie)",
+                    "url": "/focus/document?id=4400000013&isBulk=True&isDms=False",
+                    "datePublished": "2019-05-08T15:05:52",
+                    "type": "pdf",
+                },
+                "datePublished": "2019-05-08T15:05:52",
+            },
+        ],
+    }
+
+    @patch("app.focus_service.get_client")
+    def test_get_aanvraag_start(self, get_client_mock):
         mock_client = MockClient(
             get_aanvragen_response=create_soap_response(
                 "Minimafonds", self.product_source
