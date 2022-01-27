@@ -6,12 +6,17 @@ from mock import patch
 from app.config import CustomJSONEncoder
 
 from app.gpass_service import (
+    format_budget,
+    format_stadspas,
+    format_transaction,
+    get_admins,
+    get_owner_name,
     get_stadspas_admins,
     get_stadspas_details,
     get_transactions,
+    send_request,
 )
-from app.tests.wpi_test_app import FERNET_KEY_MOCK
-from freezegun import freeze_time
+from app.tests.wpi_test_app import MockResponse
 
 # from ..tests.mocks import get_response_mock
 
@@ -210,56 +215,135 @@ class GpassServiceGetTransactions(TestCase):
         send_request_mock.return_value = self.gpass_transactions_response
 
         transactions = get_transactions("xxx", "111", "abc")
-
         self.assertEqual(transactions, self.gpass_transactions_transformed)
 
+        send_request_mock.return_value = None
 
-# class GpassServiceVarious(TestCase):
-
-# def test_get_transactions(self):
-#     pas_number = "6666666666666"
-#     budget_code = "aaa"
-#     result = get_transactions(self.admin_number, pas_number, budget_code)
-
-#     expected = [
-#         {
-#             "id": 1,
-#             "title": "Fietsenwinkel - B.V.",
-#             "amount": 20.0,
-#             "date": "2020-10-05T04:01:01.0000000",
-#         }
-#     ]
-#     self.assertEqual(result, expected)
-
-# def test_get_transactions_wrong_pas_number(self):
-#     pas_number = 11111
-#     result = get_transactions(self.admin_number, pas_number, budget_code="aaa")
-#     self.assertEqual(result, [])
+        transactions = get_transactions("xxx", "111", "abc")
+        self.assertEqual(transactions, [])
 
 
-# @patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
-# @patch("app.gpass_service.requests.get", get_response_mock)
-# @patch("app.utils.GPASS_FERNET_ENCRYPTION_KEY", TESTKEY)
-# class GpassApiTest(WpiApiTestApp):
-#     admin_number = "111111111"
-#     pas_number = "6666666666666"
-#     budget_code = "aaa"
+class GpassServiceVarious(TestCase):
+    @patch("app.gpass_service.requests.get")
+    def test_send_request(self, get_mock):
+        get_mock.return_value = MockResponse({"foo": "bar"})
 
-#     def test_get_transactions(self):
-#         encrypted = encrypt(self.budget_code, self.admin_number, self.pas_number)
-#         response = self.client.get(f"/focus/stadspastransacties/{encrypted}")
+        response = send_request("http://haha", "1x1x1", params={"foo": "bar"})
 
-#         expected = {
-#             "content": [
-#                 {
-#                     "amount": 20.0,
-#                     "date": "2020-10-05T04:01:01.0000000",
-#                     "id": 1,
-#                     "title": "Fietsenwinkel - B.V.",
-#                 }
-#             ],
-#             "status": "OK",
-#         }
+        get_mock.assert_called_with(
+            "http://haha",
+            headers={"Authorization": "AppBearer None,1x1x1"},
+            timeout=30,
+            params={"foo": "bar"},
+        )
 
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(response.json, expected)
+        self.assertEqual(response, {"foo": "bar"})
+
+    @patch("app.gpass_service.encrypt")
+    def test_format_budget(self, encrypt_mock):
+        encrypt_mock.return_value = "abcdefghijklmnop"
+
+        budget = {
+            "code": "AMSTEG_10-14",
+            "naam": "Kindtegoed 10-14",
+            "omschrijving": "Kindtegoed",
+            "expiry_date": "2021-08-31T21:59:59.000Z",
+            "budget_assigned": 150,
+            "budget_balance": 0,
+        }
+        budget_transformed = {
+            "description": "Kindtegoed",
+            "code": "AMSTEG_10-14",
+            "budgetAssigned": 150,
+            "budgetBalance": 0,
+            "urlTransactions": "/wpi/stadspas/transacties/abcdefghijklmnop",
+            "dateEnd": "2021-08-31T21:59:59.000Z",
+        }
+        admin = {
+            "owner": "A Achternaam",
+            "admin_number": "xxx",
+            "pass_number": 333333333333,
+        }
+        result = format_budget(budget, admin)
+
+        encrypt_mock.assert_called_with("AMSTEG_10-14", "xxx", 333333333333)
+
+        self.assertEqual(result, budget_transformed)
+
+    @patch("app.gpass_service.format_budget")
+    def test_format_stadspas(self, format_budget_mock):
+        format_budget_mock.return_value = {"bar": "foo"}
+        stadspas = {
+            "id": "some-id",
+            "pasnummer_volledig": "123123123",
+            "budgetten": [{"foo": "bar"}],
+            "expiry_date": "2022-01-27T:11:11:11.0000",
+        }
+        admin = {
+            "owner": "A Achternaam",
+            "admin_number": "xxx",
+            "pass_number": 333333333333,
+        }
+        stadspas_transformed = {
+            "id": "some-id",
+            "passNumber": "123123123",
+            "owner": "A Achternaam",
+            "dateEnd": "2022-01-27T:11:11:11.0000",
+            "budgets": [{"bar": "foo"}],
+        }
+
+        result = format_stadspas(stadspas, admin)
+
+        format_budget_mock.assert_called_with({"foo": "bar"}, admin)
+
+        self.assertEqual(result, stadspas_transformed)
+
+    def test_get_admins(self):
+        admin_number = "12121212"
+        owner_name = "John Kelly"
+        stadspassen = [
+            {
+                "actief": False,
+                "pasnummer": 444444444444,
+            },
+            {
+                "actief": True,
+                "pasnummer": 333333333333,
+            },
+        ]
+        result = get_admins(admin_number, owner_name, stadspassen)
+
+        self.assertEqual(
+            result,
+            [
+                {
+                    "owner": "John Kelly",
+                    "admin_number": "12121212",
+                    "pass_number": 333333333333,
+                }
+            ],
+        )
+
+        stadspassen = [
+            {
+                "actief": False,
+                "pasnummer": 444444444444,
+            },
+            {
+                "actief": False,
+                "pasnummer": 333333333333,
+            },
+        ]
+        result = get_admins(admin_number, owner_name, stadspassen)
+
+        self.assertEqual(
+            result,
+            [],
+        )
+
+    def test_get_owner_name(self):
+        name = get_owner_name({"volledige_naam": "John Kelly"})
+        self.assertEqual(name, "John Kelly")
+
+        name = get_owner_name({"achternaam": "Kenedy", "initialen": "J F"})
+        self.assertEqual(name, "J F Kenedy")

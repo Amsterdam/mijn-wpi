@@ -63,6 +63,10 @@ def get_stadspas_details(admin):
     path = f"{GPASS_ENDPOINT_PAS}{stadspas_number}"
 
     stadspas = send_request(path, admin_number, params={"include_balance": True})
+
+    if not stadspas:
+        return None
+
     stadspas_details = format_stadspas(stadspas, admin)
 
     return stadspas_details
@@ -119,7 +123,9 @@ def get_stadspassen(admin_number):
 
     for admin in stadspas_admins:
         stadspas_details = get_stadspas_details(admin)
-        stadspassen.append(stadspas_details)
+
+        if stadspas_details:
+            stadspassen.append(stadspas_details)
 
     return stadspassen
 
@@ -142,6 +148,10 @@ def get_transactions(admin_number, pass_number, budget_code):
         "sub_transactions": True,
     }
     response = send_request(GPASS_ENDPOINT_TRANSACTIONS, admin_number, params=params)
+
+    if not response:
+        return []
+
     transactions = response.get("transacties")
 
     if not transactions:
