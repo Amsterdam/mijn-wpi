@@ -121,14 +121,16 @@ class TestFocusBijstandAanvraag(FocusApiTestApp):
 
     @patch("app.focus_service.get_client")
     def test_get_aanvraag(self, get_client_mock):
-        get_client_mock.return_value = MockClient(
+        mock_client = MockClient(
             get_aanvragen_response=create_soap_response(
                 "Participatiewet", self.product_source
             )
         )
+        get_client_mock.return_value = mock_client
         response = get_aanvragen(bsn=self.bsn)
 
         self.assertTrue(len(response) == 1)
+        mock_client.service.getAanvragen.assert_called_with(self.bsn)
 
         product = response[0]
         self.assertEqual(product, self.product_transformed)
@@ -219,14 +221,16 @@ class TestFocusStadspasAanvraag(FocusApiTestApp):
 
     @patch("app.focus_service.get_client")
     def test_get_aanvraag(self, get_client_mock):
-        get_client_mock.return_value = MockClient(
+        mock_client = MockClient(
             get_aanvragen_response=create_soap_response(
                 "Minimafonds", self.product_source
             )
         )
+        get_client_mock.return_value = mock_client
         response = get_aanvragen(bsn=self.bsn)
 
         self.assertTrue(len(response) == 1)
+        mock_client.service.getAanvragen.assert_called_with(self.bsn)
 
         product = response[0]
         self.assertEqual(product, self.product_transformed)
