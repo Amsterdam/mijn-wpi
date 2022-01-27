@@ -1,11 +1,9 @@
-from cryptography.fernet import Fernet
-
-from app.config import GPASS_FERNET_ENCRYPTION_KEY
 import os
 from datetime import date, datetime
 from functools import wraps
 
 import yaml
+from cryptography.fernet import Fernet
 from flask import g, request
 from flask.helpers import make_response
 from openapi_core import create_spec
@@ -22,10 +20,8 @@ from tma_saml.tma_saml import get_user_type
 from tma_saml.user_type import UserType
 from yaml import load
 
-from app.config import (
-    BASE_PATH,
-    ENABLE_OPENAPI_VALIDATION,
-)
+from app.config import BASE_PATH, ENABLE_OPENAPI_VALIDATION
+from app.gpass_config import GPASS_FERNET_ENCRYPTION_KEY
 
 openapi_spec = None
 

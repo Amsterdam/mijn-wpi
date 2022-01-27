@@ -3,10 +3,11 @@ import logging
 from urllib.error import HTTPError
 
 import sentry_sdk
-from flask import Flask
+from flask import Flask, request, make_response
 from sentry_sdk.integrations.flask import FlaskIntegration
+from app.focus_service import get_aanvragen, get_document, get_stadspas_admin_number
 
-from app.gpass_service import get_transactions
+from app.gpass_service import get_stadspassen, get_transactions
 from app.utils import (
     decrypt,
     error_response_json,
@@ -15,16 +16,17 @@ from app.utils import (
 )
 
 from app.config import (
-    FOCUS_DOCUMENT_PATH,
     IS_DEV,
     SENTRY_DSN,
     CustomJSONEncoder,
     TMAException,
-    focus_credentials,
-    zeep_config,
 )
-from app.focusconnect import FocusConnection
-from app.focusserver import FocusServer
+from app.focus_config import (
+    FOCUS_DOCUMENT_PATH,
+)
+
+# from app.focusconnect import FocusConnection
+# from app.focusserver import FocusServer
 
 application = Flask(__name__)
 application.json_encoder = CustomJSONEncoder
@@ -35,41 +37,63 @@ if SENTRY_DSN:  # pragma: no cover
     )
 
 
-def get_server():
-    focus_connection = FocusConnection(zeep_config, focus_credentials)
-    return FocusServer(focus_connection)
-
-
 @application.route("/status/health")
 def status_health():
     return success_response_json("OK")
 
 
-@application.route("/focus/aanvragen")
+@application.route("/sociaal/aanvragen")
 def aanvragen():
     bsn = get_bsn_from_request()
-    return get_server().aanvragen(bsn)
+    aanvragen = get_aanvragen(bsn)
+
+    return success_response_json(aanvragen)
 
 
 @application.route(f"/{FOCUS_DOCUMENT_PATH}")
 def document():
     bsn = get_bsn_from_request()
-    return get_server().document(bsn)
+    id = request.args.get("id", None)
+    isBulk = request.args.get("isBulk", "false").lower() == "true"
+    isDms = request.args.get("isDms", "false").lower() == "true"
+
+    document = get_document(bsn, id, isBulk, isDms)
+
+    response = make_response(document["contents"])
+    response.headers[
+        "Content-Disposition"
+    ] = f'attachment; filename="{document["fileName"]}"'
+    response.headers["Content-Type"] = document["mime_type"]
+
+    return response
 
 
-@application.route("/focus/combined")
-def combined():
+@application.route("/wpi/bijstanduitkering/jaaropgaven")
+def jaaropgaven():
     bsn = get_bsn_from_request()
-    combined_response_data = get_server().combined(bsn)
-    return success_response_json(combined_response_data)
+    jaaropgaven = []
+    return success_response_json(jaaropgaven)
 
 
-@application.route("/focus/stadspastransacties/<string:encrypted_admin_pasnummer>")
+@application.route("/wpi/bijstanduitkering/specificaties")
+def uitkeringspecificaties():
+    bsn = get_bsn_from_request()
+    uitkeringspecificaties = []
+    return success_response_json(uitkeringspecificaties)
+
+
+@application.route("/wpi/stadspassen")
+def stadspassen():
+    bsn = get_bsn_from_request()
+    admin_number = get_stadspas_admin_number(bsn)
+    stadspassen = get_stadspassen(admin_number)
+    return success_response_json(stadspassen)
+
+
+@application.route("/wpi/stadspas/transacties/<string:encrypted_admin_pasnummer>")
 def stadspastransactions(encrypted_admin_pasnummer):
     budget_code, admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
-
     stadspas_transations = get_transactions(admin_number, stadspas_number, budget_code)
-
     return success_response_json(stadspas_transations)
 
 

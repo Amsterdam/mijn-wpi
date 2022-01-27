@@ -1,9 +1,7 @@
 import datetime
-import json
 from unittest.mock import MagicMock, patch
-from app.config import CustomJSONEncoder
 from app.focus_service import get_aanvragen
-from tests.focus_test_app import FocusApiTestApp
+from app.tests.wpi_test_app import WpiApiTestApp
 
 
 class MockService:
@@ -24,7 +22,7 @@ def create_soap_response(soort_product_naam, product, bsn=12312312399):
     }
 
 
-class TestFocusBijstandAanvraag(FocusApiTestApp):
+class TestFocusBijstandAanvraag(WpiApiTestApp):
 
     bsn = 12312312399
     product_source = {
@@ -101,7 +99,7 @@ class TestFocusBijstandAanvraag(FocusApiTestApp):
                 "documents": {
                     "id": "4400000007",
                     "title": "Formulier Inlichtingen Klant",
-                    "url": "/focus/document?id=4400000007&isBulk=True&isDms=False",
+                    "url": "/wpi/aanvraag/document?id=4400000007&isBulk=True&isDms=False",
                     "datePublished": "2017-08-18T15:05:52",
                     "type": "pdf",
                 },
@@ -136,7 +134,7 @@ class TestFocusBijstandAanvraag(FocusApiTestApp):
         self.assertEqual(product, self.product_transformed)
 
 
-class TestFocusStadspasAanvraag(FocusApiTestApp):
+class TestFocusStadspasAanvraag(WpiApiTestApp):
 
     bsn = 99321321321
     product_source = {
@@ -188,7 +186,7 @@ class TestFocusStadspasAanvraag(FocusApiTestApp):
                 "documents": {
                     "id": "4400000013",
                     "title": "Aanvraag Stadspas (balie)",
-                    "url": "/focus/document?id=4400000013&isBulk=True&isDms=False",
+                    "url": "/wpi/aanvraag/document?id=4400000013&isBulk=True&isDms=False",
                     "datePublished": "2019-05-08T15:05:52",
                     "type": "pdf",
                 },
@@ -236,7 +234,7 @@ class TestFocusStadspasAanvraag(FocusApiTestApp):
         self.assertEqual(product, self.product_transformed)
 
 
-class TestFocusStadspasAanvraag2(FocusApiTestApp):
+class TestFocusStadspasAanvraag2(WpiApiTestApp):
 
     bsn = 99321321321
     product_source = {
@@ -278,7 +276,7 @@ class TestFocusStadspasAanvraag2(FocusApiTestApp):
                 "documents": {
                     "id": "4400000013",
                     "title": "Aanvraag Stadspas (balie)",
-                    "url": "/focus/document?id=4400000013&isBulk=True&isDms=False",
+                    "url": "/wpi/aanvraag/document?id=4400000013&isBulk=True&isDms=False",
                     "datePublished": "2019-05-08T15:05:52",
                     "type": "pdf",
                 },

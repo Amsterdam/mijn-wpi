@@ -2,7 +2,7 @@ import os
 from unittest import TestCase
 
 from mock import patch
-from tests.focus_test_app import FocusApiTestApp
+from app.tests.wpi_test_app import WpiApiTestApp
 
 # Prepare environment
 from tests.mocks import MockClient
@@ -41,7 +41,7 @@ class TestConnection(TestCase):
         self.assertTrue(mocked_set_client.called)
 
 
-class TestInterpreter(FocusApiTestApp):
+class TestInterpreter(WpiApiTestApp):
     def test_to_array(self):
         self.assertEqual(_to_list({}, "x"), {"x": []})
         self.assertEqual(_to_list({"x": []}, "x"), {"x": []})

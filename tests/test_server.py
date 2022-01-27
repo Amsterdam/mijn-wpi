@@ -1,7 +1,7 @@
 import json
 from mock import patch
 
-from tests.focus_test_app import FocusApiTestApp
+from app.tests.wpi_test_app import WpiApiTestApp
 from tests.mocks import MockClient
 
 # side step decoding the BSN from SAML token
@@ -9,7 +9,7 @@ from tests.mocks import MockClient
 @patch("app.focusconnect.Client", new=MockClient)
 @patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
 @patch("app.utils.GPASS_FERNET_ENCRYPTION_KEY", "abcde1234")
-class TestApi(FocusApiTestApp):
+class TestApi(WpiApiTestApp):
 
     TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 

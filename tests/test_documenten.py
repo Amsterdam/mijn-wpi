@@ -3,7 +3,7 @@ from unittest import TestCase
 
 # Prepare environment
 from mock import patch
-from tests.focus_test_app import FocusApiTestApp
+from app.tests.wpi_test_app import WpiApiTestApp
 
 from tests.mocks import MockClient, pdf_document
 
@@ -33,7 +33,7 @@ class DocumentTest(TestCase):
 # side step decoding the BSN from SAML token
 @patch("app.server.get_bsn_from_request", lambda: 123456789)
 @patch("app.focusconnect.Client", new=MockClient)
-class DocumentApiTest(FocusApiTestApp):
+class DocumentApiTest(WpiApiTestApp):
     def test_document_api(self):
         response = self.client.get("/focus/document?id=1&isBulk=true&isDms=true")
         self.assertEqual(response.data, pdf_document)
