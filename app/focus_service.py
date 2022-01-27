@@ -134,7 +134,7 @@ def transform_step_hersteltermijn(step, product_source):
         0,
     )
 
-    # Deadline date for the Municiaplity used to generate a status text for the 'herstelTermijn / Meer informatie' step.
+    # A decision about the request is expected to made before this date
     municipality_decision_date_max = calculate_municipality_feedback_date_max(
         date_aanvraag,
         default_if_none(product_source, "dienstverleningstermijn", 0),
@@ -142,6 +142,7 @@ def transform_step_hersteltermijn(step, product_source):
         aantal_dagen_hersteltermijn,
     )
 
+    # A requester is expected to give feedback to the municipality before this date
     user_feedback_date_max = calculate_user_feedback_date_max(
         date_aanvraag, aantal_dagen_hersteltermijn
     )
@@ -155,7 +156,7 @@ def transform_step_hersteltermijn(step, product_source):
 def transform_step_inbehandeling(step, product_source):
     date_aanvraag = product_source["processtappen"]["aanvraag"]["datum"]
 
-    # Deadline date used to generate a status text for the 'inBehandeling' step.
+    # A decision about the request is expected to made before this date
     municipality_decision_date_max = calculate_municipality_feedback_date_max(
         date_aanvraag,
         default_if_none(product_source, "dienstverleningstermijn", 0),
