@@ -6,11 +6,10 @@ import requests
 from app.config import API_REQUEST_TIMEOUT
 from app.focus_service import get_client
 from app.gpass_config import (
-    GPASS_API_LOCATION,
     GPASS_API_TOKEN,
-    GPASS_ENDPOINT_PAS_BUDGET,
     GPASS_ENDPOINT_PASHOUDER,
     GPASS_ENDPOINT_PAS,
+    GPASS_ENDPOINT_TRANSACTIONS,
     STADSPAS_TRANSACTIONS_PATH,
 )
 from app.utils import encrypt
@@ -30,7 +29,6 @@ def send_request(url, admin_number, params=None):
 
 
 def format_budget(budget, admin):
-    print("dingen!", budget["code"], admin["admin_number"], admin["pass_number"])
     transactions_key = encrypt(
         budget["code"], admin["admin_number"], admin["pass_number"]
     )
@@ -143,7 +141,7 @@ def get_transactions(admin_number, pass_number, budget_code):
         "budgetcode": budget_code,
         "sub_transactions": True,
     }
-    response = send_request(GPASS_ENDPOINT_PAS_BUDGET, admin_number, params=params)
+    response = send_request(GPASS_ENDPOINT_TRANSACTIONS, admin_number, params=params)
     transactions = response.get("transacties")
 
     if not transactions:

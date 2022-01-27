@@ -6,7 +6,7 @@ from app.config import focus_credentials, zeep_config
 from app.focusconnect import FocusConnection
 from app.focusserver import FocusServer
 from app.utils import decrypt
-from tests.test_gpass import GpassServiceTest
+from app.test_gpass_service import GpassServiceTest
 
 bsn = sys.argv[1]
 

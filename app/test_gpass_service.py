@@ -5,7 +5,11 @@ from black import json
 from mock import patch
 from app.config import CustomJSONEncoder
 
-from app.gpass_service import get_stadspas_details
+from app.gpass_service import (
+    get_stadspas_admins,
+    get_stadspas_details,
+    get_transactions,
+)
 from app.tests.wpi_test_app import FERNET_KEY_MOCK
 from freezegun import freeze_time
 
@@ -14,7 +18,7 @@ from freezegun import freeze_time
 TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
-class GpassServiceTest(TestCase):
+class GpassServiceGetStadspas(TestCase):
     gpass_pas_response = {
         "actief": True,
         "balance_update_time": "2020-04-02T12:45:41.000Z",
@@ -91,25 +95,146 @@ class GpassServiceTest(TestCase):
 
         self.assertEqual(result, self.gpass_formatted)
 
-    # def test_get_transactions(self):
-    #     pas_number = "6666666666666"
-    #     budget_code = "aaa"
-    #     result = get_transactions(self.admin_number, pas_number, budget_code)
 
-    #     expected = [
-    #         {
-    #             "id": 1,
-    #             "title": "Fietsenwinkel - B.V.",
-    #             "amount": 20.0,
-    #             "date": "2020-10-05T04:01:01.0000000",
-    #         }
-    #     ]
-    #     self.assertEqual(result, expected)
+class GpassServiceGetStadspassen(TestCase):
+    gpass_pashouder_response = {
+        "initialen": "A",
+        "achternaam": "Achternaam",
+        "passen": [
+            {
+                "actief": False,
+                "pasnummer": 444444444444,
+            },
+            {
+                "actief": True,
+                "pasnummer": 333333333333,
+            },
+        ],
+        "sub_pashouders": [
+            {
+                "initialen": "B",
+                "achternaam": "Achternaam",
+                "passen": [
+                    {
+                        "actief": True,
+                        "pasnummer": 666666666666,
+                    },
+                    {
+                        "actief": False,
+                        "pasnummer": 555555555555,
+                    },
+                ],
+            },
+            {
+                "initialen": "C",
+                "achternaam": "Achternaam",
+                "passen": [
+                    {
+                        "actief": True,
+                        "pasnummer": 777777777777,
+                    },
+                    {
+                        "actief": False,
+                        "pasnummer": 888888888888,
+                    },
+                ],
+            },
+        ],
+    }
 
-    # def test_get_transactions_wrong_pas_number(self):
-    #     pas_number = 11111
-    #     result = get_transactions(self.admin_number, pas_number, budget_code="aaa")
-    #     self.assertEqual(result, [])
+    gpass_admins = [
+        {"owner": "A Achternaam", "admin_number": "xxx", "pass_number": 333333333333},
+        {"owner": "B Achternaam", "admin_number": "xxx", "pass_number": 666666666666},
+        {"owner": "C Achternaam", "admin_number": "xxx", "pass_number": 777777777777},
+    ]
+
+    @patch("app.gpass_service.GPASS_ENDPOINT_PASHOUDER", "http://ha/ha/ha")
+    @patch("app.gpass_service.send_request")
+    def test_get_stadspas_admins(self, send_request_mock):
+        send_request_mock.return_value = self.gpass_pashouder_response
+
+        admin_number = "xxx"
+        result = get_stadspas_admins(admin_number)
+        expected_path = f"http://ha/ha/ha"
+
+        send_request_mock.assert_called_with(
+            expected_path, admin_number, params={"addsubs": True}
+        )
+
+        self.assertEqual(result, self.gpass_admins)
+
+
+class GpassServiceGetTransactions(TestCase):
+
+    gpass_transactions_response = {
+        "number_of_items": 20,
+        "total_items": 42,
+        "transacties": [
+            {
+                "id": 1,
+                "transactiedatum": "2020-10-05T04:01:01.0000",
+                "bedrag": 20.0,
+                "pashouder": {"id": 1, "hoofd_pashouder_id": 2},
+                "pas": {
+                    "id": 2,
+                    "pasnummer": 6666666666666,
+                    "pasnummer_volledig": "66666666666666",
+                    "originele_pas": {
+                        "id": 1,
+                        "pasnummer": 66666666666666,
+                        "pasnummer_volledig": "66666666666666",
+                    },
+                },
+                "budget": {
+                    "id": 44,
+                    "code": "GPAS05_19",
+                    "naam": "Schoolactiviteiten",
+                    "aanbieder": {"id": 222222, "naam": "Fietsenwinkel - B.V."},
+                },
+            }
+        ],
+    }
+
+    gpass_transactions_transformed = [
+        {
+            "id": 1,
+            "title": "Fietsenwinkel - B.V.",
+            "amount": 20.0,
+            "datePublished": "2020-10-05T04:01:01.0000",
+        }
+    ]
+
+    @patch("app.gpass_service.GPASS_ENDPOINT_TRANSACTIONS", "http://ha/ha/ha")
+    @patch("app.gpass_service.send_request")
+    def test_get_transactions(self, send_request_mock):
+        send_request_mock.return_value = self.gpass_transactions_response
+
+        transactions = get_transactions("xxx", "111", "abc")
+
+        self.assertEqual(transactions, self.gpass_transactions_transformed)
+
+
+# class GpassServiceVarious(TestCase):
+
+# def test_get_transactions(self):
+#     pas_number = "6666666666666"
+#     budget_code = "aaa"
+#     result = get_transactions(self.admin_number, pas_number, budget_code)
+
+#     expected = [
+#         {
+#             "id": 1,
+#             "title": "Fietsenwinkel - B.V.",
+#             "amount": 20.0,
+#             "date": "2020-10-05T04:01:01.0000000",
+#         }
+#     ]
+#     self.assertEqual(result, expected)
+
+# def test_get_transactions_wrong_pas_number(self):
+#     pas_number = 11111
+#     result = get_transactions(self.admin_number, pas_number, budget_code="aaa")
+#     self.assertEqual(result, [])
 
 
 # @patch("app.gpass_service.GPASS_API_LOCATION", "http://localhost")
