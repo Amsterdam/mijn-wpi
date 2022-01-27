@@ -173,3 +173,8 @@ def decrypt(encrypted: str) -> tuple:
     budget_code, admin_number, pas_number = admin_pas_numbers.split(":", maxsplit=2)
 
     return budget_code, admin_number, pas_number
+
+
+def default_if_none(data, key, default):
+    value = data.get(key)
+    return default if value is None else value
