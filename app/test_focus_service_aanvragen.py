@@ -1,25 +1,11 @@
 import datetime
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 from app.focus_service_aanvragen import get_aanvragen
-from app.tests.wpi_test_app import WpiApiTestApp
-
-
-class MockService:
-    getAanvragen = MagicMock()
-
-
-class MockClient:
-    def __init__(self, get_aanvragen_response) -> None:
-        service = MockService()
-        service.getAanvragen.return_value = get_aanvragen_response
-        self.service = service
-
-
-def create_soap_response(soort_product_naam, product, bsn=12312312399):
-    return {
-        "bsn": bsn,
-        "soortProduct": [{"naam": soort_product_naam, "product": [product]}],
-    }
+from app.tests.wpi_test_app import (
+    MockClient,
+    WpiApiTestApp,
+    create_soap_response_get_aanvragen,
+)
 
 
 class TestFocusBijstandAanvraag(WpiApiTestApp):
@@ -119,9 +105,10 @@ class TestFocusBijstandAanvraag(WpiApiTestApp):
     @patch("app.focus_service_aanvragen.get_client")
     def test_get_aanvraag(self, get_client_mock):
         mock_client = MockClient(
-            get_aanvragen_response=create_soap_response(
+            name="getAanvragen",
+            response=create_soap_response_get_aanvragen(
                 "Participatiewet", self.product_source
-            )
+            ),
         )
         get_client_mock.return_value = mock_client
         response = get_aanvragen(bsn=self.bsn)
@@ -218,9 +205,10 @@ class TestFocusStadspasAanvraag(WpiApiTestApp):
     @patch("app.focus_service_aanvragen.get_client")
     def test_get_aanvraag(self, get_client_mock):
         mock_client = MockClient(
-            get_aanvragen_response=create_soap_response(
+            name="getAanvragen",
+            response=create_soap_response_get_aanvragen(
                 "Minimafonds", self.product_source
-            )
+            ),
         )
         get_client_mock.return_value = mock_client
         response = get_aanvragen(bsn=self.bsn)
@@ -285,9 +273,10 @@ class TestFocusStadspasAanvraag2(WpiApiTestApp):
     @patch("app.focus_service_aanvragen.get_client")
     def test_get_aanvraag_start(self, get_client_mock):
         mock_client = MockClient(
-            get_aanvragen_response=create_soap_response(
+            name="getAanvragen",
+            response=create_soap_response_get_aanvragen(
                 "Minimafonds", self.product_source
-            )
+            ),
         )
         get_client_mock.return_value = mock_client
         response = get_aanvragen(bsn=self.bsn)

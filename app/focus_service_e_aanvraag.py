@@ -1,4 +1,5 @@
 import hashlib
+import logging
 
 from app.e_aanvraag_config import (
     E_AANVRAAG_DOCUMENT_CONFIG,
@@ -25,17 +26,33 @@ def get_steps_collection():
 
 def create_e_aanvraag(product_name, steps):
     steps_sorted = sorted(steps, key=lambda d: d["datePublished"])
-
     raw_id = product_name + steps_sorted[0]["datePublished"].isoformat()
     id = hashlib.md5(raw_id.encode("utf-8")).hexdigest()
 
     first_step = steps_sorted[0]  # aanvraag step
     last_step = steps_sorted[-1]  # any step
 
-    for step in steps:
+    for step in steps_sorted:
         step["datePublished"] = step["datePublished"].isoformat()
 
     date_end = last_step["datePublished"] if last_step["title"] in ["besluit"] else None
+
+    aanvraag_step = None
+    other_steps = []
+
+    for step in steps_sorted:
+        if step["title"] == "aanvraag":
+            if not aanvraag_step:
+                aanvraag_step = step
+            else:
+                aanvraag_step["documents"] += step["documents"]
+        else:
+            other_steps.append(step)
+
+    if aanvraag_step:
+        steps = [aanvraag_step] + other_steps
+    else:
+        steps = other_steps
 
     product = {
         "id": id,
@@ -52,11 +69,18 @@ def create_e_aanvraag(product_name, steps):
 
 
 def get_e_aanvraag_document(e_aanvraag, document_config):
+    title = document_config["document_title"]
+
+    date_published = e_aanvraag["datumDocument"].isoformat()
+
+    if document_config["step_type"] == "aanvraag":
+        title = f"{title}\n{date_published}"
+
     return {
         "id": str(e_aanvraag["documentId"]),
-        "title": document_config["document_title"],
+        "title": title,
         "url": get_document_url({**e_aanvraag, "id": e_aanvraag["documentId"]}),
-        "datePublished": e_aanvraag["datumDocument"].isoformat(),
+        "datePublished": date_published,
     }
 
 
@@ -79,7 +103,7 @@ def get_e_aanvragen(bsn):
     e_aanvragen = []
 
     try:
-        response = get_client().service.EAanvragenTozo(bsn)
+        response = get_client().service.getEAanvraagTozo(bsn)
         e_aanvragen = response.get("documentgegevens", [])
     except Exception as error:
         # To Sentry
@@ -93,6 +117,7 @@ def get_e_aanvragen(bsn):
 
         if not document_config:
             # Error to Sentry
+            logging.error(f"Unknown E_Aanvraag Document encountered {document_code_id}")
             continue
 
         step = get_e_aanvraag_step(e_aanvraag, document_code_id, document_config)

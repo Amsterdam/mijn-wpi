@@ -9,6 +9,7 @@ from app.focus_service_e_aanvraag import (
     get_e_aanvragen,
     get_steps_collection,
 )
+from app.tests.wpi_test_app import MockClient, create_soap_response_get_aanvragen
 
 
 class FocusSerivceEAanvraag(TestCase):
@@ -19,7 +20,7 @@ class FocusSerivceEAanvraag(TestCase):
         document_config = get_document_config(document_code_id)
 
         self.assertEqual(document_config["product"], "tonk")
-        self.assertEqual(document_config["stepType"], "besluit")
+        self.assertEqual(document_config["step_type"], "besluit")
         self.assertEqual(document_config["decision"], "toekenning")
 
         document_config = get_document_config(123)
@@ -38,10 +39,11 @@ class FocusSerivceEAanvraag(TestCase):
                 "tozo 5": [],
                 "tonk": [],
                 "bbz": [],
+                "ioaz": [],
             },
         )
 
-    def test_create_e_aanvraag(self, get_document_url_mock):
+    def test_create_e_aanvraag(self):
 
         product_name = "tozo 5"
         steps = [
@@ -74,7 +76,7 @@ class FocusSerivceEAanvraag(TestCase):
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
-    def test_create_e_aanvraag(self, get_document_url_mock):
+    def test_create_e_aanvraag(self):
         product_name = "tonk"
         steps = [
             {
@@ -168,10 +170,16 @@ class FocusSerivceEAanvraag(TestCase):
 
         self.assertEqual(result, result_expected)
 
-    # def test_get_e_aanvragen(self):
-    #     bsn = ""
-    #     result = get_e_aanvragen(bsn)
-    #     self.assertEqual(result)
+    @patch("app.focus_service_e_aanvraag.get_client")
+    def test_get_e_aanvragen(self, get_client_mock):
+        mock_client = MockClient(response=example_response, name="getEAanvraagTozo")
+        get_client_mock.return_value = mock_client
+        bsn = "123xx123"
+        result = get_e_aanvragen(bsn)
+        print(result)
+        mock_client.service.getEAanvraagTozo.assert_called_with(bsn)
+
+        # self.assertEqual(result)
 
 
 example_response = {

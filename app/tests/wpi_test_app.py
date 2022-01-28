@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from tma_saml import FlaskServerTMATestCase
 
@@ -32,3 +32,23 @@ class MockResponse:
 
 
 FERNET_KEY_MOCK = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
+
+
+class MockService:
+    def __init__(self, name, response):
+        self.__setattr__(name, MagicMock(return_value=response))
+
+
+class MockClient:
+    service = None
+
+    def __init__(self, name, response) -> None:
+        service = MockService(name, response)
+        self.service = service
+
+
+def create_soap_response_get_aanvragen(soort_product_naam, product, bsn=12312312399):
+    return {
+        "bsn": bsn,
+        "soortProduct": [{"naam": soort_product_naam, "product": [product]}],
+    }
