@@ -24,7 +24,6 @@ def get_steps_collection():
 
 
 def create_e_aanvraag(product_name, steps):
-
     steps_sorted = sorted(steps, key=lambda d: d["datePublished"])
 
     raw_id = product_name + steps_sorted[0]["datePublished"].isoformat()
@@ -36,9 +35,7 @@ def create_e_aanvraag(product_name, steps):
     for step in steps:
         step["datePublished"] = step["datePublished"].isoformat()
 
-    date_end = (
-        last_step["datePublished"] if last_step["status"] in ["besluit"] else None
-    )
+    date_end = last_step["datePublished"] if last_step["title"] in ["besluit"] else None
 
     product = {
         "id": id,
@@ -47,21 +44,28 @@ def create_e_aanvraag(product_name, steps):
         "datePublished": last_step["datePublished"],
         "dateEnd": date_end,
         "decision": last_step["decision"] if date_end else None,
-        "status": last_step["status"],
+        "status": last_step["title"],
         "steps": steps,
     }
 
     return product
 
 
+def get_e_aanvraag_document(e_aanvraag, document_config):
+    return {
+        "id": str(e_aanvraag["documentId"]),
+        "title": document_config["document_title"],
+        "url": get_document_url({**e_aanvraag, "id": e_aanvraag["documentId"]}),
+        "datePublished": e_aanvraag["datumDocument"].isoformat(),
+    }
+
+
 def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
     step = {
         "id": document_code_id,
-        "title": document_config["document_title"],
-        "url": get_document_url(e_aanvraag),
+        "title": document_config["step_type"],
         "datePublished": e_aanvraag["datumDocument"],
-        "status": document_config["status"],
-        "documents": [],
+        "documents": [get_e_aanvraag_document(e_aanvraag, document_config)],
     }
 
     decision = document_config.get("decision")

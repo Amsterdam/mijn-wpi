@@ -41,16 +41,13 @@ class FocusSerivceEAanvraag(TestCase):
             },
         )
 
-    @patch("app.focus_service_aanvragen.get_document_url")
     def test_create_e_aanvraag(self, get_document_url_mock):
-        get_document_url_mock.return_value = "http://ho/ho/ho"
 
         product_name = "tozo 5"
         steps = [
             {
                 "id": "1x1",
                 "title": "Aanvraag document",
-                "url": "http://ho/ho/ho",
                 "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
                 "status": "aanvraag",
                 "documents": [],
@@ -68,9 +65,8 @@ class FocusSerivceEAanvraag(TestCase):
                 {
                     "id": "1x1",
                     "title": "Aanvraag document",
-                    "url": "http://ho/ho/ho",
                     "datePublished": "2020-10-23T17:20:04",
-                    "status": "aanvraag",
+                    "title": "aanvraag",
                     "documents": [],
                 }
             ],
@@ -78,26 +74,21 @@ class FocusSerivceEAanvraag(TestCase):
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
-    @patch("app.focus_service_aanvragen.get_document_url")
     def test_create_e_aanvraag(self, get_document_url_mock):
-        get_document_url_mock.return_value = "http://ho/ho/ho"
-
         product_name = "tonk"
         steps = [
             {
                 "id": "1x1",
                 "title": "Aanvraag document",
-                "url": "http://ho/ho/ho",
                 "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
-                "status": "aanvraag",
+                "title": "aanvraag",
                 "documents": [],
             },
             {
                 "id": "1x2",
                 "title": "Besluit document",
-                "url": "http://ho/ho/ho",
                 "datePublished": datetime.datetime(2020, 11, 15, 10, 00, 2),
-                "status": "besluit",
+                "title": "besluit",
                 "documents": [],
                 "decision": "toekenning",
             },
@@ -114,17 +105,15 @@ class FocusSerivceEAanvraag(TestCase):
                 {
                     "id": "1x1",
                     "title": "Aanvraag document",
-                    "url": "http://ho/ho/ho",
                     "datePublished": "2020-10-23T17:20:04",
-                    "status": "aanvraag",
+                    "title": "aanvraag",
                     "documents": [],
                 },
                 {
                     "id": "1x2",
                     "title": "Besluit document",
-                    "url": "http://ho/ho/ho",
                     "datePublished": "2020-11-15T10:00:02",
-                    "status": "besluit",
+                    "title": "besluit",
                     "decision": "toekenning",
                     "documents": [],
                 },
@@ -133,12 +122,51 @@ class FocusSerivceEAanvraag(TestCase):
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
-    # def test_get_e_aanvraag_step(self):
-    #     e_aanvraag = {}
-    #     document_code_id = ""
-    #     document_config = {}
-    #     result = get_e_aanvraag_step(e_aanvraag, document_code_id, document_config)
-    #     self.assertEqual(result)
+    def test_get_e_aanvraag_step(self):
+        e_aanvraag = {
+            "datumDocument": datetime.datetime(2020, 10, 27, 17, 20, 4),
+            "documentCodes": {
+                "documentCategorie": {
+                    "documentCategorieCode": "101",
+                    "documentCategorieNaam": "Besluit",
+                },
+                "documentCode": "5364",
+                "documentCodeId": "175364",
+                "documentOmschrijving": "Tozo3 Afwijzen",
+            },
+            "documentId": 660000000000099,
+            "isBulk": False,
+            "isDms": False,
+            "variant": None,
+        }
+
+        document_code_id = "175364"
+        document_config = {
+            "omschrijving": "Tozo3 Afwijzen",
+            "step_type": "besluit",
+            "product": "Tozo 3",
+            "document_title": "Besluit afwijzing",
+            "decision": "afwijzing",
+        }
+
+        result_expected = {
+            "id": "175364",
+            "title": "besluit",
+            "datePublished": datetime.datetime(2020, 10, 27, 17, 20, 4),
+            "decision": "afwijzing",
+            "documents": [
+                {
+                    "id": "660000000000099",
+                    "title": "Besluit afwijzing",
+                    "datePublished": "2020-10-27T17:20:04",
+                    "url": "/wpi/aanvraag/document?id=660000000000099&isBulk=False&isDms=False",
+                }
+            ],
+        }
+
+        result = get_e_aanvraag_step(e_aanvraag, document_code_id, document_config)
+
+        self.assertEqual(result, result_expected)
 
     # def test_get_e_aanvragen(self):
     #     bsn = ""
