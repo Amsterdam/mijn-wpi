@@ -1,10 +1,8 @@
 import logging
-from black import json
 
 import requests
 
 from app.config import API_REQUEST_TIMEOUT
-from app.focus_service import get_client
 from app.gpass_config import (
     GPASS_API_TOKEN,
     GPASS_ENDPOINT_PASHOUDER,

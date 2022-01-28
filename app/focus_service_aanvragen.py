@@ -9,6 +9,10 @@ from zeep.transports import Transport
 from app.config import (
     API_REQUEST_TIMEOUT,
 )
+from app.e_aanvraag_config import (
+    E_AANVRAAG_PRODUCT_NAMES,
+    E_AANVRAAG_DOCUMENT_CONFIG,
+)
 from app.focus_config import (
     FOCUS_AANVRAAG_PROCESS_STEPS,
     FOCUS_DOCUMENT_PATH,
@@ -113,17 +117,14 @@ def transform_step_documents(step):
     documents = []
 
     for document in step["document"]:
-        document_type = "pdf"  # NOTE: Is this always true?
-
-        step_transformed = {
+        document_transformed = {
             "id": str(document["id"]),
             "title": get_translation(document["omschrijving"]),
             "url": get_document_url(document),
             "datePublished": step["datum"].isoformat(),
-            "type": document_type,
         }
 
-        return step_transformed
+        return document_transformed
 
     return documents
 
@@ -151,7 +152,6 @@ def transform_step_hersteltermijn(step, product_source):
 
     step["dateDecisionExpected"] = municipality_decision_date_max.isoformat()
     step["dateUserFeedbackExpected"] = user_feedback_date_max.isoformat()
-
     return step
 
 
@@ -166,7 +166,6 @@ def transform_step_inbehandeling(step, product_source):
     )
 
     step["dateDecisionExpected"] = municipality_decision_date_max.isoformat()
-
     return step
 
 
@@ -174,7 +173,6 @@ def transform_step_besluit(step, product_source):
     # ATTENTION! Chaning the ID of this step
     step["id"] = "besluit"
     step["decision"] = product_source["typeBesluit"]
-
     return step
 
 
@@ -301,58 +299,3 @@ def get_document(bsn, id, isBulk, isDms):
     }
 
     return document
-
-
-def has_groene_stip(fondsen):
-    # Client needs to have a "toekenning" of a certain type
-    for f in fondsen:
-        is_toegekend = f.find("besluit").text == "toekenning"
-        is_correct_fonds = f.find("soortFonds").text in ["3555", "3556", "3557", "3558"]
-
-        # Temporarily disable check on Toekenning
-        # start = parser.isoparse(f.find("dtbegin").text).date()
-        # end = parser.isoparse(f.find("dteinde").text).date()
-        # is_actueel_besluit = start < today < end
-        # if is_toegekend and is_correct_fonds and is_actueel_besluit:
-
-        if is_toegekend and is_correct_fonds:
-            return True
-
-    return False
-
-
-def get_stadspas_admin_number(bsn):
-    focus_stadspas = get_client().service.getStadspas(bsn=bsn)
-    admin_number = focus_stadspas["administratienummer"]
-
-    if not admin_number:
-        return None
-
-    # fondsen = tree.find("fondsen").find_all("fonds", recursive=False)
-    fondsen = []
-    has_pas = has_groene_stip(fondsen)
-
-    if not has_pas:
-        return None
-
-    pas_type = None
-
-    # TODO: Check this code, can we get more than 1 fonds?
-    for fonds in fondsen:
-        soort = fonds.find("soortFonds").text
-        besluit = fonds.find("besluit").text
-
-        if besluit != "toekenning":
-            continue
-
-        if soort == "3555":
-            pas_type = "hoofpashouder"
-        elif soort == "3556":
-            pas_type = "partner"
-        elif soort == "3557":
-            pas_type = "kind"
-
-    return {
-        "admin_number": admin_number,
-        "type": pas_type,
-    }

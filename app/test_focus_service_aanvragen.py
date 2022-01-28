@@ -1,6 +1,6 @@
 import datetime
 from unittest.mock import MagicMock, patch
-from app.focus_service import get_aanvragen
+from app.focus_service_aanvragen import get_aanvragen
 from app.tests.wpi_test_app import WpiApiTestApp
 
 
@@ -101,7 +101,6 @@ class TestFocusBijstandAanvraag(WpiApiTestApp):
                     "title": "Formulier Inlichtingen Klant",
                     "url": "/wpi/aanvraag/document?id=4400000007&isBulk=True&isDms=False",
                     "datePublished": "2017-08-18T15:05:52",
-                    "type": "pdf",
                 },
                 "datePublished": "2017-08-18T15:05:52",
                 "dateDecisionExpected": "2017-10-15T15:05:52",
@@ -117,7 +116,7 @@ class TestFocusBijstandAanvraag(WpiApiTestApp):
         ],
     }
 
-    @patch("app.focus_service.get_client")
+    @patch("app.focus_service_aanvragen.get_client")
     def test_get_aanvraag(self, get_client_mock):
         mock_client = MockClient(
             get_aanvragen_response=create_soap_response(
@@ -188,7 +187,6 @@ class TestFocusStadspasAanvraag(WpiApiTestApp):
                     "title": "Aanvraag Stadspas (balie)",
                     "url": "/wpi/aanvraag/document?id=4400000013&isBulk=True&isDms=False",
                     "datePublished": "2019-05-08T15:05:52",
-                    "type": "pdf",
                 },
                 "datePublished": "2019-05-08T15:05:52",
             },
@@ -217,7 +215,7 @@ class TestFocusStadspasAanvraag(WpiApiTestApp):
         ],
     }
 
-    @patch("app.focus_service.get_client")
+    @patch("app.focus_service_aanvragen.get_client")
     def test_get_aanvraag(self, get_client_mock):
         mock_client = MockClient(
             get_aanvragen_response=create_soap_response(
@@ -278,14 +276,13 @@ class TestFocusStadspasAanvraag2(WpiApiTestApp):
                     "title": "Aanvraag Stadspas (balie)",
                     "url": "/wpi/aanvraag/document?id=4400000013&isBulk=True&isDms=False",
                     "datePublished": "2019-05-08T15:05:52",
-                    "type": "pdf",
                 },
                 "datePublished": "2019-05-08T15:05:52",
             },
         ],
     }
 
-    @patch("app.focus_service.get_client")
+    @patch("app.focus_service_aanvragen.get_client")
     def test_get_aanvraag_start(self, get_client_mock):
         mock_client = MockClient(
             get_aanvragen_response=create_soap_response(

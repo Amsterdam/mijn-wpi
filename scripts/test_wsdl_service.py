@@ -1,5 +1,5 @@
 from app.config import FOCUS_WSDL
-from app.focus_service import get_client
+from app.focus_service_aanvragen import get_client
 
 import operator
 
