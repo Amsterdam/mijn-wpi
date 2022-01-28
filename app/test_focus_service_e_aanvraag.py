@@ -1,5 +1,27 @@
 import datetime
+from unittest import TestCase
 
+from app.focus_service_e_aanvraag import get_document_config
+
+
+class FocusSerivceEAanvraag(TestCase):
+    def test_get_document_config(self):
+        document_code_id = 176182
+        document_config = get_document_config(document_code_id)
+
+        self.assertEqual(document_config["product"], "tonk")
+        self.assertEqual(document_config["stepType"], "besluit")
+        self.assertEqual(document_config["decision"], "toekenning")
+
+        document_config = get_document_config(123)
+
+        self.assertIsNone(document_config)
+
+
+# def get_steps_collection():
+# def create_e_aanvraag(product_name, steps):
+# def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
+# def get_e_aanvragen(bsn):
 
 example_response = {
     "bsn": 307741837,

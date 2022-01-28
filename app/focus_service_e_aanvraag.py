@@ -5,9 +5,13 @@ from app.focus_service_aanvragen import get_client, get_document_url
 
 
 def get_document_config(document_code_id):
-    code_id = str(document_code_id).lower()
+    code_id = str(document_code_id)
     document_config = E_AANVRAAG_DOCUMENT_CONFIG.get(code_id)
-    document_config.set("product", document_config.get("product").lower())
+
+    if not document_config:
+        return None
+
+    document_config["product"] = document_config.get("product").lower()
     return document_config
 
 
@@ -58,7 +62,8 @@ def get_e_aanvragen(bsn):
     e_aanvragen = []
 
     try:
-        e_aanvragen = get_client().service.EAanvragenTozo(bsn)
+        response = get_client().service.EAanvragenTozo(bsn)
+        e_aanvragen = response.get("documentgegevens", [])
     except Exception as error:
         # To Sentry
         return e_aanvragen
@@ -66,7 +71,7 @@ def get_e_aanvragen(bsn):
     steps_collection = get_steps_collection()
 
     for e_aanvraag in e_aanvragen:
-        document_code_id = e_aanvraag["documentCodeId"]
+        document_code_id = e_aanvraag["documentCodes"]["documentCodeId"]
         document_config = get_document_config(document_code_id)
 
         if not document_config:
