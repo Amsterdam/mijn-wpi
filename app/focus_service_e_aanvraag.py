@@ -37,7 +37,7 @@ def create_e_aanvraag(product_name, steps):
         step["datePublished"] = step["datePublished"].isoformat()
 
     date_end = (
-        last_step["datePublished"] if last_step["step_type"] in ["besluit"] else None
+        last_step["datePublished"] if last_step["status"] in ["besluit"] else None
     )
 
     product = {
@@ -47,7 +47,7 @@ def create_e_aanvraag(product_name, steps):
         "datePublished": last_step["datePublished"],
         "dateEnd": date_end,
         "decision": last_step["decision"] if date_end else None,
-        "status": last_step["step_type"],
+        "status": last_step["status"],
         "steps": steps,
     }
 
@@ -60,7 +60,7 @@ def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
         "title": document_config["document_title"],
         "url": get_document_url(e_aanvraag),
         "datePublished": e_aanvraag["datumDocument"],
-        "step_type": document_config["step_type"],
+        "status": document_config["status"],
         "documents": [],
     }
 

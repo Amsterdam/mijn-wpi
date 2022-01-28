@@ -52,7 +52,7 @@ class FocusSerivceEAanvraag(TestCase):
                 "title": "Aanvraag document",
                 "url": "http://ho/ho/ho",
                 "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
-                "step_type": "aanvraag",
+                "status": "aanvraag",
                 "documents": [],
             }
         ]
@@ -70,7 +70,7 @@ class FocusSerivceEAanvraag(TestCase):
                     "title": "Aanvraag document",
                     "url": "http://ho/ho/ho",
                     "datePublished": "2020-10-23T17:20:04",
-                    "step_type": "aanvraag",
+                    "status": "aanvraag",
                     "documents": [],
                 }
             ],
@@ -89,7 +89,7 @@ class FocusSerivceEAanvraag(TestCase):
                 "title": "Aanvraag document",
                 "url": "http://ho/ho/ho",
                 "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
-                "step_type": "aanvraag",
+                "status": "aanvraag",
                 "documents": [],
             },
             {
@@ -97,7 +97,7 @@ class FocusSerivceEAanvraag(TestCase):
                 "title": "Besluit document",
                 "url": "http://ho/ho/ho",
                 "datePublished": datetime.datetime(2020, 11, 15, 10, 00, 2),
-                "step_type": "besluit",
+                "status": "besluit",
                 "documents": [],
                 "decision": "toekenning",
             },
@@ -116,7 +116,7 @@ class FocusSerivceEAanvraag(TestCase):
                     "title": "Aanvraag document",
                     "url": "http://ho/ho/ho",
                     "datePublished": "2020-10-23T17:20:04",
-                    "step_type": "aanvraag",
+                    "status": "aanvraag",
                     "documents": [],
                 },
                 {
@@ -124,7 +124,7 @@ class FocusSerivceEAanvraag(TestCase):
                     "title": "Besluit document",
                     "url": "http://ho/ho/ho",
                     "datePublished": "2020-11-15T10:00:02",
-                    "step_type": "besluit",
+                    "status": "besluit",
                     "decision": "toekenning",
                     "documents": [],
                 },
