@@ -20,7 +20,14 @@ def has_groene_stip(fondsen):
 
 
 def get_stadspas_admin_number(bsn):
-    focus_stadspas = get_client().service.getStadspas(bsn=bsn)
+    focus_stadspas = None
+
+    try:
+        focus_stadspas = get_client().service.getStadspas(bsn=bsn)
+    except Exception as error:
+        # To Sentry
+        return focus_stadspas
+
     admin_number = focus_stadspas["administratienummer"]
 
     if not admin_number:

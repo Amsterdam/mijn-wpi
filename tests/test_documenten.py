@@ -16,7 +16,7 @@ from app.config import (
     zeep_config,
     focus_credentials,
 )  # noqa: E402  Module level import not at top of file
-from app.focusconnect import FocusConnection  # noqa: E402
+from app.old.focusconnect import FocusConnection  # noqa: E402
 
 
 @patch("app.focusconnect.Client", new=MockClient)

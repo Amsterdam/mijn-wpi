@@ -14,7 +14,7 @@ os.environ["TMA_CERTIFICATE"] = __file__
 
 
 from app.config import zeep_config, focus_credentials
-from app.focusconnect import FocusConnection
+from app.old.focusconnect import FocusConnection
 from app.focusinterpreter import _to_bool, _to_int, _to_list, convert_aanvragen
 
 unencrypted_saml_token = b"""

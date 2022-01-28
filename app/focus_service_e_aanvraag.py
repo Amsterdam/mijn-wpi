@@ -55,7 +55,13 @@ def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
 
 
 def get_e_aanvragen(bsn):
-    e_aanvragen = get_client().service.EAanvragenTozo(bsn)
+    e_aanvragen = []
+
+    try:
+        e_aanvragen = get_client().service.EAanvragenTozo(bsn)
+    except Exception as error:
+        # To Sentry
+        return e_aanvragen
 
     steps_collection = get_steps_collection()
 

@@ -1,3 +1,4 @@
+import base64
 import datetime
 import logging
 import hashlib
@@ -242,8 +243,14 @@ def transform_product(product):
 
 
 def get_aanvragen(bsn):
-    all_aanvragen = get_client().service.getAanvragen(bsn)
+    all_aanvragen = []
     aanvragen = []
+
+    try:
+        all_aanvragen = get_client().service.getAanvragen(bsn)
+    except Exception as error:
+        # To Sentry
+        return aanvragen
 
     for product_group in all_aanvragen["soortProduct"]:
         if product_group["naam"] in FOCUS_PRODUCT_GROUPS_ALLOWED:
@@ -259,32 +266,36 @@ def get_aanvragen(bsn):
 
 
 def get_document(bsn, id, isBulk, isDms):
-    header_value = {"Accept": "application/xop+xml"}
-
-    # Get the document
-    document = get_client().service.getDocument(
-        id=id, bsn=bsn, isBulk=isBulk, isDms=isDms
-    )
+    def get_doc(header_value={}):
+        client = get_client()
+        try:
+            with client.settings(extra_http_headers=header_value):
+                document = client.service.getDocument(
+                    id=id,
+                    bsn=bsn,
+                    isBulk=isBulk,
+                    isDms=isDms,
+                )
+                return document
+        except Exception as error:
+            # To Sentry
+            return None
 
     document_content = None
 
-    # tree = BeautifulSoup(raw_document.content, features="lxml-xml")
-    # data_element = tree.find("dataHandler")
+    # First try to get doc without special header
+    document = get_doc()
+    data_handler = document.get("dataHandler")
 
-    # if not data_element:
-    #     doc = self._client.service.getDocument(
-    #         id=id, bsn=bsn, isBulk=isBulk, isDms=isDms
-    #     )
-    #     if doc and doc["dataHandler"]:
-    #         data = doc["dataHandler"]
-    #         filename = doc["fileName"]
-    #         logging.error("fallback document method is used")
-    #     else:
-    #         raise Exception("Requested document is empty")
-    # else:
-    #     data = data_element.text
-    #     data = base64.b64decode(data)
-    #     filename = tree.find("fileName").text
+    if not data_handler:
+        # Try again with the header
+        document = get_doc(header_value={"Accept": "application/xop+xml"})
+        if document and document.get("dataHandler"):
+            document_content = base64.b64decode(data_handler)
+        else:
+            raise Exception("Requested document is empty")
+    else:
+        document_content = document["dataHandler"]
 
     mime_type = (
         "application/pdf"
@@ -293,8 +304,8 @@ def get_document(bsn, id, isBulk, isDms):
     )
 
     document = {
-        "fileName": document["fileName"],
-        "contents": document_content,
+        "file_name": document["fileName"],
+        "document_content": document_content,
         "mime_type": mime_type,
     }
 

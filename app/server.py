@@ -63,10 +63,10 @@ def document():
 
     document = get_document(bsn, id, isBulk, isDms)
 
-    response = make_response(document["contents"])
+    response = make_response(document["document_content"])
     response.headers[
         "Content-Disposition"
-    ] = f'attachment; filename="{document["fileName"]}"'
+    ] = f'attachment; filename="{document["file_name"]}"'
     response.headers["Content-Type"] = document["mime_type"]
 
     return response

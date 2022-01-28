@@ -3,7 +3,7 @@ from pprint import pprint
 
 from app.gpass_service import get_transactions
 from app.config import focus_credentials, zeep_config
-from app.focusconnect import FocusConnection
+from app.old.focusconnect import FocusConnection
 from app.focusserver import FocusServer
 from app.utils import decrypt
 from app.test_gpass_service import GpassServiceTest
