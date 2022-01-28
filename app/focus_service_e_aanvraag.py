@@ -1,6 +1,10 @@
 import hashlib
 
-from app.e_aanvraag_config import E_AANVRAAG_DOCUMENT_CONFIG, E_AANVRAAG_PRODUCT_NAMES
+from app.e_aanvraag_config import (
+    E_AANVRAAG_DOCUMENT_CONFIG,
+    E_AANVRAAG_PRODUCT_NAMES,
+    E_AANVRAAG_PRODUCT_TITLES,
+)
 from app.focus_service_aanvragen import get_client, get_document_url
 
 
@@ -23,20 +27,24 @@ def create_e_aanvraag(product_name, steps):
 
     steps_sorted = sorted(steps, key=lambda d: d["datePublished"])
 
-    raw_id = product_name + steps_sorted[0]["datePublished"]
+    raw_id = product_name + steps_sorted[0]["datePublished"].isoformat()
     id = hashlib.md5(raw_id.encode("utf-8")).hexdigest()
 
     first_step = steps_sorted[0]  # aanvraag step
     last_step = steps_sorted[-1]  # any step
 
+    for step in steps:
+        step["datePublished"] = step["datePublished"].isoformat()
+
     date_end = (
-        last_step["datePublished"] if last_step["status"] in ["besluit"] else None
+        last_step["datePublished"] if last_step["step_type"] in ["besluit"] else None
     )
 
     product = {
         "id": id,
-        "dateStart": first_step["datePublished"].isoformat(),
-        "datePublished": last_step["datePublished"].isoformat(),
+        "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
+        "dateStart": first_step["datePublished"],
+        "datePublished": last_step["datePublished"],
         "dateEnd": date_end,
         "decision": last_step["decision"] if date_end else None,
         "status": last_step["step_type"],
@@ -51,9 +59,14 @@ def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
         "id": document_code_id,
         "title": document_config["document_title"],
         "url": get_document_url(e_aanvraag),
-        "datePublished": e_aanvraag["datumDocument"].isoformat(),
+        "datePublished": e_aanvraag["datumDocument"],
         "step_type": document_config["step_type"],
+        "documents": [],
     }
+
+    decision = document_config.get("decision")
+    if decision:
+        step["decision"] = decision
 
     return step
 

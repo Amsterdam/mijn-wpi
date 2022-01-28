@@ -1,10 +1,19 @@
 import datetime
 from unittest import TestCase
+from unittest.mock import patch
 
-from app.focus_service_e_aanvraag import get_document_config
+from app.focus_service_e_aanvraag import (
+    create_e_aanvraag,
+    get_document_config,
+    get_e_aanvraag_step,
+    get_e_aanvragen,
+    get_steps_collection,
+)
 
 
 class FocusSerivceEAanvraag(TestCase):
+    maxDiff = None
+
     def test_get_document_config(self):
         document_code_id = 176182
         document_config = get_document_config(document_code_id)
@@ -17,11 +26,125 @@ class FocusSerivceEAanvraag(TestCase):
 
         self.assertIsNone(document_config)
 
+    def test_get_steps_collection(self):
+        collection = get_steps_collection()
+        self.assertEqual(
+            collection,
+            {
+                "tozo 1": [],
+                "tozo 2": [],
+                "tozo 3": [],
+                "tozo 4": [],
+                "tozo 5": [],
+                "tonk": [],
+                "bbz": [],
+            },
+        )
 
-# def get_steps_collection():
-# def create_e_aanvraag(product_name, steps):
-# def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
-# def get_e_aanvragen(bsn):
+    @patch("app.focus_service_aanvragen.get_document_url")
+    def test_create_e_aanvraag(self, get_document_url_mock):
+        get_document_url_mock.return_value = "http://ho/ho/ho"
+
+        product_name = "tozo 5"
+        steps = [
+            {
+                "id": "1x1",
+                "title": "Aanvraag document",
+                "url": "http://ho/ho/ho",
+                "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
+                "step_type": "aanvraag",
+                "documents": [],
+            }
+        ]
+        result_expected = {
+            "title": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
+            "id": "d7263e1172ef87e1a570f8cf1710b29a",
+            "dateStart": "2020-10-23T17:20:04",
+            "datePublished": "2020-10-23T17:20:04",
+            "dateEnd": None,
+            "decision": None,
+            "status": "aanvraag",
+            "steps": [
+                {
+                    "id": "1x1",
+                    "title": "Aanvraag document",
+                    "url": "http://ho/ho/ho",
+                    "datePublished": "2020-10-23T17:20:04",
+                    "step_type": "aanvraag",
+                    "documents": [],
+                }
+            ],
+        }
+        result = create_e_aanvraag(product_name, steps)
+        self.assertEqual(result, result_expected)
+
+    @patch("app.focus_service_aanvragen.get_document_url")
+    def test_create_e_aanvraag(self, get_document_url_mock):
+        get_document_url_mock.return_value = "http://ho/ho/ho"
+
+        product_name = "tonk"
+        steps = [
+            {
+                "id": "1x1",
+                "title": "Aanvraag document",
+                "url": "http://ho/ho/ho",
+                "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
+                "step_type": "aanvraag",
+                "documents": [],
+            },
+            {
+                "id": "1x2",
+                "title": "Besluit document",
+                "url": "http://ho/ho/ho",
+                "datePublished": datetime.datetime(2020, 11, 15, 10, 00, 2),
+                "step_type": "besluit",
+                "documents": [],
+                "decision": "toekenning",
+            },
+        ]
+        result_expected = {
+            "title": "TONK",
+            "id": "35243ffdb3668fc3f4607e7c41dea31e",
+            "dateStart": "2020-10-23T17:20:04",
+            "datePublished": "2020-11-15T10:00:02",
+            "dateEnd": "2020-11-15T10:00:02",
+            "decision": "toekenning",
+            "status": "besluit",
+            "steps": [
+                {
+                    "id": "1x1",
+                    "title": "Aanvraag document",
+                    "url": "http://ho/ho/ho",
+                    "datePublished": "2020-10-23T17:20:04",
+                    "step_type": "aanvraag",
+                    "documents": [],
+                },
+                {
+                    "id": "1x2",
+                    "title": "Besluit document",
+                    "url": "http://ho/ho/ho",
+                    "datePublished": "2020-11-15T10:00:02",
+                    "step_type": "besluit",
+                    "decision": "toekenning",
+                    "documents": [],
+                },
+            ],
+        }
+        result = create_e_aanvraag(product_name, steps)
+        self.assertEqual(result, result_expected)
+
+    # def test_get_e_aanvraag_step(self):
+    #     e_aanvraag = {}
+    #     document_code_id = ""
+    #     document_config = {}
+    #     result = get_e_aanvraag_step(e_aanvraag, document_code_id, document_config)
+    #     self.assertEqual(result)
+
+    # def test_get_e_aanvragen(self):
+    #     bsn = ""
+    #     result = get_e_aanvragen(bsn)
+    #     self.assertEqual(result)
+
 
 example_response = {
     "bsn": 307741837,
