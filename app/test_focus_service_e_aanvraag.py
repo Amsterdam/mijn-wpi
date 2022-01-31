@@ -1,6 +1,6 @@
 import datetime
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 from app.focus_service_e_aanvraag import (
     create_e_aanvraag,
@@ -170,20 +170,28 @@ class FocusSerivceEAanvraag(TestCase):
 
         self.assertEqual(result, result_expected)
 
+    @patch("app.focus_service_e_aanvraag.logging.error")
     @patch("app.focus_service_e_aanvraag.get_client")
-    def test_get_e_aanvragen(self, get_client_mock):
-        mock_client = MockClient(response=example_response, name="getEAanvraagTozo")
+    def test_get_e_aanvragen(self, get_client_mock, log_error_mock):
+        mock_client = MockClient(
+            response=example_soap_response, name="getEAanvraagTozo"
+        )
         get_client_mock.return_value = mock_client
         bsn = "123xx123"
         result = get_e_aanvragen(bsn)
-        print(result)
         mock_client.service.getEAanvraagTozo.assert_called_with(bsn)
+        log_error_mock.assert_has_calls(
+            [
+                call("Unknown E_Aanvraag Document encountered 176371"),
+                call("Unknown E_Aanvraag Document encountered 176372"),
+            ]
+        )
+        self.assertEqual(log_error_mock.call_count, 2)
+        self.assertEqual(result, example_result)
 
-        # self.assertEqual(result)
 
-
-example_response = {
-    "bsn": 307741837,
+example_soap_response = {
+    "bsn": 12312312323,
     "documentgegevens": [
         {
             "datumDocument": datetime.datetime(2020, 4, 3, 17, 20, 4),
@@ -715,3 +723,488 @@ example_response = {
         },
     ],
 }
+
+example_result = [
+    {
+        "id": "953311469171d5f297fcad251f3310a1",
+        "title": "Tozo 1 (aangevraagd voor 1 juni 2020)",
+        "dateStart": "2020-03-27T17:20:04",
+        "datePublished": "2020-04-08T17:20:04",
+        "dateEnd": "2020-04-08T17:20:04",
+        "decision": "toekenning",
+        "status": "besluit",
+        "steps": [
+            {
+                "id": "770",
+                "title": "aanvraag",
+                "datePublished": "2020-03-27T17:20:04",
+                "documents": [
+                    {
+                        "id": "4400000027",
+                        "title": "Ontvangst- bevestiging Aanvraag\n2020-03-27T17:20:04",
+                        "url": "/wpi/aanvraag/document?id=4400000027&isBulk=True&isDms=False",
+                        "datePublished": "2020-03-27T17:20:04",
+                    },
+                    {
+                        "id": "4400000034",
+                        "title": "Ontvangst- bevestiging Aanvraag\n2020-04-01T17:20:04",
+                        "url": "/wpi/aanvraag/document?id=4400000034&isBulk=True&isDms=False",
+                        "datePublished": "2020-04-01T17:20:04",
+                    },
+                    {
+                        "id": "4400000033",
+                        "title": "Ontvangst- bevestiging Aanvraag\n2020-04-02T17:20:04",
+                        "url": "/wpi/aanvraag/document?id=4400000033&isBulk=True&isDms=False",
+                        "datePublished": "2020-04-02T17:20:04",
+                    },
+                ],
+            },
+            {
+                "id": "175296",
+                "title": "voorschot",
+                "datePublished": "2020-04-03T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000058",
+                        "title": "Brief betaling voorschot",
+                        "url": "/wpi/aanvraag/document?id=660000000000058&isBulk=False&isDms=False",
+                        "datePublished": "2020-04-03T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "175303",
+                "title": "besluit",
+                "datePublished": "2020-04-08T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000059",
+                        "title": "Besluit toekenning uitkering",
+                        "url": "/wpi/aanvraag/document?id=660000000000059&isBulk=False&isDms=False",
+                        "datePublished": "2020-04-08T17:20:04",
+                    }
+                ],
+                "decision": "toekenning",
+            },
+        ],
+    },
+    {
+        "id": "ee5dc44e435040731d39b84e0fd0b4f5",
+        "title": "Tozo 2 (aangevraagd vanaf 1 juni 2020)",
+        "dateStart": "2020-06-19T17:20:04",
+        "datePublished": "2020-07-04T17:20:04",
+        "dateEnd": "2020-07-04T17:20:04",
+        "decision": "afwijzing",
+        "status": "besluit",
+        "steps": [
+            {
+                "id": "777",
+                "title": "aanvraag",
+                "datePublished": "2020-06-19T17:20:04",
+                "documents": [
+                    {
+                        "id": "4400000071",
+                        "title": "Ontvangst- bevestiging Aanvraag\n2020-06-19T17:20:04",
+                        "url": "/wpi/aanvraag/document?id=4400000071&isBulk=True&isDms=False",
+                        "datePublished": "2020-06-19T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "175345",
+                "title": "voorschot",
+                "datePublished": "2020-06-23T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000413",
+                        "title": "Brief betaling voorschot",
+                        "url": "/wpi/aanvraag/document?id=660000000000413&isBulk=False&isDms=False",
+                        "datePublished": "2020-06-23T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "175336",
+                "title": "besluit",
+                "datePublished": "2020-07-03T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000076",
+                        "title": "Besluit toekenning uitkering",
+                        "url": "/wpi/aanvraag/document?id=660000000000076&isBulk=False&isDms=False",
+                        "datePublished": "2020-07-03T17:20:04",
+                    }
+                ],
+                "decision": "toekenning",
+            },
+            {
+                "id": "175337",
+                "title": "besluit",
+                "datePublished": "2020-07-04T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000077",
+                        "title": "Besluit afwijzing",
+                        "url": "/wpi/aanvraag/document?id=660000000000077&isBulk=False&isDms=False",
+                        "datePublished": "2020-07-04T17:20:04",
+                    }
+                ],
+                "decision": "afwijzing",
+            },
+        ],
+    },
+    {
+        "id": "27c726a8ee4dd93a48c9f3c30cf865b2",
+        "title": "Tozo 3 (aangevraagd vanaf 1 oktober 2020)",
+        "dateStart": "2020-10-14T17:20:04",
+        "datePublished": "2020-10-27T17:20:04",
+        "dateEnd": "2020-10-27T17:20:04",
+        "decision": "afwijzing",
+        "status": "besluit",
+        "steps": [
+            {
+                "id": "785",
+                "title": "aanvraag",
+                "datePublished": "2020-10-14T17:20:04",
+                "documents": [
+                    {
+                        "id": "4400000053",
+                        "title": "Ontvangst- bevestiging Aanvraag\n2020-10-14T17:20:04",
+                        "url": "/wpi/aanvraag/document?id=4400000053&isBulk=True&isDms=False",
+                        "datePublished": "2020-10-14T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "175372",
+                "title": "voorschot",
+                "datePublished": "2020-10-19T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000097",
+                        "title": "Brief betaling voorschot",
+                        "url": "/wpi/aanvraag/document?id=660000000000097&isBulk=False&isDms=False",
+                        "datePublished": "2020-10-19T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "175309",
+                "title": "besluit",
+                "datePublished": "2020-10-23T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000098",
+                        "title": "Besluit toekenning uitkering",
+                        "url": "/wpi/aanvraag/document?id=660000000000098&isBulk=False&isDms=False",
+                        "datePublished": "2020-10-23T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "175364",
+                "title": "besluit",
+                "datePublished": "2020-10-27T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000099",
+                        "title": "Besluit afwijzing",
+                        "url": "/wpi/aanvraag/document?id=660000000000099&isBulk=False&isDms=False",
+                        "datePublished": "2020-10-27T17:20:04",
+                    }
+                ],
+                "decision": "afwijzing",
+            },
+        ],
+    },
+    {
+        "id": "e9fabddf1d6e9386622faeba4c945c48",
+        "title": "Tozo 4 (aangevraagd vanaf 1 april 2021)",
+        "dateStart": "2021-04-02T18:53:05",
+        "datePublished": "2021-04-08T18:53:05",
+        "dateEnd": "2021-04-08T18:53:05",
+        "decision": "afwijzing",
+        "status": "besluit",
+        "steps": [
+            {
+                "id": "800",
+                "title": "aanvraag",
+                "datePublished": "2021-04-02T18:53:05",
+                "documents": [
+                    {
+                        "id": "4400000022",
+                        "title": "Ontvangst- bevestiging Aanvraag\n2021-04-02T18:53:05",
+                        "url": "/wpi/aanvraag/document?id=4400000022&isBulk=True&isDms=False",
+                        "datePublished": "2021-04-02T18:53:05",
+                    }
+                ],
+            },
+            {
+                "id": "175677",
+                "title": "voorschot",
+                "datePublished": "2021-04-04T18:53:05",
+                "documents": [
+                    {
+                        "id": "660000000000471",
+                        "title": "Brief betaling voorschot",
+                        "url": "/wpi/aanvraag/document?id=660000000000471&isBulk=False&isDms=False",
+                        "datePublished": "2021-04-04T18:53:05",
+                    }
+                ],
+                "decision": "toekenning",
+            },
+            {
+                "id": "175654",
+                "title": "besluit",
+                "datePublished": "2021-04-06T18:53:05",
+                "documents": [
+                    {
+                        "id": "660000000000472",
+                        "title": "Besluit toekenning uitkering",
+                        "url": "/wpi/aanvraag/document?id=660000000000472&isBulk=False&isDms=False",
+                        "datePublished": "2021-04-06T18:53:05",
+                    }
+                ],
+                "decision": "toekenning",
+            },
+            {
+                "id": "175651",
+                "title": "besluit",
+                "datePublished": "2021-04-08T18:53:05",
+                "documents": [
+                    {
+                        "id": "660000000000473",
+                        "title": "Besluit afwijzing",
+                        "url": "/wpi/aanvraag/document?id=660000000000473&isBulk=False&isDms=False",
+                        "datePublished": "2021-04-08T18:53:05",
+                    }
+                ],
+                "decision": "afwijzing",
+            },
+        ],
+    },
+    {
+        "id": "bb17f3779128ae1745ad022fe6a6c1a9",
+        "title": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
+        "dateStart": "2021-07-02T18:53:05",
+        "datePublished": "2021-07-08T18:53:05",
+        "dateEnd": "2021-07-08T18:53:05",
+        "decision": "afwijzing",
+        "status": "besluit",
+        "steps": [
+            {
+                "id": "837",
+                "title": "aanvraag",
+                "datePublished": "2021-07-02T18:53:05",
+                "documents": [
+                    {
+                        "id": "4400000123",
+                        "title": "Ontvangst- bevestiging Aanvraag\n2021-07-02T18:53:05",
+                        "url": "/wpi/aanvraag/document?id=4400000123&isBulk=True&isDms=False",
+                        "datePublished": "2021-07-02T18:53:05",
+                    }
+                ],
+            },
+            {
+                "id": "176171",
+                "title": "voorschot",
+                "datePublished": "2021-07-04T18:53:05",
+                "documents": [
+                    {
+                        "id": "660000000000053",
+                        "title": "Brief betaling voorschot",
+                        "url": "/wpi/aanvraag/document?id=660000000000053&isBulk=False&isDms=False",
+                        "datePublished": "2021-07-04T18:53:05",
+                    }
+                ],
+            },
+            {
+                "id": "176167",
+                "title": "besluit",
+                "datePublished": "2021-07-06T18:53:05",
+                "documents": [
+                    {
+                        "id": "660000000000054",
+                        "title": "Besluit toekenning uitkering",
+                        "url": "/wpi/aanvraag/document?id=660000000000054&isBulk=False&isDms=False",
+                        "datePublished": "2021-07-06T18:53:05",
+                    }
+                ],
+                "decision": "toekenning",
+            },
+            {
+                "id": "176165",
+                "title": "besluit",
+                "datePublished": "2021-07-08T18:53:05",
+                "documents": [
+                    {
+                        "id": "660000000000055",
+                        "title": "Besluit afwijzing",
+                        "url": "/wpi/aanvraag/document?id=660000000000055&isBulk=False&isDms=False",
+                        "datePublished": "2021-07-08T18:53:05",
+                    }
+                ],
+                "decision": "afwijzing",
+            },
+        ],
+    },
+    {
+        "id": "d9c09acc579d10266ca390c0ea08c8ad",
+        "title": "TONK",
+        "dateStart": "2021-01-05T17:20:04",
+        "datePublished": "2021-08-12T17:20:04",
+        "dateEnd": "2021-08-12T17:20:04",
+        "decision": "afwijzing",
+        "status": "besluit",
+        "steps": [
+            {
+                "id": "802",
+                "title": "aanvraag",
+                "datePublished": "2021-01-05T17:20:04",
+                "documents": [
+                    {
+                        "id": "4400000095",
+                        "title": "Aanvraag TONK\n2021-01-05T17:20:04",
+                        "url": "/wpi/aanvraag/document?id=4400000095&isBulk=True&isDms=False",
+                        "datePublished": "2021-01-05T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "176137",
+                "title": "herstelTermijn",
+                "datePublished": "2021-01-06T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000500",
+                        "title": "Brief meer informatie",
+                        "url": "/wpi/aanvraag/document?id=660000000000500&isBulk=False&isDms=False",
+                        "datePublished": "2021-01-06T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "176146",
+                "title": "besluit",
+                "datePublished": "2021-01-07T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000000501",
+                        "title": "Besluit buiten behandeling",
+                        "url": "/wpi/aanvraag/document?id=660000000000501&isBulk=False&isDms=False",
+                        "datePublished": "2021-01-07T17:20:04",
+                    }
+                ],
+                "decision": "buitenbehandeling",
+            },
+            {
+                "id": "843",
+                "title": "correctiemail",
+                "datePublished": "2021-08-08T17:20:04",
+                "documents": [
+                    {
+                        "id": "4400000132",
+                        "title": "Mail verkeerde TONK-brief",
+                        "url": "/wpi/aanvraag/document?id=4400000132&isBulk=True&isDms=False",
+                        "datePublished": "2021-08-08T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "176182",
+                "title": "besluit",
+                "datePublished": "2021-08-10T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000010184",
+                        "title": "Besluit over verlenging",
+                        "url": "/wpi/aanvraag/document?id=660000000010184&isBulk=False&isDms=False",
+                        "datePublished": "2021-08-10T17:20:04",
+                    }
+                ],
+                "decision": "toekenning",
+            },
+            {
+                "id": "1726182",
+                "title": "besluit",
+                "datePublished": "2021-08-12T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000010185",
+                        "title": "Brief bevestiging weigering",
+                        "url": "/wpi/aanvraag/document?id=660000000010185&isBulk=False&isDms=False",
+                        "datePublished": "2021-08-12T17:20:04",
+                    }
+                ],
+                "decision": "afwijzing",
+            },
+        ],
+    },
+    {
+        "id": "6cbb95f98cb9d1cf2835781e3923f857",
+        "title": "Bbz",
+        "dateStart": "2021-09-01T17:20:04",
+        "datePublished": "2021-09-15T17:20:04",
+        "dateEnd": None,
+        "decision": None,
+        "status": "aanvraag",
+        "steps": [
+            {
+                "id": "844",
+                "title": "aanvraag",
+                "datePublished": "2021-09-01T17:20:04",
+                "documents": [
+                    {
+                        "id": "4400000146",
+                        "title": "Aanvraag Bbz\n2021-09-01T17:20:04",
+                        "url": "/wpi/aanvraag/document?id=4400000146&isBulk=True&isDms=False",
+                        "datePublished": "2021-09-01T17:20:04",
+                    },
+                    {
+                        "id": "4400000147",
+                        "title": "Aanvraag Bbz\n2021-09-15T17:20:04",
+                        "url": "/wpi/aanvraag/document?id=4400000147&isBulk=True&isDms=False",
+                        "datePublished": "2021-09-15T17:20:04",
+                    },
+                ],
+            },
+            {
+                "id": "175855",
+                "title": "beslistermijn",
+                "datePublished": "2021-09-02T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000010211",
+                        "title": "Brief verlenging beslistermijn",
+                        "url": "/wpi/aanvraag/document?id=660000000010211&isBulk=False&isDms=False",
+                        "datePublished": "2021-09-02T17:20:04",
+                    }
+                ],
+            },
+        ],
+    },
+    {
+        "id": "8b6ea52ea4d163770993a16c1d66aec4",
+        "title": "Ioaz",
+        "dateStart": "2021-09-16T17:20:04",
+        "datePublished": "2021-09-16T17:20:04",
+        "dateEnd": None,
+        "decision": None,
+        "status": "herstelTermijn",
+        "steps": [
+            {
+                "id": "176322",
+                "title": "herstelTermijn",
+                "datePublished": "2021-09-16T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000010212",
+                        "title": "Brief verzoek om meer informatie",
+                        "url": "/wpi/aanvraag/document?id=660000000010212&isBulk=False&isDms=False",
+                        "datePublished": "2021-09-16T17:20:04",
+                    }
+                ],
+            }
+        ],
+    },
+]
