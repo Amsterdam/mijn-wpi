@@ -1,4 +1,3 @@
-import base64
 import datetime
 import logging
 import hashlib
@@ -9,10 +8,6 @@ from zeep.transports import Transport
 
 from app.config import (
     API_REQUEST_TIMEOUT,
-)
-from app.e_aanvraag_config import (
-    E_AANVRAAG_PRODUCT_NAMES,
-    E_AANVRAAG_DOCUMENT_CONFIG,
 )
 from app.focus_config import (
     FOCUS_AANVRAAG_PROCESS_STEPS,
@@ -263,50 +258,3 @@ def get_aanvragen(bsn):
     ]
 
     return product_aanvragen
-
-
-def get_document(bsn, id, isBulk, isDms):
-    def get_doc(header_value={}):
-        client = get_client()
-        try:
-            with client.settings(extra_http_headers=header_value):
-                document = client.service.getDocument(
-                    id=id,
-                    bsn=bsn,
-                    isBulk=isBulk,
-                    isDms=isDms,
-                )
-                return document
-        except Exception as error:
-            logging.error(error)
-            return None
-
-    document_content = None
-
-    # First try to get doc without special header
-    document = get_doc()
-    data_handler = document.get("dataHandler")
-
-    if not data_handler:
-        # Try again with the header
-        document = get_doc(header_value={"Accept": "application/xop+xml"})
-        if document and document.get("dataHandler"):
-            document_content = base64.b64decode(data_handler)
-        else:
-            raise Exception("Requested document is empty")
-    else:
-        document_content = document["dataHandler"]
-
-    mime_type = (
-        "application/pdf"
-        if ".pdf" in document["fileName"]
-        else "application/octet-stream"
-    )
-
-    document = {
-        "file_name": document["fileName"],
-        "document_content": document_content,
-        "mime_type": mime_type,
-    }
-
-    return document

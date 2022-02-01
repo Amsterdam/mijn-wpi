@@ -7,8 +7,8 @@ from flask import Flask, request, make_response
 from sentry_sdk.integrations.flask import FlaskIntegration
 from app.focus_service_aanvragen import (
     get_aanvragen,
-    get_document,
 )
+from app.focus_service_get_document import get_document
 from app.focus_service_stadspas_admin import get_stadspas_admin_number
 
 from app.gpass_service import get_stadspassen, get_transactions
