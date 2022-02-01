@@ -45,10 +45,3 @@ class MockClient:
     def __init__(self, name, response) -> None:
         service = MockService(name, response)
         self.service = service
-
-
-def create_soap_response_get_aanvragen(soort_product_naam, product, bsn=12312312399):
-    return {
-        "bsn": bsn,
-        "soortProduct": [{"naam": soort_product_naam, "product": [product]}],
-    }

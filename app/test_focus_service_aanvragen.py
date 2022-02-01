@@ -4,8 +4,14 @@ from app.focus_service_aanvragen import get_aanvragen
 from app.tests.wpi_test_app import (
     MockClient,
     WpiApiTestApp,
-    create_soap_response_get_aanvragen,
 )
+
+
+def create_soap_response_get_aanvragen(soort_product_naam, product, bsn=12312312399):
+    return {
+        "bsn": bsn,
+        "soortProduct": [{"naam": soort_product_naam, "product": [product]}],
+    }
 
 
 class TestFocusBijstandAanvraag(WpiApiTestApp):
