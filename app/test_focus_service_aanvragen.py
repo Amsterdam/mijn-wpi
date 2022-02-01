@@ -225,6 +225,19 @@ class TestFocusStadspasAanvraag(WpiApiTestApp):
         product = response[0]
         self.assertEqual(product, self.product_transformed)
 
+    @patch("app.focus_service_aanvragen.get_client")
+    def test_get_aanvraag_no_show(self, get_client_mock):
+        mock_client = MockClient(
+            name="getAanvragen",
+            response=create_soap_response_get_aanvragen("BlablaDingen", None),
+        )
+        get_client_mock.return_value = mock_client
+        response = get_aanvragen(bsn=self.bsn)
+
+        self.assertTrue(len(response) == 0)
+        self.assertEqual(response, [])
+        mock_client.service.getAanvragen.assert_called_with(self.bsn)
+
 
 class TestFocusStadspasAanvraag2(WpiApiTestApp):
 
