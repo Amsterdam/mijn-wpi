@@ -47,6 +47,13 @@ FOCUS_STEP_ID_TRANSLATIONS = {
     "akte": "Akte",
 }
 
+FOCUS_STADSPAS_FONDSEN_GROENE_STIP = [3555, 3556, 3557, 3558]
+FOCUS_STADSPAS_TYPE_PER_FONDS = {
+    3555: "hoofdpashouder",
+    3556: "partner",
+    3557: "kind",
+}
+
 zeep_config = {"wsdl": FOCUS_WSDL, "session_verify": FOCUS_CERTIFICATE}
 
 focus_credentials = {

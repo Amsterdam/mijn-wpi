@@ -1,23 +1,39 @@
 import logging
+from app.focus_config import (
+    FOCUS_STADSPAS_FONDSEN_GROENE_STIP,
+    FOCUS_STADSPAS_TYPE_PER_FONDS,
+)
 from app.focus_service_aanvragen import get_client
 
 
 def has_groene_stip(fondsen):
     # Client needs to have a "toekenning" of a certain type
-    for f in fondsen:
-        is_toegekend = f.find("besluit").text == "toekenning"
-        is_correct_fonds = f.find("soortFonds").text in ["3555", "3556", "3557", "3558"]
-
-        # Temporarily disable check on Toekenning
-        # start = parser.isoparse(f.find("dtbegin").text).date()
-        # end = parser.isoparse(f.find("dteinde").text).date()
-        # is_actueel_besluit = start < today < end
-        # if is_toegekend and is_correct_fonds and is_actueel_besluit:
+    for fonds in fondsen:
+        is_toegekend = fonds["besluit"] == "toekenning"
+        is_correct_fonds = fonds["soortFonds"] in FOCUS_STADSPAS_FONDSEN_GROENE_STIP
 
         if is_toegekend and is_correct_fonds:
             return True
 
     return False
+
+
+def get_first_pas_type(fondsen):
+    pas_type = None
+
+    for fonds in fondsen:
+        soort = fonds["soortFonds"]
+        besluit = fonds["besluit"]
+
+        if besluit != "toekenning":
+            continue
+
+        pas_type = FOCUS_STADSPAS_TYPE_PER_FONDS.get(soort)
+
+        if pas_type:
+            return pas_type
+
+    return pas_type
 
 
 def get_stadspas_admin_number(bsn):
@@ -35,28 +51,13 @@ def get_stadspas_admin_number(bsn):
         return None
 
     # fondsen = tree.find("fondsen").find_all("fonds", recursive=False)
-    fondsen = []
+    fondsen = focus_stadspas["fondsen"]["fonds"]
     has_pas = has_groene_stip(fondsen)
 
     if not has_pas:
         return None
 
-    pas_type = None
-
-    # TODO: Check this code, can we get more than 1 fonds?
-    for fonds in fondsen:
-        soort = fonds.find("soortFonds").text
-        besluit = fonds.find("besluit").text
-
-        if besluit != "toekenning":
-            continue
-
-        if soort == "3555":
-            pas_type = "hoofpashouder"
-        elif soort == "3556":
-            pas_type = "partner"
-        elif soort == "3557":
-            pas_type = "kind"
+    pas_type = get_first_pas_type(fondsen)
 
     return {
         "admin_number": admin_number,

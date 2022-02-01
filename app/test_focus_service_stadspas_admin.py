@@ -1,4 +1,36 @@
 import datetime
+from unittest import TestCase
+from unittest.mock import patch
+
+from app.focus_service_stadspas_admin import (
+    get_first_pas_type,
+    get_stadspas_admin_number,
+    has_groene_stip,
+)
+from app.tests.wpi_test_app import MockClient
+
+
+class TestFocusStadspasAdmin(TestCase):
+    def test_has_groene_stip(self):
+        result = has_groene_stip(example_response["fondsen"]["fonds"])
+        self.assertTrue(result)
+
+    def test_get_first_pas_type(self):
+        result = get_first_pas_type(example_response["fondsen"]["fonds"])
+        self.assertEqual(result, "kind")
+
+    @patch("app.focus_service_stadspas_admin.get_client")
+    def test_get_stadspas_admin_number(self, get_client_mock):
+        mock_client = MockClient(
+            name="getStadspas",
+            response=example_response2,
+        )
+        get_client_mock.return_value = mock_client
+        result = get_stadspas_admin_number("11xx11")
+
+        mock_client.service.getStadspas.assert_called_with(bsn="11xx11")
+
+        self.assertEqual(result, {"type": "hoofdpashouder", "admin_number": 123123123})
 
 
 example_response = {
