@@ -106,7 +106,7 @@ def get_e_aanvragen(bsn):
         response = get_client().service.getEAanvraagTozo(bsn)
         e_aanvragen = response.get("documentgegevens", [])
     except Exception as error:
-        # To Sentry
+        logging.error(error)
         return e_aanvragen
 
     steps_collection = get_steps_collection()
@@ -116,7 +116,6 @@ def get_e_aanvragen(bsn):
         document_config = get_document_config(document_code_id)
 
         if not document_config:
-            # Error to Sentry
             logging.error(f"Unknown E_Aanvraag Document encountered {document_code_id}")
             continue
 

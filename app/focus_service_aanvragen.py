@@ -249,7 +249,7 @@ def get_aanvragen(bsn):
     try:
         all_aanvragen = get_client().service.getAanvragen(bsn)
     except Exception as error:
-        # To Sentry
+        logging.error(error)
         return aanvragen
 
     for product_group in all_aanvragen["soortProduct"]:
@@ -278,7 +278,7 @@ def get_document(bsn, id, isBulk, isDms):
                 )
                 return document
         except Exception as error:
-            # To Sentry
+            logging.error(error)
             return None
 
     document_content = None

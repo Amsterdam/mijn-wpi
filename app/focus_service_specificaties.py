@@ -1,19 +1,66 @@
-from app.focus_service_aanvragen import get_client
+import datetime
+import logging
+from app.focus_service_aanvragen import get_client, get_document_url
 
 
 def get_jaaropgaven(bsn):
     jaaropgaven = []
+    jaaropgaven_source = []
+
     try:
-        jaaropgaven = get_client().service.getJaaropgaven(bsn)
+        jaaropgaven_source = get_client().service.getJaaropgaven(bsn)
+        jaaropgaven_source = jaaropgaven_source.get("document", [])
     except Exception as error:
-        # To Sentry
+        logging.error(error)
         return jaaropgaven
+
+    for jaaropgave_source in jaaropgaven_source:
+        date_published = jaaropgave_source.get("einddatumDocument")
+        year = date_published.year
+        title = jaaropgave_source["documentCode"]["omschrijving"]
+
+        jaaropgave = {
+            "datePublished": date_published.isoformat(),
+            "id": jaaropgave_source["dcteId"],
+            "title": f"{title} {year}",
+            "type": jaaropgave_source.get("variant", ""),
+            "url": "",
+        }
+        jaaropgave["url"] = get_document_url(
+            {**jaaropgave, "isDms": False, "isBulk": False}
+        )
+        jaaropgaven.append(jaaropgave)
+
+    return jaaropgaven
 
 
 def get_uitkeringsspecificaties(bsn):
     specificaties = []
+    specificaties_source = []
+
     try:
-        specificaties = get_client().service.getUitkeringspecificaties(bsn)
+        specificaties_source = get_client().service.getUitkeringspecificaties(bsn)
+        specificaties_source = specificaties_source.get("document", [])
     except Exception as error:
-        # To Sentry
+        logging.error(error)
         return specificaties
+
+    for specificatie_source in specificaties_source:
+        date_published = specificatie_source.get("einddatumDocument")
+        year = date_published.year
+        month = date_published.month
+        title = specificatie_source["documentCode"]["omschrijving"]
+
+        uitkeringsspecificatie = {
+            "datePublished": date_published.isoformat(),
+            "id": specificatie_source["dcteId"],
+            "title": f"{title} {month:02}-{year}",
+            "type": specificatie_source.get("variant", ""),
+            "url": "",
+        }
+        uitkeringsspecificatie["url"] = get_document_url(
+            {**uitkeringsspecificatie, "isDms": False, "isBulk": False}
+        )
+        specificaties.append(uitkeringsspecificatie)
+
+    return specificaties

@@ -1,3 +1,4 @@
+import logging
 from app.focus_service_aanvragen import get_client
 
 
@@ -25,7 +26,7 @@ def get_stadspas_admin_number(bsn):
     try:
         focus_stadspas = get_client().service.getStadspas(bsn=bsn)
     except Exception as error:
-        # To Sentry
+        logging.error(error)
         return focus_stadspas
 
     admin_number = focus_stadspas["administratienummer"]
