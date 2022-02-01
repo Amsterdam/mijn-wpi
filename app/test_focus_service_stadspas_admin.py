@@ -30,8 +30,8 @@ example_response = {
 
 
 example_response2 = {
-    "administratienummer": 9900000004,
-    "bsn": 307741837,
+    "administratienummer": 123123123,
+    "bsn": 12312312399,
     "fondsen": {
         "fonds": [
             {
