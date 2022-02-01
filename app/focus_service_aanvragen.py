@@ -29,8 +29,6 @@ def get_client():
     global focus_client
 
     if not focus_client:
-        logging.info("Establishing a connection with Focus OnlineKlantBeeld")
-
         session = Session()
         session.auth = HTTPBasicAuth(FOCUS_USERNAME, FOCUS_PASSWORD)
 
@@ -120,7 +118,7 @@ def transform_step_documents(step):
             "datePublished": step["datum"].isoformat(),
         }
 
-        return document_transformed
+        documents.append(document_transformed)
 
     return documents
 
@@ -148,6 +146,7 @@ def transform_step_hersteltermijn(step, product_source):
 
     step["dateDecisionExpected"] = municipality_decision_date_max.isoformat()
     step["dateUserFeedbackExpected"] = user_feedback_date_max.isoformat()
+
     return step
 
 
@@ -162,6 +161,7 @@ def transform_step_inbehandeling(step, product_source):
     )
 
     step["dateDecisionExpected"] = municipality_decision_date_max.isoformat()
+
     return step
 
 
@@ -169,6 +169,7 @@ def transform_step_besluit(step, product_source):
     # ATTENTION! Chaning the ID of this step
     step["id"] = "besluit"
     step["decision"] = product_source["typeBesluit"]
+
     return step
 
 
