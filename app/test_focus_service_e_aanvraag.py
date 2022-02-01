@@ -128,10 +128,6 @@ class FocusSerivceEAanvraag(TestCase):
         e_aanvraag = {
             "datumDocument": datetime.datetime(2020, 10, 27, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5364",
                 "documentCodeId": "175364",
                 "documentOmschrijving": "Tozo3 Afwijzen",
@@ -196,10 +192,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 4, 3, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5296",
                 "documentCodeId": "175296",
                 "documentOmschrijving": "Tozo Toekennen voorschot",
@@ -212,10 +204,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 10, 27, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5364",
                 "documentCodeId": "175364",
                 "documentOmschrijving": "Tozo3 Afwijzen",
@@ -228,10 +216,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 8, 10, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "6182",
                 "documentCodeId": "176182",
                 "documentOmschrijving": "TONK Besluit over verlenging",
@@ -244,10 +228,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 9, 3, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "112",
-                    "documentCategorieNaam": "Declaratie",
-                },
                 "documentCode": "6371",
                 "documentCodeId": "176371",
                 "documentOmschrijving": "Bbz toekennen PU via batch",
@@ -260,10 +240,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 10, 23, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5309",
                 "documentCodeId": "175309",
                 "documentOmschrijving": "Tozo3 Toekennen",
@@ -276,10 +252,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 4, 8, 18, 53, 5),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5651",
                 "documentCodeId": "175651",
                 "documentOmschrijving": "Tozo4 Afwijzen",
@@ -292,10 +264,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 8, 12, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "26182",
                 "documentCodeId": "1726182",
                 "documentOmschrijving": "TONK Bevestigen weigering verlenging",
@@ -308,10 +276,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 7, 3, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5336",
                 "documentCodeId": "175336",
                 "documentOmschrijving": "Tozo2 Toekennen",
@@ -324,10 +288,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 9, 2, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "102",
-                    "documentCategorieNaam": "Kennisgeving",
-                },
                 "documentCode": "5855",
                 "documentCodeId": "175855",
                 "documentOmschrijving": "Bbz Verlenging beslistermijn met 13 weken",
@@ -340,10 +300,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 9, 16, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "123",
-                    "documentCategorieNaam": "Informatieverzoek bij klant",
-                },
                 "documentCode": "6322",
                 "documentCodeId": "176322",
                 "documentOmschrijving": "Ioaz Aanvraag hersteltermijn",
@@ -356,10 +312,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 4, 4, 18, 53, 5),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5677",
                 "documentCodeId": "175677",
                 "documentOmschrijving": "Tozo4 Toekennen voorschot via batch",
@@ -372,10 +324,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 10, 19, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5372",
                 "documentCodeId": "175372",
                 "documentOmschrijving": "Tozo3 Toekennen voorschot via batch",
@@ -388,10 +336,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 9, 4, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "112",
-                    "documentCategorieNaam": "Declaratie",
-                },
                 "documentCode": "6372",
                 "documentCodeId": "176372",
                 "documentOmschrijving": "Bbz toekennen voorschot via batch",
@@ -404,10 +348,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 6, 23, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5345",
                 "documentCodeId": "175345",
                 "documentOmschrijving": "Tozo2 Toekennen voorschot via batch",
@@ -420,10 +360,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 4, 8, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5303",
                 "documentCodeId": "175303",
                 "documentOmschrijving": "Tozo Toekennen",
@@ -436,10 +372,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 7, 8, 18, 53, 5),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "6165",
                 "documentCodeId": "176165",
                 "documentOmschrijving": "Tozo5 Afwijzen",
@@ -452,10 +384,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 4, 6, 18, 53, 5),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5654",
                 "documentCodeId": "175654",
                 "documentOmschrijving": "Tozo4 Toekennen",
@@ -468,10 +396,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 1, 7, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "6146",
                 "documentCodeId": "176146",
                 "documentOmschrijving": "TONK Buiten behandeling laten",
@@ -484,10 +408,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 7, 4, 18, 53, 5),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "6171",
                 "documentCodeId": "176171",
                 "documentOmschrijving": "Tozo5 Toekennen voorschot via batch",
@@ -500,10 +420,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 1, 6, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "137",
                 "documentCodeId": "176137",
                 "documentOmschrijving": "TONK Hersteltermijn",
@@ -516,10 +432,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 7, 6, 18, 53, 5),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "6167",
                 "documentCodeId": "176167",
                 "documentOmschrijving": "Tozo5 Toekennen",
@@ -532,10 +444,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 7, 4, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "101",
-                    "documentCategorieNaam": "Besluit",
-                },
                 "documentCode": "5337",
                 "documentCodeId": "175337",
                 "documentOmschrijving": "Tozo2 Afwijzen",
@@ -548,10 +456,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 1, 5, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "E-AANVR-TONK1",
                 "documentCodeId": "802",
                 "documentOmschrijving": "TONK 1 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
@@ -564,10 +468,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 3, 27, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "E-AANVR-TOZO",
                 "documentCodeId": "770",
                 "documentOmschrijving": "Tegemoetkoming Ondernemers en Zelfstandigen ",
@@ -580,10 +480,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 10, 14, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "E-AANVR-TOZ3",
                 "documentCodeId": "785",
                 "documentOmschrijving": "TOZO 3 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
@@ -596,10 +492,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 4, 2, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "E-AANVR-TOZO",
                 "documentCodeId": "770",
                 "documentOmschrijving": "Tegemoetkoming Ondernemers en Zelfstandigen ",
@@ -612,10 +504,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 4, 1, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "E-AANVR-TOZO",
                 "documentCodeId": "770",
                 "documentOmschrijving": "Tegemoetkoming Ondernemers en Zelfstandigen ",
@@ -628,10 +516,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 7, 2, 18, 53, 5),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "TOZ5",
                 "documentCodeId": "837",
                 "documentOmschrijving": "TOZO 5 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
@@ -644,10 +528,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2020, 6, 19, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "E-AANVR-TOZ2",
                 "documentCodeId": "777",
                 "documentOmschrijving": "TOZO 2 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
@@ -660,10 +540,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 8, 8, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "109",
-                    "documentCategorieNaam": "Overige",
-                },
                 "documentCode": "TONK_CORR",
                 "documentCodeId": "843",
                 "documentOmschrijving": "Correctiemail Tonk",
@@ -676,10 +552,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 4, 2, 18, 53, 5),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "E-AANVR-TOZ4",
                 "documentCodeId": "800",
                 "documentOmschrijving": "TOZO 4 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
@@ -692,10 +564,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 9, 1, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "BBZ2",
                 "documentCodeId": "844",
                 "documentOmschrijving": "Aanvraag BBZ2",
@@ -708,10 +576,6 @@ example_soap_response = {
         {
             "datumDocument": datetime.datetime(2021, 9, 15, 17, 20, 4),
             "documentCodes": {
-                "documentCategorie": {
-                    "documentCategorieCode": "116",
-                    "documentCategorieNaam": "Aanvraag",
-                },
                 "documentCode": "BBZ2",
                 "documentCodeId": "844",
                 "documentOmschrijving": "Aanvraag BBZ2",
