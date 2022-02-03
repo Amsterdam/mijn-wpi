@@ -157,7 +157,7 @@ class FocusSerivceEAanvraag(TestCase):
                     "id": "660000000000099",
                     "title": "Besluit afwijzing",
                     "datePublished": "2020-10-27T17:20:04",
-                    "url": "/wpi/aanvraag/document?id=660000000000099&isBulk=False&isDms=False",
+                    "url": "/wpi/document?id=660000000000099&isBulk=False&isDms=False",
                 }
             ],
         }
@@ -606,19 +606,19 @@ example_result = [
                     {
                         "id": "4400000027",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-03-27T17:20:04",
-                        "url": "/wpi/aanvraag/document?id=4400000027&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000027&isBulk=True&isDms=False",
                         "datePublished": "2020-03-27T17:20:04",
                     },
                     {
                         "id": "4400000034",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-04-01T17:20:04",
-                        "url": "/wpi/aanvraag/document?id=4400000034&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000034&isBulk=True&isDms=False",
                         "datePublished": "2020-04-01T17:20:04",
                     },
                     {
                         "id": "4400000033",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-04-02T17:20:04",
-                        "url": "/wpi/aanvraag/document?id=4400000033&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000033&isBulk=True&isDms=False",
                         "datePublished": "2020-04-02T17:20:04",
                     },
                 ],
@@ -631,7 +631,7 @@ example_result = [
                     {
                         "id": "660000000000058",
                         "title": "Brief betaling voorschot",
-                        "url": "/wpi/aanvraag/document?id=660000000000058&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000058&isBulk=False&isDms=False",
                         "datePublished": "2020-04-03T17:20:04",
                     }
                 ],
@@ -644,7 +644,7 @@ example_result = [
                     {
                         "id": "660000000000059",
                         "title": "Besluit toekenning uitkering",
-                        "url": "/wpi/aanvraag/document?id=660000000000059&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000059&isBulk=False&isDms=False",
                         "datePublished": "2020-04-08T17:20:04",
                     }
                 ],
@@ -669,7 +669,7 @@ example_result = [
                     {
                         "id": "4400000071",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-06-19T17:20:04",
-                        "url": "/wpi/aanvraag/document?id=4400000071&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000071&isBulk=True&isDms=False",
                         "datePublished": "2020-06-19T17:20:04",
                     }
                 ],
@@ -682,7 +682,7 @@ example_result = [
                     {
                         "id": "660000000000413",
                         "title": "Brief betaling voorschot",
-                        "url": "/wpi/aanvraag/document?id=660000000000413&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000413&isBulk=False&isDms=False",
                         "datePublished": "2020-06-23T17:20:04",
                     }
                 ],
@@ -695,7 +695,7 @@ example_result = [
                     {
                         "id": "660000000000076",
                         "title": "Besluit toekenning uitkering",
-                        "url": "/wpi/aanvraag/document?id=660000000000076&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000076&isBulk=False&isDms=False",
                         "datePublished": "2020-07-03T17:20:04",
                     }
                 ],
@@ -709,7 +709,7 @@ example_result = [
                     {
                         "id": "660000000000077",
                         "title": "Besluit afwijzing",
-                        "url": "/wpi/aanvraag/document?id=660000000000077&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000077&isBulk=False&isDms=False",
                         "datePublished": "2020-07-04T17:20:04",
                     }
                 ],
@@ -734,7 +734,7 @@ example_result = [
                     {
                         "id": "4400000053",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-10-14T17:20:04",
-                        "url": "/wpi/aanvraag/document?id=4400000053&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000053&isBulk=True&isDms=False",
                         "datePublished": "2020-10-14T17:20:04",
                     }
                 ],
@@ -747,7 +747,7 @@ example_result = [
                     {
                         "id": "660000000000097",
                         "title": "Brief betaling voorschot",
-                        "url": "/wpi/aanvraag/document?id=660000000000097&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000097&isBulk=False&isDms=False",
                         "datePublished": "2020-10-19T17:20:04",
                     }
                 ],
@@ -760,7 +760,7 @@ example_result = [
                     {
                         "id": "660000000000098",
                         "title": "Besluit toekenning uitkering",
-                        "url": "/wpi/aanvraag/document?id=660000000000098&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000098&isBulk=False&isDms=False",
                         "datePublished": "2020-10-23T17:20:04",
                     }
                 ],
@@ -773,7 +773,7 @@ example_result = [
                     {
                         "id": "660000000000099",
                         "title": "Besluit afwijzing",
-                        "url": "/wpi/aanvraag/document?id=660000000000099&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000099&isBulk=False&isDms=False",
                         "datePublished": "2020-10-27T17:20:04",
                     }
                 ],
@@ -798,7 +798,7 @@ example_result = [
                     {
                         "id": "4400000022",
                         "title": "Ontvangst- bevestiging Aanvraag\n2021-04-02T18:53:05",
-                        "url": "/wpi/aanvraag/document?id=4400000022&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000022&isBulk=True&isDms=False",
                         "datePublished": "2021-04-02T18:53:05",
                     }
                 ],
@@ -811,7 +811,7 @@ example_result = [
                     {
                         "id": "660000000000471",
                         "title": "Brief betaling voorschot",
-                        "url": "/wpi/aanvraag/document?id=660000000000471&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000471&isBulk=False&isDms=False",
                         "datePublished": "2021-04-04T18:53:05",
                     }
                 ],
@@ -825,7 +825,7 @@ example_result = [
                     {
                         "id": "660000000000472",
                         "title": "Besluit toekenning uitkering",
-                        "url": "/wpi/aanvraag/document?id=660000000000472&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000472&isBulk=False&isDms=False",
                         "datePublished": "2021-04-06T18:53:05",
                     }
                 ],
@@ -839,7 +839,7 @@ example_result = [
                     {
                         "id": "660000000000473",
                         "title": "Besluit afwijzing",
-                        "url": "/wpi/aanvraag/document?id=660000000000473&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000473&isBulk=False&isDms=False",
                         "datePublished": "2021-04-08T18:53:05",
                     }
                 ],
@@ -864,7 +864,7 @@ example_result = [
                     {
                         "id": "4400000123",
                         "title": "Ontvangst- bevestiging Aanvraag\n2021-07-02T18:53:05",
-                        "url": "/wpi/aanvraag/document?id=4400000123&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000123&isBulk=True&isDms=False",
                         "datePublished": "2021-07-02T18:53:05",
                     }
                 ],
@@ -877,7 +877,7 @@ example_result = [
                     {
                         "id": "660000000000053",
                         "title": "Brief betaling voorschot",
-                        "url": "/wpi/aanvraag/document?id=660000000000053&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000053&isBulk=False&isDms=False",
                         "datePublished": "2021-07-04T18:53:05",
                     }
                 ],
@@ -890,7 +890,7 @@ example_result = [
                     {
                         "id": "660000000000054",
                         "title": "Besluit toekenning uitkering",
-                        "url": "/wpi/aanvraag/document?id=660000000000054&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000054&isBulk=False&isDms=False",
                         "datePublished": "2021-07-06T18:53:05",
                     }
                 ],
@@ -904,7 +904,7 @@ example_result = [
                     {
                         "id": "660000000000055",
                         "title": "Besluit afwijzing",
-                        "url": "/wpi/aanvraag/document?id=660000000000055&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000055&isBulk=False&isDms=False",
                         "datePublished": "2021-07-08T18:53:05",
                     }
                 ],
@@ -929,7 +929,7 @@ example_result = [
                     {
                         "id": "4400000095",
                         "title": "Aanvraag TONK\n2021-01-05T17:20:04",
-                        "url": "/wpi/aanvraag/document?id=4400000095&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000095&isBulk=True&isDms=False",
                         "datePublished": "2021-01-05T17:20:04",
                     }
                 ],
@@ -942,7 +942,7 @@ example_result = [
                     {
                         "id": "660000000000500",
                         "title": "Brief meer informatie",
-                        "url": "/wpi/aanvraag/document?id=660000000000500&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000500&isBulk=False&isDms=False",
                         "datePublished": "2021-01-06T17:20:04",
                     }
                 ],
@@ -955,7 +955,7 @@ example_result = [
                     {
                         "id": "660000000000501",
                         "title": "Besluit buiten behandeling",
-                        "url": "/wpi/aanvraag/document?id=660000000000501&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000000501&isBulk=False&isDms=False",
                         "datePublished": "2021-01-07T17:20:04",
                     }
                 ],
@@ -969,7 +969,7 @@ example_result = [
                     {
                         "id": "4400000132",
                         "title": "Mail verkeerde TONK-brief",
-                        "url": "/wpi/aanvraag/document?id=4400000132&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000132&isBulk=True&isDms=False",
                         "datePublished": "2021-08-08T17:20:04",
                     }
                 ],
@@ -982,7 +982,7 @@ example_result = [
                     {
                         "id": "660000000010184",
                         "title": "Besluit over verlenging",
-                        "url": "/wpi/aanvraag/document?id=660000000010184&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000010184&isBulk=False&isDms=False",
                         "datePublished": "2021-08-10T17:20:04",
                     }
                 ],
@@ -996,7 +996,7 @@ example_result = [
                     {
                         "id": "660000000010185",
                         "title": "Brief bevestiging weigering",
-                        "url": "/wpi/aanvraag/document?id=660000000010185&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000010185&isBulk=False&isDms=False",
                         "datePublished": "2021-08-12T17:20:04",
                     }
                 ],
@@ -1021,13 +1021,13 @@ example_result = [
                     {
                         "id": "4400000146",
                         "title": "Aanvraag Bbz\n2021-09-01T17:20:04",
-                        "url": "/wpi/aanvraag/document?id=4400000146&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000146&isBulk=True&isDms=False",
                         "datePublished": "2021-09-01T17:20:04",
                     },
                     {
                         "id": "4400000147",
                         "title": "Aanvraag Bbz\n2021-09-15T17:20:04",
-                        "url": "/wpi/aanvraag/document?id=4400000147&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
                         "datePublished": "2021-09-15T17:20:04",
                     },
                 ],
@@ -1040,7 +1040,7 @@ example_result = [
                     {
                         "id": "660000000010211",
                         "title": "Brief verlenging beslistermijn",
-                        "url": "/wpi/aanvraag/document?id=660000000010211&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000010211&isBulk=False&isDms=False",
                         "datePublished": "2021-09-02T17:20:04",
                     }
                 ],
@@ -1064,7 +1064,7 @@ example_result = [
                     {
                         "id": "660000000010212",
                         "title": "Brief verzoek om meer informatie",
-                        "url": "/wpi/aanvraag/document?id=660000000010212&isBulk=False&isDms=False",
+                        "url": "/wpi/document?id=660000000010212&isBulk=False&isDms=False",
                         "datePublished": "2021-09-16T17:20:04",
                     }
                 ],

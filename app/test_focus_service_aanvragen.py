@@ -11,8 +11,9 @@ from app.focus_service_aanvragen import (
     get_document_url,
     get_step_title,
     get_translation,
+    transform_step_documents,
 )
-from app.test_app import MockClient, WpiApiTestApp
+from app.test_app import MockClient
 
 
 def create_soap_response_get_aanvragen(soort_product_naam, product, bsn=12312312399):
@@ -100,19 +101,19 @@ class TestFocusBijstandAanvraag(TestCase):
                     {
                         "id": "4400000007",
                         "title": "Formulier Inlichtingen Klant",
-                        "url": "/wpi/aanvraag/document?id=4400000007&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000007&isBulk=True&isDms=False",
                         "datePublished": "2017-08-18T15:05:52",
                     },
                     {
                         "id": "4400000010",
                         "title": "Formulier Inlichtingen partner",
-                        "url": "/wpi/aanvraag/document?id=4400000010&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000010&isBulk=True&isDms=False",
                         "datePublished": "2017-08-18T15:05:52",
                     },
                     {
                         "id": "4400000008",
                         "title": "Aanvraagformulier WWB (kort)",
-                        "url": "/wpi/aanvraag/document?id=4400000008&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000008&isBulk=True&isDms=False",
                         "datePublished": "2017-08-18T15:05:52",
                     },
                 ],
@@ -201,7 +202,7 @@ class TestFocusStadspasAanvraag(TestCase):
                     {
                         "id": "4400000013",
                         "title": "Aanvraag Stadspas (balie)",
-                        "url": "/wpi/aanvraag/document?id=4400000013&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000013&isBulk=True&isDms=False",
                         "datePublished": "2019-05-08T15:05:52",
                     }
                 ],
@@ -306,7 +307,7 @@ class TestFocusStadspasAanvraag2(TestCase):
                     {
                         "id": "4400000013",
                         "title": "Aanvraag Stadspas (balie)",
-                        "url": "/wpi/aanvraag/document?id=4400000013&isBulk=True&isDms=False",
+                        "url": "/wpi/document?id=4400000013&isBulk=True&isDms=False",
                         "datePublished": "2019-05-08T15:05:52",
                     }
                 ],

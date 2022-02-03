@@ -37,7 +37,7 @@ class WPITestServer(WpiApiTestApp):
         }
 
         response = self.get_secure(
-            "/wpi/aanvraag/document?id=test-id-xcfg&isDms=False&isBulk=True",
+            "/wpi/document?id=test-id-xcfg&isDms=False&isBulk=True",
         )
 
         get_document_mock.assert_called_with(self.TEST_BSN, "test-id-xcfg", True, False)
