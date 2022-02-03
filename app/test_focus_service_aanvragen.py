@@ -1,6 +1,7 @@
 import datetime
 from unittest import TestCase
 from unittest.mock import patch
+
 from app.focus_service_aanvragen import (
     calculate_municipality_feedback_date_max,
     calculate_user_feedback_date_max,
@@ -10,17 +11,8 @@ from app.focus_service_aanvragen import (
     get_document_url,
     get_step_title,
     get_translation,
-    transform_product,
-    transform_step,
-    transform_step_besluit,
-    transform_step_documents,
-    transform_step_hersteltermijn,
-    transform_step_inbehandeling,
 )
-from app.tests.wpi_test_app import (
-    MockClient,
-    WpiApiTestApp,
-)
+from app.test_app import MockClient, WpiApiTestApp
 
 
 def create_soap_response_get_aanvragen(soort_product_naam, product, bsn=12312312399):

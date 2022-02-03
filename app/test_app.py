@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 from tma_saml import FlaskServerTMATestCase
 
@@ -9,6 +9,14 @@ class WpiApiTestApp(FlaskServerTMATestCase):
     def setUp(self):
         self.client = self.get_tma_test_app(application)
         self.maxDiff = None
+
+    TEST_BSN = "111222333"
+
+    def get_secure(self, location):
+        return self.client.get(location, headers=self.saml_headers())
+
+    def saml_headers(self):
+        return self.add_digi_d_headers(self.TEST_BSN)
 
 
 class MockResponse:
@@ -29,9 +37,6 @@ class MockResponse:
 
     def raise_for_status(self):
         return
-
-
-FERNET_KEY_MOCK = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
 
 
 class MockService:

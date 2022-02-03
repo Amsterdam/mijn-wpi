@@ -21,7 +21,7 @@ for service in client.wsdl.services.values():
         )
 
         for operation in operations:
-            print("method :", operation.name)
+            print("method  :", operation.name)
             print("  input :", operation.input.signature())
             print("  output:", operation.output.signature())
 

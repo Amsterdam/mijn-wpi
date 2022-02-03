@@ -7,7 +7,7 @@ from app.focus_service_stadspas_admin import (
     get_stadspas_admin_number,
     has_groene_stip,
 )
-from app.tests.wpi_test_app import MockClient
+from app.test_app import MockClient
 
 
 class TestFocusStadspasAdmin(TestCase):

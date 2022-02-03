@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch
 from app.focus_service_specificaties import get_uitkeringsspecificaties, get_jaaropgaven
 
-from app.tests.wpi_test_app import MockClient
+from app.test_app import MockClient
 
 
 def create_specificatie(omschrijving, dcteId, einddatumDocument):

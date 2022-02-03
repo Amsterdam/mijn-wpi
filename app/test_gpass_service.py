@@ -1,14 +1,11 @@
 from unittest import TestCase
-from black import json
 
 # Prepare environment
 from mock import patch
-from app.config import CustomJSONEncoder
 
 from app.gpass_service import (
     format_budget,
     format_stadspas,
-    format_transaction,
     get_admins,
     get_owner_name,
     get_stadspas_admins,
@@ -16,11 +13,7 @@ from app.gpass_service import (
     get_transactions,
     send_request,
 )
-from app.tests.wpi_test_app import MockResponse
-
-# from ..tests.mocks import get_response_mock
-
-TESTKEY = "z4QXWk3bjwFST2HRRVidnn7Se8VFCaHscK39JfODzNs="
+from app.test_app import MockResponse
 
 
 class GpassServiceGetStadspas(TestCase):
@@ -224,6 +217,7 @@ class GpassServiceGetTransactions(TestCase):
 
 
 class GpassServiceVarious(TestCase):
+    @patch("app.gpass_service.GPASS_API_TOKEN", "--token--")
     @patch("app.gpass_service.requests.get")
     def test_send_request(self, get_mock):
         get_mock.return_value = MockResponse({"foo": "bar"})
@@ -232,7 +226,7 @@ class GpassServiceVarious(TestCase):
 
         get_mock.assert_called_with(
             "http://haha",
-            headers={"Authorization": "AppBearer None,1x1x1"},
+            headers={"Authorization": "AppBearer --token--,1x1x1"},
             timeout=30,
             params={"foo": "bar"},
         )

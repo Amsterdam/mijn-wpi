@@ -77,32 +77,40 @@ def document():
     return response
 
 
-@application.route("/wpi/bijstanduitkering/jaaropgaven", methods=["GET"])
+@application.route(
+    "/wpi/bijstanduitkering/specificaties-en-jaaropgaven", methods=["GET"]
+)
 @verify_tma_user
 @validate_openapi
-def jaaropgaven():
+def specificaties_en_jaaropgaven():
     bsn = get_bsn_from_request()
     jaaropgaven = get_jaaropgaven(bsn)
-    return success_response_json(jaaropgaven)
-
-
-@application.route("/wpi/bijstanduitkering/specificaties", methods=["GET"])
-@verify_tma_user
-@validate_openapi
-def uitkeringspecificaties():
-    bsn = get_bsn_from_request()
     uitkeringspecificaties = get_uitkeringsspecificaties(bsn)
-    return success_response_json(uitkeringspecificaties)
+    response_content = {
+        "jaaropgaven": jaaropgaven,
+        "uitkeringsspecificaties": uitkeringspecificaties,
+    }
+    return success_response_json(response_content)
 
 
-@application.route("/wpi/stadspassen", methods=["GET"])
+@application.route("/wpi/stadspas", methods=["GET"])
 @verify_tma_user
 @validate_openapi
 def stadspassen():
     bsn = get_bsn_from_request()
     admin = get_stadspas_admin_number(bsn)
+
+    if not admin["admin_number"]:
+        return success_response_json(None)
+
     stadspassen = get_stadspassen(admin["admin_number"])
-    return success_response_json({**admin, "stadspassen": stadspassen})
+    response_content = {
+        "stadspassen": stadspassen,
+        "adminNumber": admin["admin_number"],
+        "ownerType": admin["type"],
+    }
+
+    return success_response_json(response_content)
 
 
 @application.route(

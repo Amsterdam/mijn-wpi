@@ -9,7 +9,7 @@ from app.focus_service_e_aanvraag import (
     get_e_aanvragen,
     get_steps_collection,
 )
-from app.tests.wpi_test_app import MockClient
+from app.test_app import MockClient
 
 
 class FocusSerivceEAanvraag(TestCase):

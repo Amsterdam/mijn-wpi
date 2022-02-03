@@ -1,11 +1,7 @@
 import base64
-import os
 from unittest import TestCase
 from unittest.mock import call, patch
-from app.config import BASE_PATH
 from app.focus_service_get_document import get_document
-
-from app.tests.wpi_test_app import MockClient
 
 
 example_soap_response = {
