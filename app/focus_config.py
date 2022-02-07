@@ -1,12 +1,14 @@
 import os
 
+from app.config import API_BASE_PATH
+
 # Focus
 FOCUS_WSDL = os.getenv("FOCUS_WSDL")
 FOCUS_CERTIFICATE = os.getenv("FOCUS_CERTIFICATE", False)
 FOCUS_USERNAME = os.getenv("FOCUS_USERNAME")
 FOCUS_PASSWORD = os.getenv("FOCUS_PASSWORD")
 
-FOCUS_DOCUMENT_PATH = "wpi/document"
+FOCUS_DOCUMENT_PATH = f"{API_BASE_PATH[1:]}/document"
 
 FOCUS_PRODUCTS_ALLOWED = ["Levensonderhoud", "Stadspas"]
 FOCUS_PRODUCT_GROUPS_ALLOWED = ["Minimafonds", "Participatiewet"]

@@ -22,14 +22,13 @@ IS_PRODUCTION = SENTRY_ENV == "production"
 IS_ACCEPTANCE = SENTRY_ENV == "acceptance"
 IS_AP = IS_PRODUCTION or IS_ACCEPTANCE
 IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
-IS_AP = IS_PRODUCTION or IS_ACCEPTANCE
-IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
 
 # App constants
 TMAException = (SamlVerificationException, InvalidBSNException, SamlExpiredException)
 ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", "1")
 
 API_REQUEST_TIMEOUT = 30
+API_BASE_PATH = "/focus" if IS_AP else "/wpi"
 
 # Set-up logging
 LOG_LEVEL = os.getenv("LOG_LEVEL", "ERROR").upper()

@@ -23,6 +23,7 @@ from app.utils import (
 )
 
 from app.config import (
+    API_BASE_PATH,
     IS_DEV,
     SENTRY_DSN,
     CustomJSONEncoder,
@@ -46,7 +47,7 @@ def status_health():
     return success_response_json("OK")
 
 
-@application.route("/wpi/aanvragen", methods=["GET"])
+@application.route(f"{API_BASE_PATH}/aanvragen", methods=["GET"])
 @verify_tma_user
 @validate_openapi
 def aanvragen():
@@ -78,7 +79,7 @@ def document():
 
 
 @application.route(
-    "/wpi/bijstanduitkering/specificaties-en-jaaropgaven", methods=["GET"]
+    f"{API_BASE_PATH}/bijstanduitkering/specificaties-en-jaaropgaven", methods=["GET"]
 )
 @verify_tma_user
 @validate_openapi
@@ -93,7 +94,7 @@ def specificaties_en_jaaropgaven():
     return success_response_json(response_content)
 
 
-@application.route("/wpi/stadspas", methods=["GET"])
+@application.route(f"{API_BASE_PATH}/stadspas", methods=["GET"])
 @verify_tma_user
 @validate_openapi
 def stadspassen():
@@ -114,7 +115,8 @@ def stadspassen():
 
 
 @application.route(
-    "/wpi/stadspas/transacties/<string:encrypted_admin_pasnummer>", methods=["GET"]
+    f"{API_BASE_PATH}/stadspas/transacties/<string:encrypted_admin_pasnummer>",
+    methods=["GET"],
 )
 @verify_tma_user
 @validate_openapi
