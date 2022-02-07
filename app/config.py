@@ -25,7 +25,7 @@ IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
 
 # App constants
 TMAException = (SamlVerificationException, InvalidBSNException, SamlExpiredException)
-ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", "1")
+ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
 
 API_REQUEST_TIMEOUT = 30
 API_BASE_PATH = "/focus" if IS_AP else "/wpi"
