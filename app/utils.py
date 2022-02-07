@@ -172,5 +172,6 @@ def decrypt(encrypted: str) -> tuple:
 
 
 def default_if_none(data, key, default):
-    value = data.get(key)
+    if data and key in data:
+        value = data[key]
     return default if value is None else value
