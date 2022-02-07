@@ -4,6 +4,7 @@ from app.focus_config import (
     FOCUS_STADSPAS_TYPE_PER_FONDS,
 )
 from app.focus_service_aanvragen import get_client
+from app.gpass_config import GPASS_ADMIN_NUMBER_GEMEENTE_CODE
 
 
 def has_groene_stip(fondsen):
@@ -36,6 +37,12 @@ def get_first_pas_type(fondsen):
     return pas_type
 
 
+def volledig_administratienummer(admin_number) -> str:
+    stadspas_admin_number = str(admin_number).zfill(10)
+    stadspas_admin_number = f"{GPASS_ADMIN_NUMBER_GEMEENTE_CODE}{stadspas_admin_number}"
+    return stadspas_admin_number
+
+
 def get_stadspas_admin_number(bsn):
     focus_stadspas = None
 
@@ -60,6 +67,6 @@ def get_stadspas_admin_number(bsn):
     pas_type = get_first_pas_type(fondsen)
 
     return {
-        "admin_number": admin_number,
+        "admin_number": volledig_administratienummer(admin_number),
         "type": pas_type,
     }
