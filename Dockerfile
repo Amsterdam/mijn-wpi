@@ -14,6 +14,7 @@ RUN rm requirements.txt
 
 COPY ./scripts /api/scripts
 COPY ./app /api/app
+COPY ./focus /api/focus
 
 COPY uwsgi.ini /api/
 COPY test.sh /api/

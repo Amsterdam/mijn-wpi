@@ -9,9 +9,9 @@ def retagAndPush(String imageName, String currentTag, String newTag)
 }
 
 String BRANCH = "${env.BRANCH_NAME}"
-String IMAGE_NAME = "mijnams/wpi"
+String IMAGE_NAME = "mijnams/focus"
 String IMAGE_TAG = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
-String CMDB_ID = "app_mijn-wpi"
+String CMDB_ID = "app_mijn-focus"
 
 node {
     stage("Checkout") {
