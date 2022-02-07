@@ -1,8 +1,6 @@
 FROM amsterdam/python:3.8-buster
 LABEL maintainer=datapunt@amsterdam.nl
 
-EXPOSE 8000
-
 WORKDIR /api
 
 # remove this when the 3.8.6-buster image is fixed
@@ -14,7 +12,6 @@ RUN rm requirements.txt
 
 COPY ./scripts /api/scripts
 COPY ./app /api/app
-COPY ./focus /api/focus
 
 COPY uwsgi.ini /api/
 COPY test.sh /api/
