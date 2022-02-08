@@ -16,6 +16,7 @@ COPY ./focus /app/focus
 COPY test.sh /app/
 COPY .flake8 /app/
 COPY ./tests /app/tests
+COPY ./scripts /app/scripts
 
 USER datapunt
 CMD uwsgi --ini /app/focus/uwsgi.ini
