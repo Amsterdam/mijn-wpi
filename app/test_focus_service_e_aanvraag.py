@@ -20,7 +20,7 @@ class FocusSerivceEAanvraag(TestCase):
         document_config = get_document_config(document_code_id)
 
         self.assertEqual(document_config["product"], "tonk")
-        self.assertEqual(document_config["step_type"], "besluit")
+        self.assertEqual(document_config["step_id"], "besluit")
         self.assertEqual(document_config["decision"], "toekenning")
 
         document_config = get_document_config(123)
@@ -141,15 +141,15 @@ class FocusSerivceEAanvraag(TestCase):
         document_code_id = "175364"
         document_config = {
             "omschrijving": "Tozo3 Afwijzen",
-            "step_type": "besluit",
+            "step_id": "besluit",
             "product": "Tozo 3",
             "document_title": "Besluit afwijzing",
             "decision": "afwijzing",
         }
 
         result_expected = {
-            "id": "175364",
-            "title": "besluit",
+            "id": "besluit",
+            "title": "Besluit",
             "datePublished": datetime.datetime(2020, 10, 27, 17, 20, 4),
             "decision": "afwijzing",
             "documents": [

@@ -38,15 +38,6 @@ FOCUS_STEP_ID_TRANSLATIONS = {
     "inBehandeling": "In behandeling",
     "herstelTermijn": "Informatie nodig",
     "besluit": "Besluit",
-    # Tozo / Tonk / Bbz
-    "terugvorderingsbesluit": "Terugvorderings- besluit",
-    "inkomstenwijziging": "Wijziging inkomsten",
-    "bezwaar": "Bezwaar",
-    "brief": "Brief",
-    "mail": "Mail",
-    "voorschot": "Voorschot",
-    "tijdNodig": "Tijd nodig",
-    "akte": "Akte",
 }
 
 FOCUS_STADSPAS_FONDSEN_GROENE_STIP = [3555, 3556, 3557, 3558]

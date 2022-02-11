@@ -5,8 +5,13 @@ from app.e_aanvraag_config import (
     E_AANVRAAG_DOCUMENT_CONFIG,
     E_AANVRAAG_PRODUCT_NAMES,
     E_AANVRAAG_PRODUCT_TITLES,
+    E_AANVRAAG_STEP_ID_TRANSLATIONS,
 )
 from app.focus_service_aanvragen import get_client, get_document_url
+
+
+def get_step_title(step_id):
+    return E_AANVRAAG_STEP_ID_TRANSLATIONS.get(step_id, step_id)
 
 
 def get_document_config(document_code_id):
@@ -73,7 +78,7 @@ def get_e_aanvraag_document(e_aanvraag, document_config):
 
     date_published = e_aanvraag["datumDocument"].isoformat()
 
-    if document_config["step_type"] == "aanvraag":
+    if document_config["step_id"] == "aanvraag":
         title = f"{title}\n{date_published}"
 
     return {
@@ -86,8 +91,8 @@ def get_e_aanvraag_document(e_aanvraag, document_config):
 
 def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
     step = {
-        "id": document_code_id,
-        "title": document_config["step_type"],
+        "id": document_config["step_id"],
+        "title": get_step_title(document_config["step_id"]),
         "datePublished": e_aanvraag["datumDocument"],
         "documents": [get_e_aanvraag_document(e_aanvraag, document_config)],
     }
