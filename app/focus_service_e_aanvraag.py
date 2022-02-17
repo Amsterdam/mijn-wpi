@@ -86,7 +86,13 @@ def get_e_aanvraag_document(e_aanvraag, document_config):
         "id": str(e_aanvraag["documentId"]),
         "dceId": e_aanvraag["documentCodes"]["documentCodeId"],
         "title": title,
-        "url": get_document_url({**e_aanvraag, "id": e_aanvraag["documentId"]}),
+        "url": get_document_url(
+            {
+                "isBulk": e_aanvraag["isBulk"],
+                "isDms": e_aanvraag["isDms"],
+                "id": e_aanvraag["documentId"],
+            }
+        ),
         "datePublished": date_published,
     }
 
