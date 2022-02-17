@@ -2,14 +2,16 @@ import hashlib
 import logging
 
 from app.e_aanvraag_config import (
+    E_AANVRAAG_ABOUT,
     E_AANVRAAG_DOCUMENT_CONFIG,
-    E_AANVRAAG_PRODUCT_NAMES,
+    E_AANVRAAG_PRODUCT_TITLES,
+    E_AANVRAAG_STEP_COLLECTION_IDS,
     E_AANVRAAG_STEP_ID_TRANSLATIONS,
 )
 from app.focus_service_aanvragen import get_client, get_document_url
 
 
-def get_step_title(step_id):
+def get_step_status(step_id):
     return E_AANVRAAG_STEP_ID_TRANSLATIONS.get(step_id, step_id)
 
 
@@ -20,12 +22,11 @@ def get_document_config(document_code_id):
     if not document_config:
         return None
 
-    document_config["product"] = document_config.get("product").lower()
     return document_config
 
 
 def get_steps_collection():
-    return {product_name.lower(): [] for product_name in E_AANVRAAG_PRODUCT_NAMES}
+    return {id: [] for id in E_AANVRAAG_STEP_COLLECTION_IDS}
 
 
 def create_e_aanvraag(product_name, steps):
@@ -36,7 +37,7 @@ def create_e_aanvraag(product_name, steps):
     first_step = steps_sorted[0]  # aanvraag step
     last_step = steps_sorted[-1]  # any step
     decision_steps = list(filter(lambda s: s["id"] == "besluit", steps_sorted))
-    decision_step = decision_steps[-1] if decision_steps else None
+    decision_step = decision_steps[-1] if decision_steps else None  # Last decision step
 
     for step in steps_sorted:
         step["datePublished"] = step["datePublished"].isoformat()
@@ -62,7 +63,8 @@ def create_e_aanvraag(product_name, steps):
 
     product = {
         "id": id,
-        "title": product_name,
+        "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
+        "about": product_name,
         "dateStart": first_step["datePublished"],
         "datePublished": last_step["datePublished"],
         "dateEnd": date_end,
@@ -101,16 +103,19 @@ def get_e_aanvraag_step(e_aanvraag, document_config):
     step_id = document_config["step_id"]
     step = {
         "id": step_id,
-        "title": get_step_title(step_id),
+        "status": get_step_status(step_id),
         "datePublished": e_aanvraag["datumDocument"],
         "documents": [get_e_aanvraag_document(e_aanvraag, document_config)],
     }
+
+    if document_config.get("about_parent"):
+        step["about"] = document_config.get("about")
 
     decision = document_config.get("decision")
     if decision:
         step["decision"] = decision
 
-    product_specific = document_config.get("product_specific")
+    product_specific = document_config.get("about_specific")
     if product_specific:
         step["productSpecific"] = product_specific
 
@@ -139,8 +144,14 @@ def get_e_aanvragen(bsn):
 
         step = get_e_aanvraag_step(e_aanvraag, document_config)
 
+        about = (
+            document_config["about"]
+            if not document_config.get("about_parent")
+            else document_config["about_parent"]
+        )
+
         if step:
-            steps_collection[document_config["product"]].append(step)
+            steps_collection[about].append(step)
 
     aanvragen = []
 

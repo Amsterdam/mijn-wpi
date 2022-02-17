@@ -14,14 +14,14 @@ from app.focus_service_e_aanvraag import (
 from app.test_app import MockClient
 
 
-class FocusSerivceEAanvraag(TestCase):
+class FocusServiceEAanvraag(TestCase):
     maxDiff = None
 
     def test_get_document_config(self):
         document_code_id = 176182
         document_config = get_document_config(document_code_id)
 
-        self.assertEqual(document_config["product"], "tonk")
+        self.assertEqual(document_config["about"], "TONK")
         self.assertEqual(document_config["step_id"], "besluit")
         self.assertEqual(document_config["decision"], "mogelijkeVerlenging")
 
@@ -34,31 +34,31 @@ class FocusSerivceEAanvraag(TestCase):
         self.assertEqual(
             collection,
             {
-                "tozo 1": [],
-                "tozo 2": [],
-                "tozo 3": [],
-                "tozo 4": [],
-                "tozo 5": [],
-                "tonk": [],
-                "bbz": [],
-                "ioaz": [],
+                "Tozo 1": [],
+                "Tozo 2": [],
+                "Tozo 3": [],
+                "Tozo 4": [],
+                "Tozo 5": [],
+                "TONK": [],
+                "Bbz": [],
             },
         )
 
     def test_create_e_aanvraag(self):
 
-        product_name = "tozo 5"
+        product_name = "Tozo 5"
         steps = [
             {
                 "id": "aanvraag",
+                "status": "Aanvraag",
                 "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
-                "title": "Aanvraag",
                 "documents": [],
             }
         ]
         result_expected = {
-            "title": "tozo 5",
-            "id": "d7263e1172ef87e1a570f8cf1710b29a",
+            "title": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
+            "about": "Tozo 5",
+            "id": "8c04fe509fe8e9e817807e85d639810b",
             "dateStart": "2020-10-23T17:20:04",
             "datePublished": "2020-10-23T17:20:04",
             "dateEnd": None,
@@ -67,7 +67,7 @@ class FocusSerivceEAanvraag(TestCase):
             "steps": [
                 {
                     "id": "aanvraag",
-                    "title": "Aanvraag",
+                    "status": "Aanvraag",
                     "datePublished": "2020-10-23T17:20:04",
                     "documents": [],
                 }
@@ -77,25 +77,26 @@ class FocusSerivceEAanvraag(TestCase):
         self.assertEqual(result, result_expected)
 
     def test_create_e_aanvraag2(self):
-        product_name = "tonk"
+        product_name = "TONK"
         steps = [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
                 "documents": [],
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": datetime.datetime(2020, 11, 15, 10, 00, 2),
                 "documents": [],
                 "decision": "toekenning",
             },
         ]
         result_expected = {
-            "title": "tonk",
-            "id": "35243ffdb3668fc3f4607e7c41dea31e",
+            "title": "TONK",
+            "about": "TONK",
+            "id": "d818f43f721dddca7dce630d1e9ac940",
             "dateStart": "2020-10-23T17:20:04",
             "datePublished": "2020-11-15T10:00:02",
             "dateEnd": "2020-11-15T10:00:02",
@@ -104,16 +105,14 @@ class FocusSerivceEAanvraag(TestCase):
             "steps": [
                 {
                     "id": "aanvraag",
-                    "title": "Aanvraag document",
                     "datePublished": "2020-10-23T17:20:04",
-                    "title": "Aanvraag",
+                    "status": "Aanvraag",
                     "documents": [],
                 },
                 {
                     "id": "besluit",
-                    "title": "Besluit document",
                     "datePublished": "2020-11-15T10:00:02",
-                    "title": "Besluit",
+                    "status": "Besluit",
                     "decision": "toekenning",
                     "documents": [],
                 },
@@ -138,15 +137,15 @@ class FocusSerivceEAanvraag(TestCase):
 
         document_config = {
             "omschrijving": "Tozo3 Afwijzen",
+            "about": "Tozo 3",
             "step_id": "besluit",
-            "product": "Tozo 3",
             "document_title": "Besluit afwijzing",
             "decision": "afwijzing",
         }
 
         result_expected = {
             "id": "besluit",
-            "title": "Besluit",
+            "status": "Besluit",
             "datePublished": datetime.datetime(2020, 10, 27, 17, 20, 4),
             "decision": "afwijzing",
             "documents": [
@@ -173,6 +172,7 @@ class FocusSerivceEAanvraag(TestCase):
         get_client_mock.return_value = mock_client
         bsn = "123xx123"
         result = get_e_aanvragen(bsn)
+
         mock_client.service.getEAanvraagTOZO.assert_called_with(bsn)
         log_error_mock.assert_has_calls(
             [
@@ -588,8 +588,9 @@ example_soap_response = {
 
 example_result = [
     {
-        "id": "953311469171d5f297fcad251f3310a1",
-        "title": "tozo 1",
+        "id": "6c31bbf416232a8b9b1240257b358ed6",
+        "title": "Tozo 1 (aangevraagd voor 1 juni 2020)",
+        "about": "Tozo 1",
         "dateStart": "2020-03-27T17:20:04",
         "datePublished": "2020-04-08T17:20:04",
         "dateEnd": "2020-04-08T17:20:04",
@@ -598,7 +599,7 @@ example_result = [
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "datePublished": "2020-03-27T17:20:04",
                 "documents": [
                     {
@@ -626,7 +627,7 @@ example_result = [
             },
             {
                 "id": "voorschot",
-                "title": "Voorschot",
+                "status": "Voorschot",
                 "datePublished": "2020-04-03T17:20:04",
                 "documents": [
                     {
@@ -640,7 +641,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2020-04-08T17:20:04",
                 "documents": [
                     {
@@ -657,8 +658,9 @@ example_result = [
         ],
     },
     {
-        "id": "ee5dc44e435040731d39b84e0fd0b4f5",
-        "title": "tozo 2",
+        "id": "61d58ab37ffe556198d625b947e90b1a",
+        "title": "Tozo 2 (aangevraagd vanaf 1 juni 2020)",
+        "about": "Tozo 2",
         "dateStart": "2020-06-19T17:20:04",
         "datePublished": "2020-07-04T17:20:04",
         "dateEnd": "2020-07-04T17:20:04",
@@ -667,7 +669,7 @@ example_result = [
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "datePublished": "2020-06-19T17:20:04",
                 "documents": [
                     {
@@ -681,7 +683,7 @@ example_result = [
             },
             {
                 "id": "voorschot",
-                "title": "Voorschot",
+                "status": "Voorschot",
                 "datePublished": "2020-06-23T17:20:04",
                 "documents": [
                     {
@@ -695,7 +697,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2020-07-03T17:20:04",
                 "documents": [
                     {
@@ -711,7 +713,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2020-07-04T17:20:04",
                 "documents": [
                     {
@@ -727,8 +729,9 @@ example_result = [
         ],
     },
     {
-        "id": "27c726a8ee4dd93a48c9f3c30cf865b2",
-        "title": "tozo 3",
+        "id": "b01879e9ea8233e8c7008d0978279613",
+        "title": "Tozo 3 (aangevraagd vanaf 1 oktober 2020)",
+        "about": "Tozo 3",
         "dateStart": "2020-10-14T17:20:04",
         "datePublished": "2020-10-27T17:20:04",
         "dateEnd": "2020-10-27T17:20:04",
@@ -737,7 +740,7 @@ example_result = [
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "datePublished": "2020-10-14T17:20:04",
                 "documents": [
                     {
@@ -751,7 +754,7 @@ example_result = [
             },
             {
                 "id": "voorschot",
-                "title": "Voorschot",
+                "status": "Voorschot",
                 "datePublished": "2020-10-19T17:20:04",
                 "documents": [
                     {
@@ -765,7 +768,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2020-10-23T17:20:04",
                 "documents": [
                     {
@@ -781,7 +784,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2020-10-27T17:20:04",
                 "documents": [
                     {
@@ -797,8 +800,9 @@ example_result = [
         ],
     },
     {
-        "id": "e9fabddf1d6e9386622faeba4c945c48",
-        "title": "tozo 4",
+        "id": "0c4133dba3fe3d0d6b11f31ecd860382",
+        "title": "Tozo 4 (aangevraagd vanaf 1 april 2021)",
+        "about": "Tozo 4",
         "dateStart": "2021-04-02T18:53:05",
         "datePublished": "2021-04-08T18:53:05",
         "dateEnd": "2021-04-08T18:53:05",
@@ -807,7 +811,7 @@ example_result = [
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "datePublished": "2021-04-02T18:53:05",
                 "documents": [
                     {
@@ -821,7 +825,7 @@ example_result = [
             },
             {
                 "id": "voorschot",
-                "title": "Voorschot",
+                "status": "Voorschot",
                 "datePublished": "2021-04-04T18:53:05",
                 "documents": [
                     {
@@ -835,7 +839,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2021-04-06T18:53:05",
                 "documents": [
                     {
@@ -851,7 +855,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2021-04-08T18:53:05",
                 "documents": [
                     {
@@ -867,8 +871,9 @@ example_result = [
         ],
     },
     {
-        "id": "bb17f3779128ae1745ad022fe6a6c1a9",
-        "title": "tozo 5",
+        "id": "6ac434393fa829c96750416707e1b8f0",
+        "title": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
+        "about": "Tozo 5",
         "dateStart": "2021-07-02T18:53:05",
         "datePublished": "2021-07-08T18:53:05",
         "dateEnd": "2021-07-08T18:53:05",
@@ -877,7 +882,7 @@ example_result = [
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "datePublished": "2021-07-02T18:53:05",
                 "documents": [
                     {
@@ -891,7 +896,7 @@ example_result = [
             },
             {
                 "id": "voorschot",
-                "title": "Voorschot",
+                "status": "Voorschot",
                 "datePublished": "2021-07-04T18:53:05",
                 "documents": [
                     {
@@ -905,7 +910,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2021-07-06T18:53:05",
                 "documents": [
                     {
@@ -921,7 +926,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2021-07-08T18:53:05",
                 "documents": [
                     {
@@ -937,8 +942,9 @@ example_result = [
         ],
     },
     {
-        "id": "d9c09acc579d10266ca390c0ea08c8ad",
-        "title": "tonk",
+        "id": "27ece36a035186e3c7863e03554a6c2e",
+        "title": "TONK",
+        "about": "TONK",
         "dateStart": "2021-01-05T17:20:04",
         "datePublished": "2021-08-12T17:20:04",
         "dateEnd": "2021-08-10T17:20:04",
@@ -947,7 +953,7 @@ example_result = [
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "datePublished": "2021-01-05T17:20:04",
                 "documents": [
                     {
@@ -962,7 +968,7 @@ example_result = [
             },
             {
                 "id": "herstelTermijn",
-                "title": "Informatie nodig",
+                "status": "Informatie nodig",
                 "datePublished": "2021-01-06T17:20:04",
                 "documents": [
                     {
@@ -977,7 +983,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2021-01-07T17:20:04",
                 "documents": [
                     {
@@ -993,7 +999,7 @@ example_result = [
             },
             {
                 "id": "correctiemail",
-                "title": "Mail",
+                "status": "Mail",
                 "datePublished": "2021-08-08T17:20:04",
                 "documents": [
                     {
@@ -1008,7 +1014,7 @@ example_result = [
             },
             {
                 "id": "besluit",
-                "title": "Besluit",
+                "status": "Besluit",
                 "datePublished": "2021-08-10T17:20:04",
                 "documents": [
                     {
@@ -1024,7 +1030,7 @@ example_result = [
             },
             {
                 "id": "briefWeigering",
-                "title": "Brief",
+                "status": "Brief",
                 "datePublished": "2021-08-12T17:20:04",
                 "documents": [
                     {
@@ -1040,17 +1046,18 @@ example_result = [
         ],
     },
     {
-        "id": "6cbb95f98cb9d1cf2835781e3923f857",
-        "title": "bbz",
+        "id": "899b4f4473a2692bc1a5558d5ab95f8c",
+        "title": "Bbz",
+        "about": "Bbz",
         "dateStart": "2021-09-01T17:20:04",
-        "datePublished": "2021-09-15T17:20:04",
+        "datePublished": "2021-09-16T17:20:04",
         "dateEnd": None,
         "decision": None,
-        "status": "aanvraag",
+        "status": "herstelTermijn",
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "datePublished": "2021-09-01T17:20:04",
                 "documents": [
                     {
@@ -1071,7 +1078,7 @@ example_result = [
             },
             {
                 "id": "beslisTermijn",
-                "title": "Tijd nodig",
+                "status": "Tijd nodig",
                 "datePublished": "2021-09-02T17:20:04",
                 "documents": [
                     {
@@ -1083,20 +1090,9 @@ example_result = [
                     }
                 ],
             },
-        ],
-    },
-    {
-        "id": "8b6ea52ea4d163770993a16c1d66aec4",
-        "title": "ioaz",
-        "dateStart": "2021-09-16T17:20:04",
-        "datePublished": "2021-09-16T17:20:04",
-        "dateEnd": None,
-        "decision": None,
-        "status": "herstelTermijn",
-        "steps": [
             {
                 "id": "herstelTermijn",
-                "title": "Informatie nodig",
+                "status": "Informatie nodig",
                 "datePublished": "2021-09-16T17:20:04",
                 "documents": [
                     {
@@ -1107,7 +1103,8 @@ example_result = [
                         "datePublished": "2021-09-16T17:20:04",
                     }
                 ],
-            }
+                "about": "IOAZ",
+            },
         ],
     },
 ]

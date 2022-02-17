@@ -7,9 +7,8 @@ from app.focus_service_aanvragen import (
     calculate_user_feedback_date_max,
     get_aanvragen,
     get_client,
-    get_decision,
     get_document_url,
-    get_step_title,
+    get_step_status,
     get_translation,
     transform_step_documents,
 )
@@ -24,6 +23,8 @@ def create_soap_response_get_aanvragen(soort_product_naam, product, bsn=12312312
 
 
 class TestFocusBijstandAanvraag(TestCase):
+
+    maxDiff = None
 
     bsn = 12312312399
     product_source = {
@@ -73,8 +74,9 @@ class TestFocusBijstandAanvraag(TestCase):
         "typeBesluit": "Afwijzing",
     }
     product_transformed = {
-        "id": "318055ab142430bcd6eda77c8b78fdab",
+        "id": "40cc95c8803279949c4cba24285adf8c",
         "title": "Bijstandsuitkering",
+        "about": "Bijstandsuitkering",
         "status": "besluit",
         "decision": "afwijzing",
         "datePublished": "2017-08-21T15:05:52",
@@ -83,20 +85,20 @@ class TestFocusBijstandAanvraag(TestCase):
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "documents": [],
                 "datePublished": "2017-08-17T15:05:52",
             },
             {
                 "id": "inBehandeling",
-                "title": "In behandeling",
+                "status": "In behandeling",
                 "documents": [],
                 "datePublished": "2017-08-17T15:05:52",
                 "dateDecisionExpected": "2017-10-05T15:05:52",
             },
             {
                 "id": "herstelTermijn",
-                "title": "Informatie nodig",
+                "status": "Informatie nodig",
                 "documents": [
                     {
                         "id": "4400000007",
@@ -123,10 +125,10 @@ class TestFocusBijstandAanvraag(TestCase):
             },
             {
                 "id": "besluit",
-                "title": "beslissing",
+                "status": "beslissing",
                 "documents": [],
                 "datePublished": "2017-08-21T15:05:52",
-                "decision": "Afwijzing",
+                "decision": "afwijzing",
             },
         ],
     }
@@ -150,6 +152,7 @@ class TestFocusBijstandAanvraag(TestCase):
 
 
 class TestFocusStadspasAanvraag(TestCase):
+    maxDiff = None
 
     bsn = 99321321321
     product_source = {
@@ -189,6 +192,7 @@ class TestFocusStadspasAanvraag(TestCase):
     product_transformed = {
         "id": "4b46c9865ac4f007b2b0fdd03fd1fbba",
         "title": "Stadspas",
+        "about": "Stadspas",
         "status": "besluit",
         "decision": "toekenning",
         "datePublished": "2019-06-07T15:05:52",
@@ -197,7 +201,7 @@ class TestFocusStadspasAanvraag(TestCase):
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "documents": [
                     {
                         "id": "4400000013",
@@ -210,14 +214,14 @@ class TestFocusStadspasAanvraag(TestCase):
             },
             {
                 "id": "inBehandeling",
-                "title": "In behandeling",
+                "status": "In behandeling",
                 "documents": [],
                 "datePublished": "2019-05-10T15:05:52",
                 "dateDecisionExpected": "2019-07-03T15:05:52",
             },
             {
                 "id": "herstelTermijn",
-                "title": "Informatie nodig",
+                "status": "Informatie nodig",
                 "documents": [],
                 "datePublished": "2019-05-17T15:05:52",
                 "dateDecisionExpected": "2019-07-23T15:05:52",
@@ -225,10 +229,10 @@ class TestFocusStadspasAanvraag(TestCase):
             },
             {
                 "id": "besluit",
-                "title": "beslissing",
+                "status": "beslissing",
                 "documents": [],
                 "datePublished": "2019-06-07T15:05:52",
-                "decision": "Toekenning",
+                "decision": "toekenning",
             },
         ],
     }
@@ -294,6 +298,7 @@ class TestFocusStadspasAanvraag2(TestCase):
     product_transformed = {
         "id": "4b46c9865ac4f007b2b0fdd03fd1fbba",
         "title": "Stadspas",
+        "about": "Stadspas",
         "status": "aanvraag",
         "decision": None,
         "datePublished": "2019-05-08T15:05:52",
@@ -302,7 +307,7 @@ class TestFocusStadspasAanvraag2(TestCase):
         "steps": [
             {
                 "id": "aanvraag",
-                "title": "Aanvraag",
+                "status": "Aanvraag",
                 "documents": [
                     {
                         "id": "4400000013",
@@ -371,11 +376,6 @@ class TestFocusService(TestCase):
 
         self.assertEqual(result, client_mock())
 
-    def test_get_decision(self):
-        result = get_decision("HeY    Ho")
-        result_expected = "heyho"
-        self.assertEqual(result, result_expected)
-
     @patch(
         "app.focus_service_aanvragen.FOCUS_TITLE_TRANSLATIONS",
         {"test": "123", "foo": "bar"},
@@ -397,8 +397,8 @@ class TestFocusService(TestCase):
         "app.focus_service_aanvragen.FOCUS_STEP_ID_TRANSLATIONS",
         {"step1": "Stap 1"},
     )
-    def test_get_step_title(self):
-        result = get_step_title("step1")
+    def test_get_step_status(self):
+        result = get_step_status("step1")
         result_expected = "Stap 1"
         self.assertEqual(result, result_expected)
 

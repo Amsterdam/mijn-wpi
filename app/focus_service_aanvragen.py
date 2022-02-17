@@ -67,15 +67,11 @@ def get_client():
     return focus_client
 
 
-def get_decision(decision):
-    return decision.lower().replace(" ", "")
-
-
 def get_translation(source_title):
     return FOCUS_TITLE_TRANSLATIONS.get(source_title, source_title)
 
 
-def get_step_title(step_id):
+def get_step_status(step_id):
     return FOCUS_STEP_ID_TRANSLATIONS.get(step_id, step_id)
 
 
@@ -168,7 +164,9 @@ def transform_step_inbehandeling(step, product_source):
 def transform_step_besluit(step, product_source):
     # ATTENTION! Chaning the ID of this step
     step["id"] = "besluit"
-    step["decision"] = product_source["typeBesluit"]
+    step["decision"] = (
+        product_source["typeBesluit"].lower() if product_source["typeBesluit"] else None
+    )
 
     return step
 
@@ -176,7 +174,7 @@ def transform_step_besluit(step, product_source):
 def transform_step(step_id, step, product_source):
     step_transformed = {
         "id": step_id,
-        "title": get_step_title(
+        "status": get_step_status(
             step_id
         ),  # TODO: Maybe we need more granular determination here by passing more data to determine a better title?
         "documents": transform_step_documents(step),
@@ -215,17 +213,15 @@ def transform_product(product):
     first_step = steps[0]  # aanvraag step
     last_step = steps[-1]  # any step
 
-    title = get_translation(product["naam"])
-    raw_id = title + first_step["datePublished"]
+    raw_id = product["naam"] + first_step["datePublished"]
     id = hashlib.md5(raw_id.encode("utf-8")).hexdigest()
 
     product_transformed = {
         "id": id,
-        "title": title,
+        "title": get_translation(product["naam"]),
+        "about": get_translation(product["naam"]),
         "status": last_step["id"],
-        "decision": (
-            get_decision(product["typeBesluit"]) if product["typeBesluit"] else None
-        ),
+        "decision": product["typeBesluit"].lower() if product["typeBesluit"] else None,
         # Last update
         "datePublished": last_step["datePublished"],
         # Date start of the process

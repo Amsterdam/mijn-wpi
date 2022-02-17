@@ -417,7 +417,7 @@ components:
                 - buitenBehandeling
                 - verlenging
                 - mogelijkeVerlenging
-    EAanvraagIoazStepDecision:
+    EAanvraagBbzStepDecision:
       allOf:
         - $ref: "#/components/schemas/AanvraagStepStatus"
         - type: object
