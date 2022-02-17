@@ -151,7 +151,7 @@ class FocusServiceEAanvraag(TestCase):
             "documents": [
                 {
                     "id": "660000000000099",
-                    "dceId": "175364",
+                    "dcteId": "175364",
                     "title": "Besluit afwijzing",
                     "datePublished": "2020-10-27T17:20:04",
                     "url": "/wpi/document?id=660000000000099&isBulk=False&isDms=False",
@@ -604,21 +604,21 @@ example_result = [
                 "documents": [
                     {
                         "id": "4400000027",
-                        "dceId": "770",
+                        "dcteId": "770",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-03-27T17:20:04",
                         "url": "/wpi/document?id=4400000027&isBulk=True&isDms=False",
                         "datePublished": "2020-03-27T17:20:04",
                     },
                     {
                         "id": "4400000034",
-                        "dceId": "770",
+                        "dcteId": "770",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-04-01T17:20:04",
                         "url": "/wpi/document?id=4400000034&isBulk=True&isDms=False",
                         "datePublished": "2020-04-01T17:20:04",
                     },
                     {
                         "id": "4400000033",
-                        "dceId": "770",
+                        "dcteId": "770",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-04-02T17:20:04",
                         "url": "/wpi/document?id=4400000033&isBulk=True&isDms=False",
                         "datePublished": "2020-04-02T17:20:04",
@@ -632,7 +632,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000058",
-                        "dceId": "175296",
+                        "dcteId": "175296",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000058&isBulk=False&isDms=False",
                         "datePublished": "2020-04-03T17:20:04",
@@ -646,7 +646,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000059",
-                        "dceId": "175303",
+                        "dcteId": "175303",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000059&isBulk=False&isDms=False",
                         "datePublished": "2020-04-08T17:20:04",
@@ -674,7 +674,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "4400000071",
-                        "dceId": "777",
+                        "dcteId": "777",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-06-19T17:20:04",
                         "url": "/wpi/document?id=4400000071&isBulk=True&isDms=False",
                         "datePublished": "2020-06-19T17:20:04",
@@ -688,7 +688,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000413",
-                        "dceId": "175345",
+                        "dcteId": "175345",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000413&isBulk=False&isDms=False",
                         "datePublished": "2020-06-23T17:20:04",
@@ -702,7 +702,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000076",
-                        "dceId": "175336",
+                        "dcteId": "175336",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000076&isBulk=False&isDms=False",
                         "datePublished": "2020-07-03T17:20:04",
@@ -718,7 +718,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000077",
-                        "dceId": "175337",
+                        "dcteId": "175337",
                         "title": "Besluit afwijzing",
                         "url": "/wpi/document?id=660000000000077&isBulk=False&isDms=False",
                         "datePublished": "2020-07-04T17:20:04",
@@ -745,7 +745,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "4400000053",
-                        "dceId": "785",
+                        "dcteId": "785",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-10-14T17:20:04",
                         "url": "/wpi/document?id=4400000053&isBulk=True&isDms=False",
                         "datePublished": "2020-10-14T17:20:04",
@@ -759,7 +759,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000097",
-                        "dceId": "175372",
+                        "dcteId": "175372",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000097&isBulk=False&isDms=False",
                         "datePublished": "2020-10-19T17:20:04",
@@ -773,7 +773,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000098",
-                        "dceId": "175309",
+                        "dcteId": "175309",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000098&isBulk=False&isDms=False",
                         "datePublished": "2020-10-23T17:20:04",
@@ -789,7 +789,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000099",
-                        "dceId": "175364",
+                        "dcteId": "175364",
                         "title": "Besluit afwijzing",
                         "url": "/wpi/document?id=660000000000099&isBulk=False&isDms=False",
                         "datePublished": "2020-10-27T17:20:04",
@@ -816,7 +816,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "4400000022",
-                        "dceId": "800",
+                        "dcteId": "800",
                         "title": "Ontvangst- bevestiging Aanvraag\n2021-04-02T18:53:05",
                         "url": "/wpi/document?id=4400000022&isBulk=True&isDms=False",
                         "datePublished": "2021-04-02T18:53:05",
@@ -830,7 +830,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000471",
-                        "dceId": "175677",
+                        "dcteId": "175677",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000471&isBulk=False&isDms=False",
                         "datePublished": "2021-04-04T18:53:05",
@@ -844,7 +844,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000472",
-                        "dceId": "175654",
+                        "dcteId": "175654",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000472&isBulk=False&isDms=False",
                         "datePublished": "2021-04-06T18:53:05",
@@ -860,7 +860,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000473",
-                        "dceId": "175651",
+                        "dcteId": "175651",
                         "title": "Besluit afwijzing",
                         "url": "/wpi/document?id=660000000000473&isBulk=False&isDms=False",
                         "datePublished": "2021-04-08T18:53:05",
@@ -887,7 +887,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "4400000123",
-                        "dceId": "837",
+                        "dcteId": "837",
                         "title": "Ontvangst- bevestiging Aanvraag\n2021-07-02T18:53:05",
                         "url": "/wpi/document?id=4400000123&isBulk=True&isDms=False",
                         "datePublished": "2021-07-02T18:53:05",
@@ -901,7 +901,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000053",
-                        "dceId": "176171",
+                        "dcteId": "176171",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000053&isBulk=False&isDms=False",
                         "datePublished": "2021-07-04T18:53:05",
@@ -915,7 +915,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000054",
-                        "dceId": "176167",
+                        "dcteId": "176167",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000054&isBulk=False&isDms=False",
                         "datePublished": "2021-07-06T18:53:05",
@@ -931,7 +931,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000055",
-                        "dceId": "176165",
+                        "dcteId": "176165",
                         "title": "Besluit afwijzing",
                         "url": "/wpi/document?id=660000000000055&isBulk=False&isDms=False",
                         "datePublished": "2021-07-08T18:53:05",
@@ -958,7 +958,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "4400000095",
-                        "dceId": "802",
+                        "dcteId": "802",
                         "title": "Aanvraag TONK\n2021-01-05T17:20:04",
                         "url": "/wpi/document?id=4400000095&isBulk=True&isDms=False",
                         "datePublished": "2021-01-05T17:20:04",
@@ -973,7 +973,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000500",
-                        "dceId": "176137",
+                        "dcteId": "176137",
                         "title": "Brief meer informatie",
                         "url": "/wpi/document?id=660000000000500&isBulk=False&isDms=False",
                         "datePublished": "2021-01-06T17:20:04",
@@ -988,7 +988,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000000501",
-                        "dceId": "176146",
+                        "dcteId": "176146",
                         "title": "Besluit buiten behandeling",
                         "url": "/wpi/document?id=660000000000501&isBulk=False&isDms=False",
                         "datePublished": "2021-01-07T17:20:04",
@@ -1004,7 +1004,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "4400000132",
-                        "dceId": "843",
+                        "dcteId": "843",
                         "title": "Mail verkeerde TONK-brief",
                         "url": "/wpi/document?id=4400000132&isBulk=True&isDms=False",
                         "datePublished": "2021-08-08T17:20:04",
@@ -1019,7 +1019,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000010184",
-                        "dceId": "176182",
+                        "dcteId": "176182",
                         "title": "Besluit over verlenging",
                         "url": "/wpi/document?id=660000000010184&isBulk=False&isDms=False",
                         "datePublished": "2021-08-10T17:20:04",
@@ -1035,7 +1035,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000010185",
-                        "dceId": "1726182",
+                        "dcteId": "1726182",
                         "title": "Brief bevestiging weigering",
                         "url": "/wpi/document?id=660000000010185&isBulk=False&isDms=False",
                         "datePublished": "2021-08-12T17:20:04",
@@ -1062,14 +1062,14 @@ example_result = [
                 "documents": [
                     {
                         "id": "4400000146",
-                        "dceId": "844",
+                        "dcteId": "844",
                         "title": "Aanvraag Bbz\n2021-09-01T17:20:04",
                         "url": "/wpi/document?id=4400000146&isBulk=True&isDms=False",
                         "datePublished": "2021-09-01T17:20:04",
                     },
                     {
                         "id": "4400000147",
-                        "dceId": "844",
+                        "dcteId": "844",
                         "title": "Aanvraag Bbz\n2021-09-15T17:20:04",
                         "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
                         "datePublished": "2021-09-15T17:20:04",
@@ -1083,7 +1083,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000010211",
-                        "dceId": "175855",
+                        "dcteId": "175855",
                         "title": "Brief verlenging beslistermijn",
                         "url": "/wpi/document?id=660000000010211&isBulk=False&isDms=False",
                         "datePublished": "2021-09-02T17:20:04",
@@ -1097,7 +1097,7 @@ example_result = [
                 "documents": [
                     {
                         "id": "660000000010212",
-                        "dceId": "176322",
+                        "dcteId": "176322",
                         "title": "Brief verzoek om meer informatie",
                         "url": "/wpi/document?id=660000000010212&isBulk=False&isDms=False",
                         "datePublished": "2021-09-16T17:20:04",

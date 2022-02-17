@@ -86,7 +86,7 @@ def get_e_aanvraag_document(e_aanvraag, document_config):
 
     return {
         "id": str(e_aanvraag["documentId"]),
-        "dceId": e_aanvraag["documentCodes"]["documentCodeId"],
+        "dcteId": e_aanvraag["documentCodes"]["documentCodeId"],
         "title": title,
         "url": get_document_url(
             {
