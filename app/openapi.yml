@@ -16,7 +16,7 @@ paths:
                 type: string
                 enum:
                   - "OK"
-  /wpi/aanvragen:
+  /wpi/uitkering-en-stadspas/aanvragen:
     get:
       description: Returns a list aanvragen.
       responses:
@@ -29,6 +29,29 @@ paths:
                 properties:
                   content:
                     $ref: "#/components/schemas/Aanvragen"
+                  status:
+                    type: string
+                    enum:
+                      - "OK"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /wpi/e-aanvragen:
+    get:
+      description: Returns a list of E-aanvragen (Tozo, Tonk, Bbz).
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    $ref: "#/components/schemas/EAanvragen"
                   status:
                     type: string
                     enum:
@@ -133,7 +156,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /wpi/bijstanduitkering/specificaties-en-jaaropgaven:
+  /wpi/uitkering/specificaties-en-jaaropgaven:
     get:
       description: Returns a list uitkeringsspecificatie en jaaropgaven.
       responses:
@@ -167,15 +190,32 @@ components:
         anyOf:
           - $ref: "#/components/schemas/BijstandsuitkeringAanvraag"
           - $ref: "#/components/schemas/StadspasAanvraag"
+    EAanvragen:
+      type: array
+      items:
+        anyOf:
+          - $ref: "#/components/schemas/EAanvraagTozo1"
+          - $ref: "#/components/schemas/EAanvraagTozo2_3_4_5"
+          - $ref: "#/components/schemas/EAanvraagTONK"
+          - $ref: "#/components/schemas/EAanvraagBbz"
     Aanvraag:
       type: object
       properties:
         title:
           type: string
+          enum:
+            - Bijstandsuitkering
+            - Stadspas
         dateEnd:
           $ref: "#/components/schemas/Date"
         dateStart:
           $ref: "#/components/schemas/Date"
+        decision:
+          type: string
+          enum:
+            - toekenning
+            - afwijzing
+            - buitenBehandeling
         steps:
           type: array
           items:
@@ -184,6 +224,78 @@ components:
               - $ref: "#/components/schemas/AanvraagStepActive"
               - $ref: "#/components/schemas/AanvraagStepAdditionalInfo"
               - $ref: "#/components/schemas/AanvraagStepDecision"
+    EAanvraag:
+      type: object
+      properties:
+        dateEnd:
+          $ref: "#/components/schemas/Date"
+        dateStart:
+          $ref: "#/components/schemas/Date"
+    EAanvraagTozo1:
+      allOf:
+        - $ref: "#/components/schemas/EAanvraag"
+        - type: object
+          properties:
+            decision:
+              type: string
+              enum:
+                - toekenning
+                - afwijzing
+                - buitenBehandeling
+                - vrijeBeschikking
+            steps:
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/components/schemas/AanvraagStepRequest"
+                  - $ref: "#/components/schemas/AanvraagStepAdditionalInfo"
+                  - $ref: "#/components/schemas/EAanvraagStepIntrekking"
+                  - $ref: "#/components/schemas/EAanvraagTozo1StepDecision"
+    EAanvraagTozo2_3_4_5:
+      allOf:
+        - $ref: "#/components/schemas/EAanvraag"
+        - type: object
+          properties:
+            decision:
+              type: string
+              enum:
+                - toekenning
+                - afwijzing
+                - buitenBehandeling
+            steps:
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/components/schemas/AanvraagStepRequest"
+                  - $ref: "#/components/schemas/AanvraagStepAdditionalInfo"
+                  - $ref: "#/components/schemas/EAanvraagStepIntrekking"
+                  - $ref: "#/components/schemas/EAanvraagStepTerugvorderingsbesluit"
+                  - $ref: "#/components/schemas/EAanvraagStepInkomstenwijziging"
+                  - $ref: "#/components/schemas/AanvraagStepDecision"
+    EAanvraagBbz:
+      allOf:
+        - $ref: "#/components/schemas/EAanvraag"
+        - type: object
+          properties:
+            decision:
+              type: string
+              enum:
+                - toekenning
+                - afwijzing
+                - buitenBehandeling
+            steps:
+              type: array
+              items:
+                anyOf:
+                  - $ref: "#/components/schemas/AanvraagStepRequest"
+                  - $ref: "#/components/schemas/AanvraagStepAdditionalInfo"
+                  - $ref: "#/components/schemas/EAanvraagStepIntrekking"
+                  - $ref: "#/components/schemas/EAanvraagStepTerugvorderingsbesluit"
+                  - $ref: "#/components/schemas/EAanvraagStepInkomstenwijziging"
+                  - $ref: "#/components/schemas/AanvraagStepDecision"
+    EAanvraagTONK:
+      allOf:
+        - $ref: "#/components/schemas/EAanvraag"
     AanvraagStepStatus:
       type: object
       properties:
@@ -241,7 +353,86 @@ components:
                 - besluit
             decision:
               type: string
-              example: Toegekend, Afgewezen
+              enum:
+                - toekenning
+                - afwijzing
+                - buitenBehandeling
+    EAanvraagStepIntrekking:
+      allOf:
+        - $ref: "#/components/schemas/AanvraagStepStatus"
+        - type: object
+          properties:
+            id:
+              type: string
+              enum:
+                - intrekking
+    EAanvraagTozo1StepDecision:
+      allOf:
+        - $ref: "#/components/schemas/AanvraagStepStatus"
+        - type: object
+          properties:
+            id:
+              type: string
+              enum:
+                - besluit
+            decision:
+              type: string
+              enum:
+                - toekenning
+                - afwijzing
+                - buitenBehandeling
+                - vrijeBeschikking
+    EAanvraagStepTerugvorderingsbesluit:
+      allOf:
+        - $ref: "#/components/schemas/AanvraagStepStatus"
+        - type: object
+          properties:
+            id:
+              type: string
+              enum:
+                - terugvorderingsbesluit
+    EAanvraagStepInkomstenwijziging:
+      allOf:
+        - $ref: "#/components/schemas/AanvraagStepStatus"
+        - type: object
+          properties:
+            id:
+              type: string
+              enum:
+                - inkomstenwijziging
+    EAanvraagTONKStepDecision:
+      allOf:
+        - $ref: "#/components/schemas/AanvraagStepStatus"
+        - type: object
+          properties:
+            id:
+              type: string
+              enum:
+                - besluit
+            decision:
+              type: string
+              enum:
+                - toekenning
+                - afwijzing
+                - buitenBehandeling
+                - verlenging
+                - mogelijkeVerlenging
+    EAanvraagIoazStepDecision:
+      allOf:
+        - $ref: "#/components/schemas/AanvraagStepStatus"
+        - type: object
+          properties:
+            id:
+              type: string
+              enum:
+                - besluit
+            decision:
+              type: string
+              enum:
+                - toekenning
+                - afwijzing
+                - buitenBehandeling
+                - toekenningVoorlopig
     BijstandsuitkeringAanvraag:
       allOf:
         - $ref: "#/components/schemas/Aanvraag"
