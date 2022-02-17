@@ -30,7 +30,9 @@ class TestFocusStadspasAdmin(TestCase):
 
         mock_client.service.getStadspas.assert_called_with(bsn="11xx11")
 
-        self.assertEqual(result, {"type": "hoofdpashouder", "admin_number": 123123123})
+        self.assertEqual(
+            result, {"type": "hoofdpashouder", "admin_number": "03630123123123"}
+        )
 
     @patch("app.focus_service_stadspas_admin.get_client")
     def test_get_stadspas_admin_number_none(self, get_client_mock):

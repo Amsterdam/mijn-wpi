@@ -1,4 +1,6 @@
 import datetime
+import json
+from textwrap import indent
 from unittest import TestCase
 from unittest.mock import call, patch
 
@@ -21,7 +23,7 @@ class FocusSerivceEAanvraag(TestCase):
 
         self.assertEqual(document_config["product"], "tonk")
         self.assertEqual(document_config["step_id"], "besluit")
-        self.assertEqual(document_config["decision"], "toekenning")
+        self.assertEqual(document_config["decision"], "mogelijkeVerlenging")
 
         document_config = get_document_config(123)
 
@@ -48,15 +50,14 @@ class FocusSerivceEAanvraag(TestCase):
         product_name = "tozo 5"
         steps = [
             {
-                "id": "1x1",
-                "title": "Aanvraag document",
+                "id": "aanvraag",
                 "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
-                "status": "aanvraag",
+                "title": "Aanvraag",
                 "documents": [],
             }
         ]
         result_expected = {
-            "title": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
+            "title": "tozo 5",
             "id": "d7263e1172ef87e1a570f8cf1710b29a",
             "dateStart": "2020-10-23T17:20:04",
             "datePublished": "2020-10-23T17:20:04",
@@ -65,10 +66,9 @@ class FocusSerivceEAanvraag(TestCase):
             "status": "aanvraag",
             "steps": [
                 {
-                    "id": "1x1",
-                    "title": "Aanvraag document",
+                    "id": "aanvraag",
+                    "title": "Aanvraag",
                     "datePublished": "2020-10-23T17:20:04",
-                    "title": "aanvraag",
                     "documents": [],
                 }
             ],
@@ -76,27 +76,25 @@ class FocusSerivceEAanvraag(TestCase):
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
-    def test_create_e_aanvraag(self):
+    def test_create_e_aanvraag2(self):
         product_name = "tonk"
         steps = [
             {
-                "id": "1x1",
-                "title": "Aanvraag document",
+                "id": "aanvraag",
+                "title": "Aanvraag",
                 "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
-                "title": "aanvraag",
                 "documents": [],
             },
             {
-                "id": "1x2",
-                "title": "Besluit document",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": datetime.datetime(2020, 11, 15, 10, 00, 2),
-                "title": "besluit",
                 "documents": [],
                 "decision": "toekenning",
             },
         ]
         result_expected = {
-            "title": "TONK",
+            "title": "tonk",
             "id": "35243ffdb3668fc3f4607e7c41dea31e",
             "dateStart": "2020-10-23T17:20:04",
             "datePublished": "2020-11-15T10:00:02",
@@ -105,17 +103,17 @@ class FocusSerivceEAanvraag(TestCase):
             "status": "besluit",
             "steps": [
                 {
-                    "id": "1x1",
+                    "id": "aanvraag",
                     "title": "Aanvraag document",
                     "datePublished": "2020-10-23T17:20:04",
-                    "title": "aanvraag",
+                    "title": "Aanvraag",
                     "documents": [],
                 },
                 {
-                    "id": "1x2",
+                    "id": "besluit",
                     "title": "Besluit document",
                     "datePublished": "2020-11-15T10:00:02",
-                    "title": "besluit",
+                    "title": "Besluit",
                     "decision": "toekenning",
                     "documents": [],
                 },
@@ -138,7 +136,6 @@ class FocusSerivceEAanvraag(TestCase):
             "variant": None,
         }
 
-        document_code_id = "175364"
         document_config = {
             "omschrijving": "Tozo3 Afwijzen",
             "step_id": "besluit",
@@ -155,6 +152,7 @@ class FocusSerivceEAanvraag(TestCase):
             "documents": [
                 {
                     "id": "660000000000099",
+                    "dceId": "175364",
                     "title": "Besluit afwijzing",
                     "datePublished": "2020-10-27T17:20:04",
                     "url": "/wpi/document?id=660000000000099&isBulk=False&isDms=False",
@@ -162,7 +160,7 @@ class FocusSerivceEAanvraag(TestCase):
             ],
         }
 
-        result = get_e_aanvraag_step(e_aanvraag, document_code_id, document_config)
+        result = get_e_aanvraag_step(e_aanvraag, document_config)
 
         self.assertEqual(result, result_expected)
 
@@ -591,7 +589,7 @@ example_soap_response = {
 example_result = [
     {
         "id": "953311469171d5f297fcad251f3310a1",
-        "title": "Tozo 1 (aangevraagd voor 1 juni 2020)",
+        "title": "tozo 1",
         "dateStart": "2020-03-27T17:20:04",
         "datePublished": "2020-04-08T17:20:04",
         "dateEnd": "2020-04-08T17:20:04",
@@ -599,24 +597,27 @@ example_result = [
         "status": "besluit",
         "steps": [
             {
-                "id": "770",
-                "title": "aanvraag",
+                "id": "aanvraag",
+                "title": "Aanvraag",
                 "datePublished": "2020-03-27T17:20:04",
                 "documents": [
                     {
                         "id": "4400000027",
+                        "dceId": "770",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-03-27T17:20:04",
                         "url": "/wpi/document?id=4400000027&isBulk=True&isDms=False",
                         "datePublished": "2020-03-27T17:20:04",
                     },
                     {
                         "id": "4400000034",
+                        "dceId": "770",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-04-01T17:20:04",
                         "url": "/wpi/document?id=4400000034&isBulk=True&isDms=False",
                         "datePublished": "2020-04-01T17:20:04",
                     },
                     {
                         "id": "4400000033",
+                        "dceId": "770",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-04-02T17:20:04",
                         "url": "/wpi/document?id=4400000033&isBulk=True&isDms=False",
                         "datePublished": "2020-04-02T17:20:04",
@@ -624,12 +625,13 @@ example_result = [
                 ],
             },
             {
-                "id": "175296",
-                "title": "voorschot",
+                "id": "voorschot",
+                "title": "Voorschot",
                 "datePublished": "2020-04-03T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000058",
+                        "dceId": "175296",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000058&isBulk=False&isDms=False",
                         "datePublished": "2020-04-03T17:20:04",
@@ -637,24 +639,26 @@ example_result = [
                 ],
             },
             {
-                "id": "175303",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2020-04-08T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000059",
+                        "dceId": "175303",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000059&isBulk=False&isDms=False",
                         "datePublished": "2020-04-08T17:20:04",
                     }
                 ],
                 "decision": "toekenning",
+                "productSpecific": "uitkering",
             },
         ],
     },
     {
         "id": "ee5dc44e435040731d39b84e0fd0b4f5",
-        "title": "Tozo 2 (aangevraagd vanaf 1 juni 2020)",
+        "title": "tozo 2",
         "dateStart": "2020-06-19T17:20:04",
         "datePublished": "2020-07-04T17:20:04",
         "dateEnd": "2020-07-04T17:20:04",
@@ -662,12 +666,13 @@ example_result = [
         "status": "besluit",
         "steps": [
             {
-                "id": "777",
-                "title": "aanvraag",
+                "id": "aanvraag",
+                "title": "Aanvraag",
                 "datePublished": "2020-06-19T17:20:04",
                 "documents": [
                     {
                         "id": "4400000071",
+                        "dceId": "777",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-06-19T17:20:04",
                         "url": "/wpi/document?id=4400000071&isBulk=True&isDms=False",
                         "datePublished": "2020-06-19T17:20:04",
@@ -675,12 +680,13 @@ example_result = [
                 ],
             },
             {
-                "id": "175345",
-                "title": "voorschot",
+                "id": "voorschot",
+                "title": "Voorschot",
                 "datePublished": "2020-06-23T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000413",
+                        "dceId": "175345",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000413&isBulk=False&isDms=False",
                         "datePublished": "2020-06-23T17:20:04",
@@ -688,26 +694,29 @@ example_result = [
                 ],
             },
             {
-                "id": "175336",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2020-07-03T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000076",
+                        "dceId": "175336",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000076&isBulk=False&isDms=False",
                         "datePublished": "2020-07-03T17:20:04",
                     }
                 ],
                 "decision": "toekenning",
+                "productSpecific": "uitkering",
             },
             {
-                "id": "175337",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2020-07-04T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000077",
+                        "dceId": "175337",
                         "title": "Besluit afwijzing",
                         "url": "/wpi/document?id=660000000000077&isBulk=False&isDms=False",
                         "datePublished": "2020-07-04T17:20:04",
@@ -719,7 +728,7 @@ example_result = [
     },
     {
         "id": "27c726a8ee4dd93a48c9f3c30cf865b2",
-        "title": "Tozo 3 (aangevraagd vanaf 1 oktober 2020)",
+        "title": "tozo 3",
         "dateStart": "2020-10-14T17:20:04",
         "datePublished": "2020-10-27T17:20:04",
         "dateEnd": "2020-10-27T17:20:04",
@@ -727,12 +736,13 @@ example_result = [
         "status": "besluit",
         "steps": [
             {
-                "id": "785",
-                "title": "aanvraag",
+                "id": "aanvraag",
+                "title": "Aanvraag",
                 "datePublished": "2020-10-14T17:20:04",
                 "documents": [
                     {
                         "id": "4400000053",
+                        "dceId": "785",
                         "title": "Ontvangst- bevestiging Aanvraag\n2020-10-14T17:20:04",
                         "url": "/wpi/document?id=4400000053&isBulk=True&isDms=False",
                         "datePublished": "2020-10-14T17:20:04",
@@ -740,12 +750,13 @@ example_result = [
                 ],
             },
             {
-                "id": "175372",
-                "title": "voorschot",
+                "id": "voorschot",
+                "title": "Voorschot",
                 "datePublished": "2020-10-19T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000097",
+                        "dceId": "175372",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000097&isBulk=False&isDms=False",
                         "datePublished": "2020-10-19T17:20:04",
@@ -753,25 +764,29 @@ example_result = [
                 ],
             },
             {
-                "id": "175309",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2020-10-23T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000098",
+                        "dceId": "175309",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000098&isBulk=False&isDms=False",
                         "datePublished": "2020-10-23T17:20:04",
                     }
                 ],
+                "decision": "toekenning",
+                "productSpecific": "uitkering",
             },
             {
-                "id": "175364",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2020-10-27T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000099",
+                        "dceId": "175364",
                         "title": "Besluit afwijzing",
                         "url": "/wpi/document?id=660000000000099&isBulk=False&isDms=False",
                         "datePublished": "2020-10-27T17:20:04",
@@ -783,7 +798,7 @@ example_result = [
     },
     {
         "id": "e9fabddf1d6e9386622faeba4c945c48",
-        "title": "Tozo 4 (aangevraagd vanaf 1 april 2021)",
+        "title": "tozo 4",
         "dateStart": "2021-04-02T18:53:05",
         "datePublished": "2021-04-08T18:53:05",
         "dateEnd": "2021-04-08T18:53:05",
@@ -791,12 +806,13 @@ example_result = [
         "status": "besluit",
         "steps": [
             {
-                "id": "800",
-                "title": "aanvraag",
+                "id": "aanvraag",
+                "title": "Aanvraag",
                 "datePublished": "2021-04-02T18:53:05",
                 "documents": [
                     {
                         "id": "4400000022",
+                        "dceId": "800",
                         "title": "Ontvangst- bevestiging Aanvraag\n2021-04-02T18:53:05",
                         "url": "/wpi/document?id=4400000022&isBulk=True&isDms=False",
                         "datePublished": "2021-04-02T18:53:05",
@@ -804,40 +820,43 @@ example_result = [
                 ],
             },
             {
-                "id": "175677",
-                "title": "voorschot",
+                "id": "voorschot",
+                "title": "Voorschot",
                 "datePublished": "2021-04-04T18:53:05",
                 "documents": [
                     {
                         "id": "660000000000471",
+                        "dceId": "175677",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000471&isBulk=False&isDms=False",
                         "datePublished": "2021-04-04T18:53:05",
                     }
                 ],
-                "decision": "toekenning",
             },
             {
-                "id": "175654",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2021-04-06T18:53:05",
                 "documents": [
                     {
                         "id": "660000000000472",
+                        "dceId": "175654",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000472&isBulk=False&isDms=False",
                         "datePublished": "2021-04-06T18:53:05",
                     }
                 ],
                 "decision": "toekenning",
+                "productSpecific": "uitkering",
             },
             {
-                "id": "175651",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2021-04-08T18:53:05",
                 "documents": [
                     {
                         "id": "660000000000473",
+                        "dceId": "175651",
                         "title": "Besluit afwijzing",
                         "url": "/wpi/document?id=660000000000473&isBulk=False&isDms=False",
                         "datePublished": "2021-04-08T18:53:05",
@@ -849,7 +868,7 @@ example_result = [
     },
     {
         "id": "bb17f3779128ae1745ad022fe6a6c1a9",
-        "title": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
+        "title": "tozo 5",
         "dateStart": "2021-07-02T18:53:05",
         "datePublished": "2021-07-08T18:53:05",
         "dateEnd": "2021-07-08T18:53:05",
@@ -857,12 +876,13 @@ example_result = [
         "status": "besluit",
         "steps": [
             {
-                "id": "837",
-                "title": "aanvraag",
+                "id": "aanvraag",
+                "title": "Aanvraag",
                 "datePublished": "2021-07-02T18:53:05",
                 "documents": [
                     {
                         "id": "4400000123",
+                        "dceId": "837",
                         "title": "Ontvangst- bevestiging Aanvraag\n2021-07-02T18:53:05",
                         "url": "/wpi/document?id=4400000123&isBulk=True&isDms=False",
                         "datePublished": "2021-07-02T18:53:05",
@@ -870,12 +890,13 @@ example_result = [
                 ],
             },
             {
-                "id": "176171",
-                "title": "voorschot",
+                "id": "voorschot",
+                "title": "Voorschot",
                 "datePublished": "2021-07-04T18:53:05",
                 "documents": [
                     {
                         "id": "660000000000053",
+                        "dceId": "176171",
                         "title": "Brief betaling voorschot",
                         "url": "/wpi/document?id=660000000000053&isBulk=False&isDms=False",
                         "datePublished": "2021-07-04T18:53:05",
@@ -883,26 +904,29 @@ example_result = [
                 ],
             },
             {
-                "id": "176167",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2021-07-06T18:53:05",
                 "documents": [
                     {
                         "id": "660000000000054",
+                        "dceId": "176167",
                         "title": "Besluit toekenning uitkering",
                         "url": "/wpi/document?id=660000000000054&isBulk=False&isDms=False",
                         "datePublished": "2021-07-06T18:53:05",
                     }
                 ],
                 "decision": "toekenning",
+                "productSpecific": "uitkering",
             },
             {
-                "id": "176165",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2021-07-08T18:53:05",
                 "documents": [
                     {
                         "id": "660000000000055",
+                        "dceId": "176165",
                         "title": "Besluit afwijzing",
                         "url": "/wpi/document?id=660000000000055&isBulk=False&isDms=False",
                         "datePublished": "2021-07-08T18:53:05",
@@ -914,99 +938,110 @@ example_result = [
     },
     {
         "id": "d9c09acc579d10266ca390c0ea08c8ad",
-        "title": "TONK",
+        "title": "tonk",
         "dateStart": "2021-01-05T17:20:04",
         "datePublished": "2021-08-12T17:20:04",
-        "dateEnd": "2021-08-12T17:20:04",
-        "decision": "afwijzing",
-        "status": "besluit",
+        "dateEnd": "2021-08-10T17:20:04",
+        "decision": "mogelijkeVerlenging",
+        "status": "briefWeigering",
         "steps": [
             {
-                "id": "802",
-                "title": "aanvraag",
+                "id": "aanvraag",
+                "title": "Aanvraag",
                 "datePublished": "2021-01-05T17:20:04",
                 "documents": [
                     {
                         "id": "4400000095",
+                        "dceId": "802",
                         "title": "Aanvraag TONK\n2021-01-05T17:20:04",
                         "url": "/wpi/document?id=4400000095&isBulk=True&isDms=False",
                         "datePublished": "2021-01-05T17:20:04",
                     }
                 ],
+                "productSpecific": "uitkering",
             },
             {
-                "id": "176137",
-                "title": "herstelTermijn",
+                "id": "herstelTermijn",
+                "title": "Informatie nodig",
                 "datePublished": "2021-01-06T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000500",
+                        "dceId": "176137",
                         "title": "Brief meer informatie",
                         "url": "/wpi/document?id=660000000000500&isBulk=False&isDms=False",
                         "datePublished": "2021-01-06T17:20:04",
                     }
                 ],
+                "productSpecific": "uitkering",
             },
             {
-                "id": "176146",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2021-01-07T17:20:04",
                 "documents": [
                     {
                         "id": "660000000000501",
+                        "dceId": "176146",
                         "title": "Besluit buiten behandeling",
                         "url": "/wpi/document?id=660000000000501&isBulk=False&isDms=False",
                         "datePublished": "2021-01-07T17:20:04",
                     }
                 ],
-                "decision": "buitenbehandeling",
+                "decision": "buitenBehandeling",
+                "productSpecific": "uitkering",
             },
             {
-                "id": "843",
-                "title": "correctiemail",
+                "id": "correctiemail",
+                "title": "Mail",
                 "datePublished": "2021-08-08T17:20:04",
                 "documents": [
                     {
                         "id": "4400000132",
+                        "dceId": "843",
                         "title": "Mail verkeerde TONK-brief",
                         "url": "/wpi/document?id=4400000132&isBulk=True&isDms=False",
                         "datePublished": "2021-08-08T17:20:04",
                     }
                 ],
+                "productSpecific": "uitkering",
             },
             {
-                "id": "176182",
-                "title": "besluit",
+                "id": "besluit",
+                "title": "Besluit",
                 "datePublished": "2021-08-10T17:20:04",
                 "documents": [
                     {
                         "id": "660000000010184",
+                        "dceId": "176182",
                         "title": "Besluit over verlenging",
                         "url": "/wpi/document?id=660000000010184&isBulk=False&isDms=False",
                         "datePublished": "2021-08-10T17:20:04",
                     }
                 ],
-                "decision": "toekenning",
+                "decision": "mogelijkeVerlenging",
+                "productSpecific": "uitkering",
             },
             {
-                "id": "1726182",
-                "title": "besluit",
+                "id": "briefWeigering",
+                "title": "Brief",
                 "datePublished": "2021-08-12T17:20:04",
                 "documents": [
                     {
                         "id": "660000000010185",
+                        "dceId": "1726182",
                         "title": "Brief bevestiging weigering",
                         "url": "/wpi/document?id=660000000010185&isBulk=False&isDms=False",
                         "datePublished": "2021-08-12T17:20:04",
                     }
                 ],
-                "decision": "afwijzing",
+                "productSpecific": "uitkering",
             },
         ],
     },
     {
         "id": "6cbb95f98cb9d1cf2835781e3923f857",
-        "title": "Bbz",
+        "title": "bbz",
         "dateStart": "2021-09-01T17:20:04",
         "datePublished": "2021-09-15T17:20:04",
         "dateEnd": None,
@@ -1014,18 +1049,20 @@ example_result = [
         "status": "aanvraag",
         "steps": [
             {
-                "id": "844",
-                "title": "aanvraag",
+                "id": "aanvraag",
+                "title": "Aanvraag",
                 "datePublished": "2021-09-01T17:20:04",
                 "documents": [
                     {
                         "id": "4400000146",
+                        "dceId": "844",
                         "title": "Aanvraag Bbz\n2021-09-01T17:20:04",
                         "url": "/wpi/document?id=4400000146&isBulk=True&isDms=False",
                         "datePublished": "2021-09-01T17:20:04",
                     },
                     {
                         "id": "4400000147",
+                        "dceId": "844",
                         "title": "Aanvraag Bbz\n2021-09-15T17:20:04",
                         "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
                         "datePublished": "2021-09-15T17:20:04",
@@ -1033,12 +1070,13 @@ example_result = [
                 ],
             },
             {
-                "id": "175855",
-                "title": "beslistermijn",
+                "id": "beslisTermijn",
+                "title": "Tijd nodig",
                 "datePublished": "2021-09-02T17:20:04",
                 "documents": [
                     {
                         "id": "660000000010211",
+                        "dceId": "175855",
                         "title": "Brief verlenging beslistermijn",
                         "url": "/wpi/document?id=660000000010211&isBulk=False&isDms=False",
                         "datePublished": "2021-09-02T17:20:04",
@@ -1049,7 +1087,7 @@ example_result = [
     },
     {
         "id": "8b6ea52ea4d163770993a16c1d66aec4",
-        "title": "Ioaz",
+        "title": "ioaz",
         "dateStart": "2021-09-16T17:20:04",
         "datePublished": "2021-09-16T17:20:04",
         "dateEnd": None,
@@ -1057,12 +1095,13 @@ example_result = [
         "status": "herstelTermijn",
         "steps": [
             {
-                "id": "176322",
-                "title": "herstelTermijn",
+                "id": "herstelTermijn",
+                "title": "Informatie nodig",
                 "datePublished": "2021-09-16T17:20:04",
                 "documents": [
                     {
                         "id": "660000000010212",
+                        "dceId": "176322",
                         "title": "Brief verzoek om meer informatie",
                         "url": "/wpi/document?id=660000000010212&isBulk=False&isDms=False",
                         "datePublished": "2021-09-16T17:20:04",

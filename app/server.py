@@ -47,10 +47,19 @@ def status_health():
     return success_response_json("OK")
 
 
-@application.route(f"{API_BASE_PATH}/aanvragen", methods=["GET"])
+@application.route(f"{API_BASE_PATH}/uitkering-en-stadspas/aanvragen", methods=["GET"])
 @verify_tma_user
 @validate_openapi
 def aanvragen():
+    bsn = get_bsn_from_request()
+    aanvragen = get_aanvragen(bsn)
+    return success_response_json(aanvragen)
+
+
+@application.route(f"{API_BASE_PATH}/e-aanvragen", methods=["GET"])
+@verify_tma_user
+@validate_openapi
+def e_aanvragen():
     bsn = get_bsn_from_request()
     aanvragen = get_aanvragen(bsn)
     return success_response_json(aanvragen)
@@ -79,17 +88,17 @@ def document():
 
 
 @application.route(
-    f"{API_BASE_PATH}/bijstanduitkering/specificaties-en-jaaropgaven", methods=["GET"]
+    f"{API_BASE_PATH}/uitkering/specificaties-en-jaaropgaven", methods=["GET"]
 )
 @verify_tma_user
 @validate_openapi
 def specificaties_en_jaaropgaven():
     bsn = get_bsn_from_request()
     jaaropgaven = get_jaaropgaven(bsn)
-    uitkeringspecificaties = get_uitkeringsspecificaties(bsn)
+    uitkeringsspecificaties = get_uitkeringsspecificaties(bsn)
     response_content = {
         "jaaropgaven": jaaropgaven,
-        "uitkeringsspecificaties": uitkeringspecificaties,
+        "uitkeringsspecificaties": uitkeringsspecificaties,
     }
     return success_response_json(response_content)
 

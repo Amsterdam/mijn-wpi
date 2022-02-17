@@ -21,7 +21,7 @@ class WPITestServer(WpiApiTestApp):
     def test_aanvragen(self, get_aanvragen_mock):
         get_aanvragen_mock.return_value = ["Aanvragen"]
 
-        response = self.get_secure("/wpi/aanvragen")
+        response = self.get_secure("/wpi/uitkering-en-stadspas/aanvragen")
         response_json = response.get_json()
 
         get_aanvragen_mock.assert_called_with(self.TEST_BSN)
@@ -55,9 +55,7 @@ class WPITestServer(WpiApiTestApp):
         get_specificaties_mock.return_value = ["Uitkeringsspecificaties"]
         get_jaaropgaven_mock.return_value = ["Jaaropgaven"]
 
-        response = self.get_secure(
-            "/wpi/bijstanduitkering/specificaties-en-jaaropgaven"
-        )
+        response = self.get_secure("/wpi/uitkering/specificaties-en-jaaropgaven")
 
         response_json = response.get_json()
 

@@ -4,7 +4,6 @@ import logging
 from app.e_aanvraag_config import (
     E_AANVRAAG_DOCUMENT_CONFIG,
     E_AANVRAAG_PRODUCT_NAMES,
-    E_AANVRAAG_PRODUCT_TITLES,
     E_AANVRAAG_STEP_ID_TRANSLATIONS,
 )
 from app.focus_service_aanvragen import get_client, get_document_url
@@ -15,7 +14,7 @@ def get_step_title(step_id):
 
 
 def get_document_config(document_code_id):
-    code_id = str(document_code_id)
+    code_id = str(document_code_id).replace(" ", "")
     document_config = E_AANVRAAG_DOCUMENT_CONFIG.get(code_id)
 
     if not document_config:
@@ -36,17 +35,19 @@ def create_e_aanvraag(product_name, steps):
 
     first_step = steps_sorted[0]  # aanvraag step
     last_step = steps_sorted[-1]  # any step
+    decision_steps = list(filter(lambda s: s["id"] == "besluit", steps_sorted))
+    decision_step = decision_steps[-1] if decision_steps else None
 
     for step in steps_sorted:
         step["datePublished"] = step["datePublished"].isoformat()
 
-    date_end = last_step["datePublished"] if last_step["title"] in ["besluit"] else None
+    date_end = decision_step["datePublished"] if decision_step else None
 
     aanvraag_step = None
     other_steps = []
 
     for step in steps_sorted:
-        if step["title"] == "aanvraag":
+        if step["id"] == "aanvraag":
             if not aanvraag_step:
                 aanvraag_step = step
             else:
@@ -61,12 +62,12 @@ def create_e_aanvraag(product_name, steps):
 
     product = {
         "id": id,
-        "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
+        "title": product_name,
         "dateStart": first_step["datePublished"],
         "datePublished": last_step["datePublished"],
         "dateEnd": date_end,
-        "decision": last_step["decision"] if date_end else None,
-        "status": last_step["title"],
+        "decision": decision_step["decision"] if decision_step else None,
+        "status": last_step["id"],
         "steps": steps,
     }
 
@@ -83,16 +84,18 @@ def get_e_aanvraag_document(e_aanvraag, document_config):
 
     return {
         "id": str(e_aanvraag["documentId"]),
+        "dceId": e_aanvraag["documentCodes"]["documentCodeId"],
         "title": title,
         "url": get_document_url({**e_aanvraag, "id": e_aanvraag["documentId"]}),
         "datePublished": date_published,
     }
 
 
-def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
+def get_e_aanvraag_step(e_aanvraag, document_config):
+    step_id = document_config["step_id"]
     step = {
-        "id": document_config["step_id"],
-        "title": get_step_title(document_config["step_id"]),
+        "id": step_id,
+        "title": get_step_title(step_id),
         "datePublished": e_aanvraag["datumDocument"],
         "documents": [get_e_aanvraag_document(e_aanvraag, document_config)],
     }
@@ -100,6 +103,10 @@ def get_e_aanvraag_step(e_aanvraag, document_code_id, document_config):
     decision = document_config.get("decision")
     if decision:
         step["decision"] = decision
+
+    product_specific = document_config.get("product_specific")
+    if product_specific:
+        step["productSpecific"] = product_specific
 
     return step
 
@@ -124,7 +131,7 @@ def get_e_aanvragen(bsn):
             logging.error(f"Unknown E_Aanvraag Document encountered {document_code_id}")
             continue
 
-        step = get_e_aanvraag_step(e_aanvraag, document_code_id, document_config)
+        step = get_e_aanvraag_step(e_aanvraag, document_config)
 
         if step:
             steps_collection[document_config["product"]].append(step)

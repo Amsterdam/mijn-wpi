@@ -12,19 +12,10 @@ E_AANVRAAG_PRODUCT_NAMES = [
     "ioaz",
 ]
 
-E_AANVRAAG_PRODUCT_TITLES = {
-    "tozo 1": "Tozo 1 (aangevraagd voor 1 juni 2020)",
-    "tozo 2": "Tozo 2 (aangevraagd vanaf 1 juni 2020)",
-    "tozo 3": "Tozo 3 (aangevraagd vanaf 1 oktober 2020)",
-    "tozo 4": "Tozo 4 (aangevraagd vanaf 1 april 2021)",
-    "tozo 5": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
-    "tonk": "TONK",
-    "bbz": "Bbz",
-    "ioaz": "Ioaz",
-}
-
 E_AANVRAAG_STEP_ID_TRANSLATIONS = {
-    **FOCUS_STEP_ID_TRANSLATIONS,
+    "aanvraag": "Aanvraag",
+    "besluit": "Besluit",
+    "herstelTermijn": "Informatie nodig",
     # Tozo 1-5 / Bbz
     "voorschot": "Voorschot",
     "terugvorderingsbesluit": "Terugvorderings- besluit",
@@ -120,15 +111,13 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "omschrijving": "Tozo Intrekken met terugvordering voorschot",
         "document_title": "Besluit intrekking met terugbetaling",
         "product": "Tozo 1",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
     },
     "175331": {
         "omschrijving": "Tozo Intrekken",
         "document_title": "Brief intrekking aanvraag",
         "product": "Tozo 1",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
     },
     "175334": {
         "omschrijving": "Tozo Vrije beschikking",
@@ -184,8 +173,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "omschrijving": "Tozo2 Intrekken",
         "document_title": "Brief intrekking aanvraag",
         "product": "Tozo 2",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
     },
     "175342": {
         "omschrijving": "Tozo2 Buiten behandeling laten",
@@ -205,8 +193,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "omschrijving": "Tozo2 Intrekken met terugvordering voorschot",
         "document_title": "Besluit intrekking met terugbetaling",
         "product": "Tozo 2",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
     },
     "175345": {
         "omschrijving": "Tozo2 Toekennen voorschot via batch",
@@ -245,16 +232,14 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     "175650": {
         "omschrijving": "Tozo 2 Terugvorderingsbesluit",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Tozo 2",
         "product_specific": "uitkering",
     },
     "175645": {
         "omschrijving": "Tozo 2 Terugvorderingsbesluit",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Tozo 2",
         "product_specific": "uitkering",
     },
@@ -309,8 +294,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     },
     "175367": {
         "omschrijving": "Tozo3 Intrekken met terugvordering voorschot",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
         "product": "Tozo 3",
         "document_title": "Besluit intrekking met terugbetaling",
     },
@@ -331,8 +315,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     },
     "175370": {
         "omschrijving": "Tozo3 Intrekken",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
         "product": "Tozo 3",
         "document_title": "Brief intrekking aanvraag",
     },
@@ -359,16 +342,14 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     "1725650": {
         "omschrijving": "Tozo 3 Terugvorderingsbesluit",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Tozo 3",
         "product_specific": "uitkering",
     },
     "1725645": {
         "omschrijving": "Tozo 3 Terugvorderingsbesluit",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Tozo 3",
         "product_specific": "uitkering",
     },
@@ -418,8 +399,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     "175670": {
         "omschrijving": "Tozo 4 Intrekken",
         "document_title": "Brief intrekking aanvraag",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
         "product": "Tozo 4",
     },
     "175652": {
@@ -459,16 +439,14 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     "1735650": {
         "omschrijving": "Tozo 4 Terugvorderingsbesluit",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Tozo 4",
         "product_specific": "uitkering",
     },
     "1735645": {
         "omschrijving": "Tozo 4 Terugvorderingsbesluit",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Tozo 4",
         "product_specific": "uitkering",
     },
@@ -518,8 +496,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     "176163": {
         "omschrijving": "Tozo5 Intrekken",
         "document_title": "Brief intrekking aanvraag",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
         "product": "Tozo 5",
     },
     "176166": {
@@ -553,16 +530,14 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     "1745650": {
         "omschrijving": "Tozo5 Terugvorderen na inkomstenopgave",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product_specific": "uitkering",
         "product": "Tozo 5",
     },
     "1745645": {
         "omschrijving": "Tozo5 Terugvorderen na inkomstenopgave (batch)",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Tozo 5",
         "product_specific": "uitkering",
     },
@@ -591,8 +566,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "omschrijving": "TONK intrekken",
         "document_title": "Brief intrekking TONK aanvraag",
         "product": "TONK",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
         "product_specific": "uitkering",
     },
     "176149": {
@@ -649,7 +623,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "product": "TONK",
         "product_specific": "uitkering",
         "step_id": "besluit",
-        "decision": "verlenging",
+        "decision": "mogelijkeVerlenging",
     },
     "1726182": {
         "omschrijving": "TONK Bevestigen weigering verlenging",
@@ -711,8 +685,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "omschrijving": "Transitie Bbz Intrekken",
         "document_title": "Brief intrekken Bbz aanvraag",
         "product": "Bbz",
-        "step_id": "besluit",
-        "decision": "intrekking",
+        "step_id": "intrekking",
     },
     "176353": {
         "omschrijving": "Transitie Bbz buiten behandeling stellen",
@@ -806,16 +779,14 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     "176363": {
         "omschrijving": "Transitie Bbz Terugvordering via batch",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Bbz",
         "product_specific": "uitkering",
     },
     "176364": {
         "omschrijving": "Transitie Bbz Terugvordering",
         "document_title": "Besluit terugvordering",
-        "step_id": "besluit",
-        "decision": "terugvordering",
+        "step_id": "terugvorderingsbesluit",
         "product": "Bbz",
         "product_specific": "uitkering",
     },
