@@ -1,12 +1,12 @@
-import json
-from app.config import FOCUS_WSDL
+import sys
 from app.focus_service_aanvragen import get_client
 
 import operator
 
-from app.focus_service_stadspas_admin import get_stadspas_admin_number
 
-bsn = ""
+bsn = None
+if len(sys.argv) >= 2:
+    bsn = sys.argv[1]
 
 client = get_client()
 
@@ -39,12 +39,11 @@ isDms = False
 # print(json.dumps(focus_stadspas, indent=4))
 # print(focus_stadspas)
 
-# e_aanvragen = client.service.getEAanvraagTOZO(bsn=bsn)
-# print(json.dumps(e_aanvragen, indent=4))
-# print(e_aanvragen)
+e_aanvragen = client.service.getEAanvraagTOZO(bsn=bsn)
+print(e_aanvragen)
 
-# specs = client.service.getUitkeringspecificaties(bsn)
-# print(specs)
+specs = client.service.getUitkeringspecificaties(bsn)
+print(specs)
 
 jaaropgaven = client.service.getJaaropgaven(bsn)
 print(jaaropgaven)

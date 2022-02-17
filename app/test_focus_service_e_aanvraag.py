@@ -168,12 +168,12 @@ class FocusSerivceEAanvraag(TestCase):
     @patch("app.focus_service_e_aanvraag.get_client")
     def test_get_e_aanvragen(self, get_client_mock, log_error_mock):
         mock_client = MockClient(
-            response=example_soap_response, name="getEAanvraagTozo"
+            response=example_soap_response, name="getEAanvraagTOZO"
         )
         get_client_mock.return_value = mock_client
         bsn = "123xx123"
         result = get_e_aanvragen(bsn)
-        mock_client.service.getEAanvraagTozo.assert_called_with(bsn)
+        mock_client.service.getEAanvraagTOZO.assert_called_with(bsn)
         log_error_mock.assert_has_calls(
             [
                 call("Unknown E_Aanvraag Document encountered 176371"),

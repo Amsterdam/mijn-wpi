@@ -9,13 +9,13 @@ def get_jaaropgaven(bsn):
 
     try:
         jaaropgaven_source = get_client().service.getJaaropgaven(bsn)
-        jaaropgaven_source = jaaropgaven_source.get("document", [])
+        jaaropgaven_source = jaaropgaven_source["document"]
     except Exception as error:
         logging.error(error)
         return jaaropgaven
 
     for jaaropgave_source in jaaropgaven_source:
-        date_published = jaaropgave_source.get("einddatumDocument")
+        date_published = jaaropgave_source["einddatumDocument"]
         year = date_published.year
         title = jaaropgave_source["documentCode"]["omschrijving"]
 
@@ -23,7 +23,7 @@ def get_jaaropgaven(bsn):
             "datePublished": date_published.isoformat(),
             "id": jaaropgave_source["dcteId"],
             "title": f"{title} {year}",
-            "type": jaaropgave_source.get("variant", ""),
+            "type": jaaropgave_source["variant"],
             "url": "",
         }
         jaaropgave["url"] = get_document_url(
@@ -40,13 +40,13 @@ def get_uitkeringsspecificaties(bsn):
 
     try:
         specificaties_source = get_client().service.getUitkeringspecificaties(bsn)
-        specificaties_source = specificaties_source.get("document", [])
+        specificaties_source = specificaties_source["document"]
     except Exception as error:
         logging.error(error)
         return specificaties
 
     for specificatie_source in specificaties_source:
-        date_published = specificatie_source.get("einddatumDocument")
+        date_published = specificatie_source["einddatumDocument"]
         year = date_published.year
         month = date_published.month
         title = specificatie_source["documentCode"]["omschrijving"]
@@ -55,7 +55,7 @@ def get_uitkeringsspecificaties(bsn):
             "datePublished": date_published.isoformat(),
             "id": specificatie_source["dcteId"],
             "title": f"{title} {month:02}-{year}",
-            "type": specificatie_source.get("variant", ""),
+            "type": specificatie_source["variant"],
             "url": "",
         }
         uitkeringsspecificatie["url"] = get_document_url(
