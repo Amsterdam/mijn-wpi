@@ -78,8 +78,8 @@ class TestSpecificatieService(TestCase):
         mock_client.service.getUitkeringspecificaties.assert_called_with(bsn)
 
         self.assertEqual(len(result), 2)
-        self.assertEqual(result[0]["title"], "test1 01-2020")
-        self.assertEqual(result[1]["title"], "test2 02-2020")
+        self.assertEqual(result[0]["title"], "test1 Januari-2020")
+        self.assertEqual(result[1]["title"], "test2 Februari-2020")
 
     @patch("app.focus_service_specificaties.logging.error")
     @patch("app.focus_service_specificaties.get_client")

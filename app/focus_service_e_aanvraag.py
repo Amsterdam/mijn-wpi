@@ -82,7 +82,8 @@ def get_e_aanvraag_document(e_aanvraag, document_config):
     date_published = e_aanvraag["datumDocument"].isoformat()
 
     if document_config["step_id"] == "aanvraag":
-        title = f"{title}\n{date_published}"
+        display_date_published = e_aanvraag["datumDocument"].strftime("%d %B %Y %H:%M")
+        title = f"{title}\n{display_date_published}"  # dd MMMM yyyy
 
     return {
         "id": str(e_aanvraag["documentId"]),

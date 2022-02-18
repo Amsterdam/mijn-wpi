@@ -48,13 +48,13 @@ def get_uitkeringsspecificaties(bsn):
     for specificatie_source in specificaties_source:
         date_published = specificatie_source["einddatumDocument"]
         year = date_published.year
-        month = date_published.month
+        month = date_published.strftime("%B")
         title = specificatie_source["documentCode"]["omschrijving"]
 
         uitkeringsspecificatie = {
             "datePublished": date_published.isoformat(),
             "id": specificatie_source["dcteId"],
-            "title": f"{title} {month:02}-{year}",
+            "title": f"{title} {month.title()}-{year}",
             "variant": specificatie_source["variant"],
             "url": "",
         }

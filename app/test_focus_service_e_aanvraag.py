@@ -172,6 +172,7 @@ class FocusServiceEAanvraag(TestCase):
         get_client_mock.return_value = mock_client
         bsn = "123xx123"
         result = get_e_aanvragen(bsn)
+        # print(json.dumps(result, indent=4))
 
         mock_client.service.getEAanvraagTOZO.assert_called_with(bsn)
         log_error_mock.assert_has_calls(
@@ -605,21 +606,21 @@ example_result = [
                     {
                         "id": "4400000027",
                         "dcteId": "770",
-                        "title": "Ontvangst- bevestiging Aanvraag\n2020-03-27T17:20:04",
+                        "title": "Aanvraag Tozo 1\n27 maart 2020 17:20",
                         "url": "/wpi/document?id=4400000027&isBulk=True&isDms=False",
                         "datePublished": "2020-03-27T17:20:04",
                     },
                     {
                         "id": "4400000034",
                         "dcteId": "770",
-                        "title": "Ontvangst- bevestiging Aanvraag\n2020-04-01T17:20:04",
+                        "title": "Aanvraag Tozo 1\n01 april 2020 17:20",
                         "url": "/wpi/document?id=4400000034&isBulk=True&isDms=False",
                         "datePublished": "2020-04-01T17:20:04",
                     },
                     {
                         "id": "4400000033",
                         "dcteId": "770",
-                        "title": "Ontvangst- bevestiging Aanvraag\n2020-04-02T17:20:04",
+                        "title": "Aanvraag Tozo 1\n02 april 2020 17:20",
                         "url": "/wpi/document?id=4400000033&isBulk=True&isDms=False",
                         "datePublished": "2020-04-02T17:20:04",
                     },
@@ -675,7 +676,7 @@ example_result = [
                     {
                         "id": "4400000071",
                         "dcteId": "777",
-                        "title": "Ontvangst- bevestiging Aanvraag\n2020-06-19T17:20:04",
+                        "title": "Aanvraag Tozo 2\n19 juni 2020 17:20",
                         "url": "/wpi/document?id=4400000071&isBulk=True&isDms=False",
                         "datePublished": "2020-06-19T17:20:04",
                     }
@@ -746,7 +747,7 @@ example_result = [
                     {
                         "id": "4400000053",
                         "dcteId": "785",
-                        "title": "Ontvangst- bevestiging Aanvraag\n2020-10-14T17:20:04",
+                        "title": "Aanvraag Tozo 3\n14 oktober 2020 17:20",
                         "url": "/wpi/document?id=4400000053&isBulk=True&isDms=False",
                         "datePublished": "2020-10-14T17:20:04",
                     }
@@ -817,7 +818,7 @@ example_result = [
                     {
                         "id": "4400000022",
                         "dcteId": "800",
-                        "title": "Ontvangst- bevestiging Aanvraag\n2021-04-02T18:53:05",
+                        "title": "Aanvraag Tozo 4\n02 april 2021 18:53",
                         "url": "/wpi/document?id=4400000022&isBulk=True&isDms=False",
                         "datePublished": "2021-04-02T18:53:05",
                     }
@@ -888,7 +889,7 @@ example_result = [
                     {
                         "id": "4400000123",
                         "dcteId": "837",
-                        "title": "Ontvangst- bevestiging Aanvraag\n2021-07-02T18:53:05",
+                        "title": "Aanvraag Tozo 5\n02 juli 2021 18:53",
                         "url": "/wpi/document?id=4400000123&isBulk=True&isDms=False",
                         "datePublished": "2021-07-02T18:53:05",
                     }
@@ -959,7 +960,7 @@ example_result = [
                     {
                         "id": "4400000095",
                         "dcteId": "802",
-                        "title": "Aanvraag TONK\n2021-01-05T17:20:04",
+                        "title": "Aanvraag TONK\n05 januari 2021 17:20",
                         "url": "/wpi/document?id=4400000095&isBulk=True&isDms=False",
                         "datePublished": "2021-01-05T17:20:04",
                     }
@@ -1063,14 +1064,14 @@ example_result = [
                     {
                         "id": "4400000146",
                         "dcteId": "844",
-                        "title": "Aanvraag Bbz\n2021-09-01T17:20:04",
+                        "title": "Aanvraag Bbz\n01 september 2021 17:20",
                         "url": "/wpi/document?id=4400000146&isBulk=True&isDms=False",
                         "datePublished": "2021-09-01T17:20:04",
                     },
                     {
                         "id": "4400000147",
                         "dcteId": "844",
-                        "title": "Aanvraag Bbz\n2021-09-15T17:20:04",
+                        "title": "Aanvraag Bbz\n15 september 2021 17:20",
                         "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
                         "datePublished": "2021-09-15T17:20:04",
                     },

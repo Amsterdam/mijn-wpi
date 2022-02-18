@@ -125,7 +125,7 @@ class TestFocusBijstandAanvraag(TestCase):
             },
             {
                 "id": "besluit",
-                "status": "beslissing",
+                "status": "Besluit",
                 "documents": [],
                 "datePublished": "2017-08-21T15:05:52",
                 "decision": "afwijzing",
@@ -229,7 +229,7 @@ class TestFocusStadspasAanvraag(TestCase):
             },
             {
                 "id": "besluit",
-                "status": "beslissing",
+                "status": "Besluit",
                 "documents": [],
                 "datePublished": "2019-06-07T15:05:52",
                 "decision": "toekenning",

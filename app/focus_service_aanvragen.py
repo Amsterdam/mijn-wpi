@@ -172,6 +172,9 @@ def transform_step_besluit(step, product_source):
 
 
 def transform_step(step_id, step, product_source):
+    if step_id == "beslissing":
+        step_id = "besluit"
+
     step_transformed = {
         "id": step_id,
         "status": get_step_status(
@@ -191,7 +194,7 @@ def transform_step(step_id, step, product_source):
             step_transformed, product_source
         )
 
-    if step_id == "beslissing":
+    if step_id == "besluit":
         step_transformed = transform_step_besluit(step_transformed, product_source)
 
     return step_transformed

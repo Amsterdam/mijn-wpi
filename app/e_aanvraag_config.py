@@ -40,12 +40,14 @@ E_AANVRAAG_STEP_ID = {
     "intrekking": "intrekking",
     "terugvorderingsbesluit": "terugvorderingsbesluit",
     "voorschot": "voorschot",
+    "intrekking": "intrekking",
 }
 
 E_AANVRAAG_STEP_ID_TRANSLATIONS = {
     E_AANVRAAG_STEP_ID["aanvraag"]: "Aanvraag",
     E_AANVRAAG_STEP_ID["besluit"]: "Besluit",
     E_AANVRAAG_STEP_ID["herstelTermijn"]: "Informatie nodig",
+    E_AANVRAAG_STEP_ID["intrekking"]: "Brief",
     # Tozo 1-5 / Bbz
     E_AANVRAAG_STEP_ID["voorschot"]: "Voorschot",
     E_AANVRAAG_STEP_ID["terugvorderingsbesluit"]: "Terugvorderings- besluit",
@@ -85,13 +87,13 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     # Tozo 1
     "756": {
         "omschrijving": "Verkorte Aanvraag BBZ",
-        "document_title": "Ontvangst- bevestiging Aanvraag",
+        "document_title": "Aanvraag Tozo 1",
         "about": E_AANVRAAG_ABOUT["Tozo 1"],
         "step_id": E_AANVRAAG_STEP_ID["aanvraag"],
     },
     "770": {
         "omschrijving": "Tegemoetkoming Ondernemers en Zelfstandigen",
-        "document_title": "Ontvangst- bevestiging Aanvraag",
+        "document_title": "Aanvraag Tozo 1",
         "about": E_AANVRAAG_ABOUT["Tozo 1"],
         "step_id": E_AANVRAAG_STEP_ID["aanvraag"],
     },
@@ -187,7 +189,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     # TOZO 2
     "777": {
         "omschrijving": "TOZO 2 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
-        "document_title": "Ontvangst- bevestiging Aanvraag",
+        "document_title": "Aanvraag Tozo 2",
         "about": E_AANVRAAG_ABOUT["Tozo 2"],
         "step_id": E_AANVRAAG_STEP_ID["aanvraag"],
     },
@@ -297,7 +299,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     # TOZO 3
     "785": {
         "omschrijving": "TOZO 3 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
-        "document_title": "Ontvangst- bevestiging Aanvraag",
+        "document_title": "Aanvraag Tozo 3",
         "about": E_AANVRAAG_ABOUT["Tozo 3"],
         "step_id": E_AANVRAAG_STEP_ID["aanvraag"],
     },
@@ -407,7 +409,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     # TOZO 4
     "800": {
         "omschrijving": "Tozo 4 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
-        "document_title": "Ontvangst- bevestiging Aanvraag",
+        "document_title": "Aanvraag Tozo 4",
         "step_id": E_AANVRAAG_STEP_ID["aanvraag"],
         "about": E_AANVRAAG_ABOUT["Tozo 4"],
     },
@@ -504,7 +506,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     # Tozo 5
     "837": {
         "omschrijving": "Tozo 5 (vervolgregeling tegemoetkoming Ondernemers en Zelfstandigen)",
-        "document_title": "Ontvangst- bevestiging Aanvraag",
+        "document_title": "Aanvraag Tozo 5",
         "step_id": E_AANVRAAG_STEP_ID["aanvraag"],
         "about": E_AANVRAAG_ABOUT["Tozo 5"],
     },
@@ -840,7 +842,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "about_specific": E_ABOUT_SPECIFIC_UITKERING,
     },
-    "176364": {
+    "176365": {
         "omschrijving": "Transitie Bbz Terugvordering",
         "document_title": "Besluit terugvordering",
         "step_id": E_AANVRAAG_STEP_ID["terugvorderingsbesluit"],

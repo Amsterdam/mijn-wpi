@@ -9,6 +9,10 @@ from tma_saml.exceptions import (
     SamlVerificationException,
 )
 
+import locale
+
+locale.setlocale(locale.LC_TIME, "nl_NL")
+
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 TMA_CERTIFICATE = os.getenv("TMA_CERTIFICATE")
