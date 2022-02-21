@@ -20,7 +20,7 @@ from app.focus_config import (
     FOCUS_USERNAME,
     FOCUS_WSDL,
 )
-from app.utils import default_if_none
+from app.utils import camel_case, default_if_none
 
 focus_client = None
 
@@ -224,7 +224,9 @@ def transform_product(product):
         "title": get_translation(product["naam"]),
         "about": get_translation(product["naam"]),
         "status": last_step["id"],
-        "decision": product["typeBesluit"].lower() if product["typeBesluit"] else None,
+        "decision": camel_case(product["typeBesluit"])
+        if product["typeBesluit"]
+        else None,
         # Last update
         "datePublished": last_step["datePublished"],
         # Date start of the process

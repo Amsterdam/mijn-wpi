@@ -1,6 +1,7 @@
 import os
 from datetime import date, datetime
 from functools import wraps
+from re import sub
 
 import yaml
 from cryptography.fernet import Fernet
@@ -175,3 +176,8 @@ def default_if_none(data, key, default):
     if data and key in data:
         value = data[key]
     return default if value is None else value
+
+
+def camel_case(s):
+    s = sub(r"(_|-)+", " ", s).title().replace(" ", "")
+    return "".join([s[0].lower(), s[1:]])
