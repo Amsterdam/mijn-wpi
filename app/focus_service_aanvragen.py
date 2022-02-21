@@ -165,7 +165,9 @@ def transform_step_besluit(step, product_source):
     # ATTENTION! Chaning the ID of this step
     step["id"] = "besluit"
     step["decision"] = (
-        product_source["typeBesluit"].lower() if product_source["typeBesluit"] else None
+        camel_case(product_source["typeBesluit"])
+        if product_source["typeBesluit"]
+        else None
     )
 
     return step
