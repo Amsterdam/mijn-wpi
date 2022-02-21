@@ -7,6 +7,7 @@ WORKDIR /api
 ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 RUN apt-get update
+RUN apt-get -y install locales
 RUN sed -i -e 's/# nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen && \
   locale-gen
 ENV LANG nl_NL.UTF-8
