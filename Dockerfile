@@ -7,9 +7,11 @@ WORKDIR /api
 ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 RUN apt-get update
-ENV LC_ALL="nl_NL.UTF-8"
-ENV LC_CTYPE="nl_NL.UTF-8"
-RUN dpkg-reconfigure locales
+RUN sed -i -e 's/# nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen && \
+  locale-gen
+ENV LANG nl_NL.UTF-8
+ENV LANGUAGE nl_NL:nl
+ENV LC_ALL nl_NL.UTF-8
 
 COPY requirements.txt /api
 RUN pip install --no-cache-dir -r requirements.txt
