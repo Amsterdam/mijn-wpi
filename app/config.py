@@ -11,7 +11,7 @@ from tma_saml.exceptions import (
 
 import locale
 
-locale.setlocale(locale.LC_ALL, "nl_NL")
+locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
