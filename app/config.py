@@ -32,7 +32,7 @@ TMAException = (SamlVerificationException, InvalidBSNException, SamlExpiredExcep
 ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
 
 API_REQUEST_TIMEOUT = 30
-API_BASE_PATH = "/focus" if IS_AP else "/wpi"
+API_BASE_PATH = "/wpi"
 
 # Set-up logging
 LOG_LEVEL = os.getenv("LOG_LEVEL", "ERROR").upper()
