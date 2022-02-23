@@ -8,6 +8,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from app.focus_service_aanvragen import (
     get_aanvragen,
 )
+from app.focus_service_e_aanvraag import get_e_aanvragen
 from app.focus_service_get_document import get_document
 from app.focus_service_specificaties import get_jaaropgaven, get_uitkeringsspecificaties
 from app.focus_service_stadspas_admin import get_stadspas_admin_number
@@ -61,7 +62,7 @@ def aanvragen():
 @validate_openapi
 def e_aanvragen():
     bsn = get_bsn_from_request()
-    aanvragen = get_aanvragen(bsn)
+    aanvragen = get_e_aanvragen(bsn)
     return success_response_json(aanvragen)
 
 

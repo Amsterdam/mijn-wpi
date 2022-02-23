@@ -28,6 +28,17 @@ class WPITestServer(WpiApiTestApp):
 
         self.assertEqual(response_json["content"], ["Aanvragen"])
 
+    @patch("app.server.get_e_aanvragen")
+    def test_aanvragen(self, get_e_aanvragen_mock):
+        get_e_aanvragen_mock.return_value = ["Aanvragen"]
+
+        response = self.get_secure("/wpi/e-aanvragen")
+        response_json = response.get_json()
+
+        get_e_aanvragen_mock.assert_called_with(self.TEST_BSN)
+
+        self.assertEqual(response_json["content"], ["Aanvragen"])
+
     @patch("app.server.get_document")
     def test_document(self, get_document_mock):
         get_document_mock.return_value = {
