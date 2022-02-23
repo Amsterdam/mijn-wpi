@@ -772,6 +772,13 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "step_id": E_AANVRAAG_STEP_ID["besluit"],
         "decision": E_AANVRAAG_DECISION_ID["afwijzing"],
     },
+    "1736198": {
+        "omschrijving": "Transitie Bbz Afwijzen",
+        "document_title": "Besluit afwijzing",
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+        "step_id": E_AANVRAAG_STEP_ID["besluit"],
+        "decision": E_AANVRAAG_DECISION_ID["afwijzing"],
+    },
     "176194": {
         "omschrijving": "Transitie Bbz Toekennen handmatig",
         "document_title": "Besluit toekenning uitkering",
