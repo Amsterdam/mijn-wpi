@@ -1,5 +1,4 @@
 import base64
-import logging
 from app.focus_service_aanvragen import get_client
 
 
@@ -25,15 +24,15 @@ def get_document(bsn, id, isBulk, isDms):
     if document is None:
         raise Exception("Requested document is empty")
 
-    data_handler = document.get("dataHandler")
+    data_handler = document["dataHandler"]
 
     if not data_handler:
         # Try again with the header
         document = send_document_request(
             bsn, id, isBulk, isDms, header_value={"Accept": "application/xop+xml"}
         )
-        if document and document.get("dataHandler"):
-            document_content = base64.b64decode(document.get("dataHandler"))
+        if document and document["dataHandler"]:
+            document_content = base64.b64decode(document["dataHandler"])
         else:
             raise Exception("Requested document is empty")
     else:
