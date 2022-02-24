@@ -140,7 +140,12 @@ def get_e_aanvragen(bsn):
         document_config = get_document_config(document_code_id)
 
         if not document_config:
-            description = e_aanvraag["omschrijving"]
+            description = "unknown-description"
+            if (
+                "documentCodes" in e_aanvraag
+                and "documentOmschrijving" in e_aanvraag["documentCodes"]
+            ):
+                description = e_aanvraag["documentCodes"]["documentOmschrijving"]
             logging.error(
                 f"Unknown E_Aanvraag Document encountered {document_code_id} / {description}"
             )

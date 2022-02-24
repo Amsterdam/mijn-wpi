@@ -177,8 +177,12 @@ class FocusServiceEAanvraag(TestCase):
         mock_client.service.getEAanvraagTOZO.assert_called_with(bsn)
         log_error_mock.assert_has_calls(
             [
-                call("Unknown E_Aanvraag Document encountered 176371"),
-                call("Unknown E_Aanvraag Document encountered 176372"),
+                call(
+                    "Unknown E_Aanvraag Document encountered 176371 / Bbz toekennen PU via batch"
+                ),
+                call(
+                    "Unknown E_Aanvraag Document encountered 176372 / Bbz toekennen voorschot via batch"
+                ),
             ]
         )
         self.assertEqual(log_error_mock.call_count, 2)
