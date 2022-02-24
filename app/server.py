@@ -111,7 +111,7 @@ def stadspassen():
     bsn = get_bsn_from_request()
     admin = get_stadspas_admin_number(bsn)
 
-    if not admin["admin_number"]:
+    if not admin or not admin["admin_number"]:
         return success_response_json(None)
 
     stadspassen = get_stadspassen(admin["admin_number"])
