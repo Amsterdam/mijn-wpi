@@ -24,14 +24,16 @@ def get_document(bsn, id, isBulk, isDms):
     if document is None:
         raise Exception("Requested document is empty")
 
-    data_handler = document["dataHandler"]
+    data_handler = (
+        document["dataHandler"] if document and document["dataHandler"] else None
+    )
 
     if not data_handler:
         # Try again with the header
         document = send_document_request(
             bsn, id, isBulk, isDms, header_value={"Accept": "application/xop+xml"}
         )
-        if document and document["dataHandler"]:
+        if document and "dataHandler" in document and document["dataHandler"]:
             document_content = base64.b64decode(document["dataHandler"])
         else:
             raise Exception("Requested document is empty")

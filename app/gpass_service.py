@@ -5,6 +5,7 @@ import requests
 from app.config import API_REQUEST_TIMEOUT
 from app.gpass_config import (
     GPASS_API_TOKEN,
+    GPASS_BUDGET_ONLY_FOR_CHILDREN,
     GPASS_ENDPOINT_PASHOUDER,
     GPASS_ENDPOINT_PAS,
     GPASS_ENDPOINT_TRANSACTIONS,
@@ -47,10 +48,11 @@ def format_stadspas(stadspas, admin):
 
     return {
         "id": stadspas["id"],
-        "passNumber": stadspas["pasnummer_volledig"],
         "owner": admin["owner"],
         "dateEnd": stadspas["expiry_date"],
         "budgets": budgets,
+        "passNumber": stadspas["pasnummer_volledig"],
+        "passType": "kind" if budgets and GPASS_BUDGET_ONLY_FOR_CHILDREN else "ouder",
     }
 
 

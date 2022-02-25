@@ -51,6 +51,7 @@ class GpassServiceGetStadspas(TestCase):
     gpass_formatted = {
         "id": 999999,
         "passNumber": "6666666666666666666",
+        "passType": "kind",
         "owner": "N T Koop",
         "dateEnd": "2020-08-31T23:59:59.000Z",
         "budgets": [
@@ -281,6 +282,7 @@ class GpassServiceVarious(TestCase):
         stadspas_transformed = {
             "id": "some-id",
             "passNumber": "123123123",
+            "passType": "kind",
             "owner": "A Achternaam",
             "dateEnd": "2022-01-27T:11:11:11.0000",
             "budgets": [{"bar": "foo"}],
