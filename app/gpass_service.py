@@ -47,7 +47,7 @@ def format_stadspas(stadspas, admin):
     budgets = [format_budget(budget, admin) for budget in stadspas["budgetten"]]
 
     return {
-        "id": stadspas["id"],
+        "id": str(stadspas["id"]),
         "owner": admin["owner"],
         "dateEnd": stadspas["expiry_date"],
         "budgets": budgets,
@@ -79,7 +79,7 @@ def get_admins(admin_number, owner_name, stadspassen):
     for stadspas in stadspassen_active:
         stadspas_details = {
             "owner": owner_name,
-            "pass_number": stadspas["pasnummer"],
+            "pass_number": str(stadspas["pasnummer"]),
             "admin_number": admin_number,
         }
         stadspassen.append(stadspas_details)
@@ -134,7 +134,7 @@ def format_transaction(transaction):
     date_published = transaction["transactiedatum"]  # parse and convert to date
 
     return {
-        "id": transaction["id"],
+        "id": str(transaction["id"]),
         "title": transaction["budget"]["aanbieder"]["naam"],
         "amount": transaction["bedrag"],
         "datePublished": date_published,

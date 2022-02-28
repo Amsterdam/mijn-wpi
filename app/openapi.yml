@@ -51,7 +51,7 @@ paths:
                 type: object
                 properties:
                   content:
-                    $ref: "#/components/schemas/EAanvragen"
+                    $ref: "#/components/schemas/Aanvragen"
                   status:
                     type: string
                     enum:
@@ -71,19 +71,17 @@ paths:
           description: document id
           required: true
           schema:
-            type: integer
+            type: string
         - name: isBulk
           in: query
           description: Tells if the document is a bulk document
           schema:
-            type: boolean
-            default: false
+            type: string
         - name: isDms
           in: query
           description: Tells if the document is a DMS (Document Management System) document
           schema:
-            type: boolean
-            default: false
+            type: string
         - name: x-saml-attribute-token1
           in: header
           description: TMA encoded BSN
@@ -106,11 +104,11 @@ paths:
             application/pdf:
               schema:
                 type: string
-                format: byte
+                format: binary
             application/octet-stream:
               schema:
                 type: string
-                format: byte
+                format: binary
         default:
           description: Unexpected error
           content:
@@ -118,6 +116,49 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
   
+  /wpi/stadspas:
+    get:
+      parameters:
+        - name: x-saml-attribute-token1
+          in: header
+          description: TMA encoded BSN
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns information about the Stadspas and related passes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                    enum:
+                      - "OK"
+                  content:
+                    type: object
+                    properties:
+                      ownerType:
+                        type: string
+                        enum:
+                          - kind
+                          - hoofdpashouder
+                          - partner
+                      adminNumber:
+                        type: string
+                      stadspassen:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Stadspas"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /wpi/stadspas/transacties/{encrypted_admin_pasnummer}:
     get:
       parameters:
@@ -168,9 +209,16 @@ paths:
                 type: object
                 properties:
                   content:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Uitkeringsspecificatie"
+                    type: object
+                    properties:
+                      jaaropgaven:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Specificatie"
+                      uitkeringsspecificaties:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Specificatie"
                   status:
                     type: string
                     enum:
@@ -187,268 +235,60 @@ components:
     Aanvragen:
       type: array
       items:
-        anyOf:
-          - $ref: "#/components/schemas/BijstandsuitkeringAanvraag"
-          - $ref: "#/components/schemas/StadspasAanvraag"
-    EAanvragen:
-      type: array
-      items:
-        anyOf:
-          - $ref: "#/components/schemas/EAanvraagTozo1"
-          - $ref: "#/components/schemas/EAanvraagTozo2_3_4_5"
-          - $ref: "#/components/schemas/EAanvraagTONK"
-          - $ref: "#/components/schemas/EAanvraagBbz"
+        $ref: "#/components/schemas/Aanvraag"
     Aanvraag:
       type: object
       properties:
         title:
           type: string
-          enum:
-            - Bijstandsuitkering
-            - Stadspas
+        about:
+          type: string
+        datePublished:
+          $ref: "#/components/schemas/DateTime"
         dateEnd:
-          $ref: "#/components/schemas/Date"
+          $ref: "#/components/schemas/DateTime"
+          nullable: true
         dateStart:
-          $ref: "#/components/schemas/Date"
+          $ref: "#/components/schemas/DateTime"
         decision:
           type: string
-          enum:
-            - toekenning
-            - afwijzing
-            - buitenBehandeling
-        steps:
-          type: array
-          items:
-            anyOf:
-              - $ref: "#/components/schemas/AanvraagStepRequest"
-              - $ref: "#/components/schemas/AanvraagStepActive"
-              - $ref: "#/components/schemas/AanvraagStepAdditionalInfo"
-              - $ref: "#/components/schemas/AanvraagStepDecision"
-    EAanvraag:
-      type: object
-      properties:
-        dateEnd:
-          $ref: "#/components/schemas/Date"
-        dateStart:
-          $ref: "#/components/schemas/Date"
-    EAanvraagTozo1:
-      allOf:
-        - $ref: "#/components/schemas/EAanvraag"
-        - type: object
-          properties:
-            decision:
-              type: string
-              enum:
-                - toekenning
-                - afwijzing
-                - buitenBehandeling
-                - vrijeBeschikking
-            steps:
-              type: array
-              items:
-                anyOf:
-                  - $ref: "#/components/schemas/AanvraagStepRequest"
-                  - $ref: "#/components/schemas/AanvraagStepAdditionalInfo"
-                  - $ref: "#/components/schemas/EAanvraagStepIntrekking"
-                  - $ref: "#/components/schemas/EAanvraagTozo1StepDecision"
-    EAanvraagTozo2_3_4_5:
-      allOf:
-        - $ref: "#/components/schemas/EAanvraag"
-        - type: object
-          properties:
-            decision:
-              type: string
-              enum:
-                - toekenning
-                - afwijzing
-                - buitenBehandeling
-            steps:
-              type: array
-              items:
-                anyOf:
-                  - $ref: "#/components/schemas/AanvraagStepRequest"
-                  - $ref: "#/components/schemas/AanvraagStepAdditionalInfo"
-                  - $ref: "#/components/schemas/EAanvraagStepIntrekking"
-                  - $ref: "#/components/schemas/EAanvraagStepTerugvorderingsbesluit"
-                  - $ref: "#/components/schemas/EAanvraagStepInkomstenwijziging"
-                  - $ref: "#/components/schemas/AanvraagStepDecision"
-    EAanvraagBbz:
-      allOf:
-        - $ref: "#/components/schemas/EAanvraag"
-        - type: object
-          properties:
-            decision:
-              type: string
-              enum:
-                - toekenning
-                - afwijzing
-                - buitenBehandeling
-            steps:
-              type: array
-              items:
-                anyOf:
-                  - $ref: "#/components/schemas/AanvraagStepRequest"
-                  - $ref: "#/components/schemas/AanvraagStepAdditionalInfo"
-                  - $ref: "#/components/schemas/EAanvraagStepIntrekking"
-                  - $ref: "#/components/schemas/EAanvraagStepTerugvorderingsbesluit"
-                  - $ref: "#/components/schemas/EAanvraagStepInkomstenwijziging"
-                  - $ref: "#/components/schemas/AanvraagStepDecision"
-    EAanvraagTONK:
-      allOf:
-        - $ref: "#/components/schemas/EAanvraag"
+          nullable: true
+        status:
+          type: string
+          example: besluit
+          description: De status van het aanvraagporces. B.v aanvraag, buitenBehandeling, besluit e.d
     AanvraagStepStatus:
       type: object
       properties:
         id: 
           type: string
-        title:
+        status:
           type: string
         datePublished:
-          $ref: "#/components/schemas/Date"
+          $ref: "#/components/schemas/DateTime"
         documents:
           type: array
           items:
             $ref: "#/components/schemas/Document"
-    AanvraagStepRequest:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
+        productSpecific:
               type: string
               enum:
-                - aanvraag
-    AanvraagStepActive:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - inBehandeling
-            dateDecisionExpected:
-              $ref: "#/components/schemas/Date"
-    AanvraagStepAdditionalInfo:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - herstelTermijn
-            dateDecisionExpected:
-              $ref: "#/components/schemas/Date"
-            dateUserFeedbackExpected:
-              $ref: "#/components/schemas/Date"
-    AanvraagStepDecision:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - besluit
-            decision:
-              type: string
-              enum:
-                - toekenning
-                - afwijzing
-                - buitenBehandeling
-    EAanvraagStepIntrekking:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - intrekking
-    EAanvraagTozo1StepDecision:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - besluit
-            decision:
-              type: string
-              enum:
-                - toekenning
-                - afwijzing
-                - buitenBehandeling
-                - vrijeBeschikking
-    EAanvraagStepTerugvorderingsbesluit:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - terugvorderingsbesluit
-    EAanvraagStepInkomstenwijziging:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - inkomstenwijziging
-    EAanvraagTONKStepDecision:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - besluit
-            decision:
-              type: string
-              enum:
-                - toekenning
-                - afwijzing
-                - buitenBehandeling
-                - verlenging
-                - mogelijkeVerlenging
-    EAanvraagBbzStepDecision:
-      allOf:
-        - $ref: "#/components/schemas/AanvraagStepStatus"
-        - type: object
-          properties:
-            id:
-              type: string
-              enum:
-                - besluit
-            decision:
-              type: string
-              enum:
-                - toekenning
-                - afwijzing
-                - buitenBehandeling
-                - toekenningVoorlopig
-    BijstandsuitkeringAanvraag:
-      allOf:
-        - $ref: "#/components/schemas/Aanvraag"
-        - type: object
-          properties:
-            title:
-              enum:
-                - Bijstandsuitkering
-    StadspasAanvraag:
-      allOf:
-        - $ref: "#/components/schemas/Aanvraag"
-        - type: object
-          properties:
-            title:
-              enum:
-                - Stadspas
+                - lening
+                - uitkering
+              nullable: true
+              description: Only available for E-Aanvragen (Tozo, Tonk, Bbz)
+        dateDecisionExpected:
+          $ref: "#/components/schemas/DateTime"
+          description: Only available at step herstelTermijn and inBehandeling
+          nullable: true
+        dateUserFeedbackExpected:
+          $ref: "#/components/schemas/DateTime"
+          description: Only available at step HerstelTermijn
+          nullable: true
+        decision:
+          type: string
+          description: Only available at step decision
+          nullable: true
     Document:
       type: object
       properties:
@@ -460,17 +300,17 @@ components:
           type: string
           example: "/wpi/document?id=95330222&isBulk=false&isDms=false"
         datePublished:
-          $ref: "#/components/schemas/Date"
-    Uitkeringsspecificatie:
+          $ref: "#/components/schemas/DateTime"
+        dcteId:
+          type: string
+          nullable: true
+    Specificatie:
       allOf:
         - $ref: "#/components/schemas/Document"
         - type: object
           properties:
-            title:
-              enum:
-                - A
-                - B
-                - C
+            variant:
+              type: string
     StadspasTransaction:
       type: object
       properties:
@@ -491,6 +331,11 @@ components:
           $ref: "#/components/schemas/DateTime"
         passNumber:
           type: string
+        passType:
+          type: string
+          enum:
+            - kind
+            - ouder
         owner:
           type: string
         budgets:

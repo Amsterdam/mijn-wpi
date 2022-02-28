@@ -3,7 +3,7 @@ import logging
 from urllib.error import HTTPError
 
 import sentry_sdk
-from flask import Flask, request, make_response
+from flask import Flask, request, Response
 from sentry_sdk.integrations.flask import FlaskIntegration
 from app.focus_service_aanvragen import (
     get_aanvragen,
@@ -76,14 +76,15 @@ def document():
     isDms = request.args.get("isDms", "false").lower() == "true"
 
     document = get_document(bsn, id, isBulk, isDms)
-    response = make_response(document["document_content"])
 
-    headers = {
-        "Content-Disposition": f'attachment; filename="{document["file_name"]}"',
-        "Content-Type": document["mime_type"],
-    }
-
-    response.headers = headers
+    response = Response(
+        response=document["document_content"],
+        headers={
+            "Content-Disposition": f'attachment; filename="{document["file_name"]}"',
+            "Content-Type": document["mime_type"],
+        },
+        mimetype=document["mime_type"],
+    )
 
     return response
 

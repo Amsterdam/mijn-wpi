@@ -49,7 +49,7 @@ class GpassServiceGetStadspas(TestCase):
     }
 
     gpass_formatted = {
-        "id": 999999,
+        "id": "999999",
         "passNumber": "6666666666666666666",
         "passType": "kind",
         "owner": "N T Koop",
@@ -142,9 +142,9 @@ class GpassServiceGetStadspassen(TestCase):
     }
 
     gpass_admins = [
-        {"owner": "A Achternaam", "admin_number": "xxx", "pass_number": 333333333333},
-        {"owner": "B Achternaam", "admin_number": "xxx", "pass_number": 666666666666},
-        {"owner": "C Achternaam", "admin_number": "xxx", "pass_number": 777777777777},
+        {"owner": "A Achternaam", "admin_number": "xxx", "pass_number": "333333333333"},
+        {"owner": "B Achternaam", "admin_number": "xxx", "pass_number": "666666666666"},
+        {"owner": "C Achternaam", "admin_number": "xxx", "pass_number": "777777777777"},
     ]
 
     @patch("app.gpass_service.GPASS_ENDPOINT_PASHOUDER", "http://ha/ha/ha")
@@ -196,7 +196,7 @@ class GpassServiceGetTransactions(TestCase):
 
     gpass_transactions_transformed = [
         {
-            "id": 1,
+            "id": "1",
             "title": "Fietsenwinkel - B.V.",
             "amount": 20.0,
             "datePublished": "2020-10-05T04:01:01.0000",
@@ -257,11 +257,11 @@ class GpassServiceVarious(TestCase):
         admin = {
             "owner": "A Achternaam",
             "admin_number": "xxx",
-            "pass_number": 333333333333,
+            "pass_number": "333333333333",
         }
         result = format_budget(budget, admin)
 
-        encrypt_mock.assert_called_with("AMSTEG_10-14", "xxx", 333333333333)
+        encrypt_mock.assert_called_with("AMSTEG_10-14", "xxx", "333333333333")
 
         self.assertEqual(result, budget_transformed)
 
@@ -277,7 +277,7 @@ class GpassServiceVarious(TestCase):
         admin = {
             "owner": "A Achternaam",
             "admin_number": "xxx",
-            "pass_number": 333333333333,
+            "pass_number": "333333333333",
         }
         stadspas_transformed = {
             "id": "some-id",
@@ -315,7 +315,7 @@ class GpassServiceVarious(TestCase):
                 {
                     "owner": "John Kelly",
                     "admin_number": "12121212",
-                    "pass_number": 333333333333,
+                    "pass_number": "333333333333",
                 }
             ],
         )
