@@ -154,7 +154,7 @@ class GpassServiceGetStadspassen(TestCase):
 
         admin_number = "xxx"
         result = get_stadspas_admins(admin_number)
-        expected_path = f"http://ha/ha/ha"
+        expected_path = "http://ha/ha/ha"
 
         send_request_mock.assert_called_with(
             expected_path, admin_number, params={"addsubs": True}

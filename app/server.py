@@ -1,4 +1,3 @@
-from email.mime import application
 import logging
 from urllib.error import HTTPError
 

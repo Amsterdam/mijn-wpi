@@ -55,7 +55,7 @@ class TestSpecificatieService(TestCase):
         get_client_mock.return_value = mock_client
 
         bsn = "12312312399"
-        result = get_jaaropgaven(bsn)
+        get_jaaropgaven(bsn)
 
         mock_client.service.getJaaropgaven.assert_called_with(bsn)
         log_error_mock.assert_called()
@@ -93,7 +93,7 @@ class TestSpecificatieService(TestCase):
         get_client_mock.return_value = mock_client
 
         bsn = "12312312399"
-        result = get_uitkeringsspecificaties(bsn)
+        get_uitkeringsspecificaties(bsn)
 
         mock_client.service.getUitkeringspecificaties.assert_called_with(bsn)
         log_error_mock.assert_called()

@@ -1,4 +1,3 @@
-import datetime
 import logging
 from app.focus_service_aanvragen import get_client, get_document_url
 

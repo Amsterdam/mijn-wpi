@@ -1,6 +1,3 @@
-from app.focus_config import FOCUS_STEP_ID_TRANSLATIONS
-
-
 E_AANVRAAG_ABOUT = {
     "Tozo 1": "Tozo 1",
     "Tozo 2": "Tozo 2",

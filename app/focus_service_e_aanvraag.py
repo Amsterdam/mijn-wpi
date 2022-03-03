@@ -2,7 +2,6 @@ import hashlib
 import logging
 
 from app.e_aanvraag_config import (
-    E_AANVRAAG_ABOUT,
     E_AANVRAAG_DOCUMENT_CONFIG,
     E_AANVRAAG_PRODUCT_TITLES,
     E_AANVRAAG_STEP_COLLECTION_IDS,
