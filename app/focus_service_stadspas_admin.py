@@ -76,8 +76,8 @@ def get_stadspas_admin_number(bsn):
     pas_type = get_first_pas_type(fondsen)
 
     return {
-        "admin_number": volledig_administratienummer(
-            get_administratienummer(admin_number)
+        "admin_number": get_administratienummer(
+            volledig_administratienummer(admin_number)
         ),
         "type": pas_type,
     }
