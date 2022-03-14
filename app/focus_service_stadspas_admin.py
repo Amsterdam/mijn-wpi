@@ -66,9 +66,11 @@ def get_stadspas_admin_number(bsn):
     if not admin_number:
         return None
 
-    # fondsen = tree.find("fondsen").find_all("fonds", recursive=False)
-    fondsen = focus_stadspas["fondsen"]["fonds"]
-    has_pas = has_groene_stip(fondsen)
+    has_pas = False
+
+    if "fondsen" in focus_stadspas and "fonds" in focus_stadspas["fondsen"]:
+        fondsen = focus_stadspas["fondsen"]["fonds"]
+        has_pas = has_groene_stip(fondsen)
 
     if not has_pas:
         return None
