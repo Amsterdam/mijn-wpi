@@ -1,6 +1,7 @@
+import json
 import os
 
-from app.config import API_BASE_PATH
+from app.config import API_BASE_PATH, IS_ACCEPTANCE
 
 # Focus
 FOCUS_WSDL = os.getenv("FOCUS_WSDL")
@@ -46,6 +47,12 @@ FOCUS_STADSPAS_TYPE_PER_FONDS = {
     3556: "partner",
     3557: "kind",
 }
+
+FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC = (
+    json.loads(os.getenv("FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC", "null"))
+    if IS_ACCEPTANCE
+    else None
+)
 
 zeep_config = {"wsdl": FOCUS_WSDL, "session_verify": FOCUS_CERTIFICATE}
 

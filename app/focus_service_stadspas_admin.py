@@ -1,5 +1,6 @@
 import logging
 from app.focus_config import (
+    FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC,
     FOCUS_STADSPAS_FONDSEN_GROENE_STIP,
     FOCUS_STADSPAS_TYPE_PER_FONDS,
 )
@@ -17,6 +18,14 @@ def has_groene_stip(fondsen):
             return True
 
     return False
+
+
+def get_administratienummer(number_from_source):
+    if FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC:
+        return FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC.get(
+            number_from_source, number_from_source
+        )
+    return number_from_source
 
 
 def get_first_pas_type(fondsen):
@@ -67,6 +76,8 @@ def get_stadspas_admin_number(bsn):
     pas_type = get_first_pas_type(fondsen)
 
     return {
-        "admin_number": volledig_administratienummer(admin_number),
+        "admin_number": volledig_administratienummer(
+            get_administratienummer(admin_number)
+        ),
         "type": pas_type,
     }

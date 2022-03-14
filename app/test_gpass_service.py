@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 # Prepare environment
-from mock import patch
+from unittest.mock import patch
 
 from app.gpass_service import (
     format_budget,
