@@ -164,7 +164,8 @@ def get_e_aanvragen(bsn):
     aanvragen = []
 
     for product_name in steps_collection.keys():
-        aanvraag = create_e_aanvraag(product_name, steps_collection[product_name])
-        aanvragen.append(aanvraag)
+        if steps_collection[product_name]:
+            aanvraag = create_e_aanvraag(product_name, steps_collection[product_name])
+            aanvragen.append(aanvraag)
 
     return aanvragen
