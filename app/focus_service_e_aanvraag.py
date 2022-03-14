@@ -127,7 +127,7 @@ def get_e_aanvragen(bsn):
 
     try:
         response = get_client().service.getEAanvraagTOZO(bsn)
-        e_aanvragen = response["documentgegevens"]
+        e_aanvragen = response["documentgegevens"] if response else []
     except Exception as error:
         logging.error(error)
         return e_aanvragen
