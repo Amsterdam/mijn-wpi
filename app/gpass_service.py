@@ -22,6 +22,10 @@ def send_request(url, admin_number, params=None):
 
     logging.debug(response)
 
+    if response.status_code in [401, 404]:
+        logging.error(f"Gpass request error: {response.status_code}, {response.text}")
+        return None
+
     response.raise_for_status()
 
     return response.json()
