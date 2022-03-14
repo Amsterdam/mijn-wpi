@@ -24,6 +24,7 @@ hiro
 mock
 flake8
 coverage
+freezegun
 
 # error reporting
 sentry-sdk[flask]

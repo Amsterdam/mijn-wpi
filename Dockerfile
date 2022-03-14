@@ -1,22 +1,29 @@
 FROM amsterdam/python:3.8-buster
 LABEL maintainer=datapunt@amsterdam.nl
 
-EXPOSE 8000
+WORKDIR /api
 
-WORKDIR /app
 # remove this when the 3.8.6-buster image is fixed
 ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
-COPY requirements.txt /app/
+RUN apt-get update
+RUN apt-get -y install locales
+RUN sed -i -e 's/# nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen && \
+  locale-gen
+ENV LANG nl_NL.UTF-8
+ENV LANGUAGE nl_NL:nl
+ENV LC_ALL nl_NL.UTF-8
+
+COPY requirements.txt /api
 RUN pip install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
-COPY ./focus /app/focus
+COPY ./scripts /api/scripts
+COPY ./app /api/app
 
-COPY test.sh /app/
-COPY .flake8 /app/
-COPY ./tests /app/tests
-COPY ./scripts /app/scripts
+COPY uwsgi.ini /api/
+COPY test.sh /api/
+COPY .flake8 /api/
 
 USER datapunt
-CMD uwsgi --ini /app/focus/uwsgi.ini
+CMD uwsgi --ini /api/uwsgi.ini

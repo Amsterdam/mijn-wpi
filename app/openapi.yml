@@ -1,0 +1,380 @@
+openapi: 3.0.3
+info:
+  title: Focus API
+  description: Koppel api tussen WPI (Focus) en Mijn Amsterdam
+  version: 2.0.0
+paths:
+  /status/health:
+    get:
+      description: returns "OK" if api is running
+      responses:
+        "200":
+          description: Returns "OK"
+          content:
+            application/json:
+              schema:
+                type: string
+                enum:
+                  - "OK"
+  /wpi/uitkering-en-stadspas/aanvragen:
+    get:
+      description: Returns a list aanvragen.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    $ref: "#/components/schemas/Aanvragen"
+                  status:
+                    type: string
+                    enum:
+                      - "OK"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /wpi/e-aanvragen:
+    get:
+      description: Returns a list of E-aanvragen (Tozo, Tonk, Bbz).
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    $ref: "#/components/schemas/Aanvragen"
+                  status:
+                    type: string
+                    enum:
+                      - "OK"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /wpi/document:
+    get:
+      description: Geeft een bij een aanvraag behorend document terug voor een bepaalde persoon geidentificeerd door een BSN nummer
+      parameters:
+        - name: id
+          in: query
+          description: document id
+          required: true
+          schema:
+            type: string
+        - name: isBulk
+          in: query
+          description: Tells if the document is a bulk document
+          schema:
+            type: string
+        - name: isDms
+          in: query
+          description: Tells if the document is a DMS (Document Management System) document
+          schema:
+            type: string
+        - name: x-saml-attribute-token1
+          in: header
+          description: TMA encoded BSN
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: |
+            Document contents (base64 encoded string), filename and description
+            - description
+            Short description of the document (normally null)
+            - fileName
+            Name of the file, including extension, e.g. doc.pdf
+            - contents
+            Base64 encoded contents
+            - mime_type
+            MIME type (application/pdf voor pdf documenten, anders application/octet-stream)
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  
+  /wpi/stadspas:
+    get:
+      parameters:
+        - name: x-saml-attribute-token1
+          in: header
+          description: TMA encoded BSN
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns information about the Stadspas and related passes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                    enum:
+                      - "OK"
+                  content:
+                    type: object
+                    properties:
+                      ownerType:
+                        type: string
+                        enum:
+                          - kind
+                          - hoofdpashouder
+                          - partner
+                      adminNumber:
+                        type: string
+                      stadspassen:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Stadspas"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /wpi/stadspas/transacties/{encrypted_admin_pasnummer}:
+    get:
+      parameters:
+        - name: x-saml-attribute-token1
+          in: header
+          description: TMA encoded BSN
+          required: true
+          schema:
+            type: string
+        - name: encrypted_admin_pasnummer
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns a list of transactions coupled to a stadspass.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                    enum:
+                      - "OK"
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/StadspasTransaction"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /wpi/uitkering/specificaties-en-jaaropgaven:
+    get:
+      description: Returns a list uitkeringsspecificatie en jaaropgaven.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: object
+                    properties:
+                      jaaropgaven:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Specificatie"
+                      uitkeringsspecificaties:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Specificatie"
+                  status:
+                    type: string
+                    enum:
+                      - "OK"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Aanvragen:
+      type: array
+      items:
+        $ref: "#/components/schemas/Aanvraag"
+    Aanvraag:
+      type: object
+      properties:
+        title:
+          type: string
+        about:
+          type: string
+        datePublished:
+          $ref: "#/components/schemas/DateTime"
+        dateEnd:
+          $ref: "#/components/schemas/DateTime"
+          nullable: true
+        dateStart:
+          $ref: "#/components/schemas/DateTime"
+        decision:
+          type: string
+          nullable: true
+        status:
+          type: string
+          example: besluit
+          description: De status van het aanvraagporces. B.v aanvraag, buitenBehandeling, besluit e.d
+    AanvraagStepStatus:
+      type: object
+      properties:
+        id: 
+          type: string
+        status:
+          type: string
+        datePublished:
+          $ref: "#/components/schemas/DateTime"
+        documents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Document"
+        productSpecific:
+              type: string
+              enum:
+                - lening
+                - uitkering
+              nullable: true
+              description: Only available for E-Aanvragen (Tozo, Tonk, Bbz)
+        dateDecisionExpected:
+          $ref: "#/components/schemas/DateTime"
+          description: Only available at step herstelTermijn and inBehandeling
+          nullable: true
+        dateUserFeedbackExpected:
+          $ref: "#/components/schemas/DateTime"
+          description: Only available at step HerstelTermijn
+          nullable: true
+        decision:
+          type: string
+          description: Only available at step decision
+          nullable: true
+    Document:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          example: "/wpi/document?id=95330222&isBulk=false&isDms=false"
+        datePublished:
+          $ref: "#/components/schemas/DateTime"
+        dcteId:
+          type: string
+          nullable: true
+    Specificatie:
+      allOf:
+        - $ref: "#/components/schemas/Document"
+        - type: object
+          properties:
+            variant:
+              type: string
+    StadspasTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        amount:
+          type: number
+        datePublished:
+          $ref: "#/components/schemas/DateTime"
+    Stadspas:
+      type: object
+      properties:
+        id:
+          type: string
+        dateEnd:
+          $ref: "#/components/schemas/DateTime"
+        passNumber:
+          type: string
+        passType:
+          type: string
+          enum:
+            - kind
+            - ouder
+        owner:
+          type: string
+        budgets:
+          type: array
+          items:
+            $ref: "#/components/schemas/StadspasBudget"
+    StadspasBudget:
+      type: object
+      properties:
+        budgetAssigned:
+          type: number
+        budgetBalance:
+          type: number
+        code:
+          type: string
+        description:
+          type: string
+        urlTransactions:
+          type: string
+          description: optional url to get the stadspas transactions
+          example: "/wpi/stadspas/transacties/{encrypted_admin_pasnummer}"
+        dateEnd:
+          $ref: "#/components/schemas/DateTime"
+    Date:
+      type: string
+      format: date
+      example: "2020-06-16"
+      nullable: true
+    DateTime:
+      type: string
+      format: date-time
+      example: "2020-06-08T00:00:00"
+      nullable: true
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - "ERROR"
+        message:
+          type: string
