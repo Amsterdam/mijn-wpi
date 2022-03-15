@@ -20,7 +20,7 @@ def get_jaaropgaven(bsn):
 
         jaaropgave = {
             "datePublished": date_published.isoformat(),
-            "id": jaaropgave_source["dcteId"],
+            "id": jaaropgave_source["id"],
             "title": f"{title} {year}",
             "variant": jaaropgave_source["variant"],
             "url": "",
@@ -52,7 +52,7 @@ def get_uitkeringsspecificaties(bsn):
 
         uitkeringsspecificatie = {
             "datePublished": date_published.isoformat(),
-            "id": specificatie_source["dcteId"],
+            "id": specificatie_source["id"],
             "title": f"{title} {month.title()}-{year}",
             "variant": specificatie_source["variant"],
             "url": "",
