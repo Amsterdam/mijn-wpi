@@ -68,7 +68,7 @@ def create_e_aanvraag(product_name, steps):
         "datePublished": last_step["datePublished"],
         "dateEnd": date_end,
         "decision": decision_step["decision"] if decision_step else None,
-        "status": last_step["id"],
+        "statusId": last_step["id"],
         "steps": steps,
     }
 

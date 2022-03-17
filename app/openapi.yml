@@ -253,10 +253,10 @@ components:
         decision:
           type: string
           nullable: true
-        status:
+        statusId:
           type: string
           example: besluit
-          description: De status van het aanvraagporces. B.v aanvraag, buitenBehandeling, besluit e.d
+          description: De statusId of the request process. Refers to the AanvraagStepStatus.id.
     AanvraagStepStatus:
       type: object
       properties:
@@ -355,7 +355,7 @@ components:
           type: string
         urlTransactions:
           type: string
-          description: optional url to get the stadspas transactions
+          description: Optional url to get the stadspas transactions
           example: "/wpi/stadspas/transacties/{encrypted_admin_pasnummer}"
         dateEnd:
           $ref: "#/components/schemas/DateTime"
