@@ -68,7 +68,7 @@ def create_e_aanvraag(product_name, steps):
         "datePublished": last_step["datePublished"],
         "dateEnd": date_end,
         "decision": decision_step["decision"] if decision_step else None,
-        "status": last_step["id"],
+        "statusId": last_step["id"],
         "steps": steps,
     }
 
@@ -122,16 +122,7 @@ def get_e_aanvraag_step(e_aanvraag, document_config):
     return step
 
 
-def get_e_aanvragen(bsn):
-    e_aanvragen = []
-
-    try:
-        response = get_client().service.getEAanvraagTOZO(bsn)
-        e_aanvragen = response["documentgegevens"] if response else []
-    except Exception as error:
-        logging.error(error)
-        return e_aanvragen
-
+def collect_and_transform_status_steps(e_aanvragen):
     steps_collection = get_steps_collection()
 
     for e_aanvraag in e_aanvragen:
@@ -161,10 +152,25 @@ def get_e_aanvragen(bsn):
         if step:
             steps_collection[about].append(step)
 
+    return steps_collection
+
+
+def get_e_aanvragen(bsn):
+    e_aanvragen = []
+
+    try:
+        response = get_client().service.getEAanvraagTOZO(bsn)
+        e_aanvragen = response["documentgegevens"] if response else []
+    except Exception as error:
+        logging.error(error)
+        return e_aanvragen
+
     aanvragen = []
+    steps_collection = collect_and_transform_status_steps(e_aanvragen)
 
     for product_name in steps_collection.keys():
-        aanvraag = create_e_aanvraag(product_name, steps_collection[product_name])
-        aanvragen.append(aanvraag)
+        if steps_collection[product_name]:
+            aanvraag = create_e_aanvraag(product_name, steps_collection[product_name])
+            aanvragen.append(aanvraag)
 
     return aanvragen

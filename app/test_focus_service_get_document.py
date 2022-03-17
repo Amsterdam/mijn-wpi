@@ -30,7 +30,9 @@ class FocusSerivceGetDocumentTest(TestCase):
 
         result = get_document(bsn, doc_id, is_bulk, is_dms)
 
-        send_document_request_mock.assert_called_with(bsn, doc_id, is_bulk, is_dms)
+        send_document_request_mock.assert_called_with(
+            bsn, doc_id, is_bulk, is_dms, raw_response=False
+        )
 
         result_expected = {
             "file_name": "Aanvraag Stadspas (balie).pdf",
@@ -55,7 +57,9 @@ class FocusSerivceGetDocumentTest(TestCase):
 
         result = get_document(bsn, doc_id, is_bulk, is_dms)
 
-        send_document_request_mock.assert_called_with(bsn, doc_id, is_bulk, is_dms)
+        send_document_request_mock.assert_called_with(
+            bsn, doc_id, is_bulk, is_dms, raw_response=False
+        )
 
         result_expected = {
             "file_name": "testding",
@@ -85,13 +89,14 @@ class FocusSerivceGetDocumentTest(TestCase):
 
         send_document_request_mock.assert_has_calls(
             [
-                call("123xx123", "123", False, False),
+                call("123xx123", "123", False, False, raw_response=False),
                 call(
                     "123xx123",
                     "123",
                     False,
                     False,
                     header_value={"Accept": "application/xop+xml"},
+                    raw_response=False,
                 ),
             ]
         )
@@ -121,13 +126,14 @@ class FocusSerivceGetDocumentTest(TestCase):
 
         send_document_request_mock.assert_has_calls(
             [
-                call("123xx123", "123", False, False),
+                call("123xx123", "123", False, False, raw_response=False),
                 call(
                     "123xx123",
                     "123",
                     False,
                     False,
                     header_value={"Accept": "application/xop+xml"},
+                    raw_response=False,
                 ),
             ]
         )

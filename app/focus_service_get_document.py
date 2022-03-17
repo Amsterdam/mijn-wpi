@@ -2,9 +2,9 @@ import base64
 from app.focus_service_aanvragen import get_client
 
 
-def send_document_request(bsn, id, isBulk, isDms, header_value={}):
+def send_document_request(bsn, id, isBulk, isDms, header_value={}, raw_response=False):
     client = get_client()
-    with client.settings(extra_http_headers=header_value):
+    with client.settings(extra_http_headers=header_value, raw_response=raw_response):
         document = client.service.getDocument(
             id=id,
             bsn=bsn,
@@ -14,12 +14,15 @@ def send_document_request(bsn, id, isBulk, isDms, header_value={}):
         return document
 
 
-def get_document(bsn, id, isBulk, isDms):
+def get_document(bsn, id, isBulk, isDms, raw_response=False):
 
     document_content = None
 
     # First try to get doc without special header
-    document = send_document_request(bsn, id, isBulk, isDms)
+    document = send_document_request(bsn, id, isBulk, isDms, raw_response=raw_response)
+
+    if raw_response and document:
+        return document
 
     if document is None:
         raise Exception("Requested document is empty")
@@ -31,8 +34,17 @@ def get_document(bsn, id, isBulk, isDms):
     if not data_handler:
         # Try again with the header
         document = send_document_request(
-            bsn, id, isBulk, isDms, header_value={"Accept": "application/xop+xml"}
+            bsn,
+            id,
+            isBulk,
+            isDms,
+            header_value={"Accept": "application/xop+xml"},
+            raw_response=raw_response,
         )
+
+        if raw_response and document:
+            return document
+
         if document and "dataHandler" in document and document["dataHandler"]:
             document_content = base64.b64decode(document["dataHandler"])
         else:

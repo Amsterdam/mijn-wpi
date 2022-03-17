@@ -225,7 +225,7 @@ def transform_product(product):
         "id": id,
         "title": get_translation(product["naam"]),
         "about": get_translation(product["naam"]),
-        "status": last_step["id"],
+        "statusId": last_step["id"],
         "decision": camel_case(product["typeBesluit"])
         if product["typeBesluit"]
         else None,

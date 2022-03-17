@@ -61,7 +61,7 @@ class FocusServiceEAanvraag(TestCase):
             "datePublished": "2020-10-23T17:20:04",
             "dateEnd": None,
             "decision": None,
-            "status": "aanvraag",
+            "statusId": "aanvraag",
             "steps": [
                 {
                     "id": "aanvraag",
@@ -99,7 +99,7 @@ class FocusServiceEAanvraag(TestCase):
             "datePublished": "2020-11-15T10:00:02",
             "dateEnd": "2020-11-15T10:00:02",
             "decision": "toekenning",
-            "status": "besluit",
+            "statusId": "besluit",
             "steps": [
                 {
                     "id": "aanvraag",
@@ -598,7 +598,7 @@ example_result = [
         "datePublished": "2020-04-08T17:20:04",
         "dateEnd": "2020-04-08T17:20:04",
         "decision": "toekenning",
-        "status": "besluit",
+        "statusId": "besluit",
         "steps": [
             {
                 "id": "aanvraag",
@@ -668,7 +668,7 @@ example_result = [
         "datePublished": "2020-07-04T17:20:04",
         "dateEnd": "2020-07-04T17:20:04",
         "decision": "afwijzing",
-        "status": "besluit",
+        "statusId": "besluit",
         "steps": [
             {
                 "id": "aanvraag",
@@ -739,7 +739,7 @@ example_result = [
         "datePublished": "2020-10-27T17:20:04",
         "dateEnd": "2020-10-27T17:20:04",
         "decision": "afwijzing",
-        "status": "besluit",
+        "statusId": "besluit",
         "steps": [
             {
                 "id": "aanvraag",
@@ -810,7 +810,7 @@ example_result = [
         "datePublished": "2021-04-08T18:53:05",
         "dateEnd": "2021-04-08T18:53:05",
         "decision": "afwijzing",
-        "status": "besluit",
+        "statusId": "besluit",
         "steps": [
             {
                 "id": "aanvraag",
@@ -881,7 +881,7 @@ example_result = [
         "datePublished": "2021-07-08T18:53:05",
         "dateEnd": "2021-07-08T18:53:05",
         "decision": "afwijzing",
-        "status": "besluit",
+        "statusId": "besluit",
         "steps": [
             {
                 "id": "aanvraag",
@@ -952,7 +952,7 @@ example_result = [
         "datePublished": "2021-08-12T17:20:04",
         "dateEnd": "2021-08-10T17:20:04",
         "decision": "mogelijkeVerlenging",
-        "status": "briefWeigering",
+        "statusId": "briefWeigering",
         "steps": [
             {
                 "id": "aanvraag",
@@ -1056,7 +1056,7 @@ example_result = [
         "datePublished": "2021-09-16T17:20:04",
         "dateEnd": None,
         "decision": None,
-        "status": "herstelTermijn",
+        "statusId": "herstelTermijn",
         "steps": [
             {
                 "id": "aanvraag",

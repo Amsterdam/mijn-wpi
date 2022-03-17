@@ -6,9 +6,9 @@ from app.focus_service_specificaties import get_uitkeringsspecificaties, get_jaa
 from app.test_app import MockClient
 
 
-def create_specificatie(omschrijving, dcteId, einddatumDocument):
+def create_specificatie(omschrijving, id, einddatumDocument):
     return {
-        "dcteId": dcteId,
+        "id": id,
         "documentCode": {
             "omschrijving": omschrijving,
         },

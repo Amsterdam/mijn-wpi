@@ -37,7 +37,6 @@ E_AANVRAAG_STEP_ID = {
     "intrekking": "intrekking",
     "terugvorderingsbesluit": "terugvorderingsbesluit",
     "voorschot": "voorschot",
-    "intrekking": "intrekking",
 }
 
 E_AANVRAAG_STEP_ID_TRANSLATIONS = {
