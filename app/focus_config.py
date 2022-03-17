@@ -30,7 +30,7 @@ FOCUS_AANVRAAG_PROCESS_STEPS = [
     "aanvraag",
     "inBehandeling",
     "herstelTermijn",
-    "beslissing",
+    "beslissing",  # Is transformed to besluit
 ]
 
 FOCUS_STEP_ID_TRANSLATIONS = {
