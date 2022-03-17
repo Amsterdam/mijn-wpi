@@ -1,4 +1,3 @@
-from io import BytesIO
 from sys import argv
 
 from app.focus_service_get_document import get_document
