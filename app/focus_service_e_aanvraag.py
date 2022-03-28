@@ -138,7 +138,7 @@ def collect_and_transform_status_steps(e_aanvragen):
             ):
                 description = e_aanvraag["documentCodes"]["documentOmschrijving"]
                 extra = {"code": document_code_id, "description": description}
-            logging.error(f"Unknown E_Aanvraag Document encountered", extra=extra)
+            logging.error("Unknown E_Aanvraag Document encountered", extra=extra)
             continue
 
         step = get_e_aanvraag_step(e_aanvraag, document_config)
