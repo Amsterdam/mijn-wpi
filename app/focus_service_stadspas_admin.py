@@ -68,7 +68,12 @@ def get_stadspas_admin_number(bsn):
 
     has_pas = False
 
-    if "fondsen" in focus_stadspas and "fonds" in focus_stadspas["fondsen"]:
+    if (
+        "fondsen" in focus_stadspas
+        and focus_stadspas["fondsen"]
+        and "fonds" in focus_stadspas["fondsen"]
+        and focus_stadspas["fondsen"]["fonds"]
+    ):
         fondsen = focus_stadspas["fondsen"]["fonds"]
         has_pas = has_groene_stip(fondsen)
 
