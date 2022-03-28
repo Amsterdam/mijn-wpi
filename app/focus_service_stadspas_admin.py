@@ -63,7 +63,7 @@ def get_stadspas_admin_number(bsn):
 
     admin_number = focus_stadspas["administratienummer"]
 
-    if not admin_number:
+    if not admin_number or not focus_stadspas:
         return None
 
     has_pas = False
