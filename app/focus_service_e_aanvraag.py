@@ -164,8 +164,8 @@ def get_e_aanvragen(bsn):
     except Exception as error:
         extra = None
         if "No row with the given identifier exists" in str(error):
-            error = "No row with the given identifier exists"
             extra = {"originalError": str(error)}
+            error = "No row with the given identifier exists"
         logging.error(error, extra=extra)
         return e_aanvragen
 
