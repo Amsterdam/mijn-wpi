@@ -162,7 +162,11 @@ def get_e_aanvragen(bsn):
         response = get_client().service.getEAanvraagTOZO(bsn)
         e_aanvragen = response["documentgegevens"] if response else []
     except Exception as error:
-        logging.error(error)
+        extra = None
+        if "No row with the given identifier exists" in str(error):
+            error = "No row with the given identifier exists"
+            extra = {"originalError": str(error)}
+        logging.error(error, extra=extra)
         return e_aanvragen
 
     aanvragen = []
