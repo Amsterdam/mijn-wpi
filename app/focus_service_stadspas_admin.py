@@ -61,9 +61,9 @@ def get_stadspas_admin_number(bsn):
         logging.error(error)
         return focus_stadspas
 
-    admin_number = focus_stadspas["administratienummer"]
+    admin_number = focus_stadspas["administratienummer"] if focus_stadspas else None
 
-    if not admin_number or not focus_stadspas:
+    if not admin_number:
         return None
 
     has_pas = False
