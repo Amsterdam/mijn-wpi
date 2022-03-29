@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import date, datetime
 from functools import wraps
@@ -181,3 +182,20 @@ def default_if_none(data, key, default):
 def camel_case(s):
     s = sub(r"(_|-)+", " ", s).title().replace(" ", "")
     return "".join([s[0].lower(), s[1:]])
+
+
+def handle_soap_service_error(error):
+    error_original = error
+    extra_default = {"originalError": error_original}
+    extra = None
+    error_string = str(error)
+
+    if "No row with the given identifier exists" in error_string:
+        extra = extra_default
+        error = "No row with the given identifier exists"
+
+    elif "Max retries exceeded with url" in error_string:
+        extra = extra_default
+        error = "Focus connection timeout"
+
+    logging.error(error, extra=extra)

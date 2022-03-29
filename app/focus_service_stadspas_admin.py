@@ -6,6 +6,7 @@ from app.focus_config import (
 )
 from app.focus_service_aanvragen import get_client
 from app.gpass_config import GPASS_ADMIN_NUMBER_GEMEENTE_CODE
+from app.utils import handle_soap_service_error
 
 
 def has_groene_stip(fondsen):
@@ -58,7 +59,7 @@ def get_stadspas_admin_number(bsn):
     try:
         focus_stadspas = get_client().service.getStadspas(bsn=bsn)
     except Exception as error:
-        logging.error(error)
+        handle_soap_service_error(error)
         return focus_stadspas
 
     admin_number = focus_stadspas["administratienummer"] if focus_stadspas else None

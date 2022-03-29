@@ -1,5 +1,6 @@
 import logging
 from app.focus_service_aanvragen import get_client, get_document_url
+from app.utils import handle_soap_service_error
 
 
 def get_jaaropgaven(bsn):
@@ -41,7 +42,7 @@ def get_uitkeringsspecificaties(bsn):
         specificaties_source = get_client().service.getUitkeringspecificaties(bsn)
         specificaties_source = specificaties_source["document"]
     except Exception as error:
-        logging.error(error)
+        handle_soap_service_error(error)
         return specificaties
 
     for specificatie_source in specificaties_source:

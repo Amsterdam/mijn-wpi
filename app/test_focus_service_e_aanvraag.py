@@ -163,7 +163,11 @@ class FocusServiceEAanvraag(TestCase):
 
     @patch("app.focus_service_e_aanvraag.logging.error")
     @patch("app.focus_service_e_aanvraag.get_client")
-    def test_get_e_aanvragen(self, get_client_mock, log_error_mock):
+    def test_get_e_aanvragen(
+        self,
+        get_client_mock,
+        log_error_mock,
+    ):
         mock_client = MockClient(
             response=example_soap_response, name="getEAanvraagTOZO"
         )
@@ -173,6 +177,7 @@ class FocusServiceEAanvraag(TestCase):
         # print(json.dumps(result, indent=4))
 
         mock_client.service.getEAanvraagTOZO.assert_called_with(bsn)
+
         log_error_mock.assert_has_calls(
             [
                 call(

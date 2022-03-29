@@ -20,7 +20,7 @@ from app.focus_config import (
     FOCUS_USERNAME,
     FOCUS_WSDL,
 )
-from app.utils import camel_case, default_if_none
+from app.utils import camel_case, default_if_none, handle_soap_service_error
 
 focus_client = None
 
@@ -248,7 +248,7 @@ def get_aanvragen(bsn):
     try:
         all_aanvragen = get_client().service.getAanvragen(bsn)
     except Exception as error:
-        logging.error(error)
+        handle_soap_service_error(error)
         return aanvragen
 
     for product_group in all_aanvragen["soortProduct"]:

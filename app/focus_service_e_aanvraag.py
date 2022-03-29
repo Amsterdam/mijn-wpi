@@ -8,6 +8,7 @@ from app.e_aanvraag_config import (
     E_AANVRAAG_STEP_ID_TRANSLATIONS,
 )
 from app.focus_service_aanvragen import get_client, get_document_url
+from app.utils import handle_soap_service_error
 
 
 def get_step_status(step_id):
@@ -162,11 +163,7 @@ def get_e_aanvragen(bsn):
         response = get_client().service.getEAanvraagTOZO(bsn)
         e_aanvragen = response["documentgegevens"] if response else []
     except Exception as error:
-        extra = None
-        if "No row with the given identifier exists" in str(error):
-            extra = {"originalError": str(error)}
-            error = "No row with the given identifier exists"
-        logging.error(error, extra=extra)
+        handle_soap_service_error(error)
         return e_aanvragen
 
     aanvragen = []
