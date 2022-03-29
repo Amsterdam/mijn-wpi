@@ -1,4 +1,3 @@
-import logging
 from app.focus_config import (
     FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC,
     FOCUS_STADSPAS_FONDSEN_GROENE_STIP,
