@@ -11,7 +11,7 @@ def get_jaaropgaven(bsn):
         jaaropgaven_source = get_client().service.getJaaropgaven(bsn)
         jaaropgaven_source = jaaropgaven_source["document"]
     except Exception as error:
-        logging.error(error)
+        handle_soap_service_error(error)
         return jaaropgaven
 
     for jaaropgave_source in jaaropgaven_source:
