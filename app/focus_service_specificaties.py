@@ -1,4 +1,3 @@
-import logging
 from app.focus_service_aanvragen import get_client, get_document_url
 from app.utils import handle_soap_service_error
 
