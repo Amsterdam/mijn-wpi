@@ -43,9 +43,11 @@ class TestSpecificatieService(TestCase):
         self.assertEqual(result[0]["title"], "test1 2020")
         self.assertEqual(result[1]["title"], "test2 2021")
 
-    @patch("app.focus_service_specificaties.logging.error")
+    @patch("app.focus_service_specificaties.handle_soap_service_error")
     @patch("app.focus_service_specificaties.get_client")
-    def test_get_jaaropgaven_error(self, get_client_mock, log_error_mock):
+    def test_get_jaaropgaven_error(
+        self, get_client_mock, handle_soap_service_error_mock
+    ):
 
         mock_client = MockClient(
             response=None,
@@ -58,7 +60,7 @@ class TestSpecificatieService(TestCase):
         get_jaaropgaven(bsn)
 
         mock_client.service.getJaaropgaven.assert_called_with(bsn)
-        log_error_mock.assert_called()
+        handle_soap_service_error_mock.assert_called()
 
     @patch("app.focus_service_specificaties.get_client")
     def test_get_uitkeringsspecificaties(self, get_client_mock):
@@ -81,9 +83,11 @@ class TestSpecificatieService(TestCase):
         self.assertEqual(result[0]["title"], "test1 Januari-2020")
         self.assertEqual(result[1]["title"], "test2 Februari-2020")
 
-    @patch("app.focus_service_specificaties.logging.error")
+    @patch("app.focus_service_specificaties.handle_soap_service_error")
     @patch("app.focus_service_specificaties.get_client")
-    def test_get_uitkeringsspecificaties_error(self, get_client_mock, log_error_mock):
+    def test_get_uitkeringsspecificaties_error(
+        self, get_client_mock, handle_soap_service_error_mock
+    ):
 
         mock_client = MockClient(
             response=None,
@@ -96,4 +100,4 @@ class TestSpecificatieService(TestCase):
         get_uitkeringsspecificaties(bsn)
 
         mock_client.service.getUitkeringspecificaties.assert_called_with(bsn)
-        log_error_mock.assert_called()
+        handle_soap_service_error_mock.assert_called()
