@@ -194,8 +194,10 @@ def handle_soap_service_error(error):
         extra = extra_default
         error = "No row with the given identifier exists"
 
-    elif "Max retries exceeded with url" in error_string:
+    elif ("Max retries exceeded with url" in error_string) or (
+        "Failed to establish a connection" in error_string
+    ):
         extra = extra_default
-        error = "Focus connection timeout"
+        error = "Focus connection failure"
 
     logging.error(error, extra=extra)
