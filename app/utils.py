@@ -184,6 +184,15 @@ def camel_case(s):
     return "".join([s[0].lower(), s[1:]])
 
 
+CONNECTION_ERRORS = [
+    "Max retries exceeded with url",
+    "Failed to establish a connection",
+    "Connection aborted",
+    "read timeout",
+    "ConnectionError",
+]
+
+
 def handle_soap_service_error(error):
     error_original = error
     extra_default = {"originalError": error_original}
@@ -194,9 +203,7 @@ def handle_soap_service_error(error):
         extra = extra_default
         error = "No row with the given identifier exists"
 
-    elif ("Max retries exceeded with url" in error_string) or (
-        "Failed to establish a connection" in error_string
-    ):
+    elif filter(lambda err: err in error_string, CONNECTION_ERRORS):
         extra = extra_default
         error = "Focus connection failure"
 

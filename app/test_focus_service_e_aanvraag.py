@@ -181,18 +181,12 @@ class FocusServiceEAanvraag(TestCase):
         log_error_mock.assert_has_calls(
             [
                 call(
-                    "Unknown E_Aanvraag Document encountered",
-                    extra={
-                        "code": "176371",
-                        "description": "Bbz toekennen PU via batch",
-                    },
+                    "Unknown E_Aanvraag Document encountered 176371 / Bbz toekennen PU via batch",
+                    extra=None,
                 ),
                 call(
-                    "Unknown E_Aanvraag Document encountered",
-                    extra={
-                        "code": "176372",
-                        "description": "Bbz toekennen voorschot via batch",
-                    },
+                    "Unknown E_Aanvraag Document encountered 176372 / Bbz toekennen voorschot via batch",
+                    extra=None,
                 ),
             ]
         )
