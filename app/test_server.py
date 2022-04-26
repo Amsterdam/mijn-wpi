@@ -1,6 +1,5 @@
 import datetime
 from unittest.mock import patch
-from app.auth import AuthError
 
 from app.test_app import WpiApiTestApp
 from app.test_focus_service_aanvragen import TestFocusBijstandAanvraag
