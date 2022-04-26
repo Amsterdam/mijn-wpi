@@ -1,22 +1,12 @@
+from email.mime import application
 from unittest.mock import MagicMock
 
-from tma_saml import FlaskServerTMATestCase
-
+from app.auth import FlaskServerTestCase
 from app.server import application
 
 
-class WpiApiTestApp(FlaskServerTMATestCase):
-    def setUp(self):
-        self.client = self.get_tma_test_app(application)
-        self.maxDiff = None
-
-    TEST_BSN = "111222333"
-
-    def get_secure(self, location):
-        return self.client.get(location, headers=self.saml_headers())
-
-    def saml_headers(self):
-        return self.add_digi_d_headers(self.TEST_BSN)
+class WpiApiTestApp(FlaskServerTestCase):
+    app = application
 
 
 class MockResponse:

@@ -1,8 +1,6 @@
 import datetime
 from unittest.mock import patch
 
-from tma_saml.for_tests.cert_and_key import server_crt
-
 from app.test_app import WpiApiTestApp
 from app.test_focus_service_aanvragen import TestFocusBijstandAanvraag
 from app.test_focus_service_e_aanvraag import example_result
@@ -11,7 +9,6 @@ from app.utils import encrypt
 
 
 @patch("app.utils.ENABLE_OPENAPI_VALIDATION", True)
-@patch("app.utils.get_tma_certificate", lambda: server_crt)
 class WPITestServer(WpiApiTestApp):
     def test_status_health(self):
         response = self.client.get("/status/health")
