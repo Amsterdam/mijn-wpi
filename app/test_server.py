@@ -1,5 +1,6 @@
 import datetime
 from unittest.mock import patch
+from app.auth import AuthError
 
 from app.test_app import WpiApiTestApp
 from app.test_focus_service_aanvragen import TestFocusBijstandAanvraag
@@ -32,6 +33,13 @@ class WPITestServer(WpiApiTestApp):
         self.assertEqual(
             response_json["content"], [TestFocusBijstandAanvraag.product_transformed]
         )
+
+    def test_aanvragen_fail(self):
+        response = self.client.get("/wpi/uitkering-en-stadspas/aanvragen")
+        response_json = response.get_json()
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response_json["status"], "ERROR")
 
     @patch("app.server.get_e_aanvragen")
     def test_e_aanvragen(self, get_e_aanvragen_mock):
