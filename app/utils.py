@@ -6,7 +6,7 @@ from re import sub
 
 import yaml
 from cryptography.fernet import Fernet
-from flask import g, request
+from flask import request
 from flask.helpers import make_response
 from openapi_core import create_spec
 from openapi_core.contrib.flask import FlaskOpenAPIRequest, FlaskOpenAPIResponse

@@ -1,4 +1,3 @@
-from email.mime import application
 from unittest.mock import MagicMock
 
 from app.auth import FlaskServerTestCase
