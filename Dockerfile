@@ -1,4 +1,4 @@
-FROM amsterdam/python:3.9.6-slim-bullseye-minimal
+FROM amsterdam/python:3.9.6-buster
 
 WORKDIR /api
 
@@ -11,7 +11,7 @@ ENV LANGUAGE nl_NL:nl
 ENV LC_ALL nl_NL.UTF-8
 
 COPY requirements.txt /api
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY ./scripts /api/scripts
 COPY ./app /api/app
