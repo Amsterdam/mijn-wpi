@@ -1,9 +1,6 @@
-FROM amsterdam/python:3.8-buster
+FROM amsterdam/python:3.9.6-slim-bullseye-minimal
 
 WORKDIR /api
-
-# remove this when the 3.8.6-buster image is fixed
-ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 RUN apt-get update
 RUN apt-get -y install locales
@@ -15,7 +12,6 @@ ENV LC_ALL nl_NL.UTF-8
 
 COPY requirements.txt /api
 RUN pip install --no-cache-dir -r requirements.txt
-RUN rm requirements.txt
 
 COPY ./scripts /api/scripts
 COPY ./app /api/app
