@@ -11,7 +11,7 @@ ENV LANGUAGE nl_NL:nl
 ENV LC_ALL nl_NL.UTF-8
 
 COPY requirements.txt /api
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 RUN rm requirements.txt
 
 COPY ./scripts /api/scripts
