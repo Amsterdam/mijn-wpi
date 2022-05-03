@@ -3,6 +3,7 @@ import logging
 
 from app.e_aanvraag_config import (
     E_AANVRAAG_DOCUMENT_CONFIG,
+    E_AANVRAAG_EXCLUDE_AANVRAAG_DOCUMENT_AGGREGATION,
     E_AANVRAAG_PRODUCT_TITLES,
     E_AANVRAAG_STEP_COLLECTION_IDS,
     E_AANVRAAG_STEP_ID_TRANSLATIONS,
@@ -48,7 +49,10 @@ def create_e_aanvraag(product_name, steps):
     other_steps = []
 
     for step in steps_sorted:
-        if step["id"] == "aanvraag":
+        if (
+            step["id"] == "aanvraag"
+            and product_name not in E_AANVRAAG_EXCLUDE_AANVRAAG_DOCUMENT_AGGREGATION
+        ):
             if not aanvraag_step:
                 aanvraag_step = step
             else:
@@ -56,7 +60,10 @@ def create_e_aanvraag(product_name, steps):
         else:
             other_steps.append(step)
 
-    if aanvraag_step:
+    if (
+        aanvraag_step
+        and product_name not in E_AANVRAAG_EXCLUDE_AANVRAAG_DOCUMENT_AGGREGATION
+    ):
         steps = [aanvraag_step] + other_steps
     else:
         steps = other_steps
