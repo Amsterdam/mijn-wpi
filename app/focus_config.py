@@ -21,6 +21,17 @@ FOCUS_TITLE_TRANSLATIONS = {
     "LO: Besluit": "Besluit aanvraag bijstandsuitkering",
     "LO: In behandeling": "Uw aanvraag is in behandeling genomen",
     "LO: Herstel": "Verzoek om aanvullende informatie van u",
+    # Requirements Document Thema Inkomen Versie 4.2 / Bijlage 11 Lijst overige documenten
+    # Titels gebruikt als E_AANVRAAG configuratie
+    "Formulier Inlichtingen Klant": "Brief meer informatie",
+    "Formulier Inlichtingen partner": "Brief meer informatie",
+    "Aanvraagformulier WWB (kort)": "Brief meer informatie",
+    "Aanvraag WWB (GALO)": "Aanvraag uitkering",
+    "Toekenning Levensonderhoud": "Besluit toekenning",
+    "Afwijzen Levensonderhoud": "Besluit afwijzing",
+    "Afwijzen Levensonderhoud (BIJ)": "Besluit afwijzing",
+    "Toekennen Levensonderhoud (BIJ)": "Besluit toekenning",
+    "Niet in behandeling nemen": "Besluit buiten behandeling",
     # Product name
     "Levensonderhoud": "Bijstandsuitkering",
 }
