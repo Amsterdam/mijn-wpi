@@ -76,18 +76,20 @@ def create_e_aanvraag(product_name, steps):
         request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps_sorted)) 
         request_step = request_steps[-1] if request_steps else None # last request step
         if request_step is not None:
-            if datetime.fromisoformat(request_step['datePublished']) < datetime.fromisoformat(decision_step['datePublished']):
-                filtered_steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) <= datetime.fromisoformat(request_step['datePublished'])), steps_sorted)
-                steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) > datetime.fromisoformat(request_step['datePublished'])), steps_sorted)
+            if datetime.fromisoformat(decision_step['datePublished']) < datetime.fromisoformat(request_step['datePublished']):
+                filtered_steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) >= datetime.fromisoformat(request_step['datePublished']), steps_sorted))
+                steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) < datetime.fromisoformat(request_step['datePublished']), steps_sorted))
+                request_last_step = filtered_steps[-1]
+                last_step = steps[-1]
                 bbz = {
                     "id": 'nieuw',
                     "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
                     "about": product_name,
-                    "dateStart": first_step["datePublished"],
-                    "datePublished": last_step["datePublished"],
-                    "dateEnd": date_end,
-                    "decision": decision_step["decision"] if decision_step else None,
-                    "statusId": last_step["id"],
+                    "dateStart": request_step["datePublished"],
+                    "datePublished": request_last_step["datePublished"],
+                    "dateEnd": None,
+                    "decision": None,
+                    "statusId": request_last_step["id"],
                     "steps": filtered_steps,
                 }
                 products.append(bbz)

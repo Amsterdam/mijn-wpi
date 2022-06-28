@@ -119,6 +119,76 @@ class FocusServiceEAanvraag(TestCase):
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
+    def test_create_e_aanvraag_bbz(self):
+        product_name = "Bbz"
+        steps = [
+            {
+                "id": "aanvraag",
+                "status": "Aanvraag",
+                "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
+                "documents": [],
+            },
+            {
+                "id": "besluit",
+                "status": "Besluit",
+                "datePublished": datetime.datetime(2020, 11, 15, 10, 00, 2),
+                "documents": [],
+                "decision": "toekenning",
+            },
+              {
+                "id": "aanvraag",
+                "status": "Aanvraag",
+                "datePublished": datetime.datetime(2021, 10, 23, 17, 20, 4),
+                "documents": [],
+            },
+        ]
+        result_expected = [
+        {
+            "title": "Bbz",
+            "about": "Bbz",
+            "id": "nieuw",
+            "dateStart": "2021-10-23T17:20:04",
+            "datePublished": "2021-10-23T17:20:04",
+            "dateEnd": None,
+            "decision": None,
+            "statusId": "aanvraag",
+            "steps": [
+                {
+                    "id": "aanvraag",
+                    "datePublished": "2021-10-23T17:20:04",
+                    "status": "Aanvraag",
+                    "documents": [],
+                },
+            ],
+        },
+        {
+            "title": "Bbz",
+            "about": "Bbz",
+            "id": "ccb5123f8e05693fda804704fe01d2bf",
+            "dateStart": "2020-10-23T17:20:04",
+            "datePublished": "2020-11-15T10:00:02",
+            "dateEnd": "2020-11-15T10:00:02",
+            "decision": "toekenning",
+            "statusId": "besluit",
+            "steps": [
+                {
+                    "id": "aanvraag",
+                    "datePublished": "2020-10-23T17:20:04",
+                    "status": "Aanvraag",
+                    "documents": [],
+                },
+                {
+                    "id": "besluit",
+                    "datePublished": "2020-11-15T10:00:02",
+                    "status": "Besluit",
+                    "decision": "toekenning",
+                    "documents": [],
+                },
+            ],
+        }]
+        result = create_e_aanvraag(product_name, steps)
+        self.assertEqual(result, result_expected)
+
     def test_get_e_aanvraag_step(self):
         e_aanvraag = {
             "datumDocument": datetime.datetime(2020, 10, 27, 17, 20, 4),
