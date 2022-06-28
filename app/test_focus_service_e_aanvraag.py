@@ -146,7 +146,7 @@ class FocusServiceEAanvraag(TestCase):
         {
             "title": "Bbz",
             "about": "Bbz",
-            "id": "nieuw",
+            "id": "1bb40ca67b5ba2e2af43581b0db19a39",
             "dateStart": "2021-10-23T17:20:04",
             "datePublished": "2021-10-23T17:20:04",
             "dateEnd": None,

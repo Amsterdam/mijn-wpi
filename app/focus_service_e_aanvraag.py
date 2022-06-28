@@ -81,8 +81,10 @@ def create_e_aanvraag(product_name, steps):
                 steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) < datetime.fromisoformat(request_step['datePublished']), steps_sorted))
                 request_last_step = filtered_steps[-1]
                 last_step = steps[-1]
+                raw_id = product_name + filtered_steps[0]["datePublished"]
+                new_id = hashlib.md5(raw_id.encode("utf-8")).hexdigest()
                 bbz = {
-                    "id": 'nieuw',
+                    "id": new_id,
                     "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
                     "about": product_name,
                     "dateStart": request_step["datePublished"],
