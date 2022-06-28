@@ -1,3 +1,4 @@
+from datetime import datetime
 import hashlib
 import logging
 
@@ -34,6 +35,7 @@ def create_e_aanvraag(product_name, steps):
     steps_sorted = sorted(steps, key=lambda d: d["datePublished"])
     raw_id = product_name + steps_sorted[0]["datePublished"].isoformat()
     id = hashlib.md5(raw_id.encode("utf-8")).hexdigest()
+    products = []
 
     first_step = steps_sorted[0]  # aanvraag step
     last_step = steps_sorted[-1]  # any step
@@ -68,6 +70,28 @@ def create_e_aanvraag(product_name, steps):
     else:
         steps = other_steps
 
+    # if bbz document check if there is a open request if so create a second product
+    # an open request is defined as a request on a later date than the final decision
+    if(product_name == 'Bbz' and decision_step is not None):
+        request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps_sorted)) 
+        request_step = request_steps[-1] if request_steps else None # last request step
+        if request_step is not None:
+            if datetime.fromisoformat(request_step['datePublished']) < datetime.fromisoformat(decision_step['datePublished']):
+                filtered_steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) <= datetime.fromisoformat(request_step['datePublished'])), steps_sorted)
+                steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) > datetime.fromisoformat(request_step['datePublished'])), steps_sorted)
+                bbz = {
+                    "id": 'nieuw',
+                    "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
+                    "about": product_name,
+                    "dateStart": first_step["datePublished"],
+                    "datePublished": last_step["datePublished"],
+                    "dateEnd": date_end,
+                    "decision": decision_step["decision"] if decision_step else None,
+                    "statusId": last_step["id"],
+                    "steps": filtered_steps,
+                }
+                products.append(bbz)
+
     product = {
         "id": id,
         "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
@@ -80,7 +104,9 @@ def create_e_aanvraag(product_name, steps):
         "steps": steps,
     }
 
-    return product
+    products.append(product)
+    
+    return products
 
 
 def get_e_aanvraag_document(e_aanvraag, document_config):
@@ -182,6 +208,6 @@ def get_e_aanvragen(bsn):
     for product_name in steps_collection.keys():
         if steps_collection[product_name]:
             aanvraag = create_e_aanvraag(product_name, steps_collection[product_name])
-            aanvragen.append(aanvraag)
+            aanvragen.extend(aanvraag)
 
     return aanvragen

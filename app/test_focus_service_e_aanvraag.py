@@ -53,7 +53,7 @@ class FocusServiceEAanvraag(TestCase):
                 "documents": [],
             }
         ]
-        result_expected = {
+        result_expected = [{
             "title": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
             "about": "Tozo 5",
             "id": "8c04fe509fe8e9e817807e85d639810b",
@@ -70,7 +70,7 @@ class FocusServiceEAanvraag(TestCase):
                     "documents": [],
                 }
             ],
-        }
+        }]
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
@@ -91,7 +91,7 @@ class FocusServiceEAanvraag(TestCase):
                 "decision": "toekenning",
             },
         ]
-        result_expected = {
+        result_expected = [{
             "title": "TONK",
             "about": "TONK",
             "id": "d818f43f721dddca7dce630d1e9ac940",
@@ -115,7 +115,7 @@ class FocusServiceEAanvraag(TestCase):
                     "documents": [],
                 },
             ],
-        }
+        }]
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
