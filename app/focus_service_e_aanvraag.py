@@ -32,7 +32,7 @@ def get_steps_collection():
 
 
 def create_bbz_aanvraag(steps, decision_step, id):
-    products = [];
+    products = []
     product_name = 'Bbz'
     request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps))
     request_step = request_steps[-1] if request_steps else None  # last request step
@@ -114,8 +114,8 @@ def create_e_aanvraag(product_name, steps):
     # if bbz document check if there is a open request if so create a second product
     # an open request is defined as a request on a later date than the final decision
     if(product_name == 'Bbz' and decision_step is not None):
-       return create_bbz_aanvraag(steps_sorted, decision_step, id)
-    
+        return create_bbz_aanvraag(steps_sorted, decision_step, id)
+
     product = {
         "id": id,
         "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
