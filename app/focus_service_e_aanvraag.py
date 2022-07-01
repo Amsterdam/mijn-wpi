@@ -73,8 +73,8 @@ def create_e_aanvraag(product_name, steps):
     # if bbz document check if there is a open request if so create a second product
     # an open request is defined as a request on a later date than the final decision
     if(product_name == 'Bbz' and decision_step is not None):
-        request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps_sorted)) 
-        request_step = request_steps[-1] if request_steps else None # last request step
+        request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps_sorted))
+        request_step = request_steps[-1] if request_steps else None  # last request step
         if request_step is not None:
             if datetime.fromisoformat(decision_step['datePublished']) < datetime.fromisoformat(request_step['datePublished']):
                 filtered_steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) >= datetime.fromisoformat(request_step['datePublished']), steps_sorted))
@@ -109,7 +109,7 @@ def create_e_aanvraag(product_name, steps):
     }
 
     products.append(product)
-    
+
     return products
 
 

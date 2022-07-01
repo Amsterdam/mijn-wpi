@@ -143,49 +143,50 @@ class FocusServiceEAanvraag(TestCase):
             },
         ]
         result_expected = [
-        {
-            "title": "Bbz",
-            "about": "Bbz",
-            "id": "1bb40ca67b5ba2e2af43581b0db19a39",
-            "dateStart": "2021-10-23T17:20:04",
-            "datePublished": "2021-10-23T17:20:04",
-            "dateEnd": None,
-            "decision": None,
-            "statusId": "aanvraag",
-            "steps": [
-                {
-                    "id": "aanvraag",
-                    "datePublished": "2021-10-23T17:20:04",
-                    "status": "Aanvraag",
-                    "documents": [],
-                },
-            ],
-        },
-        {
-            "title": "Bbz",
-            "about": "Bbz",
-            "id": "ccb5123f8e05693fda804704fe01d2bf",
-            "dateStart": "2020-10-23T17:20:04",
-            "datePublished": "2020-11-15T10:00:02",
-            "dateEnd": "2020-11-15T10:00:02",
-            "decision": "toekenning",
-            "statusId": "besluit",
-            "steps": [
-                {
-                    "id": "aanvraag",
-                    "datePublished": "2020-10-23T17:20:04",
-                    "status": "Aanvraag",
-                    "documents": [],
-                },
-                {
-                    "id": "besluit",
-                    "datePublished": "2020-11-15T10:00:02",
-                    "status": "Besluit",
-                    "decision": "toekenning",
-                    "documents": [],
-                },
-            ],
-        }]
+            {
+                "title": "Bbz",
+                "about": "Bbz",
+                "id": "1bb40ca67b5ba2e2af43581b0db19a39",
+                "dateStart": "2021-10-23T17:20:04",
+                "datePublished": "2021-10-23T17:20:04",
+                "dateEnd": None,
+                "decision": None,
+                "statusId": "aanvraag",
+                "steps": [
+                    {
+                        "id": "aanvraag",
+                        "datePublished": "2021-10-23T17:20:04",
+                        "status": "Aanvraag",
+                        "documents": [],
+                    },
+                ],
+            },
+            {
+                "title": "Bbz",
+                "about": "Bbz",
+                "id": "ccb5123f8e05693fda804704fe01d2bf",
+                "dateStart": "2020-10-23T17:20:04",
+                "datePublished": "2020-11-15T10:00:02",
+                "dateEnd": "2020-11-15T10:00:02",
+                "decision": "toekenning",
+                "statusId": "besluit",
+                "steps": [
+                    {
+                        "id": "aanvraag",
+                        "datePublished": "2020-10-23T17:20:04",
+                        "status": "Aanvraag",
+                        "documents": [],
+                    },
+                    {
+                        "id": "besluit",
+                        "datePublished": "2020-11-15T10:00:02",
+                        "status": "Besluit",
+                        "decision": "toekenning",
+                        "documents": [],
+                    },
+                ],
+            }
+        ]
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
