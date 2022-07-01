@@ -135,7 +135,7 @@ class FocusServiceEAanvraag(TestCase):
                 "documents": [],
                 "decision": "toekenning",
             },
-              {
+            {
                 "id": "aanvraag",
                 "status": "Aanvraag",
                 "datePublished": datetime.datetime(2021, 10, 23, 17, 20, 4),
