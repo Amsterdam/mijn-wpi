@@ -64,7 +64,6 @@ def create_e_aanvraag(product_name, steps):
 
     if (
         aanvraag_step
-        and product_name not in E_AANVRAAG_EXCLUDE_AANVRAAG_DOCUMENT_AGGREGATION
     ):
         steps = [aanvraag_step] + other_steps
     else:
