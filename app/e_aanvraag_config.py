@@ -861,6 +861,12 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "step_id": E_AANVRAAG_STEP_ID["aanvraag"],
         "about": E_AANVRAAG_ABOUT["Bbz"],
     },
+    "854": {
+        "omschrijving": "Bbz3 Inkomsten verklaring",
+        "document_title": "Wijziging inkomsten Bbz",
+        "step_id": E_AANVRAAG_STEP_ID["inkomstenwijziging"],
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+    },
     "175765": {
         "omschrijving": "Bbz Toekennen",
         "document_title": "Besluit toekenning",
