@@ -53,7 +53,7 @@ class FocusServiceEAanvraag(TestCase):
                 "documents": [],
             }
         ]
-        result_expected = {
+        result_expected = [{
             "title": "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
             "about": "Tozo 5",
             "id": "8c04fe509fe8e9e817807e85d639810b",
@@ -70,7 +70,7 @@ class FocusServiceEAanvraag(TestCase):
                     "documents": [],
                 }
             ],
-        }
+        }]
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
@@ -91,7 +91,7 @@ class FocusServiceEAanvraag(TestCase):
                 "decision": "toekenning",
             },
         ]
-        result_expected = {
+        result_expected = [{
             "title": "TONK",
             "about": "TONK",
             "id": "d818f43f721dddca7dce630d1e9ac940",
@@ -115,7 +115,78 @@ class FocusServiceEAanvraag(TestCase):
                     "documents": [],
                 },
             ],
-        }
+        }]
+        result = create_e_aanvraag(product_name, steps)
+        self.assertEqual(result, result_expected)
+
+    def test_create_e_aanvraag_bbz(self):
+        product_name = "Bbz"
+        steps = [
+            {
+                "id": "aanvraag",
+                "status": "Aanvraag",
+                "datePublished": datetime.datetime(2020, 10, 23, 17, 20, 4),
+                "documents": [],
+            },
+            {
+                "id": "besluit",
+                "status": "Besluit",
+                "datePublished": datetime.datetime(2020, 11, 15, 10, 00, 2),
+                "documents": [],
+                "decision": "toekenning",
+            },
+            {
+                "id": "aanvraag",
+                "status": "Aanvraag",
+                "datePublished": datetime.datetime(2021, 10, 23, 17, 20, 4),
+                "documents": [],
+            },
+        ]
+        result_expected = [
+            {
+                "title": "Bbz",
+                "about": "Bbz",
+                "id": "1bb40ca67b5ba2e2af43581b0db19a39",
+                "dateStart": "2021-10-23T17:20:04",
+                "datePublished": "2021-10-23T17:20:04",
+                "dateEnd": None,
+                "decision": None,
+                "statusId": "aanvraag",
+                "steps": [
+                    {
+                        "id": "aanvraag",
+                        "datePublished": "2021-10-23T17:20:04",
+                        "status": "Aanvraag",
+                        "documents": [],
+                    },
+                ],
+            },
+            {
+                "title": "Bbz",
+                "about": "Bbz",
+                "id": "ccb5123f8e05693fda804704fe01d2bf",
+                "dateStart": "2020-10-23T17:20:04",
+                "datePublished": "2020-11-15T10:00:02",
+                "dateEnd": "2020-11-15T10:00:02",
+                "decision": "toekenning",
+                "statusId": "besluit",
+                "steps": [
+                    {
+                        "id": "aanvraag",
+                        "datePublished": "2020-10-23T17:20:04",
+                        "status": "Aanvraag",
+                        "documents": [],
+                    },
+                    {
+                        "id": "besluit",
+                        "datePublished": "2020-11-15T10:00:02",
+                        "status": "Besluit",
+                        "decision": "toekenning",
+                        "documents": [],
+                    },
+                ],
+            }
+        ]
         result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
