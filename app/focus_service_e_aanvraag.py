@@ -33,13 +33,28 @@ def get_steps_collection():
 
 def create_bbz_aanvraag(steps, decision_step, id):
     products = []
-    product_name = 'Bbz'
+    product_name = "Bbz"
     request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps))
     request_step = request_steps[-1] if request_steps else None  # last request step
+    last_step = None
 
-    if request_step is not None and datetime.fromisoformat(decision_step['datePublished']) < datetime.fromisoformat(request_step['datePublished']):
-        filtered_steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) >= datetime.fromisoformat(request_step['datePublished']), steps))
-        steps = list(filter(lambda s: datetime.fromisoformat(s['datePublished']) < datetime.fromisoformat(request_step['datePublished']), steps))
+    if request_step is not None and datetime.fromisoformat(
+        decision_step["datePublished"]
+    ) < datetime.fromisoformat(request_step["datePublished"]):
+        filtered_steps = list(
+            filter(
+                lambda s: datetime.fromisoformat(s["datePublished"])
+                >= datetime.fromisoformat(request_step["datePublished"]),
+                steps,
+            )
+        )
+        steps = list(
+            filter(
+                lambda s: datetime.fromisoformat(s["datePublished"])
+                < datetime.fromisoformat(request_step["datePublished"]),
+                steps,
+            )
+        )
         request_last_step = filtered_steps[-1]
         last_step = steps[-1]
         raw_id = product_name + filtered_steps[0]["datePublished"]
@@ -57,13 +72,16 @@ def create_bbz_aanvraag(steps, decision_step, id):
         }
         products.append(bbz)
 
+    if not last_step:
+        last_step = steps[-1]
+
     old_requests = {
         "id": id,
         "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
         "about": product_name,
         "dateStart": steps[0]["datePublished"],
         "datePublished": last_step["datePublished"],
-        "dateEnd": decision_step['datePublished'],
+        "dateEnd": decision_step["datePublished"],
         "decision": decision_step["decision"] if decision_step else None,
         "statusId": last_step["id"],
         "steps": steps,
@@ -113,7 +131,7 @@ def create_e_aanvraag(product_name, steps):
 
     # if bbz document check if there is a open request if so create a second product
     # an open request is defined as a request on a later date than the final decision
-    if(product_name == 'Bbz' and decision_step is not None):
+    if product_name == "Bbz" and decision_step is not None:
         return create_bbz_aanvraag(steps_sorted, decision_step, id)
 
     product = {
