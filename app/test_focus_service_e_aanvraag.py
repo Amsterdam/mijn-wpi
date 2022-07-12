@@ -1,4 +1,5 @@
 import datetime
+import json
 from unittest import TestCase
 from unittest.mock import call, patch
 
@@ -157,14 +158,26 @@ class FocusServiceEAanvraag(TestCase):
                 "datePublished": datetime.datetime(2021, 11, 30, 17, 20, 4),
                 "documents": [],
             },
+            {
+                "id": "aanvraag",
+                "status": "Aanvraag",
+                "datePublished": datetime.datetime(2022, 11, 23, 17, 20, 4),
+                "documents": [],
+            },
+            {
+                "id": "herstelTermijn",
+                "status": "Meer informatie",
+                "datePublished": datetime.datetime(2022, 11, 30, 17, 20, 4),
+                "documents": [],
+            },
         ]
         result_expected = [
             {
-                "id": "e2ae9169b51795132ab4d1c4ebc650d4",
+                "id": "234abf4a058d4fc5a588cc125d8873b5",
                 "title": "Bbz",
                 "about": "Bbz",
-                "dateStart": "2021-11-23T17:20:04",
-                "datePublished": "2021-11-30T17:20:04",
+                "dateStart": "2022-11-23T17:20:04",
+                "datePublished": "2022-11-30T17:20:04",
                 "dateEnd": None,
                 "decision": None,
                 "statusId": "herstelTermijn",
@@ -172,13 +185,13 @@ class FocusServiceEAanvraag(TestCase):
                     {
                         "id": "aanvraag",
                         "status": "Aanvraag",
-                        "datePublished": "2021-11-23T17:20:04",
+                        "datePublished": "2022-11-23T17:20:04",
                         "documents": [],
                     },
                     {
                         "id": "herstelTermijn",
                         "status": "Meer informatie",
-                        "datePublished": "2021-11-30T17:20:04",
+                        "datePublished": "2022-11-30T17:20:04",
                         "documents": [],
                     },
                 ],
@@ -188,10 +201,10 @@ class FocusServiceEAanvraag(TestCase):
                 "title": "Bbz",
                 "about": "Bbz",
                 "dateStart": "2020-10-23T17:20:04",
-                "datePublished": "2020-11-16T10:00:02",
+                "datePublished": "2021-11-30T17:20:04",
                 "dateEnd": "2020-11-15T10:00:02",
                 "decision": "toekenning",
-                "statusId": "terugvorderingsbesluit",
+                "statusId": "herstelTermijn",
                 "steps": [
                     {
                         "id": "aanvraag",
@@ -212,10 +225,23 @@ class FocusServiceEAanvraag(TestCase):
                         "datePublished": "2020-11-16T10:00:02",
                         "documents": [],
                     },
+                    {
+                        "id": "aanvraag",
+                        "status": "Aanvraag",
+                        "datePublished": "2021-11-23T17:20:04",
+                        "documents": [],
+                    },
+                    {
+                        "id": "herstelTermijn",
+                        "status": "Meer informatie",
+                        "datePublished": "2021-11-30T17:20:04",
+                        "documents": [],
+                    },
                 ],
             },
         ]
         result = create_e_aanvraag(product_name, steps)
+
         self.assertEqual(result, result_expected)
 
     def test_get_e_aanvraag_step(self):

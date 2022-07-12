@@ -48,13 +48,13 @@ def split_bbz_aanvraag(steps, split_at_step):
         else:
             steps_historic.append(step)
 
-    aanvraag_actual = create_e_aanvraag(product_name, steps_actual)
-    aanvraag_historic = create_e_aanvraag(product_name, steps_historic)
+    aanvraag_actual = create_e_aanvraag(product_name, steps_actual, 1)
+    aanvraag_historic = create_e_aanvraag(product_name, steps_historic, 1)
 
     return aanvraag_actual + aanvraag_historic
 
 
-def create_e_aanvraag(product_name, steps):
+def create_e_aanvraag(product_name, steps, recurse_depth=0):
     steps_sorted = sorted(steps, key=lambda d: d["datePublished"])
     raw_id = product_name + steps_sorted[0]["datePublished"].isoformat()
     id = hashlib.md5(raw_id.encode("utf-8")).hexdigest()
@@ -70,7 +70,12 @@ def create_e_aanvraag(product_name, steps):
     last_request_step = request_steps[-1] if request_steps else None
 
     # If bbz product, check if there is a request step after decision step, if so, split the steps into 2 e_aanvragen.
-    if product_name == "Bbz" and len(request_steps) > 1 and decision_step:
+    if (
+        product_name == "Bbz"
+        and len(request_steps) > 1
+        and decision_step
+        and recurse_depth == 0
+    ):
         return split_bbz_aanvraag(steps_sorted, last_request_step)
 
     for step in steps_sorted:
