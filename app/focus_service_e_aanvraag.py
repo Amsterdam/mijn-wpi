@@ -31,63 +31,27 @@ def get_steps_collection():
     return {id: [] for id in E_AANVRAAG_STEP_COLLECTION_IDS}
 
 
-def create_bbz_aanvraag(steps, decision_step, id):
-    products = []
+def split_bbz_aanvraag(steps, split_at_step):
     product_name = "Bbz"
-    request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps))
-    request_step = request_steps[-1] if request_steps else None  # last request step
-    last_step = None
 
-    if request_step is not None and datetime.fromisoformat(
-        decision_step["datePublished"]
-    ) < datetime.fromisoformat(request_step["datePublished"]):
-        filtered_steps = list(
-            filter(
-                lambda s: datetime.fromisoformat(s["datePublished"])
-                >= datetime.fromisoformat(request_step["datePublished"]),
-                steps,
-            )
-        )
-        steps = list(
-            filter(
-                lambda s: datetime.fromisoformat(s["datePublished"])
-                < datetime.fromisoformat(request_step["datePublished"]),
-                steps,
-            )
-        )
-        request_last_step = filtered_steps[-1]
-        last_step = steps[-1]
-        raw_id = product_name + filtered_steps[0]["datePublished"]
-        new_id = hashlib.md5(raw_id.encode("utf-8")).hexdigest()
-        bbz = {
-            "id": new_id,
-            "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
-            "about": product_name,
-            "dateStart": request_step["datePublished"],
-            "datePublished": request_last_step["datePublished"],
-            "dateEnd": None,
-            "decision": None,
-            "statusId": request_last_step["id"],
-            "steps": filtered_steps,
-        }
-        products.append(bbz)
+    steps_actual = []
+    steps_historic = []
 
-    if not last_step:
-        last_step = steps[-1]
+    use_actual_steps_list = False
 
-    old_requests = {
-        "id": id,
-        "title": E_AANVRAAG_PRODUCT_TITLES.get(product_name, product_name),
-        "about": product_name,
-        "dateStart": steps[0]["datePublished"],
-        "datePublished": last_step["datePublished"],
-        "dateEnd": decision_step["datePublished"],
-        "decision": decision_step["decision"] if decision_step else None,
-        "statusId": last_step["id"],
-        "steps": steps,
-    }
-    products.append(old_requests)
-    return products
+    for step in steps:
+        if step == split_at_step:
+            use_actual_steps_list = True
+
+        if use_actual_steps_list:
+            steps_actual.append(step)
+        else:
+            steps_historic.append(step)
+
+    aanvraag_actual = create_e_aanvraag(product_name, steps_actual)
+    aanvraag_historic = create_e_aanvraag(product_name, steps_historic)
+
+    return aanvraag_actual + aanvraag_historic
 
 
 def create_e_aanvraag(product_name, steps):
@@ -98,8 +62,16 @@ def create_e_aanvraag(product_name, steps):
 
     first_step = steps_sorted[0]  # aanvraag step
     last_step = steps_sorted[-1]  # any step
+
     decision_steps = list(filter(lambda s: s["id"] == "besluit", steps_sorted))
     decision_step = decision_steps[-1] if decision_steps else None  # Last decision step
+
+    request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps_sorted))
+    last_request_step = request_steps[-1] if request_steps else None
+
+    # If bbz product, check if there is a request step after decision step, if so, split the steps into 2 e_aanvragen.
+    if product_name == "Bbz" and len(request_steps) > 1:
+        return split_bbz_aanvraag(steps_sorted, last_request_step)
 
     for step in steps_sorted:
         step["datePublished"] = step["datePublished"].isoformat()
@@ -128,11 +100,6 @@ def create_e_aanvraag(product_name, steps):
         steps = [aanvraag_step] + other_steps
     else:
         steps = other_steps
-
-    # if bbz document check if there is a open request if so create a second product
-    # an open request is defined as a request on a later date than the final decision
-    if product_name == "Bbz" and decision_step is not None:
-        return create_bbz_aanvraag(steps_sorted, decision_step, id)
 
     product = {
         "id": id,
