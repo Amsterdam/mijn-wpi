@@ -173,30 +173,6 @@ class FocusServiceEAanvraag(TestCase):
         ]
         result_expected = [
             {
-                "id": "234abf4a058d4fc5a588cc125d8873b5",
-                "title": "Bbz",
-                "about": "Bbz",
-                "dateStart": "2022-11-23T17:20:04",
-                "datePublished": "2022-11-30T17:20:04",
-                "dateEnd": None,
-                "decision": None,
-                "statusId": "herstelTermijn",
-                "steps": [
-                    {
-                        "id": "aanvraag",
-                        "status": "Aanvraag",
-                        "datePublished": "2022-11-23T17:20:04",
-                        "documents": [],
-                    },
-                    {
-                        "id": "herstelTermijn",
-                        "status": "Meer informatie",
-                        "datePublished": "2022-11-30T17:20:04",
-                        "documents": [],
-                    },
-                ],
-            },
-            {
                 "id": "ccb5123f8e05693fda804704fe01d2bf",
                 "title": "Bbz",
                 "about": "Bbz",
@@ -239,9 +215,32 @@ class FocusServiceEAanvraag(TestCase):
                     },
                 ],
             },
+            {
+                "id": "234abf4a058d4fc5a588cc125d8873b5",
+                "title": "Bbz",
+                "about": "Bbz",
+                "dateStart": "2022-11-23T17:20:04",
+                "datePublished": "2022-11-30T17:20:04",
+                "dateEnd": None,
+                "decision": None,
+                "statusId": "herstelTermijn",
+                "steps": [
+                    {
+                        "id": "aanvraag",
+                        "status": "Aanvraag",
+                        "datePublished": "2022-11-23T17:20:04",
+                        "documents": [],
+                    },
+                    {
+                        "id": "herstelTermijn",
+                        "status": "Meer informatie",
+                        "datePublished": "2022-11-30T17:20:04",
+                        "documents": [],
+                    },
+                ],
+            },
         ]
         result = create_e_aanvraag(product_name, steps)
-
         self.assertEqual(result, result_expected)
 
     def test_get_e_aanvraag_step(self):

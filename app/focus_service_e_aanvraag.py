@@ -34,24 +34,24 @@ def get_steps_collection():
 def split_bbz_aanvraag(steps, split_at_step):
     product_name = "Bbz"
 
-    steps_actual = []
-    steps_historic = []
+    steps_set_a = []
+    steps_set_b = []
 
-    use_actual_steps_list = False
+    use_step_set_b = False
 
     for step in steps:
         if step == split_at_step:
-            use_actual_steps_list = True
+            use_step_set_b = True
 
-        if use_actual_steps_list:
-            steps_actual.append(step)
+        if use_step_set_b:
+            steps_set_b.append(step)
         else:
-            steps_historic.append(step)
+            steps_set_a.append(step)
 
-    aanvraag_actual = create_e_aanvraag(product_name, steps_actual, 1)
-    aanvraag_historic = create_e_aanvraag(product_name, steps_historic, 1)
+    aanvraag_a = create_e_aanvraag(product_name, steps_set_a, 1)
+    aanvraag_b = create_e_aanvraag(product_name, steps_set_b, 1)
 
-    return aanvraag_actual + aanvraag_historic
+    return aanvraag_a + aanvraag_b
 
 
 def create_e_aanvraag(product_name, steps, recurse_depth=0):
@@ -63,18 +63,22 @@ def create_e_aanvraag(product_name, steps, recurse_depth=0):
     first_step = steps_sorted[0]  # aanvraag step
     last_step = steps_sorted[-1]  # any step
 
-    decision_steps = list(filter(lambda s: s["id"] == "besluit", steps_sorted))
+    decision_steps = list(filter(lambda s: s["id"] in "besluit", steps_sorted))
     decision_step = decision_steps[-1] if decision_steps else None  # Last decision step
 
     request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps_sorted))
     last_request_step = request_steps[-1] if request_steps else None
 
+    date_last_request = last_request_step["datePublished"]
+    date_last_decision = decision_step["datePublished"] if decision_step else None
+
     # If bbz product, check if there is a request step after decision step, if so, split the steps into 2 e_aanvragen.
     if (
         product_name == "Bbz"
-        and len(request_steps) > 1
-        and decision_step
         and recurse_depth == 0
+        and len(request_steps) > 1
+        and date_last_decision
+        and date_last_decision < date_last_request
     ):
         return split_bbz_aanvraag(steps_sorted, last_request_step)
 
