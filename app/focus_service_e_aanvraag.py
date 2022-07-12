@@ -70,7 +70,7 @@ def create_e_aanvraag(product_name, steps):
     last_request_step = request_steps[-1] if request_steps else None
 
     # If bbz product, check if there is a request step after decision step, if so, split the steps into 2 e_aanvragen.
-    if product_name == "Bbz" and len(request_steps) > 1:
+    if product_name == "Bbz" and len(request_steps) > 1 and decision_step:
         return split_bbz_aanvraag(steps_sorted, last_request_step)
 
     for step in steps_sorted:
