@@ -1179,55 +1179,14 @@ example_result = [
         ],
     },
     {
-        "id": "57806a01ea61930f75c9576508ba3e33",
-        "title": "Bbz",
-        "about": "Bbz",
-        "dateStart": "2021-09-15T17:20:04",
-        "datePublished": "2021-09-16T17:20:04",
-        "dateEnd": None,
-        "decision": None,
-        "statusId": "herstelTermijn",
-        "steps": [
-            {
-                "id": "aanvraag",
-                "status": "Aanvraag",
-                "datePublished": "2021-09-15T17:20:04",
-                "documents": [
-                    {
-                        "id": "4400000147",
-                        "dcteId": "844",
-                        "title": "Aanvraag Bbz\n15 september 2021 17:20",
-                        "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
-                        "datePublished": "2021-09-15T17:20:04",
-                    }
-                ],
-            },
-            {
-                "id": "herstelTermijn",
-                "status": "Informatie nodig",
-                "datePublished": "2021-09-16T17:20:04",
-                "documents": [
-                    {
-                        "id": "660000000010212",
-                        "dcteId": "176322",
-                        "title": "Brief verzoek om meer informatie",
-                        "url": "/wpi/document?id=660000000010212&isBulk=False&isDms=False",
-                        "datePublished": "2021-09-16T17:20:04",
-                    }
-                ],
-                "about": "IOAZ",
-            },
-        ],
-    },
-    {
         "id": "899b4f4473a2692bc1a5558d5ab95f8c",
         "title": "Bbz",
         "about": "Bbz",
         "dateStart": "2021-09-01T17:20:04",
-        "datePublished": "2021-09-02T17:20:04",
+        "datePublished": "2021-09-16T17:20:04",
         "dateEnd": None,
         "decision": None,
-        "statusId": "beslisTermijn",
+        "statusId": "herstelTermijn",
         "steps": [
             {
                 "id": "aanvraag",
@@ -1256,6 +1215,35 @@ example_result = [
                         "datePublished": "2021-09-02T17:20:04",
                     }
                 ],
+            },
+            {
+                "id": "aanvraag",
+                "status": "Aanvraag",
+                "datePublished": "2021-09-15T17:20:04",
+                "documents": [
+                    {
+                        "id": "4400000147",
+                        "dcteId": "844",
+                        "title": "Aanvraag Bbz\n15 september 2021 17:20",
+                        "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
+                        "datePublished": "2021-09-15T17:20:04",
+                    }
+                ],
+            },
+            {
+                "id": "herstelTermijn",
+                "status": "Informatie nodig",
+                "datePublished": "2021-09-16T17:20:04",
+                "documents": [
+                    {
+                        "id": "660000000010212",
+                        "dcteId": "176322",
+                        "title": "Brief verzoek om meer informatie",
+                        "url": "/wpi/document?id=660000000010212&isBulk=False&isDms=False",
+                        "datePublished": "2021-09-16T17:20:04",
+                    }
+                ],
+                "about": "IOAZ",
             },
         ],
     },
