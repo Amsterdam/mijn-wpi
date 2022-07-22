@@ -1,21 +1,12 @@
+import locale
+import logging
+import os
 from datetime import date, time
 from json import JSONEncoder
-import os
-import logging
-
-from tma_saml.exceptions import (
-    InvalidBSNException,
-    SamlExpiredException,
-    SamlVerificationException,
-)
-
-import locale
 
 locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
-
-TMA_CERTIFICATE = os.getenv("TMA_CERTIFICATE")
 
 # Sentry configuration.
 SENTRY_DSN = os.getenv("SENTRY_DSN")
@@ -28,7 +19,6 @@ IS_AP = IS_PRODUCTION or IS_ACCEPTANCE
 IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
 
 # App constants
-TMAException = (SamlVerificationException, InvalidBSNException, SamlExpiredException)
 ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
 
 API_REQUEST_TIMEOUT = 30
@@ -41,6 +31,15 @@ logging.basicConfig(
     datefmt="%Y-%m-%d:%H:%M:%S",
     level=LOG_LEVEL,
 )
+
+
+CONNECTION_ERRORS = [
+    "Max retries exceeded with url",
+    "Failed to establish a connection",
+    "Connection aborted",
+    "read timeout",
+    "ConnectionError",
+]
 
 
 class CustomJSONEncoder(JSONEncoder):

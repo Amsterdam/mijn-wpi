@@ -1,30 +1,11 @@
-requests
-lxml
-python-dateutil
-
-# flask and plugins
-flask
-flask_cors
-flask_testing
-
-# TMA token verification tools
-tma-saml>=0.2
-
-# swagger
-connexion
-
-# soap api
-zeep>=3.4
-# to convert the soap xml to a dict
-xmltodict
-beautifulsoup4
-
-# testing tools
-hiro
-mock
-flake8
+black
 coverage
-freezegun
-
-# error reporting
+cryptography
+flake8
+flask
+flask_httpauth
+openapi-core
+pyjwt
+requests
 sentry-sdk[flask]
+zeep>=3.4

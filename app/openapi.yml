@@ -19,6 +19,13 @@ paths:
   /wpi/uitkering-en-stadspas/aanvragen:
     get:
       description: Returns a list aanvragen.
+      parameters:
+        - name: Authorization
+          in: header
+          description: Bearer token
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -42,6 +49,13 @@ paths:
   /wpi/e-aanvragen:
     get:
       description: Returns a list of E-aanvragen (Tozo, Tonk, Bbz).
+      parameters:
+        - name: Authorization
+          in: header
+          description: Bearer token
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -82,9 +96,9 @@ paths:
           description: Tells if the document is a DMS (Document Management System) document
           schema:
             type: string
-        - name: x-saml-attribute-token1
+        - name: Authorization
           in: header
-          description: TMA encoded BSN
+          description: Bearer token
           required: true
           schema:
             type: string
@@ -119,9 +133,9 @@ paths:
   /wpi/stadspas:
     get:
       parameters:
-        - name: x-saml-attribute-token1
+        - name: Authorization
           in: header
-          description: TMA encoded BSN
+          description: Bearer token
           required: true
           schema:
             type: string
@@ -162,9 +176,9 @@ paths:
   /wpi/stadspas/transacties/{encrypted_admin_pasnummer}:
     get:
       parameters:
-        - name: x-saml-attribute-token1
+        - name: Authorization
           in: header
-          description: TMA encoded BSN
+          description: Bearer token
           required: true
           schema:
             type: string
@@ -200,6 +214,13 @@ paths:
   /wpi/uitkering/specificaties-en-jaaropgaven:
     get:
       description: Returns a list uitkeringsspecificatie en jaaropgaven.
+      parameters:
+        - name: Authorization
+          in: header
+          description: Bearer token
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK

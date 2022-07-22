@@ -16,18 +16,16 @@ from app.gpass_service import get_stadspassen, get_transactions
 from app.utils import (
     decrypt,
     error_response_json,
-    get_bsn_from_request,
     success_response_json,
     validate_openapi,
-    verify_tma_user,
 )
+from app import auth
 
 from app.config import (
     API_BASE_PATH,
     IS_DEV,
     SENTRY_DSN,
     CustomJSONEncoder,
-    TMAException,
 )
 from app.focus_config import (
     FOCUS_DOCUMENT_PATH,
@@ -48,33 +46,33 @@ def status_health():
 
 
 @application.route(f"{API_BASE_PATH}/uitkering-en-stadspas/aanvragen", methods=["GET"])
-@verify_tma_user
+@auth.login_required
 @validate_openapi
 def aanvragen():
-    bsn = get_bsn_from_request()
-    aanvragen = get_aanvragen(bsn)
+    user = auth.get_current_user()
+    aanvragen = get_aanvragen(user["id"])
     return success_response_json(aanvragen)
 
 
 @application.route(f"{API_BASE_PATH}/e-aanvragen", methods=["GET"])
-@verify_tma_user
+@auth.login_required
 @validate_openapi
 def e_aanvragen():
-    bsn = get_bsn_from_request()
-    aanvragen = get_e_aanvragen(bsn)
+    user = auth.get_current_user()
+    aanvragen = get_e_aanvragen(user["id"])
     return success_response_json(aanvragen)
 
 
 @application.route(f"/{FOCUS_DOCUMENT_PATH}", methods=["GET"])
-@verify_tma_user
+@auth.login_required
 @validate_openapi
 def document():
-    bsn = get_bsn_from_request()
+    user = auth.get_current_user()
     id = request.args.get("id", None)
     isBulk = request.args.get("isBulk", "false").lower() == "true"
     isDms = request.args.get("isDms", "false").lower() == "true"
 
-    document = get_document(bsn, id, isBulk, isDms)
+    document = get_document(user["id"], id, isBulk, isDms)
 
     response = Response(
         response=document["document_content"],
@@ -91,12 +89,12 @@ def document():
 @application.route(
     f"{API_BASE_PATH}/uitkering/specificaties-en-jaaropgaven", methods=["GET"]
 )
-@verify_tma_user
+@auth.login_required
 @validate_openapi
 def specificaties_en_jaaropgaven():
-    bsn = get_bsn_from_request()
-    jaaropgaven = get_jaaropgaven(bsn)
-    uitkeringsspecificaties = get_uitkeringsspecificaties(bsn)
+    user = auth.get_current_user()
+    jaaropgaven = get_jaaropgaven(user["id"])
+    uitkeringsspecificaties = get_uitkeringsspecificaties(user["id"])
     response_content = {
         "jaaropgaven": jaaropgaven,
         "uitkeringsspecificaties": uitkeringsspecificaties,
@@ -105,11 +103,11 @@ def specificaties_en_jaaropgaven():
 
 
 @application.route(f"{API_BASE_PATH}/stadspas", methods=["GET"])
-@verify_tma_user
+@auth.login_required
 @validate_openapi
 def stadspassen():
-    bsn = get_bsn_from_request()
-    admin = get_stadspas_admin_number(bsn)
+    user = auth.get_current_user()
+    admin = get_stadspas_admin_number(user["id"])
 
     if not admin or not admin["admin_number"]:
         return success_response_json(None)
@@ -128,7 +126,7 @@ def stadspassen():
     f"{API_BASE_PATH}/stadspas/transacties/<string:encrypted_admin_pasnummer>",
     methods=["GET"],
 )
-@verify_tma_user
+@auth.login_required
 @validate_openapi
 def stadspastransactions(encrypted_admin_pasnummer):
     budget_code, admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
@@ -139,16 +137,16 @@ def stadspastransactions(encrypted_admin_pasnummer):
 @application.errorhandler(Exception)
 def handle_error(error):
 
-    error_message_original = str(error)
+    error_message_original = f"{type(error)}:{str(error)}"
 
-    msg_tma_exception = "TMA error occurred"
+    msg_auth_exception = "Auth error occurred"
     msg_request_http_error = "Request error occurred"
     msg_server_error = "Server error occurred"
 
     logging.exception(error, extra={"error_message_original": error_message_original})
 
-    if IS_DEV:
-        msg_tma_exception = error_message_original
+    if IS_DEV:  # pragma: no cover
+        msg_auth_exception = error_message_original
         msg_request_http_error = error_message_original
         msg_server_error = error_message_original
 
@@ -157,11 +155,11 @@ def handle_error(error):
             msg_request_http_error,
             error.response.status_code,
         )
-    elif isinstance(error, TMAException):
-        return error_response_json(msg_tma_exception, 400)
+    elif auth.is_auth_exception(error):
+        return error_response_json(msg_auth_exception, 401)
 
     return error_response_json(msg_server_error, 500)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     application.run()
