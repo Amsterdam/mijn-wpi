@@ -36,6 +36,6 @@ COPY init.sh /usr/local/bin/
 
 RUN chmod u+x /usr/local/bin/init.sh
 
-ENTRYPOINT ["/usr/local/bin/init.sh"]
-
+# ENTRYPOINT ["/usr/local/bin/init.sh"]
+ENTRYPOINT [ "/bin/sh", "/usr/local/bin/init.sh"]
 # CMD uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini
