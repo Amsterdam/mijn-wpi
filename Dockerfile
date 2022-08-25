@@ -32,9 +32,9 @@ COPY test.sh /api/
 COPY .flake8 /api/
 
 # COPY sshd_config /etc/ssh/
-# COPY init.sh /usr/local/bin/
+COPY init.sh /usr/local/bin/
 
-# RUN chmod u+x /usr/local/bin/init.sh
+RUN chmod u+x /usr/local/bin/init.sh
 
 ENTRYPOINT ["init.sh"]
 
