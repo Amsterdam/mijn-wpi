@@ -10,6 +10,9 @@ ENV LANG nl_NL.UTF-8
 ENV LANGUAGE nl_NL:nl
 ENV LC_ALL nl_NL.UTF-8
 
+EXPOSE 8000
+ENV PORT 8000
+
 COPY requirements.txt /api
 RUN pip install -r requirements.txt
 
@@ -21,4 +24,4 @@ COPY test.sh /api/
 COPY .flake8 /api/
 
 USER datapunt
-CMD uwsgi --ini /api/uwsgi.ini
+CMD uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini
