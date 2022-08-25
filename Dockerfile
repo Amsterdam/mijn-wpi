@@ -36,6 +36,6 @@ COPY .flake8 /api/
 
 # RUN chmod u+x /usr/local/bin/init.sh
 
-# ENTRYPOINT ["init.sh"]
+ENTRYPOINT ["init.sh"]
 
-CMD uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini
+# CMD uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini
