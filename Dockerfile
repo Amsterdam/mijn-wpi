@@ -10,6 +10,14 @@ ENV LANG nl_NL.UTF-8
 ENV LANGUAGE nl_NL:nl
 ENV LC_ALL nl_NL.UTF-8
 
+# ssh ( see also: https://github.com/Azure-Samples/docker-django-webapp-linux )
+ENV SSH_PASSWD "root:Docker!"
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends dialog \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends openssh-server \
+  && echo "$SSH_PASSWD" | chpasswd 
+
 EXPOSE 8000
 ENV PORT 8000
 
@@ -23,5 +31,9 @@ COPY uwsgi.ini /api/
 COPY test.sh /api/
 COPY .flake8 /api/
 
-USER datapunt
-CMD uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini
+COPY sshd_config /etc/ssh/
+COPY init.sh /usr/local/bin/
+
+RUN chmod u+x /usr/local/bin/init.sh
+
+ENTRYPOINT ["init.sh"]
