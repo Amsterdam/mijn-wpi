@@ -1,4 +1,4 @@
-FROM amsterdam/python:3.9.6-buster
+FROM amsterdam/python:3.9.6-buster as base
 
 WORKDIR /api
 
@@ -9,6 +9,25 @@ RUN sed -i -e 's/# nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen && \
 ENV LANG nl_NL.UTF-8
 ENV LANGUAGE nl_NL:nl
 ENV LC_ALL nl_NL.UTF-8
+
+COPY requirements.txt /api
+RUN pip install -r requirements.txt
+
+COPY ./scripts /api/scripts
+COPY ./app /api/app
+
+
+FROM base as test-app
+
+COPY conf/test.sh /api/
+COPY .flake8 /api/
+
+RUN chmod u+x /api/test.sh
+
+ENTRYPOINT [ "/bin/sh", "/api/test.sh"]
+
+
+FROM base as deploy-app
 
 # ssh ( see also: https://github.com/Azure-Samples/docker-django-webapp-linux )
 ENV SSH_PASSWD "root:Docker!"
@@ -21,19 +40,10 @@ RUN apt-get update \
 EXPOSE 8000
 ENV PORT 8000
 
-COPY requirements.txt /api
-RUN pip install -r requirements.txt
-
-COPY ./scripts /api/scripts
-COPY ./app /api/app
-
-COPY uwsgi.ini /api/
-COPY test.sh /api/
-COPY .flake8 /api/
-
+COPY conf/uwsgi.ini /api/
+COPY conf/docker-entrypoint.sh /api/
 COPY conf/sshd_config /etc/ssh/
-COPY conf/docker-entrypoint.sh /usr/local/bin/
 
-RUN chmod u+x /usr/local/bin/docker-entrypoint.sh
+RUN chmod u+x /api/docker-entrypoint.sh
 
-ENTRYPOINT [ "/bin/sh", "/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT [ "/bin/sh", "/api/docker-entrypoint.sh"]
