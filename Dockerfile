@@ -31,9 +31,9 @@ COPY uwsgi.ini /api/
 COPY test.sh /api/
 COPY .flake8 /api/
 
-COPY sshd_config /etc/ssh/
-COPY init.sh /usr/local/bin/
+COPY conf/sshd_config /etc/ssh/
+COPY conf/docker-entrypoint.sh /usr/local/bin/
 
-RUN chmod u+x /usr/local/bin/init.sh
+RUN chmod u+x /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT [ "/bin/sh", "/usr/local/bin/init.sh"]
+ENTRYPOINT [ "/bin/sh", "/usr/local/bin/docker-entrypoint.sh"]
