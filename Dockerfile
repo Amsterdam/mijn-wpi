@@ -17,7 +17,7 @@ COPY ./scripts /api/scripts
 COPY ./app /api/app
 
 
-FROM base as test-app
+FROM base as tests
 
 COPY conf/test.sh /api/
 COPY .flake8 /api/
@@ -27,7 +27,7 @@ RUN chmod u+x /api/test.sh
 ENTRYPOINT [ "/bin/sh", "/api/test.sh"]
 
 
-FROM base as deploy-app
+FROM base as publish
 
 # ssh ( see also: https://github.com/Azure-Samples/docker-django-webapp-linux )
 ENV SSH_PASSWD "root:Docker!"
