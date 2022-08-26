@@ -29,4 +29,4 @@ jobs:
               azure-devops-project-url: '${{ secrets.AZURE_DEVOPS_PROJECT_URL }}'
               azure-pipeline-name: '${{ secrets.AZURE_DEVOPS_PIPELINE_NAME }}'
               azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}'
-              azure-pipeline-variables:  '{"ghTargetBranch": "${{ steps.extract_branch.outputs.branch }}", "ghRepositoryName": "${{ github.event.repository.name }}"}' # optional stringified json
+              azure-pipeline-variables:  '{"ghTargetBranch": "${{ steps.extract_branch.outputs.branch }}", "ghRepositoryName": "${{ github.event.repository.name }}"}'
