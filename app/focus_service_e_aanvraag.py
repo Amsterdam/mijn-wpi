@@ -30,7 +30,7 @@ def get_steps_collection():
     return {id: [] for id in E_AANVRAAG_STEP_COLLECTION_IDS}
 
 
-def split_bbz_aanvraag(steps, split_at_step):
+def split_bbz_aanvraag(steps_sorted, split_at_step):
     product_name = "Bbz"
 
     steps_set_a = []
@@ -38,7 +38,7 @@ def split_bbz_aanvraag(steps, split_at_step):
 
     use_step_set_b = False
 
-    for step in steps:
+    for step in steps_sorted:
         if step == split_at_step:
             use_step_set_b = True
 
@@ -47,13 +47,13 @@ def split_bbz_aanvraag(steps, split_at_step):
         else:
             steps_set_a.append(step)
 
-    aanvraag_a = create_e_aanvraag(product_name, steps_set_a, 1)
-    aanvraag_b = create_e_aanvraag(product_name, steps_set_b, 1)
+    aanvraag_a = create_e_aanvraag(product_name, steps_set_a, True)
+    aanvraag_b = create_e_aanvraag(product_name, steps_set_b, True)
 
     return aanvraag_a + aanvraag_b
 
 
-def create_e_aanvraag(product_name, steps, recurse_depth=0):
+def create_e_aanvraag(product_name, steps, already_splitted=False):
     steps_sorted = sorted(steps, key=lambda d: d["datePublished"])
     raw_id = product_name + steps_sorted[0]["datePublished"].isoformat()
     id = hashlib.md5(raw_id.encode("utf-8")).hexdigest()
@@ -62,24 +62,24 @@ def create_e_aanvraag(product_name, steps, recurse_depth=0):
     first_step = steps_sorted[0]  # aanvraag step
     last_step = steps_sorted[-1]  # any step
 
-    decision_steps = list(filter(lambda s: s["id"] in "besluit", steps_sorted))
+    decision_steps = list(filter(lambda s: "besluit" in s["id"], steps_sorted))
     decision_step = decision_steps[-1] if decision_steps else None  # Last decision step
 
-    request_steps = list(filter(lambda s: s["id"] == "aanvraag", steps_sorted))
-    last_request_step = request_steps[-1] if request_steps else None
-
-    date_last_request = last_request_step["datePublished"]
-    date_last_decision = decision_step["datePublished"] if decision_step else None
-
     # If bbz product, check if there is a request step after decision step, if so, split the steps into 2 e_aanvragen.
-    if (
-        product_name == "Bbz"
-        and recurse_depth == 0
-        and len(request_steps) > 1
-        and date_last_decision
-        and date_last_decision < date_last_request
-    ):
-        return split_bbz_aanvraag(steps_sorted, last_request_step)
+    if product_name == "Bbz" and not already_splitted:
+        # Determine the first request step after the last decision
+        request_step_after_decision = None
+        decision_step_found = False
+
+        for step in steps_sorted:
+            if step == decision_step:
+                decision_step_found = True
+            if decision_step_found and step["id"] == "aanvraag":
+                request_step_after_decision = step
+                break
+
+        if request_step_after_decision:
+            return split_bbz_aanvraag(steps_sorted, request_step_after_decision)
 
     for step in steps_sorted:
         step["datePublished"] = step["datePublished"].isoformat()
@@ -116,7 +116,7 @@ def create_e_aanvraag(product_name, steps, recurse_depth=0):
         "dateStart": first_step["datePublished"],
         "datePublished": last_step["datePublished"],
         "dateEnd": date_end,
-        "decision": decision_step["decision"] if decision_step else None,
+        "decision": decision_step.get("decision") if decision_step else None,
         "statusId": last_step["id"],
         "steps": steps,
     }
