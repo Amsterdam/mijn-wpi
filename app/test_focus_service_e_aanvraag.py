@@ -154,13 +154,13 @@ class FocusServiceEAanvraag(TestCase):
             {
                 "id": "herstelTermijn",
                 "status": "Meer informatie",
-                "datePublished": datetime.datetime(2021, 11, 30, 17, 20, 4),
+                "datePublished": datetime.datetime(2021, 11, 25, 17, 20, 4),
                 "documents": [],
             },
             {
                 "id": "aanvraag",
                 "status": "Aanvraag",
-                "datePublished": datetime.datetime(2022, 11, 23, 17, 20, 4),
+                "datePublished": datetime.datetime(2022, 11, 27, 17, 20, 4),
                 "documents": [],
             },
             {
@@ -176,10 +176,10 @@ class FocusServiceEAanvraag(TestCase):
                 "title": "Bbz",
                 "about": "Bbz",
                 "dateStart": "2020-10-23T17:20:04",
-                "datePublished": "2021-11-30T17:20:04",
-                "dateEnd": "2020-11-15T10:00:02",
-                "decision": "toekenning",
-                "statusId": "herstelTermijn",
+                "datePublished": "2020-11-16T10:00:02",
+                "dateEnd": "2020-11-16T10:00:02",
+                "decision": None,
+                "statusId": "terugvorderingsbesluit",
                 "steps": [
                     {
                         "id": "aanvraag",
@@ -200,6 +200,18 @@ class FocusServiceEAanvraag(TestCase):
                         "datePublished": "2020-11-16T10:00:02",
                         "documents": [],
                     },
+                ],
+            },
+            {
+                "id": "e2ae9169b51795132ab4d1c4ebc650d4",
+                "title": "Bbz",
+                "about": "Bbz",
+                "dateStart": "2021-11-23T17:20:04",
+                "datePublished": "2022-11-30T17:20:04",
+                "dateEnd": None,
+                "decision": None,
+                "statusId": "herstelTermijn",
+                "steps": [
                     {
                         "id": "aanvraag",
                         "status": "Aanvraag",
@@ -209,25 +221,13 @@ class FocusServiceEAanvraag(TestCase):
                     {
                         "id": "herstelTermijn",
                         "status": "Meer informatie",
-                        "datePublished": "2021-11-30T17:20:04",
+                        "datePublished": "2021-11-25T17:20:04",
                         "documents": [],
                     },
-                ],
-            },
-            {
-                "id": "234abf4a058d4fc5a588cc125d8873b5",
-                "title": "Bbz",
-                "about": "Bbz",
-                "dateStart": "2022-11-23T17:20:04",
-                "datePublished": "2022-11-30T17:20:04",
-                "dateEnd": None,
-                "decision": None,
-                "statusId": "herstelTermijn",
-                "steps": [
                     {
                         "id": "aanvraag",
                         "status": "Aanvraag",
-                        "datePublished": "2022-11-23T17:20:04",
+                        "datePublished": "2022-11-27T17:20:04",
                         "documents": [],
                     },
                     {
@@ -240,6 +240,7 @@ class FocusServiceEAanvraag(TestCase):
             },
         ]
         result = create_e_aanvraag(product_name, steps)
+
         self.assertEqual(result, result_expected)
 
     def test_get_e_aanvraag_step(self):
