@@ -98,7 +98,7 @@ def create_e_aanvraag(
         if request_step_after_decision:
             return split_bbz_aanvraag(steps_sorted, request_step_after_decision)
 
-        # A decision is found for a bbz request, no aggregation needed
+        # A decision is found for a historic bbz request, no aggregation needed
         elif decision_step_found:
             aggregate_request_steps = False
 
