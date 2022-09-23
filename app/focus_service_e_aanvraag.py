@@ -60,7 +60,7 @@ def split_bbz_aanvraag(steps_sorted, split_at_step):
     return aanvraag_a
 
 
-def should_split_bbz_at(product_name, steps_sorted, decision_step, already_splitted):
+def should_split_bbz_at(steps_sorted, decision_step):
     request_step_after_decision = None
     decision_step_found = False
 
@@ -92,7 +92,7 @@ def create_e_aanvraag(
     # Determine the first request step after the last decision
     if product_name == "Bbz" and not already_splitted:
         (request_step_after_decision, decision_step_found) = should_split_bbz_at(
-            product_name, steps_sorted, decision_step, already_splitted
+            steps_sorted, decision_step
         )
         # The step should be splitted
         if request_step_after_decision:
