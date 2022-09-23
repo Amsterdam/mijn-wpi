@@ -58,8 +58,6 @@ E_AANVRAAG_STEP_ID_TRANSLATIONS = {
     E_AANVRAAG_STEP_ID["briefWeigering"]: "Brief",
 }
 
-E_AANVRAAG_EXCLUDE_AANVRAAG_DOCUMENT_AGGREGATION = ["Bbz"]
-
 E_AANVRAAG_DECISION_ID = {
     "afwijzing": "afwijzing",
     "buitenBehandeling": "buitenBehandeling",

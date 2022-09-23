@@ -36,6 +36,7 @@ def split_bbz_aanvraag(steps_sorted, split_at_step):
     steps_set_b = []
 
     use_step_set_b = False
+    should_aggregate_request_steps_in_set_a = True
 
     for step in steps_sorted:
         if step == split_at_step:
@@ -46,14 +47,19 @@ def split_bbz_aanvraag(steps_sorted, split_at_step):
         else:
             steps_set_a.append(step)
 
-    aanvraag_a = create_e_aanvraag(product_name, steps_set_a, True)
+    for step in steps_set_a:
+        if "besluit" in step["id"]:
+            should_aggregate_request_steps_in_set_a = False
+
+    aanvraag_a = create_e_aanvraag(
+        product_name, steps_set_a, True, should_aggregate_request_steps_in_set_a
+    )
 
     if use_step_set_b:
         aanvraag_b = create_e_aanvraag(
             product_name,
             steps_set_b,
             True,
-            False,  # Do not aggregate request step documents for historic request processes.
         )
 
         return aanvraag_a + aanvraag_b
