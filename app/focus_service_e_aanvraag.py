@@ -36,7 +36,6 @@ def split_bbz_aanvraag(steps_sorted, split_at_step):
     steps_set_b = []
 
     use_step_set_b = False
-    should_aggregate_request_steps_in_set_a = True
 
     for step in steps_sorted:
         if step == split_at_step:
@@ -47,14 +46,7 @@ def split_bbz_aanvraag(steps_sorted, split_at_step):
         else:
             steps_set_a.append(step)
 
-    for step in steps_set_a:
-        if "besluit" in step["id"]:
-            should_aggregate_request_steps_in_set_a = False
-            break
-
-    aanvraag_a = create_e_aanvraag(
-        product_name, steps_set_a, True, should_aggregate_request_steps_in_set_a
-    )
+    aanvraag_a = create_e_aanvraag(product_name, steps_set_a, True, False)
 
     if use_step_set_b:
         aanvraag_b = create_e_aanvraag(
@@ -70,19 +62,16 @@ def split_bbz_aanvraag(steps_sorted, split_at_step):
 
 def should_split_bbz_at(product_name, steps_sorted, decision_step, already_splitted):
     request_step_after_decision = None
+    decision_step_found = False
 
-    # If bbz product, check if there is a request step after decision step, if so, split the steps into 2 e_aanvragen.
-    # Determine the first request step after the last decision
-    if product_name == "Bbz" and not already_splitted:
-        decision_step_found = False
-        for step in steps_sorted:
-            if step == decision_step:
-                decision_step_found = True
-            if decision_step_found and step["id"] == "aanvraag":
-                request_step_after_decision = step
-                break
+    for step in steps_sorted:
+        if step == decision_step:
+            decision_step_found = True
+        if decision_step_found and step["id"] == "aanvraag":
+            request_step_after_decision = step
+            break
 
-    return request_step_after_decision
+    return (request_step_after_decision, decision_step_found)
 
 
 def create_e_aanvraag(
@@ -99,11 +88,19 @@ def create_e_aanvraag(
     decision_steps = list(filter(lambda s: "besluit" in s["id"], steps_sorted))
     decision_step = decision_steps[-1] if decision_steps else None  # Last decision step
 
-    request_step_after_decision = should_split_bbz_at(
-        product_name, steps_sorted, decision_step, already_splitted
-    )
-    if request_step_after_decision:
-        return split_bbz_aanvraag(steps_sorted, request_step_after_decision)
+    # If bbz product, check if there is a request step after decision step, if so, split the steps into 2 e_aanvragen.
+    # Determine the first request step after the last decision
+    if product_name == "Bbz" and not already_splitted:
+        (request_step_after_decision, decision_step_found) = should_split_bbz_at(
+            product_name, steps_sorted, decision_step, already_splitted
+        )
+        # The step should be splitted
+        if request_step_after_decision:
+            return split_bbz_aanvraag(steps_sorted, request_step_after_decision)
+
+        # A decision is found for a bbz request, no aggregation needed
+        elif decision_step_found:
+            aggregate_request_steps = False
 
     for step in steps_sorted:
         step["datePublished"] = step["datePublished"].isoformat()
