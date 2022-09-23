@@ -1200,7 +1200,14 @@ example_result = [
                         "title": "Aanvraag Bbz\n01 september 2021 17:20",
                         "url": "/wpi/document?id=4400000146&isBulk=True&isDms=False",
                         "datePublished": "2021-09-01T17:20:04",
-                    }
+                    },
+                    {
+                        "id": "4400000147",
+                        "dcteId": "844",
+                        "title": "Aanvraag Bbz\n15 september 2021 17:20",
+                        "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
+                        "datePublished": "2021-09-15T17:20:04",
+                    },
                 ],
             },
             {
@@ -1214,20 +1221,6 @@ example_result = [
                         "title": "Brief verlenging beslistermijn",
                         "url": "/wpi/document?id=660000000010211&isBulk=False&isDms=False",
                         "datePublished": "2021-09-02T17:20:04",
-                    }
-                ],
-            },
-            {
-                "id": "aanvraag",
-                "status": "Aanvraag",
-                "datePublished": "2021-09-15T17:20:04",
-                "documents": [
-                    {
-                        "id": "4400000147",
-                        "dcteId": "844",
-                        "title": "Aanvraag Bbz\n15 september 2021 17:20",
-                        "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
-                        "datePublished": "2021-09-15T17:20:04",
                     }
                 ],
             },
