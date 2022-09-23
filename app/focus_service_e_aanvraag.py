@@ -50,6 +50,7 @@ def split_bbz_aanvraag(steps_sorted, split_at_step):
     for step in steps_set_a:
         if "besluit" in step["id"]:
             should_aggregate_request_steps_in_set_a = False
+            break
 
     aanvraag_a = create_e_aanvraag(
         product_name, steps_set_a, True, should_aggregate_request_steps_in_set_a
