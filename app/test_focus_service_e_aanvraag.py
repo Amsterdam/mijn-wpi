@@ -133,6 +133,12 @@ class FocusServiceEAanvraag(TestCase):
                 "documents": [],
             },
             {
+                "id": "aanvraag",
+                "status": "Aanvraag",
+                "datePublished": datetime.datetime(2020, 10, 24, 10, 30, 2),
+                "documents": [],
+            },
+            {
                 "id": "besluit",
                 "status": "Besluit",
                 "datePublished": datetime.datetime(2020, 11, 15, 10, 00, 2),
@@ -188,6 +194,12 @@ class FocusServiceEAanvraag(TestCase):
                         "documents": [],
                     },
                     {
+                        "id": "aanvraag",
+                        "status": "Aanvraag",
+                        "datePublished": "2020-10-24T10:30:02",
+                        "documents": [],
+                    },
+                    {
                         "id": "besluit",
                         "status": "Besluit",
                         "datePublished": "2020-11-15T10:00:02",
@@ -225,12 +237,6 @@ class FocusServiceEAanvraag(TestCase):
                         "documents": [],
                     },
                     {
-                        "id": "aanvraag",
-                        "status": "Aanvraag",
-                        "datePublished": "2022-11-27T17:20:04",
-                        "documents": [],
-                    },
-                    {
                         "id": "herstelTermijn",
                         "status": "Meer informatie",
                         "datePublished": "2022-11-30T17:20:04",
@@ -239,8 +245,8 @@ class FocusServiceEAanvraag(TestCase):
                 ],
             },
         ]
-        result = create_e_aanvraag(product_name, steps)
 
+        result = create_e_aanvraag(product_name, steps)
         self.assertEqual(result, result_expected)
 
     def test_get_e_aanvraag_step(self):
@@ -1200,7 +1206,14 @@ example_result = [
                         "title": "Aanvraag Bbz\n01 september 2021 17:20",
                         "url": "/wpi/document?id=4400000146&isBulk=True&isDms=False",
                         "datePublished": "2021-09-01T17:20:04",
-                    }
+                    },
+                    {
+                        "id": "4400000147",
+                        "dcteId": "844",
+                        "title": "Aanvraag Bbz\n15 september 2021 17:20",
+                        "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
+                        "datePublished": "2021-09-15T17:20:04",
+                    },
                 ],
             },
             {
@@ -1214,20 +1227,6 @@ example_result = [
                         "title": "Brief verlenging beslistermijn",
                         "url": "/wpi/document?id=660000000010211&isBulk=False&isDms=False",
                         "datePublished": "2021-09-02T17:20:04",
-                    }
-                ],
-            },
-            {
-                "id": "aanvraag",
-                "status": "Aanvraag",
-                "datePublished": "2021-09-15T17:20:04",
-                "documents": [
-                    {
-                        "id": "4400000147",
-                        "dcteId": "844",
-                        "title": "Aanvraag Bbz\n15 september 2021 17:20",
-                        "url": "/wpi/document?id=4400000147&isBulk=True&isDms=False",
-                        "datePublished": "2021-09-15T17:20:04",
                     }
                 ],
             },
