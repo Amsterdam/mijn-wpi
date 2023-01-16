@@ -21,10 +21,11 @@ def has_groene_stip(fondsen):
 
 
 def get_administratienummer(number_from_source):
-    if FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC:
-        return FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC.get(
-            number_from_source, number_from_source
-        )
+    # Disable ACC dataset coupling, enable if we need it again.
+    # if FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC:
+    #     return FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC.get(
+    #         number_from_source, number_from_source
+    #     )
     return number_from_source
 
 
