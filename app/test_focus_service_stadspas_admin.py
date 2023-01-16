@@ -3,7 +3,6 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from app.focus_service_stadspas_admin import (
-    get_administratienummer,
     get_first_pas_type,
     get_stadspas_admin_number,
     has_groene_stip,
