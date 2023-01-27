@@ -30,26 +30,24 @@ parameters:
     default: true
 
 variables:
-  - ${{ if eq(variables['Build.SourceBranchName'], 'ontwikkelen') }}:
-      - group: MAPipelineVariables-o
-  - name: dockerImageName
-    value: mams-wpi
-  - name: dockerImage
-    value: $(dockerACRUrl)/$(variables.dockerImageName)
+  - ${{ if eq(variables['Build.SourceBranchName'], 'testen') }}:
+      - group: MAPipelineVariables-t
+      - name: dtapName
+        value: t
 
 stages:
   - ${{ if eq(parameters.Build, true) }}:
       - template: pipelines/stages/build-koppel-api.yaml@MamsInfra
         parameters:
           serviceConnectionName: $(serviceConnectionName)
-          adoEnvironment: $(adoEnvironment)
           dockerImage: $(dockerImage)
+          dtapName: ${{ variables.dtapName }}
 
   - ${{ if eq(parameters.Test, true) }}:
       - template: pipelines/stages/test-koppel-api.yaml@MamsInfra
         parameters:
-          adoEnvironment: $(adoEnvironment)
           dockerImage: $(dockerImage)
+          dtapName: ${{ variables.dtapName }}
 
   - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(parameters.Deploy, true)) }}:
       - template: pipelines/stages/deploy-koppel-api.yaml@MamsInfra
@@ -59,3 +57,4 @@ stages:
           appServiceName: $(appServiceNameWPI)
           dockerImageName: $(dockerImageName)
           dockerImage: $(dockerImage)
+          dtapName: ${{ variables.dtapName }}
