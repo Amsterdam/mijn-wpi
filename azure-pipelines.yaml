@@ -44,13 +44,13 @@ stages:
       - template: pipelines/stages/build-koppel-api.yaml@MamsInfra
         parameters:
           serviceConnectionName: $(serviceConnectionName)
-          dockerImage: $(variables.dockerImage)
+          dockerImage: ${{ variables.dockerImage }}
           dtapName: ${{ variables.dtapName }}
 
   - ${{ if eq(parameters.Test, true) }}:
       - template: pipelines/stages/test-koppel-api.yaml@MamsInfra
         parameters:
-          dockerImage: $(variables.dockerImage)
+          dockerImage: ${{ variables.dockerImage }}
           dtapName: ${{ variables.dtapName }}
 
   - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(parameters.Deploy, true)) }}:
@@ -59,6 +59,6 @@ stages:
           serviceConnectionName: $(serviceConnectionName)
           adoEnvironment: $(adoEnvironment)
           appServiceName: $(appServiceNameWPI)
-          dockerImageName: $(dockerImageName)
-          dockerImage: $(variables.dockerImage)
+          dockerImageName: ${{ variables.dockerImageName }}
+          dockerImage: ${{ variables.dockerImage }}
           dtapName: ${{ variables.dtapName }}
