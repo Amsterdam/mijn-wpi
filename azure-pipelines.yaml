@@ -37,7 +37,7 @@ variables:
   - name: dockerImageName
     value: mams-wpi
   - name: dockerImage
-    value: $(dockerACRUrl)/${{ variables.dockerImageName }}
+    value: $(variables.dockerACRUrl)/${{ variables.dockerImageName }}
 
 stages:
   - ${{ if eq(parameters.Build, true) }}:
