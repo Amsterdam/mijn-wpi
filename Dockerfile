@@ -37,8 +37,8 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends openssh-server \
   && echo "$SSH_PASSWD" | chpasswd 
 
-EXPOSE 80
-ENV PORT 80
+EXPOSE 8000
+ENV PORT 8000
 
 COPY conf/uwsgi.ini /api/
 COPY conf/docker-entrypoint.sh /api/
