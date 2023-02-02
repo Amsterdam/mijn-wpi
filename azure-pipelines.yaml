@@ -19,13 +19,13 @@ resources:
       ref: refs/heads/pipeline-fe
 
 parameters:
-  - name: Build
+  - name: btdBuild
     type: boolean
     default: true
-  - name: Test
+  - name: btdTest
     type: boolean
     default: true
-  - name: Deploy
+  - name: btdDeploy
     type: boolean
     default: true
 
@@ -39,26 +39,15 @@ variables:
   - name: dockerImage
     value: $(dockerACRUrl)/${{ variables.dockerImageName }}
 
-stages:
-  - ${{ if eq(parameters.Build, true) }}:
-      - template: pipelines/stages/build-koppel-api.yaml@MamsInfra
-        parameters:
-          serviceConnectionName: $(serviceConnectionName)
-          dockerImage: $(dockerACRUrl)/${{ variables.dockerImageName }}
-          dtapName: ${{ variables.dtapName }}
-
-  - ${{ if eq(parameters.Test, true) }}:
-      - template: pipelines/stages/test-koppel-api.yaml@MamsInfra
-        parameters:
-          dockerImage: $(dockerACRUrl)/${{ variables.dockerImageName }}
-          dtapName: ${{ variables.dtapName }}
-
-  - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(parameters.Deploy, true)) }}:
-      - template: pipelines/stages/deploy-koppel-api.yaml@MamsInfra
-        parameters:
-          serviceConnectionName: $(serviceConnectionName)
-          adoEnvironment: $(adoEnvironment)
-          appServiceName: $(appServiceNameWPI)
-          dockerImageName: ${{ variables.dockerImageName }}
-          dockerImage: $(dockerACRUrl)/${{ variables.dockerImageName }}
-          dtapName: ${{ variables.dtapName }}
+jobs:
+  - template: pipelines/jobs/apps/btd-koppel-api.yaml@MamsInfra
+    parameters:
+      serviceConnectionName: $(serviceConnectionName)
+      adoEnvironment: $(adoEnvironment)
+      appServiceName: $(appServiceNameWPI)
+      dockerImageName: ${{ variables.dockerImageName }}
+      dockerImage: $(dockerACRUrl)/${{ variables.dockerImageName }}
+      dtapName: ${{ variables.dtapName }}
+      btdBuild: ${{ parameters.btdBuild }}
+      btdTest: ${{ parameters.btdTest }}
+      btdDeploy: ${{ parameters.btdDeploy }}
