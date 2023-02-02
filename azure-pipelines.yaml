@@ -43,7 +43,6 @@ jobs:
   - template: pipelines/jobs/apps/btd-koppel-api.yaml@MamsInfra
     parameters:
       serviceConnectionName: $(serviceConnectionName)
-      adoEnvironment: $(adoEnvironment)
       appServiceName: $(appServiceNameWPI)
       dockerImageName: ${{ variables.dockerImageName }}
       dockerImage: $(dockerACRUrl)/${{ variables.dockerImageName }}
