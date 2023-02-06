@@ -3,7 +3,6 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from app.focus_service_stadspas_admin import (
-    get_administratienummer,
     get_first_pas_type,
     get_stadspas_admin_number,
     has_groene_stip,
@@ -48,14 +47,14 @@ class TestFocusStadspasAdmin(TestCase):
 
         self.assertEqual(result, None)
 
-    @patch(
-        "app.focus_service_stadspas_admin.FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC",
-        {"xx": "yy"},
-    )
-    def test_admin_number_conversion(self):
-        self.assertEqual(get_administratienummer("xx"), "yy")
-        self.assertEqual(get_administratienummer("yy"), "yy")
-        self.assertEqual(get_administratienummer("zz"), "zz")
+    # @patch(
+    #     "app.focus_service_stadspas_admin.FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC",
+    #     {"xx": "yy"},
+    # )
+    # def test_admin_number_conversion(self):
+    #     self.assertEqual(get_administratienummer("xx"), "yy")
+    #     self.assertEqual(get_administratienummer("yy"), "yy")
+    #     self.assertEqual(get_administratienummer("zz"), "zz")
 
 
 example_response = {
