@@ -12,6 +12,20 @@ BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 SENTRY_DSN = os.getenv("SENTRY_DSN")
 SENTRY_ENV = os.getenv("SENTRY_ENVIRONMENT")
 
+# Server security / certificates for ZorgNed
+SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
+SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
+
+# ZorgNed vars
+ZORGNED_API_REQUEST_TIMEOUT_SECONDS = 30
+ZORGNED_API_TOKEN = os.getenv("WMO_NED_API_TOKEN")
+ZORGNED_API_URL =  os.getenv("ZORGNED_API_URL")
+ZORGNED_GEMEENTE_CODE = "0363"
+
+ARMOEDE_REGELING_PRODUCT_CODES = ["AV-SPM"]
+
+BESCHIKT_PRODUCT_RESULTAAT = ["toegewezen"]
+
 # Environment determination
 IS_PRODUCTION = SENTRY_ENV == "production"
 IS_ACCEPTANCE = SENTRY_ENV == "acceptance"

@@ -26,9 +26,13 @@ from app.config import (
     IS_DEV,
     SENTRY_DSN,
     CustomJSONEncoder,
+    ZORGNED_GEMEENTE_CODE
 )
 from app.focus_config import (
     FOCUS_DOCUMENT_PATH,
+)
+from app.zorgned_service import (
+    get_clientnummer
 )
 
 application = Flask(__name__)
@@ -107,12 +111,22 @@ def specificaties_en_jaaropgaven():
 @validate_openapi
 def stadspassen():
     user = auth.get_current_user()
+    stadspassen = []
+
+    # Check in zorgned
+    clientnummer = get_clientnummer(user["id"])
+
+    if clientnummer:
+        stadspassen = get_stadspassen(f"{ZORGNED_GEMEENTE_CODE}{clientnummer}")
+
+    # then check focus
     admin = get_stadspas_admin_number(user["id"])
 
-    if not admin or not admin["admin_number"]:
+    if (not admin or not admin["admin_number"]) and len(stadspassen) == 0:
         return success_response_json(None)
 
-    stadspassen = get_stadspassen(admin["admin_number"])
+    # merge results
+    stadspassen = stadspassen + get_stadspassen(admin["admin_number"])
     response_content = {
         "stadspassen": stadspassen,
         "adminNumber": admin["admin_number"],
