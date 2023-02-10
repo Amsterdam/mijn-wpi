@@ -128,6 +128,28 @@ class WPITestServer(WpiApiTestApp):
 
         self.assertEqual(response_json["content"], response_expected)
 
+    @patch("app.server.get_clientnummer")
+    @patch("app.server.get_stadspas_admin_number")
+    @patch("app.server.get_stadspassen")
+    def test_stadspassen_with_zorgned_result(self, get_stadspassen_mock, get_stadspas_admin_number_mock, get_clientnummer_mock):
+        get_stadspassen_mock.return_value = [GpassServiceGetStadspas.gpass_formatted]
+        get_stadspas_admin_number_mock.return_value = {
+            "admin_number": "abcdefg123",
+            "type": "hoofdpashouder",
+        }
+        get_clientnummer_mock.return_value = 123
+
+        response = self.get_secure("/wpi/stadspas")
+        response_json = response.get_json()
+
+        response_expected = {
+            "stadspassen": [GpassServiceGetStadspas.gpass_formatted, GpassServiceGetStadspas.gpass_formatted],
+            "ownerType": "hoofdpashouder",
+            "adminNumber": "abcdefg123",
+        }
+
+        self.assertEqual(response_json["content"], response_expected)
+
     @patch(
         "app.utils.GPASS_FERNET_ENCRYPTION_KEY",
         "z4QX3k3bj61ST2HRRV7dnn7Se8VFCaHscK39JfODz8s=",

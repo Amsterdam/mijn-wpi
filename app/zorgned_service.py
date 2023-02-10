@@ -2,7 +2,7 @@ import json
 import logging
 import requests
 from dpath import util as dpath_util
-
+from datetime import date
 from app.config import (
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
@@ -46,16 +46,14 @@ def send_api_request_json(bsn, operation="", query_params=None):
     return response_data
 
 
-def date_in_past(date):
+def date_in_past(past_date):
     return (
-        date
-        and to_date(date) <= date.today()
+        past_date
+        and to_date(past_date) <= date.today()
     )
 
 
-def filter_aanvragen(aanvragen_source=[]):
-    aanvragen = []
-
+def has_armoede_producten(aanvragen_source=[]):
     for aanvraag_source in aanvragen_source:
         beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
         beschikte_producten = dpath_util.get(
@@ -66,14 +64,14 @@ def filter_aanvragen(aanvragen_source=[]):
             for beschikt_product in beschikte_producten:
                 product = beschikt_product.get("product")
                 toegewezen_product = beschikt_product.get("toegewezenProduct")
-                # Only select products which match these criteria
+                # If any one product matches out criteria return True
                 if beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT and product.get("productsoortCode") in ARMOEDE_REGELING_PRODUCT_CODES and date_in_past(toegewezen_product.get("datumIngangGeldigheid")):
-                    aanvragen.append(aanvraag_source)
+                    return True
 
-    return aanvragen
+    return False
 
 
-def get_armoede_aanvragen(bsn, query_params=None):
+def get_aanvragen(bsn, query_params=None):
     response_data = send_api_request_json(
         bsn,
         "/aanvragen",
@@ -81,12 +79,12 @@ def get_armoede_aanvragen(bsn, query_params=None):
     )
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
-    return filter_aanvragen(response_aanvragen)
+    return response_aanvragen
 
 
 def get_clientnummer(bsn):
-    armoede_aanvragen = get_armoede_aanvragen(bsn)
-    if(len(armoede_aanvragen) == 0):
+    armoede_aanvragen = get_aanvragen(bsn)
+    if(not has_armoede_producten(armoede_aanvragen)):
         return None
 
     response_data = send_api_request_json(
