@@ -106,14 +106,16 @@ class WPITestServer(WpiApiTestApp):
             },
         )
 
+    @patch("app.server.get_clientnummer")
     @patch("app.server.get_stadspas_admin_number")
     @patch("app.server.get_stadspassen")
-    def test_stadspassen(self, get_stadspassen_mock, get_stadspas_admin_number_mock):
+    def test_stadspassen(self, get_stadspassen_mock, get_stadspas_admin_number_mock, get_clientnummer_mock):
         get_stadspassen_mock.return_value = [GpassServiceGetStadspas.gpass_formatted]
         get_stadspas_admin_number_mock.return_value = {
             "admin_number": "abcdefg123",
             "type": "hoofdpashouder",
         }
+        get_clientnummer_mock.return_value = None
 
         response = self.get_secure("/wpi/stadspas")
         response_json = response.get_json()

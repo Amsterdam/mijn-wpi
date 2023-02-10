@@ -85,7 +85,8 @@ def get_armoede_aanvragen(bsn, query_params=None):
 
 
 def get_clientnummer(bsn):
-    if(len(get_armoede_aanvragen(bsn)) == 0):
+    armoede_aanvragen = get_armoede_aanvragen(bsn)
+    if(len(armoede_aanvragen) == 0):
         return None
 
     response_data = send_api_request_json(
