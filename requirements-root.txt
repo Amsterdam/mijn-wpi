@@ -1,6 +1,7 @@
 black
 coverage
 cryptography
+dpath
 flake8
 flask
 flask_httpauth
