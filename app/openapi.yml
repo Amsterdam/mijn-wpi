@@ -129,7 +129,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  
+
   /wpi/stadspas:
     get:
       parameters:
@@ -281,7 +281,7 @@ components:
     AanvraagStepStatus:
       type: object
       properties:
-        id: 
+        id:
           type: string
         status:
           type: string
@@ -292,12 +292,12 @@ components:
           items:
             $ref: "#/components/schemas/Document"
         productSpecific:
-              type: string
-              enum:
-                - lening
-                - uitkering
-              nullable: true
-              description: Only available for E-Aanvragen (Tozo, Tonk, Bbz)
+          type: string
+          enum:
+            - lening
+            - uitkering
+          nullable: true
+          description: Only available for E-Aanvragen (Tozo, Tonk, Bbz)
         dateDecisionExpected:
           $ref: "#/components/schemas/DateTime"
           description: Only available at step herstelTermijn and inBehandeling
@@ -387,7 +387,6 @@ components:
       nullable: true
     DateTime:
       type: string
-      format: date-time
       example: "2020-06-08T00:00:00"
       nullable: true
     ErrorResponse:
