@@ -1,0 +1,59 @@
+{
+  "_links": null,
+  "_embedded": {
+    "aanvraag": [
+      {
+        "_links": null,
+        "identificatie": "1250336",
+        "datumAanmelding": "2012-11-30",
+        "datumAanvraag": "2012-11-30",
+        "beschikking": {
+          "beschikkingNummer": 123123123123,
+          "datumAfgifte": "2012-11-30",
+          "toelichting": "geanonimiseerd",
+          "beschikteProducten": [
+            {
+              "identificatie": "43789",
+              "externe_identificatie": null,
+              "product": {
+                "identificatie": "02312",
+                "productCode": "02312",
+                "productsoortCode": "AV-SPM",
+                "omschrijving": "armoede regeling"
+              },
+              "resultaat": "toegewezen",
+              "toegewezenProduct": {
+                "datumIngangGeldigheid": "2012-11-30",
+                "datumEindeGeldigheid": null,
+                "datumCheck": null,
+                "actueel": true
+              }
+            },
+            {
+              "identificatie": "98734",
+              "externe_identificatie": null,
+              "product": {
+                "identificatie": "12320",
+                "productCode": "12320",
+                "productsoortCode": "OVE",
+                "omschrijving": "autozitje"
+              },
+              "productCategorie": {
+                "code": "12",
+                "omschrijving": "Vervoervoorzieningen"
+              },
+              "resultaat": "toegewezen",
+              "toegewezenProduct": {
+                "datumIngangGeldigheid": "2012-11-30",
+                "datumEindeGeldigheid": null,
+                "datumCheck": null,
+                "actueel": true
+              }
+            }
+          ]
+        },
+        "documenten": []
+      }
+    ]
+  }
+}
