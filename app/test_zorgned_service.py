@@ -3,11 +3,8 @@ from unittest import TestCase
 from unittest.mock import patch
 from app.config import BASE_PATH
 
-from app.zorgned_service import (
-    has_armoede_producten,
-    get_aanvragen,
-    get_clientnummer
-)
+from app.zorgned_service import has_armoede_producten, get_aanvragen, get_clientnummer
+
 
 class ZorgnedApiMock:
     status_code = 200
@@ -29,13 +26,14 @@ class ZorgnedApiMock:
 
 
 class ZorgnedServiceTest(TestCase):
-
     @patch("app.zorgned_service.requests.get")
     def test_get_clientnummer_none_response(self, get_mock):
-        get_mock.return_value = ZorgnedApiMock({"_embedded": {"aanvraag": [{"foo": "bar"}]}})
+        get_mock.return_value = ZorgnedApiMock(
+            {"_embedded": {"aanvraag": [{"foo": "bar"}]}}
+        )
 
         clientnummer = get_clientnummer(123)
-        
+
         self.assertEqual(clientnummer, None)
 
     @patch("app.zorgned_service.requests.get")
@@ -44,5 +42,5 @@ class ZorgnedServiceTest(TestCase):
 
         aanvragen = get_aanvragen(123)
         has_producten = has_armoede_producten(aanvragen)
-        
+
         self.assertEqual(has_producten, True)
