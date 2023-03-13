@@ -61,7 +61,6 @@ def has_armoede_producten(aanvragen_source=[]):
         if beschikte_producten:
             for beschikt_product in beschikte_producten:
                 product = beschikt_product.get("product")
-                toegewezen_product = beschikt_product.get("toegewezenProduct")
                 # If any one product matches out criteria return True
                 if (
                     beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT
