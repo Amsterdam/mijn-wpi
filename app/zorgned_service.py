@@ -67,7 +67,6 @@ def has_armoede_producten(aanvragen_source=[]):
                     beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT
                     and product.get("productsoortCode")
                     in ARMOEDE_REGELING_PRODUCT_CODES
-                    and date_in_past(toegewezen_product.get("datumIngangGeldigheid"))
                 ):
                     return True
 
