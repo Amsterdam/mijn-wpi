@@ -1,0 +1,36 @@
+{
+  "persoon": {
+    "bsn": "000000007",
+    "clientidentificatie": 304184,
+    "geslachtsaanduiding": {
+      "code": "M",
+      "omschrijving": "Man"
+    },
+    "voorletters": "G",
+    "voorvoegsel": null,
+    "geboortenaam": "Braber",
+    "voornamen": "Gerrit",
+    "roepnaam": null,
+    "geboortedatum": "1975-01-15T00:00:00",
+    "burgerlijkestaat": {
+      "code": "3",
+      "omschrijving": "Gescheiden"
+    },
+    "aanduidingNaamgebruik": {
+      "code": "E",
+      "omschrijving": "Geboortenaam"
+    },
+    "partnernaam": null,
+    "partnervoorvoegsel": null,
+    "persoontype": "P"
+  },
+  "inschrijfadres": {
+    "huisnummer": 87,
+    "huisletter": "B",
+    "huisnummerToevoeging": null,
+    "postcode": "1018 AD",
+    "straatnaam": "Entrepotdok",
+    "plaats": "Amsterdam",
+    "adrestype": "R"
+  }
+}

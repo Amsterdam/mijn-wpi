@@ -16,9 +16,9 @@
               "identificatie": "43789",
               "externe_identificatie": null,
               "product": {
-                "identificatie": "02312",
+                "identificatie": "AV-SPM",
                 "productCode": "02312",
-                "productsoortCode": "AV-SPM",
+                "productsoortCode": "AV-ALG",
                 "omschrijving": "armoede regeling"
               },
               "resultaat": "toegewezen",

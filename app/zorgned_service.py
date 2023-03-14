@@ -16,7 +16,6 @@ from app.config import (
     ZORGNED_GEMEENTE_CODE,
 )
 from app.utils import to_date
-from sentry_sdk import capture_message
 
 
 def send_api_request(bsn, operation="", query_params=None):
@@ -70,10 +69,8 @@ def has_armoede_producten(aanvragen_source=[]):
                     and product.get("identificatie")
                     in ARMOEDE_REGELING_PRODUCT_CODES
                 ):
-                    capture_message("Armoede producten gevonden.")
                     return True
 
-    capture_message("Geen armoede producten gevonden.")
     return False
 
 
@@ -98,6 +95,9 @@ def get_clientnummer(bsn):
         "/persoonsgegevensNAW",
     )
 
-    capture_message(f"Persoonsgegevens NAW response {len(response_data)}")
+    identificatie = response_data["persoon"]["clientidentificatie"]
 
-    return response_data["persoon"]["clientidentificatie"]
+    while(len(identificatie) < 10):
+        identificatie = f"0{identificatie}"
+
+    return identificatie

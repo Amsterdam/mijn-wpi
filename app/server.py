@@ -117,7 +117,7 @@ def stadspassen():
     clientnummer = get_clientnummer(user["id"])
 
     if clientnummer is not None:
-        stadspassen = get_stadspassen(f"{ZORGNED_GEMEENTE_CODE}0000{clientnummer}")
+        stadspassen = get_stadspassen(f"{ZORGNED_GEMEENTE_CODE}{clientnummer}")
 
     # then check focus
     admin = get_stadspas_admin_number(user["id"])

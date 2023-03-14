@@ -37,6 +37,18 @@ class ZorgnedServiceTest(TestCase):
         self.assertEqual(clientnummer, None)
 
     @patch("app.zorgned_service.requests.get")
+    @patch("app.zorgned_service.requests.get")
+    def test_get_clientnummer_response(self, get_mock, get_mock_scnd):
+        get_mock.return_value = ZorgnedApiMock(
+            BASE_PATH + "/fixtures/aanvragen.json"
+        )
+        get_mock_scnd.return_value = ZorgnedApiMock(BASE_PATH + "/fixtures/aanvragen.json")
+
+        clientnummer = get_clientnummer(123)
+
+        self.assertEqual(clientnummer, "0000304184")
+
+    @patch("app.zorgned_service.requests.get")
     def test_has_armoede_producten(self, get_mock):
         get_mock.return_value = ZorgnedApiMock(BASE_PATH + "/fixtures/aanvragen.json")
 
