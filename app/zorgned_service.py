@@ -98,4 +98,6 @@ def get_clientnummer(bsn):
         "/persoonsgegevensNAW",
     )
 
+    capture_message(f"Persoonsgegevens NAW response {len(response_data)}")
+
     return response_data["persoon"]["clientidentificatie"]
