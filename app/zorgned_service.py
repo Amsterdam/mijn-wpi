@@ -66,7 +66,7 @@ def has_armoede_producten(aanvragen_source=[]):
                 # If any one product matches out criteria return True
                 if (
                     beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT
-                    and product.get("productsoortCode")
+                    and product.get("identificatie")
                     in ARMOEDE_REGELING_PRODUCT_CODES
                 ):
                     return True
