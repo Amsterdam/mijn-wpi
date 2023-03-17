@@ -85,7 +85,6 @@ def get_aanvragen(bsn, query_params=None):
 
     return response_aanvragen
 
-
 def get_clientnummer(bsn):
     armoede_aanvragen = get_aanvragen(bsn)
     if not has_armoede_producten(armoede_aanvragen):
@@ -96,9 +95,9 @@ def get_clientnummer(bsn):
         "/persoonsgegevensNAW",
     )
 
-    identificatie = str(response_data["persoon"]["clientidentificatie"])
+    return response_data["persoon"]["clientidentificatie"]
 
-    while(len(identificatie) < 10):
-        identificatie = f"0{identificatie}"
-
-    return identificatie
+def volledig_clientnummer(identificatie) -> str:
+    clientnummer = str(identificatie).zfill(10)
+    clientnummer = f"{ZORGNED_GEMEENTE_CODE}{clientnummer}"
+    return clientnummer

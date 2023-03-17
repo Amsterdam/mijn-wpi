@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch
 from app.config import BASE_PATH
 
-from app.zorgned_service import has_armoede_producten, get_aanvragen, get_clientnummer
+from app.zorgned_service import has_armoede_producten, get_aanvragen, get_clientnummer, volledig_clientnummer
 
 
 class ZorgnedApiMock:
@@ -42,7 +42,10 @@ class ZorgnedServiceTest(TestCase):
 
         clientnummer = get_clientnummer(123)
 
-        self.assertEqual(clientnummer, "0000304184")
+        self.assertEqual(clientnummer, 304184)
+
+    def test_volledig_clientnummer(self):
+        self.assertEquals(volledig_clientnummer(304184), "03630000304184")
 
     @patch("app.zorgned_service.requests.get")
     def test_has_armoede_producten(self, get_mock):
