@@ -37,12 +37,8 @@ class ZorgnedServiceTest(TestCase):
         self.assertEqual(clientnummer, None)
 
     @patch("app.zorgned_service.requests.get")
-    @patch("app.zorgned_service.requests.get")
-    def test_get_clientnummer_response(self, get_mock, get_mock_scnd):
-        get_mock.return_value = ZorgnedApiMock(
-            BASE_PATH + "/fixtures/aanvragen.json"
-        )
-        get_mock_scnd.return_value = ZorgnedApiMock(BASE_PATH + "/fixtures/aanvragen.json")
+    def test_get_clientnummer_response(self, get_mock):
+        get_mock.side_effect = [ZorgnedApiMock(BASE_PATH + "/fixtures/aanvragen.json"), ZorgnedApiMock(BASE_PATH + "/fixtures/persoon.json")]
 
         clientnummer = get_clientnummer(123)
 

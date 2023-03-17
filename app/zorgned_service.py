@@ -80,6 +80,7 @@ def get_aanvragen(bsn, query_params=None):
         "/aanvragen",
         query_params,
     )
+
     response_aanvragen = response_data["_embedded"]["aanvraag"]
 
     return response_aanvragen
@@ -95,7 +96,7 @@ def get_clientnummer(bsn):
         "/persoonsgegevensNAW",
     )
 
-    identificatie = response_data["persoon"]["clientidentificatie"]
+    identificatie = str(response_data["persoon"]["clientidentificatie"])
 
     while(len(identificatie) < 10):
         identificatie = f"0{identificatie}"
