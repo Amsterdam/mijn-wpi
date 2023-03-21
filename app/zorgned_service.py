@@ -41,7 +41,10 @@ def send_api_request(bsn, operation="", query_params=None):
 def send_api_request_json(bsn, operation="", query_params=None):
     res = send_api_request(bsn, operation, query_params)
 
-    capture_message(f"Length of response for operation {operation} {len(res)}")
+    capture_message(f"Length of response for operation {operation} {len(res.content)}")
+
+    if len(res.content) < 1:
+        return {}
 
     response_data = res.json()
 
