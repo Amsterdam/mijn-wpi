@@ -1,6 +1,6 @@
 import datetime
 from unittest import TestCase
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from app.focus_service_specificaties import get_jaaropgaven, get_uitkeringsspecificaties
 from app.test_app import MockClient
