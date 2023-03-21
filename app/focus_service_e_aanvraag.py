@@ -6,6 +6,7 @@ from app.e_aanvraag_config import (
     E_AANVRAAG_PRODUCT_TITLES,
     E_AANVRAAG_STEP_COLLECTION_IDS,
     E_AANVRAAG_STEP_ID_TRANSLATIONS,
+    exclude_documents_from_processing,
 )
 from app.focus_service_aanvragen import get_client, get_document_url
 from app.utils import handle_soap_service_error
@@ -194,6 +195,9 @@ def collect_and_transform_status_steps(e_aanvragen):
     for e_aanvraag in e_aanvragen:
         document_code_id = e_aanvraag["documentCodes"]["documentCodeId"]
         document_config = get_document_config(document_code_id)
+
+        if document_code_id in exclude_documents_from_processing:
+            continue
 
         if not document_config:
             description = "unknown-description"
