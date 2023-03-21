@@ -6,8 +6,6 @@ import requests
 from dpath import util as dpath_util
 
 from app.config import (
-    ARMOEDE_REGELING_PRODUCT_CODES,
-    BESCHIKT_PRODUCT_RESULTAAT,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
     ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
@@ -55,7 +53,15 @@ def get_clientnummer(bsn):
         "/persoonsgegevensNAW",
     )
 
-    return response_data["persoon"]["clientidentificatie"]
+    if (
+        "persoon" in response_data
+        and response_data["persoon"]
+        and "clientidentificatie" in response_data["persoon"]
+        and response_data["persoon"]["clientidentificatie"]
+    ):
+        return response_data["persoon"]["clientidentificatie"]
+
+    return None
 
 
 def volledig_clientnummer(identificatie) -> str:
