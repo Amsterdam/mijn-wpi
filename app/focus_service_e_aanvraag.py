@@ -224,7 +224,7 @@ def collect_and_transform_status_steps(e_aanvragen):
     return steps_collection
 
 
-def get_e_aanvragen(bsn):
+def get_e_aanvragen_raw(bsn):
     e_aanvragen = []
 
     try:
@@ -232,7 +232,15 @@ def get_e_aanvragen(bsn):
         e_aanvragen = response["documentgegevens"] if response else []
     except Exception as error:
         handle_soap_service_error(error)
-        return e_aanvragen
+
+    return e_aanvragen
+
+
+def get_e_aanvragen(bsn):
+    e_aanvragen = get_e_aanvragen_raw(bsn)
+
+    if not e_aanvragen:
+        return []
 
     aanvragen = []
     steps_collection = collect_and_transform_status_steps(e_aanvragen)
