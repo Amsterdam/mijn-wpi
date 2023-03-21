@@ -79,8 +79,11 @@ def get_stadspas_details(admin):
 
 
 def get_admins(admin_number, owner_name, stadspassen, category_filter=None):
-    stadspassen_active = [pas for pas in stadspassen if pas["categorie_code"] == category_filter] if category_filter is not None else stadspassen
+    stadspassen_active = [pas for pas in stadspassen if pas["actief"] is True]
     stadspassen = []
+
+    if category_filter is not None:
+        stadspassen_active = [pas for pas in stadspassen_active if pas["categorie_code"] == category_filter]
 
     for stadspas in stadspassen_active:
         stadspas_details = {
