@@ -103,7 +103,7 @@ def get_owner_name(stadspas_owner):
 
 def get_stadspas_admins(admin_number, category_filter):
     stadspas_owner = send_request(
-        GPASS_ENDPOINT_PASHOUDER, admin_number, params={"addsubs": True, "onlyvalidcards": True}
+        GPASS_ENDPOINT_PASHOUDER, admin_number, params={"addsubs": True}
     )
 
     if not stadspas_owner:
