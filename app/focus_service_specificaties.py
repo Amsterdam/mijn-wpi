@@ -1,7 +1,7 @@
+from app.e_aanvraag_specificaties_config import jaaropgave_document_codes
 from app.focus_service_aanvragen import get_client, get_document_url
 from app.focus_service_e_aanvraag import get_e_aanvragen_raw
 from app.utils import handle_soap_service_error
-from app.e_aanvraag_specificaties_config import jaaropgave_document_codes
 
 
 def get_e_aanvraag_jaaropgaven(bsn):
@@ -62,7 +62,7 @@ def get_jaaropgaven(bsn):
     try:
         e_aanvraag_jaaropgaven = get_e_aanvraag_jaaropgaven(bsn)
         jaaropgaven.extend(e_aanvraag_jaaropgaven)
-    except Exception as error:
+    except Exception:
         pass
 
     return jaaropgaven
