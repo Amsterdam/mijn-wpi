@@ -143,9 +143,9 @@ class WPITestServer(WpiApiTestApp):
         response_json = response.get_json()
 
         response_expected = {
-            "stadspassen": [GpassServiceGetStadspas.gpass_formatted, GpassServiceGetStadspas.gpass_formatted],
-            "ownerType": "hoofdpashouder",
-            "adminNumber": "abcdefg123",
+            "stadspassen": [GpassServiceGetStadspas.gpass_formatted],
+            "ownerType": "partner",
+            "adminNumber": "03630000000123",
         }
 
         self.assertEqual(response_json["content"], response_expected)

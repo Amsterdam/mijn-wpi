@@ -77,8 +77,8 @@ def get_stadspas_details(admin):
     return stadspas_details
 
 
-def get_admins(admin_number, owner_name, stadspassen):
-    stadspassen_active = [pas for pas in stadspassen if pas["actief"] is True and pas["category_code"] is "M"]
+def get_admins(admin_number, owner_name, stadspassen, category_filter=None):
+    stadspassen_active = [pas for pas in stadspassen if pas["category_code"] == category_filter] if category_filter is not None else stadspassen
     stadspassen = []
 
     for stadspas in stadspassen_active:
@@ -103,14 +103,14 @@ def get_owner_name(stadspas_owner):
 
 def get_stadspas_admins(admin_number, category_filter):
     stadspas_owner = send_request(
-        GPASS_ENDPOINT_PASHOUDER, admin_number, params={"addsubs": True}
+        GPASS_ENDPOINT_PASHOUDER, admin_number, params={"addsubs": True, "onlyvalidcards": True}
     )
 
     if not stadspas_owner:
         return []
 
     owner_name = get_owner_name(stadspas_owner)
-    stadspas_admins = get_admins(admin_number, owner_name, stadspas_owner["passen"])
+    stadspas_admins = get_admins(admin_number, owner_name, stadspas_owner["passen"], category_filter)
 
     if stadspas_owner["sub_pashouders"]:
         for sub_stadspas_owner in stadspas_owner["sub_pashouders"]:

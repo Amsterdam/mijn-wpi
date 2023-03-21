@@ -101,10 +101,6 @@ class GpassServiceGetStadspassen(TestCase):
         "achternaam": "Achternaam",
         "passen": [
             {
-                "actief": False,
-                "pasnummer": 444444444444,
-            },
-            {
                 "actief": True,
                 "pasnummer": 333333333333,
             },
@@ -118,10 +114,6 @@ class GpassServiceGetStadspassen(TestCase):
                         "actief": True,
                         "pasnummer": 666666666666,
                     },
-                    {
-                        "actief": False,
-                        "pasnummer": 555555555555,
-                    },
                 ],
             },
             {
@@ -131,11 +123,7 @@ class GpassServiceGetStadspassen(TestCase):
                     {
                         "actief": True,
                         "pasnummer": 777777777777,
-                    },
-                    {
-                        "actief": False,
-                        "pasnummer": 888888888888,
-                    },
+                    }
                 ],
             },
         ],
@@ -153,11 +141,11 @@ class GpassServiceGetStadspassen(TestCase):
         send_request_mock.return_value = self.gpass_pashouder_response
 
         admin_number = "xxx"
-        result = get_stadspas_admins(admin_number)
+        result = get_stadspas_admins(admin_number, None)
         expected_path = "http://ha/ha/ha"
 
         send_request_mock.assert_called_with(
-            expected_path, admin_number, params={"addsubs": True}
+            expected_path, admin_number, params={"addsubs": True, 'onlyvalidcards': True}
         )
 
         self.assertEqual(result, self.gpass_admins)
@@ -299,10 +287,6 @@ class GpassServiceVarious(TestCase):
         owner_name = "John Kelly"
         stadspassen = [
             {
-                "actief": False,
-                "pasnummer": 444444444444,
-            },
-            {
                 "actief": True,
                 "pasnummer": 333333333333,
             },
@@ -318,23 +302,6 @@ class GpassServiceVarious(TestCase):
                     "pass_number": "333333333333",
                 }
             ],
-        )
-
-        stadspassen = [
-            {
-                "actief": False,
-                "pasnummer": 444444444444,
-            },
-            {
-                "actief": False,
-                "pasnummer": 333333333333,
-            },
-        ]
-        result = get_admins(admin_number, owner_name, stadspassen)
-
-        self.assertEqual(
-            result,
-            [],
         )
 
     def test_get_owner_name(self):
