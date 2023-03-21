@@ -12,7 +12,6 @@ from app.gpass_config import (
     STADSPAS_TRANSACTIONS_PATH,
 )
 from app.utils import encrypt
-from sentry_sdk import capture_message
 
 
 def send_request(url, admin_number, params=None):
@@ -112,8 +111,6 @@ def get_stadspas_admins(admin_number, category_filter):
 
     if not stadspas_owner:
         return []
-
-    capture_message(json.dumps(stadspas_owner["passen"]))
 
     owner_name = get_owner_name(stadspas_owner)
     stadspas_admins = get_admins(admin_number, owner_name, stadspas_owner["passen"], category_filter)
