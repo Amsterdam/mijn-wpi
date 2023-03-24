@@ -9,6 +9,9 @@ from app.zorgned_service import get_clientnummer, volledig_clientnummer
 class ZorgnedApiMock:
     status_code = 200
     response_json = None
+    content = {
+        "mock": "Data"
+    }
 
     def __init__(self, response_json=None):
         if isinstance(response_json, str):

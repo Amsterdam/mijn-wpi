@@ -144,7 +144,7 @@ class WPITestServer(WpiApiTestApp):
 
         response_expected = {
             "stadspassen": [GpassServiceGetStadspas.gpass_formatted],
-            "ownerType": "partner",
+            "ownerType": "hoofdpashouder",
             "adminNumber": "03630000000123",
         }
 
