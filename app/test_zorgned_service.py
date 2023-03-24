@@ -40,4 +40,3 @@ class ZorgnedServiceTest(TestCase):
 
     def test_volledig_clientnummer(self):
         self.assertEquals(volledig_clientnummer(304184), "03630000304184")
-

@@ -69,3 +69,4 @@ def volledig_clientnummer(identificatie) -> str:
     clientnummer = str(identificatie).zfill(10)
     clientnummer = f"{ZORGNED_GEMEENTE_CODE}{clientnummer}"
     return clientnummer
+

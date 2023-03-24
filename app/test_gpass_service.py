@@ -101,8 +101,8 @@ class GpassServiceGetStadspassen(TestCase):
         "achternaam": "Achternaam",
         "passen": [
             {
-                "actief": False,	
-                "pasnummer": 444444444444,	
+                "actief": False,
+                "pasnummer": 444444444444,
             },
             {
                 "actief": True,
@@ -119,8 +119,8 @@ class GpassServiceGetStadspassen(TestCase):
                         "pasnummer": 666666666666,
                     },
                     {
-                        "actief": False,	
-                        "pasnummer": 555555555555,	
+                        "actief": False,
+                        "pasnummer": 555555555555,
                     },
                 ],
             },
@@ -133,8 +133,8 @@ class GpassServiceGetStadspassen(TestCase):
                         "pasnummer": 777777777777,
                     },
                     {
-                        "actief": False,	
-                        "pasnummer": 888888888888,	
+                        "actief": False,
+                        "pasnummer": 888888888888,
                     },
                 ],
             },
@@ -299,8 +299,8 @@ class GpassServiceVarious(TestCase):
         owner_name = "John Kelly"
         stadspassen = [
             {
-                "actief": False,	
-                "pasnummer": 444444444444,	
+                "actief": False,
+                "pasnummer": 444444444444,
             },
             {
                 "actief": True,
@@ -322,15 +322,15 @@ class GpassServiceVarious(TestCase):
 
         stadspassen = [
             {
-                "actief": False,	
-                "pasnummer": 444444444444,	
+                "actief": False,
+                "pasnummer": 444444444444,
             },
             {
-                "actief": False,	
-                "pasnummer": 333333333333,	
+                "actief": False,
+                "pasnummer": 333333333333,
             },
-        ]	
-        result = get_admins(admin_number, owner_name, stadspassen)	
+        ]
+        result = get_admins(admin_number, owner_name, stadspassen)
 
         self.assertEqual(
             result,
