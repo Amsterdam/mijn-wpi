@@ -13,9 +13,6 @@ from app.config import (
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
 )
-from app.utils import to_date
-from sentry_sdk import capture_message
-
 
 def send_api_request(bsn, operation="", query_params=None):
     headers = None
@@ -40,8 +37,6 @@ def send_api_request(bsn, operation="", query_params=None):
 
 def send_api_request_json(bsn, operation="", query_params=None):
     res = send_api_request(bsn, operation, query_params)
-
-    capture_message(f"Length of response for operation {operation} {len(res.content)}")
 
     if len(res.content) < 1:
         return {}

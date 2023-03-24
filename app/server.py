@@ -121,7 +121,7 @@ def stadspassen():
         response_content = {
             "stadspassen": stadspassen,
             "adminNumber": volledig_clientnummer(clientnummer),
-            "ownerType": "partner",
+            "ownerType": "hoofdpashouder",
         }
 
         return success_response_json(response_content)
