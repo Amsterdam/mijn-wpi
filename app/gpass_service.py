@@ -1,5 +1,4 @@
 import logging
-import json
 import requests
 
 from app.config import API_REQUEST_TIMEOUT
