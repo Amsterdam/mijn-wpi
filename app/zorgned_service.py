@@ -14,6 +14,7 @@ from app.config import (
     ZORGNED_GEMEENTE_CODE,
 )
 
+
 def send_api_request(bsn, operation="", query_params=None):
     headers = None
     cert = None
@@ -69,4 +70,3 @@ def volledig_clientnummer(identificatie) -> str:
     clientnummer = str(identificatie).zfill(10)
     clientnummer = f"{ZORGNED_GEMEENTE_CODE}{clientnummer}"
     return clientnummer
-
