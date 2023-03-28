@@ -1,17 +1,19 @@
 import json
 import logging
+from datetime import date
+
 import requests
 from dpath import util as dpath_util
-from datetime import date
+
 from app.config import (
+    ARMOEDE_REGELING_PRODUCT_CODES,
+    BESCHIKT_PRODUCT_RESULTAAT,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
     ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
     ZORGNED_API_TOKEN,
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
-    BESCHIKT_PRODUCT_RESULTAAT,
-    ARMOEDE_REGELING_PRODUCT_CODES,
 )
 from app.utils import to_date
 
