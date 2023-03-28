@@ -68,10 +68,12 @@ class TestSpecificatieService(TestCase):
         mock_client.service.getJaaropgaven.assert_called_with(bsn)
 
         self.assertEqual(len(result), 4)
-        self.assertEqual(result[0]["title"], "test1 2020")
-        self.assertEqual(result[1]["title"], "test2 2021")
-        self.assertEqual(result[2]["title"], "Bbz Jaaropgave rentedragende lening")
-        self.assertEqual(result[3]["title"], "Tozo Jaaropgave rentedragende lening")
+        self.assertEqual(result[0]["title"], "test1 2019")
+        self.assertEqual(result[1]["title"], "test2 2020")
+        self.assertEqual(result[2]["title"], "Bbz Jaaropgave rentedragende lening 2019")
+        self.assertEqual(
+            result[3]["title"], "Tozo Jaaropgave rentedragende lening 2019"
+        )
 
     @patch("app.focus_service_specificaties.handle_soap_service_error")
     @patch("app.focus_service_specificaties.get_client")

@@ -13,10 +13,12 @@ def get_e_aanvraag_jaaropgaven(bsn):
         jaaropgave_title = jaaropgave_document_codes.get(document_code_id)
 
         if jaaropgave_title:
+            date_published = e_aanvraag["datumDocument"]
+            year = date_published.year - 1  # For the year before
             jaaropgave = {
                 "datePublished": e_aanvraag["datumDocument"],
                 "id": document_code_id,
-                "title": jaaropgave_title,
+                "title": f"{jaaropgave_title} {year}",
                 "variant": "Bedrijfskapitaal",
                 "url": get_document_url(
                     {
@@ -44,7 +46,7 @@ def get_jaaropgaven(bsn):
 
     for jaaropgave_source in jaaropgaven_source:
         date_published = jaaropgave_source["einddatumDocument"]
-        year = date_published.year
+        year = date_published.year - 1  # For the year before
         title = jaaropgave_source["documentCode"]["omschrijving"]
 
         jaaropgave = {
