@@ -44,7 +44,7 @@ def get_jaaropgaven(bsn):
 
     for jaaropgave_source in jaaropgaven_source:
         date_published = jaaropgave_source["einddatumDocument"]
-        year = date_published.year
+        year = date_published.year - 1  # For the year before
         title = jaaropgave_source["documentCode"]["omschrijving"]
 
         jaaropgave = {
