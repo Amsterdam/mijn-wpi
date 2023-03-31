@@ -153,7 +153,7 @@ class GpassServiceGetStadspassen(TestCase):
         send_request_mock.return_value = self.gpass_pashouder_response
 
         admin_number = "xxx"
-        result = get_stadspas_admins(admin_number, None)
+        result = get_stadspas_admins(admin_number)
         expected_path = "http://ha/ha/ha"
 
         send_request_mock.assert_called_with(
