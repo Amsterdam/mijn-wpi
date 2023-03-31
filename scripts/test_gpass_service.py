@@ -8,6 +8,9 @@ if len(sys.argv) >= 2:
     bsn = sys.argv[1]
 
 admin = get_stadspas_admin_number(bsn)
+
+print(admin)
+
 stadspas = get_stadspassen(admin["admin_number"])
 
 print(stadspas)

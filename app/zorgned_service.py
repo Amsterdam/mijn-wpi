@@ -1,17 +1,19 @@
 import json
 import logging
+from datetime import date
+
 import requests
 from dpath import util as dpath_util
-from datetime import date
+
 from app.config import (
+    ARMOEDE_REGELING_PRODUCT_CODES,
+    BESCHIKT_PRODUCT_RESULTAAT,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
     ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
     ZORGNED_API_TOKEN,
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
-    BESCHIKT_PRODUCT_RESULTAAT,
-    ARMOEDE_REGELING_PRODUCT_CODES,
 )
 from app.utils import to_date
 
@@ -61,13 +63,11 @@ def has_armoede_producten(aanvragen_source=[]):
         if beschikte_producten:
             for beschikt_product in beschikte_producten:
                 product = beschikt_product.get("product")
-                toegewezen_product = beschikt_product.get("toegewezenProduct")
                 # If any one product matches out criteria return True
                 if (
                     beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT
                     and product.get("productsoortCode")
                     in ARMOEDE_REGELING_PRODUCT_CODES
-                    and date_in_past(toegewezen_product.get("datumIngangGeldigheid"))
                 ):
                     return True
 
