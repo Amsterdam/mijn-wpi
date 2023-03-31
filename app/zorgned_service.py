@@ -40,7 +40,7 @@ def send_api_request_json(bsn, operation="", query_params=None):
     res = send_api_request(bsn, operation, query_params)
 
     if len(res.content) < 1:
-        return {}
+        return None
 
     response_data = res.json()
 
@@ -56,7 +56,8 @@ def get_clientnummer(bsn):
     )
 
     if (
-        "persoon" in response_data
+        response_data is not None
+        and "persoon" in response_data
         and response_data["persoon"]
         and "clientidentificatie" in response_data["persoon"]
         and response_data["persoon"]["clientidentificatie"]
