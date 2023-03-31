@@ -103,7 +103,7 @@ def get_owner_name(stadspas_owner):
     return name
 
 
-def get_stadspas_admins(admin_number, category_filter):
+def get_stadspas_admins(admin_number, category_filter=None):
     stadspas_owner = send_request(
         GPASS_ENDPOINT_PASHOUDER, admin_number, params={"addsubs": True}
     )
