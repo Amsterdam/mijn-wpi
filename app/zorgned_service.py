@@ -1,10 +1,6 @@
 import json
 import logging
-from datetime import date
-
 import requests
-from dpath import util as dpath_util
-
 from app.config import (
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
