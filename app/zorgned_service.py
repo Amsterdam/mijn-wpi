@@ -1,13 +1,7 @@
 import json
 import logging
-from datetime import date
-
 import requests
-from dpath import util as dpath_util
-
 from app.config import (
-    ARMOEDE_REGELING_PRODUCT_CODES,
-    BESCHIKT_PRODUCT_RESULTAAT,
     SERVER_CLIENT_CERT,
     SERVER_CLIENT_KEY,
     ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
@@ -15,7 +9,6 @@ from app.config import (
     ZORGNED_API_URL,
     ZORGNED_GEMEENTE_CODE,
 )
-from app.utils import to_date
 
 
 def send_api_request(bsn, operation="", query_params=None):
@@ -42,6 +35,9 @@ def send_api_request(bsn, operation="", query_params=None):
 def send_api_request_json(bsn, operation="", query_params=None):
     res = send_api_request(bsn, operation, query_params)
 
+    if len(res.content) < 1:
+        return None
+
     response_data = res.json()
 
     logging.debug(json.dumps(response_data, indent=4))
@@ -49,50 +45,25 @@ def send_api_request_json(bsn, operation="", query_params=None):
     return response_data
 
 
-def date_in_past(past_date):
-    return past_date and to_date(past_date) <= date.today()
-
-
-def has_armoede_producten(aanvragen_source=[]):
-    for aanvraag_source in aanvragen_source:
-        beschikking = dpath_util.get(aanvraag_source, "beschikking", default=None)
-        beschikte_producten = dpath_util.get(
-            beschikking, "beschikteProducten", default=None
-        )
-
-        if beschikte_producten:
-            for beschikt_product in beschikte_producten:
-                product = beschikt_product.get("product")
-                # If any one product matches out criteria return True
-                if (
-                    beschikt_product.get("resultaat") in BESCHIKT_PRODUCT_RESULTAAT
-                    and product.get("productsoortCode")
-                    in ARMOEDE_REGELING_PRODUCT_CODES
-                ):
-                    return True
-
-    return False
-
-
-def get_aanvragen(bsn, query_params=None):
-    response_data = send_api_request_json(
-        bsn,
-        "/aanvragen",
-        query_params,
-    )
-    response_aanvragen = response_data["_embedded"]["aanvraag"]
-
-    return response_aanvragen
-
-
 def get_clientnummer(bsn):
-    armoede_aanvragen = get_aanvragen(bsn)
-    if not has_armoede_producten(armoede_aanvragen):
-        return None
-
     response_data = send_api_request_json(
         bsn,
         "/persoonsgegevensNAW",
     )
 
-    return response_data["persoon"]["clientidentificatie"]
+    if (
+        response_data is not None
+        and "persoon" in response_data
+        and response_data["persoon"]
+        and "clientidentificatie" in response_data["persoon"]
+        and response_data["persoon"]["clientidentificatie"]
+    ):
+        return response_data["persoon"]["clientidentificatie"]
+
+    return None
+
+
+def volledig_clientnummer(identificatie) -> str:
+    clientnummer = str(identificatie).zfill(10)
+    clientnummer = f"{ZORGNED_GEMEENTE_CODE}{clientnummer}"
+    return clientnummer
