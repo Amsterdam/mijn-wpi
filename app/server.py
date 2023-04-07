@@ -119,7 +119,7 @@ def stadspassen():
     if clientnummer is not None:
         stadspassen = get_stadspassen(volledig_clientnummer(clientnummer), "M")
 
-        if(stadspassen is not None):
+        if len(stadspassen) > 0:
             response_content = {
                 "stadspassen": stadspassen,
                 "adminNumber": volledig_clientnummer(clientnummer)
