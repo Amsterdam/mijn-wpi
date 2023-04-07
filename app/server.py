@@ -118,12 +118,14 @@ def stadspassen():
 
     if clientnummer is not None:
         stadspassen = get_stadspassen(volledig_clientnummer(clientnummer), "M")
-        response_content = {
-            "stadspassen": stadspassen,
-            "adminNumber": volledig_clientnummer(clientnummer)
-        }
 
-        return success_response_json(response_content)
+        if(stadspassen is not None):
+            response_content = {
+                "stadspassen": stadspassen,
+                "adminNumber": volledig_clientnummer(clientnummer)
+            }
+
+            return success_response_json(response_content)
 
     # then check focus
     admin = get_stadspas_admin_number(user["id"])
