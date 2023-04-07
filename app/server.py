@@ -120,8 +120,7 @@ def stadspassen():
         stadspassen = get_stadspassen(volledig_clientnummer(clientnummer), "M")
         response_content = {
             "stadspassen": stadspassen,
-            "adminNumber": volledig_clientnummer(clientnummer),
-            "ownerType": "hoofdpashouder",
+            "adminNumber": volledig_clientnummer(clientnummer)
         }
 
         return success_response_json(response_content)
@@ -136,8 +135,7 @@ def stadspassen():
     stadspassen = stadspassen + get_stadspassen(admin["admin_number"])
     response_content = {
         "stadspassen": stadspassen,
-        "adminNumber": admin["admin_number"],
-        "ownerType": admin["type"],
+        "adminNumber": admin["admin_number"]
     }
 
     return success_response_json(response_content)
