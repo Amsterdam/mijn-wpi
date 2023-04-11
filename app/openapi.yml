@@ -155,12 +155,6 @@ paths:
                   content:
                     type: object
                     properties:
-                      ownerType:
-                        type: string
-                        enum:
-                          - kind
-                          - hoofdpashouder
-                          - partner
                       adminNumber:
                         type: string
                       stadspassen:
