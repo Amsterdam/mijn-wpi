@@ -121,7 +121,7 @@ def stadspassen():
             if len(stadspassen) > 0:
                 response_content = {
                     "stadspassen": stadspassen,
-                    "adminNumber": volledig_clientnummer(clientnummer)
+                    "adminNumber": volledig_clientnummer(clientnummer),
                 }
 
                 return success_response_json(response_content)
@@ -136,7 +136,7 @@ def stadspassen():
     stadspassen = stadspassen + get_stadspassen(admin["admin_number"])
     response_content = {
         "stadspassen": stadspassen,
-        "adminNumber": admin["admin_number"]
+        "adminNumber": admin["admin_number"],
     }
 
     return success_response_json(response_content)
