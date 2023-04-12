@@ -12,21 +12,23 @@ BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 SENTRY_DSN = os.getenv("SENTRY_DSN")
 SENTRY_ENV = os.getenv("SENTRY_ENVIRONMENT")
 
-# Server security / certificates for ZorgNed
-SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
-SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
-
-# ZorgNed vars
-ZORGNED_API_REQUEST_TIMEOUT_SECONDS = 30
-ZORGNED_API_TOKEN = os.getenv("WMO_NED_API_TOKEN")
-ZORGNED_API_URL = os.getenv("ZORGNED_API_URL")
-ZORGNED_GEMEENTE_CODE = "0363"
-
 # Environment determination
 IS_PRODUCTION = SENTRY_ENV == "production"
 IS_ACCEPTANCE = SENTRY_ENV == "acceptance"
 IS_AP = IS_PRODUCTION or IS_ACCEPTANCE
 IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
+
+# Server security / certificates for ZorgNed
+SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
+SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
+
+# ZorgNed vars
+ZORGNED_STADSPASSEN_ENABLED = not IS_PRODUCTION
+ZORGNED_API_REQUEST_TIMEOUT_SECONDS = 30
+ZORGNED_API_TOKEN = os.getenv("WMO_NED_API_TOKEN")
+ZORGNED_API_URL = os.getenv("ZORGNED_API_URL")
+ZORGNED_GEMEENTE_CODE = "0363"
+
 
 # App constants
 ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
