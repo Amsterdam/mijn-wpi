@@ -42,6 +42,7 @@ if SENTRY_DSN:
     )
 
 
+@application.route("/", methods=["GET"])
 @application.route("/status/health", methods=["GET"])
 def status_health():
     return success_response_json("OK")
