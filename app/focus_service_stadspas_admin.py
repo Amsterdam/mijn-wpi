@@ -19,15 +19,6 @@ def has_groene_stip(fondsen):
     return False
 
 
-def get_administratienummer(number_from_source):
-    # Disable ACC dataset coupling, enable if we need it again.
-    # if FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC:
-    #     return FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC.get(
-    #         number_from_source, number_from_source
-    #     )
-    return number_from_source
-
-
 def get_first_pas_type(fondsen):
     pas_type = None
 
@@ -83,8 +74,6 @@ def get_stadspas_admin_number(bsn):
     pas_type = get_first_pas_type(fondsen)
 
     return {
-        "admin_number": get_administratienummer(
-            volledig_administratienummer(admin_number)
-        ),
+        "admin_number": volledig_administratienummer(admin_number),
         "type": pas_type,
     }

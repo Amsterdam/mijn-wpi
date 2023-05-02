@@ -47,15 +47,6 @@ class TestFocusStadspasAdmin(TestCase):
 
         self.assertEqual(result, None)
 
-    # @patch(
-    #     "app.focus_service_stadspas_admin.FOCUS_STADSPAS_ADMIN_NUMBER_CONVERSION_ACC",
-    #     {"xx": "yy"},
-    # )
-    # def test_admin_number_conversion(self):
-    #     self.assertEqual(get_administratienummer("xx"), "yy")
-    #     self.assertEqual(get_administratienummer("yy"), "yy")
-    #     self.assertEqual(get_administratienummer("zz"), "zz")
-
 
 example_response = {
     "administratienummer": 123123123,
