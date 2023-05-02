@@ -1,4 +1,4 @@
-FROM amsterdam/python:3.9.6-buster as base
+FROM python:latest as base
 
 WORKDIR /api
 
@@ -11,11 +11,13 @@ ENV LANGUAGE nl_NL:nl
 ENV LC_ALL nl_NL.UTF-8
 
 COPY requirements.txt /api
-RUN pip install -r requirements.txt
+
+RUN pip install --upgrade pip \
+  && pip install uwsgi \
+  && pip install -r requirements.txt
 
 COPY ./scripts /api/scripts
 COPY ./app /api/app
-
 
 FROM base as tests
 
@@ -47,3 +49,7 @@ COPY conf/sshd_config /etc/ssh/
 RUN chmod u+x /api/docker-entrypoint.sh
 
 ENTRYPOINT [ "/bin/sh", "/api/docker-entrypoint.sh"]
+
+FROM publish as publish-final
+
+COPY /files /app/files
