@@ -1,4 +1,3 @@
-import json
 import os
 
 from app.config import API_BASE_PATH
