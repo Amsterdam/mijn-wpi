@@ -1,5 +1,4 @@
 import logging
-
 import requests
 
 from app.config import API_REQUEST_TIMEOUT
@@ -77,9 +76,12 @@ def get_stadspas_details(admin):
     return stadspas_details
 
 
-def get_admins(admin_number, owner_name, stadspassen):
+def get_admins(admin_number, owner_name, stadspassen, category_filter=None):
     stadspassen_active = [pas for pas in stadspassen if pas["actief"] is True]
     stadspassen = []
+
+    if category_filter is not None:
+        stadspassen_active = [pas for pas in stadspassen_active if pas["categorie_code"] == category_filter]
 
     for stadspas in stadspassen_active:
         stadspas_details = {
@@ -101,7 +103,7 @@ def get_owner_name(stadspas_owner):
     return name
 
 
-def get_stadspas_admins(admin_number):
+def get_stadspas_admins(admin_number, category_filter=None):
     stadspas_owner = send_request(
         GPASS_ENDPOINT_PASHOUDER, admin_number, params={"addsubs": True}
     )
@@ -110,7 +112,7 @@ def get_stadspas_admins(admin_number):
         return []
 
     owner_name = get_owner_name(stadspas_owner)
-    stadspas_admins = get_admins(admin_number, owner_name, stadspas_owner["passen"])
+    stadspas_admins = get_admins(admin_number, owner_name, stadspas_owner["passen"], category_filter)
 
     if stadspas_owner["sub_pashouders"]:
         for sub_stadspas_owner in stadspas_owner["sub_pashouders"]:
@@ -122,8 +124,8 @@ def get_stadspas_admins(admin_number):
     return stadspas_admins
 
 
-def get_stadspassen(admin_number):
-    stadspas_admins = get_stadspas_admins(admin_number)
+def get_stadspassen(admin_number, category_filter=None):
+    stadspas_admins = get_stadspas_admins(admin_number, category_filter)
     stadspassen = []
 
     for admin in stadspas_admins:

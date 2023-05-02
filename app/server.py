@@ -25,11 +25,13 @@ from app.config import (
     API_BASE_PATH,
     IS_DEV,
     SENTRY_DSN,
+    ZORGNED_STADSPASSEN_ENABLED,
     CustomJSONEncoder,
 )
 from app.focus_config import (
     FOCUS_DOCUMENT_PATH,
 )
+from app.zorgned_service import get_clientnummer, volledig_clientnummer
 
 application = Flask(__name__)
 application.json_encoder = CustomJSONEncoder
@@ -107,16 +109,34 @@ def specificaties_en_jaaropgaven():
 @validate_openapi
 def stadspassen():
     user = auth.get_current_user()
+    stadspassen = []
+
+    if ZORGNED_STADSPASSEN_ENABLED:
+        # Check in zorgned
+        clientnummer = get_clientnummer(user["id"])
+
+        if clientnummer is not None:
+            stadspassen = get_stadspassen(volledig_clientnummer(clientnummer), "M")
+
+            if len(stadspassen) > 0:
+                response_content = {
+                    "stadspassen": stadspassen,
+                    "adminNumber": volledig_clientnummer(clientnummer),
+                }
+
+                return success_response_json(response_content)
+
+    # then check focus
     admin = get_stadspas_admin_number(user["id"])
 
-    if not admin or not admin["admin_number"]:
+    if (not admin or not admin["admin_number"]) and len(stadspassen) == 0:
         return success_response_json(None)
 
-    stadspassen = get_stadspassen(admin["admin_number"])
+    # merge results
+    stadspassen = stadspassen + get_stadspassen(admin["admin_number"])
     response_content = {
         "stadspassen": stadspassen,
         "adminNumber": admin["admin_number"],
-        "ownerType": admin["type"],
     }
 
     return success_response_json(response_content)
@@ -136,7 +156,6 @@ def stadspastransactions(encrypted_admin_pasnummer):
 
 @application.errorhandler(Exception)
 def handle_error(error):
-
     error_message_original = f"{type(error)}:{str(error)}"
 
     msg_auth_exception = "Auth error occurred"

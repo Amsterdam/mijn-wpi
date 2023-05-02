@@ -1,3 +1,5 @@
+from app.e_aanvraag_specificaties_config import jaaropgave_document_codes
+
 E_AANVRAAG_ABOUT = {
     "Tozo 1": "Tozo 1",
     "Tozo 2": "Tozo 2",
@@ -71,6 +73,8 @@ E_AANVRAAG_DECISION_ID = {
     "mogelijkeVerlenging": "mogelijkeVerlenging",
 }
 
+
+exclude_documents_from_processing = list(jaaropgave_document_codes.keys())
 
 # omschrijving: Original name of document
 # document_title: Mijn Amsterdam name of document

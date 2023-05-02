@@ -1,5 +1,36 @@
+from app.e_aanvraag_specificaties_config import jaaropgave_document_codes
 from app.focus_service_aanvragen import get_client, get_document_url
+from app.focus_service_e_aanvraag import get_e_aanvragen_raw
 from app.utils import handle_soap_service_error
+
+
+def get_e_aanvraag_jaaropgaven(bsn):
+    e_aanvragen = get_e_aanvragen_raw(bsn)
+    e_aanvraag_jaaropgaven = []
+
+    for e_aanvraag in e_aanvragen:
+        document_code_id = e_aanvraag["documentCodes"]["documentCodeId"]
+        jaaropgave_title = jaaropgave_document_codes.get(document_code_id)
+
+        if jaaropgave_title:
+            date_published = e_aanvraag["datumDocument"]
+            year = date_published.year - 1  # For the year before
+            jaaropgave = {
+                "datePublished": e_aanvraag["datumDocument"],
+                "id": document_code_id,
+                "title": f"{jaaropgave_title} {year}",
+                "variant": "Bedrijfskapitaal",
+                "url": get_document_url(
+                    {
+                        "isBulk": e_aanvraag["isBulk"],
+                        "isDms": e_aanvraag["isDms"],
+                        "id": e_aanvraag["documentId"],
+                    }
+                ),
+            }
+            e_aanvraag_jaaropgaven.append(jaaropgave)
+
+    return e_aanvraag_jaaropgaven
 
 
 def get_jaaropgaven(bsn):
@@ -15,7 +46,7 @@ def get_jaaropgaven(bsn):
 
     for jaaropgave_source in jaaropgaven_source:
         date_published = jaaropgave_source["einddatumDocument"]
-        year = date_published.year
+        year = date_published.year - 1  # For the year before
         title = jaaropgave_source["documentCode"]["omschrijving"]
 
         jaaropgave = {
@@ -29,6 +60,12 @@ def get_jaaropgaven(bsn):
             {**jaaropgave, "isDms": False, "isBulk": False}
         )
         jaaropgaven.append(jaaropgave)
+
+    try:
+        e_aanvraag_jaaropgaven = get_e_aanvraag_jaaropgaven(bsn)
+        jaaropgaven.extend(e_aanvraag_jaaropgaven)
+    except Exception:
+        pass
 
     return jaaropgaven
 
