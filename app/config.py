@@ -15,8 +15,10 @@ SENTRY_ENV = os.getenv("SENTRY_ENVIRONMENT")
 # Environment determination
 IS_PRODUCTION = SENTRY_ENV == "production"
 IS_ACCEPTANCE = SENTRY_ENV == "acceptance"
-IS_AP = IS_PRODUCTION or IS_ACCEPTANCE
-IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
+IS_TEST = SENTRY_ENV == "test"
+IS_TAP = IS_PRODUCTION or IS_ACCEPTANCE or IS_TEST
+
+IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_TAP
 
 # Server security / certificates for ZorgNed
 SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
@@ -31,7 +33,7 @@ ZORGNED_GEMEENTE_CODE = "0363"
 
 
 # App constants
-ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
+ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_TAP)
 
 API_REQUEST_TIMEOUT = 30
 API_BASE_PATH = "/wpi"
