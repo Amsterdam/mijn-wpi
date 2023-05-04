@@ -1,4 +1,4 @@
 jaaropgave_document_codes = {
-    "177025": "Bbz Jaaropgave rentedragende lening",
-    "176026": "Tozo Jaaropgave rentedragende lening",
+    "177025": "Jaaropgave {year} rentedragende lening Bbz",
+    "176026": "Jaaropgave {year} rentedragende lening Tozo",
 }
