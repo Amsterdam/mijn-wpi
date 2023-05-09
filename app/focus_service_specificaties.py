@@ -18,7 +18,7 @@ def get_e_aanvraag_jaaropgaven(bsn):
             jaaropgave = {
                 "datePublished": e_aanvraag["datumDocument"],
                 "id": document_code_id,
-                "title": f"{jaaropgave_title} {year}",
+                "title": jaaropgave_title.format(year=year),
                 "variant": "Bedrijfskapitaal",
                 "url": get_document_url(
                     {

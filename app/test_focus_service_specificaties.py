@@ -70,9 +70,9 @@ class TestSpecificatieService(TestCase):
         self.assertEqual(len(result), 4)
         self.assertEqual(result[0]["title"], "test1 2019")
         self.assertEqual(result[1]["title"], "test2 2020")
-        self.assertEqual(result[2]["title"], "Bbz Jaaropgave rentedragende lening 2019")
+        self.assertEqual(result[2]["title"], "Jaaropgave 2019 rentedragende lening Bbz")
         self.assertEqual(
-            result[3]["title"], "Tozo Jaaropgave rentedragende lening 2019"
+            result[3]["title"], "Jaaropgave 2019 rentedragende lening Tozo"
         )
 
     @patch("app.focus_service_specificaties.handle_soap_service_error")
