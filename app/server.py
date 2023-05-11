@@ -26,7 +26,7 @@ from app.config import (
     IS_DEV,
     SENTRY_DSN,
     ZORGNED_STADSPASSEN_ENABLED,
-    DefaultJSONProvider,
+    UpdatedJSONProvider,
 )
 from app.focus_config import (
     FOCUS_DOCUMENT_PATH,
@@ -34,7 +34,7 @@ from app.focus_config import (
 from app.zorgned_service import get_clientnummer, volledig_clientnummer
 
 application = Flask(__name__)
-application.json = DefaultJSONProvider(application)
+application.json = UpdatedJSONProvider(application)
 
 if SENTRY_DSN:
     sentry_sdk.init(
