@@ -56,6 +56,9 @@ CONNECTION_ERRORS = [
 
 class UpdatedJSONProvider(DefaultJSONProvider):
     def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+
         if isinstance(obj, time):
             return obj.isoformat(timespec="minutes")
 
