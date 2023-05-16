@@ -1,8 +1,8 @@
 import locale
 import logging
 import os
-from datetime import date, time
-from json import JSONEncoder
+from datetime import date, time, datetime
+from flask.json.provider import DefaultJSONProvider
 
 locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")
 
@@ -56,11 +56,15 @@ CONNECTION_ERRORS = [
 ]
 
 
-class CustomJSONEncoder(JSONEncoder):
+class UpdatedJSONProvider(DefaultJSONProvider):
     def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+
         if isinstance(obj, time):
             return obj.isoformat(timespec="minutes")
+
         if isinstance(obj, date):
             return obj.isoformat()
 
-        return JSONEncoder.default(self, obj)
+        return super().default(obj)
