@@ -23,7 +23,7 @@ from app import auth
 
 from app.config import (
     API_BASE_PATH,
-    IS_DEV,
+    IS_OT,
     SENTRY_DSN,
     ZORGNED_STADSPASSEN_ENABLED,
     UpdatedJSONProvider,
@@ -165,7 +165,7 @@ def handle_error(error):
 
     logging.exception(error, extra={"error_message_original": error_message_original})
 
-    if IS_DEV:  # pragma: no cover
+    if IS_OT:  # pragma: no cover
         msg_auth_exception = error_message_original
         msg_request_http_error = error_message_original
         msg_server_error = error_message_original
