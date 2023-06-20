@@ -43,7 +43,7 @@ RUN chmod u+x /api/test.sh
 ENTRYPOINT [ "/bin/sh", "/api/test.sh"]
 
 
-FROM base as publish
+FROM base as publish-final
 
 # ssh ( see also: https://github.com/Azure-Samples/docker-django-webapp-linux )
 ENV SSH_PASSWD "root:Docker!"
@@ -64,7 +64,3 @@ COPY conf/sshd_config /etc/ssh/
 RUN chmod u+x /api/docker-entrypoint.sh
 
 ENTRYPOINT [ "/bin/sh", "/api/docker-entrypoint.sh"]
-
-FROM publish as publish-final
-
-COPY /files /app/files
