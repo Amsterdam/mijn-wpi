@@ -938,4 +938,23 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["voorschot"],
     },
+    "1538": {
+        "omschrijving": "Bbz Toekennen voorschot",
+        "document_title": "Bbz: informatie doorgeven",
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+        "step_id": E_AANVRAAG_STEP_ID["voorschot"],
+    },
+     "175874": {
+        "omschrijving": "Bbz Toekennen voorschot",
+        "document_title": "Mail Bbz",
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+        "step_id": E_AANVRAAG_STEP_ID["voorschot"],
+    },
+     "1501": {
+        "omschrijving": "Bbz Toekennen voorschot",
+        "document_title": "Besluit definitieve berekening Bbz uitkering",
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+        "step_id": E_AANVRAAG_STEP_ID["correctiemail"],
+        "decision": E_AANVRAAG_DECISION_ID["toekenning"]
+    },
 }
