@@ -39,6 +39,7 @@ E_AANVRAAG_STEP_ID = {
     "intrekking": "intrekking",
     "terugvorderingsbesluit": "terugvorderingsbesluit",
     "voorschot": "voorschot",
+    "informatieOntvangen": "informatieOntvangen"
 }
 
 E_AANVRAAG_STEP_ID_TRANSLATIONS = {
@@ -55,6 +56,7 @@ E_AANVRAAG_STEP_ID_TRANSLATIONS = {
     E_AANVRAAG_STEP_ID["briefAdviesRapport"]: "Brief",
     E_AANVRAAG_STEP_ID["briefAkteBedrijfskapitaal"]: "Akte",
     E_AANVRAAG_STEP_ID["beslisTermijn"]: "Tijd nodig",
+    E_AANVRAAG_STEP_ID["informatieOntvangen"]: "Informatie ontvangen",
     # TONK
     E_AANVRAAG_STEP_ID["correctiemail"]: "Mail",
     E_AANVRAAG_STEP_ID["briefWeigering"]: "Brief",
@@ -68,6 +70,7 @@ E_AANVRAAG_DECISION_ID = {
     "vrijeBeschikking": "vrijeBeschikking",
     # Bbz / IOAZ
     "toekenningVoorlopig": "toekenningVoorlopig",
+    "beschikking": "beschikking",
     # Tonk
     "verlenging": "verlenging",
     "mogelijkeVerlenging": "mogelijkeVerlenging",
@@ -937,5 +940,24 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "document_title": "Brief betaling voorschot",
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["voorschot"],
+    },
+    "1538": {
+        "omschrijving": "Bbz: informatie doorgeven",
+        "document_title": "Bbz: informatie doorgeven",
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+        "step_id": E_AANVRAAG_STEP_ID["informatieOntvangen"],
+    },
+    "175874": {
+        "omschrijving": "Mail",
+        "document_title": "Mail Bbz",
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+        "step_id": E_AANVRAAG_STEP_ID["correctiemail"],
+    },
+    "1501": {
+        "omschrijving": "Besluit definitieve berekening",
+        "document_title": "Besluit definitieve berekening Bbz uitkering",
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+        "step_id": E_AANVRAAG_STEP_ID["besluit"],
+        "decision": E_AANVRAAG_DECISION_ID["beschikking"]
     },
 }
