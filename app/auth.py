@@ -127,7 +127,7 @@ def get_user_profile_from_token(token):
     else:
         token_data = jwt.api_jwt.decode(token, options={"verify_signature": False})
 
-    logging.debug(token_data)
+    logging.log(token_data)
 
     profile_type = get_profile_type(token_data)
     profile_id = get_profile_id(token_data)
