@@ -947,13 +947,13 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["informatieOntvangen"],
     },
-    "175874": {
+    "1501": {
         "omschrijving": "Mail",
         "document_title": "Mail Bbz",
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["correctiemail"],
     },
-    "1501": {
+    "175874": {
         "omschrijving": "Besluit definitieve berekening",
         "document_title": "Besluit definitieve berekening Bbz uitkering",
         "about": E_AANVRAAG_ABOUT["Bbz"],
