@@ -20,7 +20,7 @@ def get_document_config(document_code_id):
     code_id = str(document_code_id).replace(" ", "")
     document_config = E_AANVRAAG_DOCUMENT_CONFIG.get(code_id)
 
-    if not document_config:
+    if not document_config or document_config.get("is_active", True) is False:
         return None
 
     return document_config

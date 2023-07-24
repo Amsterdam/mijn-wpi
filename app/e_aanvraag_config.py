@@ -1,3 +1,4 @@
+from app.config import IS_PRODUCTION
 from app.e_aanvraag_specificaties_config import jaaropgave_document_codes
 
 E_AANVRAAG_ABOUT = {
@@ -39,7 +40,7 @@ E_AANVRAAG_STEP_ID = {
     "intrekking": "intrekking",
     "terugvorderingsbesluit": "terugvorderingsbesluit",
     "voorschot": "voorschot",
-    "informatieOntvangen": "informatieOntvangen"
+    "informatieOntvangen": "informatieOntvangen",
 }
 
 E_AANVRAAG_STEP_ID_TRANSLATIONS = {
@@ -86,6 +87,7 @@ exclude_documents_from_processing = list(jaaropgave_document_codes.keys())
 # about_specific: More specific type of about. "$about Uitkering" | "$about Lening"
 # step_id: See $E_AANVRAAG_STEP_ID,
 # decision: See $E_AANVRAAG_DECISION_ID
+# is_active: Boolean False = Not included in API response
 E_AANVRAAG_DOCUMENT_CONFIG = {
     # Tozo 1
     "756": {
@@ -952,12 +954,14 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "document_title": "Mail Bbz",
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["correctiemail"],
+        "is_active": not IS_PRODUCTION,
     },
     "175874": {
         "omschrijving": "Besluit definitieve berekening",
         "document_title": "Besluit definitieve berekening Bbz uitkering",
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["besluit"],
-        "decision": E_AANVRAAG_DECISION_ID["beschikking"]
+        "decision": E_AANVRAAG_DECISION_ID["beschikking"],
+        "is_active": not IS_PRODUCTION,
     },
 }
