@@ -43,7 +43,6 @@ class FocusServiceEAanvraag(TestCase):
         )
 
     def test_create_e_aanvraag(self):
-
         product_name = "Tozo 5"
         steps = [
             {
@@ -322,6 +321,36 @@ class FocusServiceEAanvraag(TestCase):
         )
         self.assertEqual(log_error_mock.call_count, 2)
         self.assertEqual(result, example_result)
+
+    @patch(
+        "app.focus_service_e_aanvraag.E_AANVRAAG_DOCUMENT_CONFIG",
+        {
+            "1501": {
+                "omschrijving": "Mail",
+                "document_title": "Mail Bbz",
+                "is_active": False,
+            },
+        },
+    )
+    def test_inactive_config(self):
+        self.assertIsNone(get_document_config("1502"))
+
+    @patch(
+        "app.focus_service_e_aanvraag.E_AANVRAAG_DOCUMENT_CONFIG",
+        {
+            "1501": {
+                "omschrijving": "Mail",
+                "document_title": "Mail Bbz",
+                "is_active": True,
+            },
+        },
+    )
+    def test_active_config(self):
+        config = get_document_config("1501")
+        self.assertEqual(
+            config,
+            {"document_title": "Mail Bbz", "is_active": True, "omschrijving": "Mail"},
+        )
 
 
 example_soap_response = {
