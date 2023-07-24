@@ -1,4 +1,3 @@
-from app.config import IS_PRODUCTION
 from app.e_aanvraag_specificaties_config import jaaropgave_document_codes
 
 E_AANVRAAG_ABOUT = {
