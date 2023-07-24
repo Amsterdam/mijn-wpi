@@ -1,7 +1,8 @@
 FROM python:latest as base
 
 ENV PYTHONUNBUFFERED=1 \
-  PIP_NO_CACHE_DIR=off
+  PIP_NO_CACHE_DIR=off \
+  REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 WORKDIR /api
 
