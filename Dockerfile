@@ -5,6 +5,8 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /api
 
+COPY ca/* /usr/local/share/ca-certificates/extras/
+
 RUN apt-get update \
   && apt-get dist-upgrade -y \
   && apt-get autoremove -y \
@@ -13,7 +15,9 @@ RUN apt-get update \
   locales \
   && rm -rf /var/lib/apt/lists/* /var/cache/debconf/*-old \
   && pip install --upgrade pip \
-  && pip install uwsgi
+  && pip install uwsgi \
+  && chmod -R 644 /usr/local/share/ca-certificates/extras/ \
+  && update-ca-certificates
 
 RUN sed -i -e 's/# nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen && \
   locale-gen
