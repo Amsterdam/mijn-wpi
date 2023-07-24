@@ -954,7 +954,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "document_title": "Mail Bbz",
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["correctiemail"],
-        "is_active": not IS_PRODUCTION,
+        "is_active": True,
     },
     "175874": {
         "omschrijving": "Besluit definitieve berekening",
@@ -962,6 +962,6 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["besluit"],
         "decision": E_AANVRAAG_DECISION_ID["beschikking"],
-        "is_active": not IS_PRODUCTION,
+        "is_active": True,
     },
 }
