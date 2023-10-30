@@ -122,7 +122,6 @@ def get_verified_token_data(token):
 
 
 def get_user_profile_from_token(token):
-    print("token", token, VERIFY_JWT_SIGNATURE)
     if VERIFY_JWT_SIGNATURE:
         token_data = get_verified_token_data(token)
     else:
