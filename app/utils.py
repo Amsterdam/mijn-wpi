@@ -1,5 +1,4 @@
 import logging
-import os
 from datetime import date, datetime
 from re import sub
 
