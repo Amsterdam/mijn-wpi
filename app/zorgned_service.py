@@ -27,16 +27,18 @@ def send_api_request(bsn, operation="", query_params=None):
         params=query_params,
     )
 
-    res.raise_for_status()
-
     return res
 
 
 def send_api_request_json(bsn, operation="", query_params=None):
     res = send_api_request(bsn, operation, query_params)
 
-    if len(res.content) < 1:
+    # 404 means bsn is now known to ZorgNed
+    if len(res.content) < 1 or res.status_code == 404:
         return None
+
+    # Other error codes should be propagated
+    res.raise_for_status()
 
     response_data = res.json()
 
