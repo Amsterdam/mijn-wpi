@@ -1,7 +1,9 @@
+import base64
 import locale
 import logging
 import os
 from datetime import date, time, datetime
+import tempfile
 from flask.json.provider import DefaultJSONProvider
 
 locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")
@@ -31,6 +33,21 @@ API_BASE_PATH = "/wpi"
 # Server security / certificates for ZorgNed
 SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
 SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
+
+# TODO: Add other AZ env conditions after migration.
+if IS_TEST:
+    # https://stackoverflow.com/a/46570364/756075
+    # Server security / certificates
+    cert = tempfile.NamedTemporaryFile(delete=False)
+    cert.write(base64.b64decode(SERVER_CLIENT_CERT))
+    cert.close()
+
+    key = tempfile.NamedTemporaryFile(delete=False)
+    key.write(base64.b64decode(SERVER_CLIENT_KEY))
+    key.close()
+
+    SERVER_CLIENT_CERT = cert.name
+    SERVER_CLIENT_KEY = key.name
 
 # ZorgNed vars
 ZORGNED_STADSPASSEN_ENABLED = True
