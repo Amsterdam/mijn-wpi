@@ -12,10 +12,17 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
   nano \
   openssh-server \
+  locales \
   && pip install --upgrade pip \
   && pip install uwsgi
 
 COPY requirements.txt /api
+
+RUN sed -i -e 's/# nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen && \
+  locale-gen
+ENV LANG nl_NL.UTF-8
+ENV LANGUAGE nl_NL:nl
+ENV LC_ALL nl_NL.UTF-8
 
 RUN pip install -r requirements.txt
 
