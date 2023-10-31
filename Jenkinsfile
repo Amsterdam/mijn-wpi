@@ -12,7 +12,7 @@ String BRANCH = "${env.BRANCH_NAME}"
 String IMAGE_NAME = "mijnams/focus"
 String IMAGE_TAG = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
 String IMAGE_TEST = "${IMAGE_NAME}:test-${env.BUILD_NUMBER}"
-String CMDB_ID = "app_mijn-wmoned"
+String CMDB_ID = "app_mijn-focus"
 
 node {
     stage("Checkout") {
