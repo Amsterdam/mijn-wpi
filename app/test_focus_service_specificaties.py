@@ -88,11 +88,7 @@ class TestSpecificatieService(TestCase):
         get_client_mock.return_value = mock_client
 
         bsn = "12312312399"
-        jaaropgaven = get_jaaropgaven(bsn)
-
-        print(jaaropgaven)
-
-        print("\n\n\n\n\n\n\n\n\n")
+        get_jaaropgaven(bsn)
 
         mock_client.service.getJaaropgaven.assert_called_with(bsn)
         handle_soap_service_error_mock.assert_called()

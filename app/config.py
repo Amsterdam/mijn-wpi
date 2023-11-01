@@ -1,7 +1,9 @@
+import base64
 import locale
 import logging
 import os
 from datetime import date, time, datetime
+import tempfile
 from flask.json.provider import DefaultJSONProvider
 
 locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")
@@ -15,26 +17,43 @@ SENTRY_ENV = os.getenv("SENTRY_ENVIRONMENT")
 # Environment determination
 IS_PRODUCTION = SENTRY_ENV == "production"
 IS_ACCEPTANCE = SENTRY_ENV == "acceptance"
-IS_AP = IS_PRODUCTION or IS_ACCEPTANCE
-IS_DEV = os.getenv("FLASK_ENV") == "development" and not IS_AP
+IS_DEV = SENTRY_ENV == "development"
+IS_TEST = SENTRY_ENV == "test"
+
+IS_TAP = IS_PRODUCTION or IS_ACCEPTANCE or IS_TEST
+IS_AP = IS_ACCEPTANCE or IS_PRODUCTION
+IS_OT = IS_DEV or IS_TEST
+
+# App constants
+VERIFY_JWT_SIGNATURE = os.getenv("VERIFY_JWT_SIGNATURE", IS_AP)
+API_REQUEST_TIMEOUT = 30
+API_BASE_PATH = "/wpi"
 
 # Server security / certificates for ZorgNed
 SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
 SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
 
+# TODO: Add other AZ env conditions after migration.
+if IS_TEST:
+    # https://stackoverflow.com/a/46570364/756075
+    # Server security / certificates
+    cert = tempfile.NamedTemporaryFile(delete=False)
+    cert.write(base64.b64decode(SERVER_CLIENT_CERT))
+    cert.close()
+
+    key = tempfile.NamedTemporaryFile(delete=False)
+    key.write(base64.b64decode(SERVER_CLIENT_KEY))
+    key.close()
+
+    SERVER_CLIENT_CERT = cert.name
+    SERVER_CLIENT_KEY = key.name
+
 # ZorgNed vars
 ZORGNED_STADSPASSEN_ENABLED = True
 ZORGNED_API_REQUEST_TIMEOUT_SECONDS = 30
-ZORGNED_API_TOKEN = os.getenv("WMO_NED_API_TOKEN")
+ZORGNED_API_TOKEN = os.getenv("ZORGNED_API_TOKEN")
 ZORGNED_API_URL = os.getenv("ZORGNED_API_URL")
 ZORGNED_GEMEENTE_CODE = "0363"
-
-
-# App constants
-ENABLE_OPENAPI_VALIDATION = os.getenv("ENABLE_OPENAPI_VALIDATION", not IS_AP)
-
-API_REQUEST_TIMEOUT = 30
-API_BASE_PATH = "/wpi"
 
 # Set-up logging
 LOG_LEVEL = os.getenv("LOG_LEVEL", "ERROR").upper()

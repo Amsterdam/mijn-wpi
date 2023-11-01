@@ -17,13 +17,12 @@ from app.utils import (
     decrypt,
     error_response_json,
     success_response_json,
-    validate_openapi,
 )
 from app import auth
 
 from app.config import (
     API_BASE_PATH,
-    IS_DEV,
+    IS_OT,
     SENTRY_DSN,
     ZORGNED_STADSPASSEN_ENABLED,
     UpdatedJSONProvider,
@@ -42,6 +41,7 @@ if SENTRY_DSN:
     )
 
 
+@application.route("/", methods=["GET"])
 @application.route("/status/health", methods=["GET"])
 def status_health():
     return success_response_json("OK")
@@ -49,7 +49,6 @@ def status_health():
 
 @application.route(f"{API_BASE_PATH}/uitkering-en-stadspas/aanvragen", methods=["GET"])
 @auth.login_required
-@validate_openapi
 def aanvragen():
     user = auth.get_current_user()
     aanvragen = get_aanvragen(user["id"])
@@ -58,7 +57,6 @@ def aanvragen():
 
 @application.route(f"{API_BASE_PATH}/e-aanvragen", methods=["GET"])
 @auth.login_required
-@validate_openapi
 def e_aanvragen():
     user = auth.get_current_user()
     aanvragen = get_e_aanvragen(user["id"])
@@ -67,7 +65,6 @@ def e_aanvragen():
 
 @application.route(f"/{FOCUS_DOCUMENT_PATH}", methods=["GET"])
 @auth.login_required
-@validate_openapi
 def document():
     user = auth.get_current_user()
     id = request.args.get("id", None)
@@ -92,7 +89,6 @@ def document():
     f"{API_BASE_PATH}/uitkering/specificaties-en-jaaropgaven", methods=["GET"]
 )
 @auth.login_required
-@validate_openapi
 def specificaties_en_jaaropgaven():
     user = auth.get_current_user()
     jaaropgaven = get_jaaropgaven(user["id"])
@@ -106,7 +102,6 @@ def specificaties_en_jaaropgaven():
 
 @application.route(f"{API_BASE_PATH}/stadspas", methods=["GET"])
 @auth.login_required
-@validate_openapi
 def stadspassen():
     user = auth.get_current_user()
     stadspassen = []
@@ -147,7 +142,6 @@ def stadspassen():
     methods=["GET"],
 )
 @auth.login_required
-@validate_openapi
 def stadspastransactions(encrypted_admin_pasnummer):
     budget_code, admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
     stadspas_transations = get_transactions(admin_number, stadspas_number, budget_code)
@@ -164,7 +158,7 @@ def handle_error(error):
 
     logging.exception(error, extra={"error_message_original": error_message_original})
 
-    if IS_DEV:  # pragma: no cover
+    if IS_OT:  # pragma: no cover
         msg_auth_exception = error_message_original
         msg_request_http_error = error_message_original
         msg_server_error = error_message_original

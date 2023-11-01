@@ -1,8 +1,12 @@
+import logging
 import os
 import unittest
 from unittest.mock import patch
-from flask_httpauth import HTTPTokenAuth
+
 import jwt
+from flask_httpauth import HTTPTokenAuth
+
+from app.config import VERIFY_JWT_SIGNATURE
 
 auth = HTTPTokenAuth(scheme="Bearer")
 
@@ -118,7 +122,12 @@ def get_verified_token_data(token):
 
 
 def get_user_profile_from_token(token):
-    token_data = get_verified_token_data(token)
+    if VERIFY_JWT_SIGNATURE:
+        token_data = get_verified_token_data(token)
+    else:
+        token_data = jwt.api_jwt.decode(token, options={"verify_signature": False})
+
+    logging.info(token_data)
 
     profile_type = get_profile_type(token_data)
     profile_id = get_profile_id(token_data)
