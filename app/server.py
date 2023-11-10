@@ -1,4 +1,5 @@
 import logging
+import os
 from urllib.error import HTTPError
 
 import sentry_sdk
@@ -41,10 +42,16 @@ if SENTRY_DSN:
     )
 
 
-@application.route("/", methods=["GET"])
-@application.route("/status/health", methods=["GET"])
-def status_health():
-    return success_response_json("OK")
+@application.route("/")
+@application.route("/status/health")
+def health_check():
+    return success_response_json(
+        {
+            "gitSha": os.getenv("MA_GIT_SHA", -1),
+            "buildId": os.getenv("MA_BUILD_ID", -1),
+            "otapEnv": os.getenv("MA_OTAP_ENV", None),
+        }
+    )
 
 
 @application.route(f"{API_BASE_PATH}/uitkering-en-stadspas/aanvragen", methods=["GET"])

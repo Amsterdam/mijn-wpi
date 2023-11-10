@@ -1,4 +1,5 @@
 import datetime
+import os
 from unittest.mock import patch
 
 from app.test_app import WpiApiTestApp
@@ -8,14 +9,22 @@ from app.test_gpass_service import GpassServiceGetStadspas
 from app.utils import encrypt
 
 
+@patch.dict(
+    os.environ,
+    {
+        "MA_BUILD_ID": "999",
+        "MA_GIT_SHA": "abcdefghijk",
+        "MA_OTAP_ENV": "unittesting",
+    },
+)
 class WPITestServer(WpiApiTestApp):
-    def test_status_health(self):
+    def test_status(self):
         response = self.client.get("/status/health")
-        data = response.get_json()
-
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(data["status"], "OK")
-        self.assertEqual(data["content"], "OK")
+        self.assertEqual(
+            response.data.decode(),
+            '{"content":{"buildId":"999","gitSha":"abcdefghijk","otapEnv":"unittesting"},"status":"OK"}\n',
+        )
 
     @patch("app.server.get_aanvragen")
     def test_aanvragen(self, get_aanvragen_mock):
