@@ -11,27 +11,32 @@ from app.config import (
 )
 
 
-def send_api_request(bsn, operation="", query_params=None):
+def send_api_request(bsn, operation="", post_message=None):
     headers = None
     cert = None
 
     headers = {"Token": ZORGNED_API_TOKEN}
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
-    url = f"{ZORGNED_API_URL}/gemeenten/{ZORGNED_GEMEENTE_CODE}/ingeschrevenpersonen/{bsn}{operation}"
 
-    res = requests.get(
+    url = f"{ZORGNED_API_URL}{operation}"
+    default_post_params = {
+        "burgerservicenummer": bsn,
+        "gemeentecode": ZORGNED_GEMEENTE_CODE,
+    }
+
+    res = requests.post(
         url,
         timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
-        params=query_params,
+        json= post_message | default_post_params
     )
 
     return res
 
 
-def send_api_request_json(bsn, operation="", query_params=None):
-    res = send_api_request(bsn, operation, query_params)
+def send_api_request_json(bsn, operation="", post_message=None):
+    res = send_api_request(bsn, operation, post_message)
 
     # 404 means bsn is now known to ZorgNed
     if len(res.content) < 1 or res.status_code == 404:
