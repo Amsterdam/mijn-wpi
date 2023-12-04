@@ -29,7 +29,7 @@ def send_api_request(bsn, operation="", post_message={}):
         timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
-        json=default_post_params | post_message # Pipe operator merges the 2 dicts
+        json=default_post_params | post_message  # Pipe operator merges the 2 dicts
     )
 
     return res
