@@ -40,6 +40,7 @@ E_AANVRAAG_STEP_ID = {
     "terugvorderingsbesluit": "terugvorderingsbesluit",
     "voorschot": "voorschot",
     "informatieOntvangen": "informatieOntvangen",
+    "algemeenBatchDocument": "algemeenBatchDocument",
 }
 
 E_AANVRAAG_STEP_ID_TRANSLATIONS = {
@@ -57,6 +58,7 @@ E_AANVRAAG_STEP_ID_TRANSLATIONS = {
     E_AANVRAAG_STEP_ID["briefAkteBedrijfskapitaal"]: "Akte",
     E_AANVRAAG_STEP_ID["beslisTermijn"]: "Tijd nodig",
     E_AANVRAAG_STEP_ID["informatieOntvangen"]: "Informatie ontvangen",
+    E_AANVRAAG_STEP_ID["algemeenBatchDocument"]: "Brief",
     # TONK
     E_AANVRAAG_STEP_ID["correctiemail"]: "Mail",
     E_AANVRAAG_STEP_ID["briefWeigering"]: "Brief",
@@ -961,6 +963,13 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "about": E_AANVRAAG_ABOUT["Bbz"],
         "step_id": E_AANVRAAG_STEP_ID["besluit"],
         "decision": E_AANVRAAG_DECISION_ID["beschikking"],
+        "is_active": True,
+    },
+    "5641": {
+        "omschrijving": "Wij hebben u een brief gestuurd. Bekijk de brief voor meer details.",
+        "document_title": "Brief Bbz",
+        "about": E_AANVRAAG_ABOUT["Bbz"],
+        "step_id": E_AANVRAAG_STEP_ID["algemeenBatchDocument"],
         "is_active": True,
     },
 }
