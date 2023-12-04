@@ -29,7 +29,7 @@ class ZorgnedApiMock:
 
 
 class ZorgnedServiceTest(TestCase):
-    @patch("app.zorgned_service.requests.get")
+    @patch("app.zorgned_service.requests.post")
     def test_get_clientnummer_response(self, get_mock):
         get_mock.return_value = ZorgnedApiMock(BASE_PATH + "/fixtures/persoon.json")
 
@@ -37,7 +37,7 @@ class ZorgnedServiceTest(TestCase):
 
         self.assertEqual(clientnummer, 304184)
 
-    @patch("app.zorgned_service.requests.get")
+    @patch("app.zorgned_service.requests.post")
     def test_get_clientnummer_not_found_response(self, get_mock):
         get_mock.return_value = ZorgnedApiMock(status_code=404)
 
@@ -45,7 +45,7 @@ class ZorgnedServiceTest(TestCase):
 
         self.assertEqual(clientnummer, None)
 
-    @patch("app.zorgned_service.requests.get")
+    @patch("app.zorgned_service.requests.post")
     def test_get_clientnummer_bad_request_response(self, get_mock):
         get_mock.return_value = ZorgnedApiMock(status_code=400)
 
