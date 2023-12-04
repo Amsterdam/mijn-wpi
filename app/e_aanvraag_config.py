@@ -58,6 +58,7 @@ E_AANVRAAG_STEP_ID_TRANSLATIONS = {
     E_AANVRAAG_STEP_ID["briefAkteBedrijfskapitaal"]: "Akte",
     E_AANVRAAG_STEP_ID["beslisTermijn"]: "Tijd nodig",
     E_AANVRAAG_STEP_ID["informatieOntvangen"]: "Informatie ontvangen",
+    E_AANVRAAG_STEP_ID["algemeenBatchDocument"]: "Brief",
     # TONK
     E_AANVRAAG_STEP_ID["correctiemail"]: "Mail",
     E_AANVRAAG_STEP_ID["briefWeigering"]: "Brief",
