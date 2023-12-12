@@ -965,7 +965,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "decision": E_AANVRAAG_DECISION_ID["beschikking"],
         "is_active": True,
     },
-    "5641": {
+    "175641": {
         "omschrijving": "Wij hebben u een brief gestuurd. Bekijk de brief voor meer details.",
         "document_title": "Brief Bbz",
         "about": E_AANVRAAG_ABOUT["Bbz"],
