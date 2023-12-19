@@ -7,6 +7,8 @@ ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 WORKDIR /api
 
+COPY ca/* /usr/local/share/ca-certificates/extras/
+
 RUN apt-get update \
   && apt-get dist-upgrade -y \
   && apt-get autoremove -y \
@@ -14,6 +16,8 @@ RUN apt-get update \
   nano \
   openssh-server \
   locales \
+  && chmod -R 644 /usr/local/share/ca-certificates/extras/ \
+  && update-ca-certificates \
   && pip install --upgrade pip \
   && pip install uwsgi
 
