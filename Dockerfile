@@ -3,6 +3,7 @@ FROM python:3.11-bookworm as base
 ENV TZ=Europe/Amsterdam
 ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=off
+ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 WORKDIR /api
 
