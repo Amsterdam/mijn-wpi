@@ -15,7 +15,10 @@ def send_api_request(bsn, operation="", post_message={}):
     headers = None
     cert = None
 
-    headers = {"Token": ZORGNED_API_TOKEN}
+    headers = {
+        "Token": ZORGNED_API_TOKEN,
+        "Content-type": "application/json; charset=utf-8",
+    }
     cert = (SERVER_CLIENT_CERT, SERVER_CLIENT_KEY)
 
     url = f"{ZORGNED_API_URL}{operation}"
@@ -29,7 +32,7 @@ def send_api_request(bsn, operation="", post_message={}):
         timeout=ZORGNED_API_REQUEST_TIMEOUT_SECONDS,
         headers=headers,
         cert=cert,
-        json=default_post_params | post_message  # Pipe operator merges the 2 dicts
+        json=default_post_params | post_message,  # Pipe operator merges the 2 dicts
     )
 
     return res
