@@ -2,7 +2,7 @@
 set -e
 
 # AZ AppService allows SSH into a App instance.
-if [ "$MA_OTAP_ENV" = "production" ]
+if [ "$MA_OTAP_ENV" = "test" ]
 then
     echo "Starting SSH ..."
     service ssh start
