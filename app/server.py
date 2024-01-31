@@ -23,8 +23,10 @@ from app import auth
 
 from app.config import (
     API_BASE_PATH,
+    IS_AZ,
     IS_OT,
     SENTRY_DSN,
+    SENTRY_ENV,
     ZORGNED_STADSPASSEN_ENABLED,
     UpdatedJSONProvider,
 )
@@ -38,7 +40,10 @@ application.json = UpdatedJSONProvider(application)
 
 if SENTRY_DSN:
     sentry_sdk.init(
-        dsn=SENTRY_DSN, integrations=[FlaskIntegration()], with_locals=False
+        dsn=SENTRY_DSN,
+        environment=f"{'az-' if IS_AZ else ''}{SENTRY_ENV}",
+        integrations=[FlaskIntegration()],
+        with_locals=False,
     )
 
 
