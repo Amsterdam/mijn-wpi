@@ -14,7 +14,12 @@ from app.utils import encrypt
 
 
 def send_request(url, admin_number, params=None):
-    headers = {"Authorization": f"AppBearer {GPASS_API_TOKEN},{admin_number}"}
+    headers = {
+        "Authorization": f"AppBearer {GPASS_API_TOKEN},{admin_number}",
+        "Accept": "application/json",
+        "Accept-Encoding": "*",
+        "Accept-Language": "*",
+    }
     response = requests.get(
         url, headers=headers, timeout=API_REQUEST_TIMEOUT, params=params
     )
@@ -81,7 +86,11 @@ def get_admins(admin_number, owner_name, stadspassen, category_filter=None):
     stadspassen = []
 
     if category_filter is not None:
-        stadspassen_active = [pas for pas in stadspassen_active if pas["categorie_code"] == category_filter]
+        stadspassen_active = [
+            pas
+            for pas in stadspassen_active
+            if pas["categorie_code"] == category_filter
+        ]
 
     for stadspas in stadspassen_active:
         stadspas_details = {
@@ -112,7 +121,9 @@ def get_stadspas_admins(admin_number, category_filter=None):
         return []
 
     owner_name = get_owner_name(stadspas_owner)
-    stadspas_admins = get_admins(admin_number, owner_name, stadspas_owner["passen"], category_filter)
+    stadspas_admins = get_admins(
+        admin_number, owner_name, stadspas_owner["passen"], category_filter
+    )
 
     if stadspas_owner["sub_pashouders"]:
         for sub_stadspas_owner in stadspas_owner["sub_pashouders"]:
