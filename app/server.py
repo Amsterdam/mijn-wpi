@@ -122,8 +122,12 @@ def stadspassen():
         # Check in zorgned
         clientnummer = get_clientnummer(user["id"])
 
+        sentry_sdk.capture_message(f"clientnummer {clientnummer}")
+
         if clientnummer is not None:
             stadspassen = get_stadspassen(volledig_clientnummer(clientnummer), "M")
+
+            sentry_sdk.capture_message(f"passen {len(stadspassen)}")
 
             if len(stadspassen) > 0:
                 response_content = {
