@@ -1,16 +1,16 @@
 import sys
-from app.focus_service_stadspas_admin import get_stadspas_admin_number
-from app.gpass_service import get_stadspassen
 
+from app.gpass_service import get_stadspassen
+from app.zorgned_service import get_clientnummer, volledig_clientnummer
 
 bsn = None
 if len(sys.argv) >= 2:
     bsn = sys.argv[1]
 
-admin = get_stadspas_admin_number(bsn)
+clientnummer = get_clientnummer(bsn)
 
-print(admin)
+if clientnummer is not None:
+    stadspassen = get_stadspassen(volledig_clientnummer(clientnummer), "M")
+    print(stadspassen)
 
-stadspas = get_stadspassen(admin["admin_number"])
-
-print(stadspas)
+print("geen client nummer")
