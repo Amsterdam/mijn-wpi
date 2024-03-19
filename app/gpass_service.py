@@ -17,6 +17,7 @@ def send_request(url, admin_number, params=None):
     headers = {
         "Authorization": f"AppBearer {GPASS_API_TOKEN},{admin_number}",
         "Accept": "application/json",
+        "Content-type": "application/json; charset=utf-8",
         "Accept-Encoding": "*",
         "Accept-Language": "*",
     }
