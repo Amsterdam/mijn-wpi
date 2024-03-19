@@ -227,7 +227,13 @@ class GpassServiceVarious(TestCase):
 
         get_mock.assert_called_with(
             "http://haha",
-            headers={"Authorization": "AppBearer --token--,1x1x1"},
+            headers={
+                "Authorization": "AppBearer --token--,1x1x1",
+                "Accept": "application/json",
+                "Content-type": "application/json; charset=utf-8",
+                "Accept-Encoding": "*",
+                "Accept-Language": "*",
+            },
             timeout=30,
             params={"foo": "bar"},
         )
