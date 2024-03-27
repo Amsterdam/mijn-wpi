@@ -1,9 +1,8 @@
-import base64
 import locale
 import logging
 import os
-from datetime import date, time, datetime
-import tempfile
+from datetime import date, datetime, time
+
 from flask.json.provider import DefaultJSONProvider
 
 locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")

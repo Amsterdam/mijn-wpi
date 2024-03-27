@@ -2,7 +2,6 @@ import logging
 from datetime import date, datetime
 from re import sub
 
-from cryptography.fernet import Fernet
 from flask.helpers import make_response
 
 from app.config import CONNECTION_ERRORS
