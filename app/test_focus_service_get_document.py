@@ -12,7 +12,7 @@ example_soap_response = {
     "description": None,
     "disposition": "attachment",
     "document": None,
-    "fileName": "Aanvraag Stadspas (balie).pdf",
+    "fileName": "Aanvraag (balie).pdf",
 }
 
 
@@ -35,7 +35,7 @@ class FocusSerivceGetDocumentTest(TestCase):
         )
 
         result_expected = {
-            "file_name": "Aanvraag Stadspas (balie).pdf",
+            "file_name": "Aanvraag (balie).pdf",
             "document_content": b"document-content",
             "mime_type": "application/pdf",
         }
@@ -102,7 +102,7 @@ class FocusSerivceGetDocumentTest(TestCase):
         )
 
         result_expected = {
-            "file_name": "Aanvraag Stadspas (balie).pdf",
+            "file_name": "Aanvraag (balie).pdf",
             "document_content": b"document-content",
             "mime_type": "application/pdf",
         }

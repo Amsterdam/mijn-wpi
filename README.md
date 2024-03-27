@@ -5,10 +5,8 @@ Mijn-WPI API
 
 Deze api levert de volgende data:
 
-- Stadspasaanvragen met bijbehorende status updates.
 - Bijstandsuitkeringaanvragen met bijbehorende status updates.
 - Aanvragen voor Tozo 1-5, Bbz en TONK met bijbehorende status updates.
-- Informatie over stadspassen en de bijbehorende budgetten.
 
 ### Kenmerken
 - De Bronsystemen zijn Focus (Soap Api) en Gpass (Json Api)

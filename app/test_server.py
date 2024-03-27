@@ -5,8 +5,6 @@ from unittest.mock import patch
 from app.test_app import WpiApiTestApp
 from app.test_focus_service_aanvragen import TestFocusBijstandAanvraag
 from app.test_focus_service_e_aanvraag import example_result
-from app.test_gpass_service import GpassServiceGetStadspas
-from app.utils import encrypt
 
 
 @patch.dict(
@@ -32,7 +30,7 @@ class WPITestServer(WpiApiTestApp):
             TestFocusBijstandAanvraag.product_transformed
         ]
 
-        response = self.get_secure("/wpi/uitkering-en-stadspas/aanvragen")
+        response = self.get_secure("/wpi/uitkering/aanvragen")
         response_json = response.get_json()
 
         get_aanvragen_mock.assert_called_with(self.TEST_BSN)
@@ -42,7 +40,7 @@ class WPITestServer(WpiApiTestApp):
         )
 
     def test_aanvragen_fail(self):
-        response = self.client.get("/wpi/uitkering-en-stadspas/aanvragen")
+        response = self.client.get("/wpi/uitkering/aanvragen")
         response_json = response.get_json()
 
         self.assertEqual(response.status_code, 401)
@@ -113,87 +111,3 @@ class WPITestServer(WpiApiTestApp):
                 "uitkeringsspecificaties": [specification],
             },
         )
-
-    @patch("app.server.get_clientnummer")
-    @patch("app.server.get_stadspas_admin_number")
-    @patch("app.server.get_stadspassen")
-    def test_stadspassen(
-        self,
-        get_stadspassen_mock,
-        get_stadspas_admin_number_mock,
-        get_clientnummer_mock,
-    ):
-        get_stadspassen_mock.return_value = [GpassServiceGetStadspas.gpass_formatted]
-        get_stadspas_admin_number_mock.return_value = {
-            "admin_number": "abcdefg123",
-            "type": "hoofdpashouder",
-        }
-        get_clientnummer_mock.return_value = None
-
-        response = self.get_secure("/wpi/stadspas")
-        response_json = response.get_json()
-
-        response_expected = {
-            "stadspassen": [GpassServiceGetStadspas.gpass_formatted],
-            "adminNumber": "abcdefg123",
-        }
-
-        self.assertEqual(response_json["content"], response_expected)
-
-    @patch("app.server.get_clientnummer")
-    @patch("app.server.get_stadspas_admin_number")
-    @patch("app.server.get_stadspassen")
-    def test_stadspassen_with_zorgned_result(
-        self,
-        get_stadspassen_mock,
-        get_stadspas_admin_number_mock,
-        get_clientnummer_mock,
-    ):
-        get_stadspassen_mock.return_value = [GpassServiceGetStadspas.gpass_formatted]
-        get_stadspas_admin_number_mock.return_value = {
-            "admin_number": "abcdefg123",
-            "type": "hoofdpashouder",
-        }
-        get_clientnummer_mock.return_value = 123
-
-        response = self.get_secure("/wpi/stadspas")
-        response_json = response.get_json()
-
-        response_expected = {
-            "stadspassen": [GpassServiceGetStadspas.gpass_formatted],
-            "adminNumber": "03630000000123",
-        }
-
-        self.assertEqual(response_json["content"], response_expected)
-
-    @patch(
-        "app.utils.GPASS_FERNET_ENCRYPTION_KEY",
-        "z4QX3k3bj61ST2HRRV7dnn7Se8VFCaHscK39JfODz8s=",
-    )
-    @patch("app.server.get_transactions")
-    def test_stadspastransactions(self, get_stadspastransactions_mock):
-        transaction_dummy = {
-            "id": "test",
-            "title": "Budget title",
-            "amount": 50,
-            "datePublished": "2022-02-25T13:55:02.000",
-        }
-        get_stadspastransactions_mock.return_value = [
-            {
-                "id": "test",
-                "title": "Budget title",
-                "amount": 50,
-                "datePublished": "2022-02-25T13:55:02.000",
-            }
-        ]
-
-        transactions_key = encrypt("123abc", "abcdefg123", "0009998887777")
-
-        response = self.get_secure(f"/wpi/stadspas/transacties/{transactions_key}")
-        response_json = response.get_json()
-
-        get_stadspastransactions_mock.assert_called_with(
-            "abcdefg123", "0009998887777", "123abc"
-        )
-
-        self.assertEqual(response_json["content"], [transaction_dummy])
