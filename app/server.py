@@ -11,11 +11,8 @@ from app.focus_service_aanvragen import (
 from app.focus_service_e_aanvraag import get_e_aanvragen
 from app.focus_service_get_document import get_document
 from app.focus_service_specificaties import get_jaaropgaven, get_uitkeringsspecificaties
-from app.focus_service_stadspas_admin import get_stadspas_admin_number
 
-from app.gpass_service import get_stadspassen, get_transactions
 from app.utils import (
-    decrypt,
     error_response_json,
     success_response_json,
 )
@@ -27,13 +24,11 @@ from app.config import (
     IS_OT,
     SENTRY_DSN,
     SENTRY_ENV,
-    ZORGNED_STADSPASSEN_ENABLED,
     UpdatedJSONProvider,
 )
 from app.focus_config import (
     FOCUS_DOCUMENT_PATH,
 )
-from app.zorgned_service import get_clientnummer, volledig_clientnummer
 
 application = Flask(__name__)
 application.json = UpdatedJSONProvider(application)
@@ -59,7 +54,7 @@ def health_check():
     )
 
 
-@application.route(f"{API_BASE_PATH}/uitkering-en-stadspas/aanvragen", methods=["GET"])
+@application.route(f"{API_BASE_PATH}/uitkering/aanvragen", methods=["GET"])
 @auth.login_required
 def aanvragen():
     user = auth.get_current_user()
@@ -110,54 +105,6 @@ def specificaties_en_jaaropgaven():
         "uitkeringsspecificaties": uitkeringsspecificaties,
     }
     return success_response_json(response_content)
-
-
-@application.route(f"{API_BASE_PATH}/stadspas", methods=["GET"])
-@auth.login_required
-def stadspassen():
-    user = auth.get_current_user()
-    stadspassen = []
-
-    if ZORGNED_STADSPASSEN_ENABLED:
-        # Check in zorgned
-        clientnummer = get_clientnummer(user["id"])
-
-        if clientnummer is not None:
-            stadspassen = get_stadspassen(volledig_clientnummer(clientnummer), "M")
-
-            if len(stadspassen) > 0:
-                response_content = {
-                    "stadspassen": stadspassen,
-                    "adminNumber": volledig_clientnummer(clientnummer),
-                }
-
-                return success_response_json(response_content)
-
-    # then check focus
-    admin = get_stadspas_admin_number(user["id"])
-
-    if (not admin or not admin["admin_number"]) and len(stadspassen) == 0:
-        return success_response_json(None)
-
-    # merge results
-    stadspassen = stadspassen + get_stadspassen(admin["admin_number"])
-    response_content = {
-        "stadspassen": stadspassen,
-        "adminNumber": admin["admin_number"],
-    }
-
-    return success_response_json(response_content)
-
-
-@application.route(
-    f"{API_BASE_PATH}/stadspas/transacties/<string:encrypted_admin_pasnummer>",
-    methods=["GET"],
-)
-@auth.login_required
-def stadspastransactions(encrypted_admin_pasnummer):
-    budget_code, admin_number, stadspas_number = decrypt(encrypted_admin_pasnummer)
-    stadspas_transations = get_transactions(admin_number, stadspas_number, budget_code)
-    return success_response_json(stadspas_transations)
 
 
 @application.errorhandler(Exception)

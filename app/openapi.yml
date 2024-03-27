@@ -16,7 +16,7 @@ paths:
                 type: string
                 enum:
                   - "OK"
-  /wpi/uitkering-en-stadspas/aanvragen:
+
     get:
       description: Returns a list aanvragen.
       parameters:
@@ -123,81 +123,6 @@ paths:
               schema:
                 type: string
                 format: binary
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-  /wpi/stadspas:
-    get:
-      parameters:
-        - name: Authorization
-          in: header
-          description: Bearer token
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Returns information about the Stadspas and related passes.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: OK
-                    enum:
-                      - "OK"
-                  content:
-                    type: object
-                    properties:
-                      adminNumber:
-                        type: string
-                      stadspassen:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/Stadspas"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  /wpi/stadspas/transacties/{encrypted_admin_pasnummer}:
-    get:
-      parameters:
-        - name: Authorization
-          in: header
-          description: Bearer token
-          required: true
-          schema:
-            type: string
-        - name: encrypted_admin_pasnummer
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Returns a list of transactions coupled to a stadspass.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: OK
-                    enum:
-                      - "OK"
-                  content:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/StadspasTransaction"
         default:
           description: Unexpected error
           content:
@@ -326,54 +251,6 @@ components:
           properties:
             variant:
               type: string
-    StadspasTransaction:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        amount:
-          type: number
-        datePublished:
-          $ref: "#/components/schemas/DateTime"
-    Stadspas:
-      type: object
-      properties:
-        id:
-          type: string
-        dateEnd:
-          $ref: "#/components/schemas/DateTime"
-        passNumber:
-          type: string
-        passType:
-          type: string
-          enum:
-            - kind
-            - ouder
-        owner:
-          type: string
-        budgets:
-          type: array
-          items:
-            $ref: "#/components/schemas/StadspasBudget"
-    StadspasBudget:
-      type: object
-      properties:
-        budgetAssigned:
-          type: number
-        budgetBalance:
-          type: number
-        code:
-          type: string
-        description:
-          type: string
-        urlTransactions:
-          type: string
-          description: Optional url to get the stadspas transactions
-          example: "/wpi/stadspas/transacties/{encrypted_admin_pasnummer}"
-        dateEnd:
-          $ref: "#/components/schemas/DateTime"
     Date:
       type: string
       format: date
