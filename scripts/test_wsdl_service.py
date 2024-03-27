@@ -30,15 +30,6 @@ id = 4400000013
 isBulk = True
 isDms = False
 
-# doc = get_client().service.getDocument(
-#          id=id, bsn=bsn, isBulk=isBulk, isDms=isDms
-#      )
-# print(doc)
-
-# focus_stadspas = client.service.getStadspas(bsn=bsn)
-# print(json.dumps(focus_stadspas, indent=4))
-# print(focus_stadspas)
-
 e_aanvragen = client.service.getEAanvraagTOZO(bsn=bsn)
 print(e_aanvragen)
 

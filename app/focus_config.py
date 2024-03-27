@@ -10,7 +10,7 @@ FOCUS_PASSWORD = os.getenv("FOCUS_PASSWORD")
 
 FOCUS_DOCUMENT_PATH = f"{API_BASE_PATH[1:]}/document"
 
-FOCUS_PRODUCTS_ALLOWED = ["Levensonderhoud", "Stadspas"]
+FOCUS_PRODUCTS_ALLOWED = ["Levensonderhoud"]
 FOCUS_PRODUCT_GROUPS_ALLOWED = ["Minimafonds", "Participatiewet"]
 
 # NOTE: We probably need more up-to-date translations.
@@ -44,18 +44,11 @@ FOCUS_AANVRAAG_PROCESS_STEPS = [
 ]
 
 FOCUS_STEP_ID_TRANSLATIONS = {
-    # Stadspas / Bijstandsuitkering
+    # Bijstandsuitkering aaanvraag
     "aanvraag": "Aanvraag",
     "inBehandeling": "In behandeling",
     "herstelTermijn": "Informatie nodig",
     "besluit": "Besluit",
-}
-
-FOCUS_STADSPAS_FONDSEN_GROENE_STIP = [3555, 3556, 3557, 3558]
-FOCUS_STADSPAS_TYPE_PER_FONDS = {
-    3555: "hoofdpashouder",
-    3556: "partner",
-    3557: "kind",
 }
 
 zeep_config = {"wsdl": FOCUS_WSDL, "session_verify": FOCUS_CERTIFICATE}

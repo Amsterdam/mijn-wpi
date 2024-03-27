@@ -30,32 +30,6 @@ VERIFY_JWT_SIGNATURE = os.getenv("VERIFY_JWT_SIGNATURE", IS_AP)
 API_REQUEST_TIMEOUT = 30
 API_BASE_PATH = "/wpi"
 
-# Server security / certificates for ZorgNed
-SERVER_CLIENT_CERT = os.getenv("MIJN_DATA_CLIENT_CERT")
-SERVER_CLIENT_KEY = os.getenv("MIJN_DATA_CLIENT_KEY")
-
-# TODO: Add other AZ env conditions after migration.
-if IS_AZ and IS_TAP and SERVER_CLIENT_CERT is not None:
-    # https://stackoverflow.com/a/46570364/756075
-    # Server security / certificates
-    cert = tempfile.NamedTemporaryFile(delete=False)
-    cert.write(base64.b64decode(SERVER_CLIENT_CERT))
-    cert.close()
-
-    key = tempfile.NamedTemporaryFile(delete=False)
-    key.write(base64.b64decode(SERVER_CLIENT_KEY))
-    key.close()
-
-    SERVER_CLIENT_CERT = cert.name
-    SERVER_CLIENT_KEY = key.name
-
-# ZorgNed vars
-ZORGNED_STADSPASSEN_ENABLED = True
-ZORGNED_API_REQUEST_TIMEOUT_SECONDS = 30
-ZORGNED_API_TOKEN = os.getenv("ZORGNED_API_TOKEN")
-ZORGNED_API_URL = os.getenv("ZORGNED_API_URL")
-ZORGNED_GEMEENTE_CODE = "0363"
-
 # Set-up logging
 LOG_LEVEL = os.getenv("LOG_LEVEL", "ERROR").upper()
 logging.basicConfig(
