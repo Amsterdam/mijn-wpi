@@ -9,7 +9,7 @@ Deze api levert de volgende data:
 - Aanvragen voor Tozo 1-5, Bbz en TONK met bijbehorende status updates.
 
 ### Kenmerken
-- De Bronsystemen zijn Focus (Soap Api) en Gpass (Json Api)
+- De Bronsystemen zijn Focus (Soap Api)
 - Alle bronsystemen worden bevraagd op basis van een BSN.
 - De output van de api is JSON formaat.
 
