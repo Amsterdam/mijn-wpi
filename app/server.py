@@ -90,14 +90,15 @@ def document():
 @app.route(f"{API_BASE_PATH}/uitkering/specificaties-en-jaaropgaven", methods=["GET"])
 @auth.login_required
 def specificaties_en_jaaropgaven():
-    user = auth.get_current_user()
-    jaaropgaven = get_jaaropgaven(user["id"])
-    uitkeringsspecificaties = get_uitkeringsspecificaties(user["id"])
-    response_content = {
-        "jaaropgaven": jaaropgaven,
-        "uitkeringsspecificaties": uitkeringsspecificaties,
-    }
-    return success_response_json(response_content)
+    with tracer.start_as_current_span("/specificaties-en-jaaropgaven"):
+        user = auth.get_current_user()
+        jaaropgaven = get_jaaropgaven(user["id"])
+        uitkeringsspecificaties = get_uitkeringsspecificaties(user["id"])
+        response_content = {
+            "jaaropgaven": jaaropgaven,
+            "uitkeringsspecificaties": uitkeringsspecificaties,
+        }
+        return success_response_json(response_content)
 
 
 @app.errorhandler(Exception)
