@@ -57,3 +57,7 @@ class UpdatedJSONProvider(DefaultJSONProvider):
             return obj.isoformat()
 
         return super().default(obj)
+
+
+def get_application_insights_connection_string():
+    return os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING", None)
