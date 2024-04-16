@@ -2,44 +2,19 @@ import logging
 import os
 from urllib.error import HTTPError
 
-import sentry_sdk
-from flask import Flask, request, Response
-from sentry_sdk.integrations.flask import FlaskIntegration
-from app.focus_service_aanvragen import (
-    get_aanvragen,
-)
+from flask import Flask, Response, request
+
+from app import auth
+from app.config import API_BASE_PATH, IS_OT, UpdatedJSONProvider
+from app.focus_config import FOCUS_DOCUMENT_PATH
+from app.focus_service_aanvragen import get_aanvragen
 from app.focus_service_e_aanvraag import get_e_aanvragen
 from app.focus_service_get_document import get_document
 from app.focus_service_specificaties import get_jaaropgaven, get_uitkeringsspecificaties
-
-from app.utils import (
-    error_response_json,
-    success_response_json,
-)
-from app import auth
-
-from app.config import (
-    API_BASE_PATH,
-    IS_AZ,
-    IS_OT,
-    SENTRY_DSN,
-    SENTRY_ENV,
-    UpdatedJSONProvider,
-)
-from app.focus_config import (
-    FOCUS_DOCUMENT_PATH,
-)
+from app.utils import error_response_json, success_response_json
 
 application = Flask(__name__)
 application.json = UpdatedJSONProvider(application)
-
-if SENTRY_DSN:
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        environment=f"{'az-' if IS_AZ else ''}{SENTRY_ENV}",
-        integrations=[FlaskIntegration()],
-        with_locals=False,
-    )
 
 
 @application.route("/")
@@ -130,7 +105,11 @@ def handle_error(error):
     elif auth.is_auth_exception(error):
         return error_response_json(msg_auth_exception, 401)
 
-    return error_response_json(msg_server_error, 500)
+    return error_response_json(
+        msg_server_error,
+        msg_server_error,
+        error.code if hasattr(error, "code") else 500,
+    )
 
 
 if __name__ == "__main__":  # pragma: no cover
