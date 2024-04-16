@@ -9,7 +9,7 @@ locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
-OTAP_ENV = os.getenv("SENTRY_ENVIRONMENT")
+OTAP_ENV = os.getenv("OTAP_ENV")
 
 # Environment determination
 IS_PRODUCTION = OTAP_ENV == "production"
