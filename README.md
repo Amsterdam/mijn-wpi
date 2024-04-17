@@ -8,6 +8,22 @@ Deze api levert de volgende data:
 - Bijstandsuitkeringaanvragen met bijbehorende status updates.
 - Aanvragen voor Tozo 1-5, Bbz en TONK met bijbehorende status updates.
 
+### Local env
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements-root.txt
+
+// unittest
+python -m unittest
+
+// requirements.txt maken
+make requirements
+
+// dev server
+sh scripts/run-dev.sh
+```
+
 ### Kenmerken
 - De Bronsystemen zijn Focus (Soap Api)
 - Alle bronsystemen worden bevraagd op basis van een BSN.

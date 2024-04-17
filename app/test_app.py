@@ -1,11 +1,11 @@
 from unittest.mock import MagicMock
 
 from app.auth import FlaskServerTestCase
-from app.server import application
+from app.server import app
 
 
 class WpiApiTestApp(FlaskServerTestCase):
-    app = application
+    app = app
 
 
 class MockResponse:
