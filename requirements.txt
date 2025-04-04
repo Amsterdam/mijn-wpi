@@ -8,7 +8,7 @@ asgiref==3.8.1
     # via opentelemetry-instrumentation-asgi
 attrs==25.3.0
     # via zeep
-azure-core==1.32.0
+azure-core==1.33.0
     # via
     #   azure-core-tracing-opentelemetry
     #   azure-monitor-opentelemetry
@@ -36,7 +36,7 @@ click==8.1.8
     # via
     #   black
     #   flask
-coverage==7.7.1
+coverage==7.8.0
     # via -r requirements-root.txt
 cryptography==44.0.2
     # via -r requirements-root.txt
@@ -48,7 +48,7 @@ dpath==2.2.0
     # via -r requirements-root.txt
 fixedint==0.1.6
     # via azure-monitor-opentelemetry-exporter
-flake8==7.1.2
+flake8==7.2.0
     # via -r requirements-root.txt
 flask==3.1.0
     # via
@@ -176,11 +176,11 @@ platformdirs==4.3.7
     #   zeep
 psutil==6.1.1
     # via azure-monitor-opentelemetry-exporter
-pycodestyle==2.12.1
+pycodestyle==2.13.0
     # via flake8
 pycparser==2.22
     # via cffi
-pyflakes==3.2.0
+pyflakes==3.3.2
     # via flake8
 pyjwt==2.10.1
     # via -r requirements-root.txt
@@ -203,7 +203,7 @@ requests-toolbelt==1.0.0
     # via zeep
 six==1.17.0
     # via azure-core
-typing-extensions==4.13.0
+typing-extensions==4.13.1
     # via
     #   azure-core
     #   opentelemetry-sdk
