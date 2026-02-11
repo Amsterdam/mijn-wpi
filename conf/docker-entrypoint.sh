@@ -8,4 +8,4 @@ then
     service ssh start
 fi
 
-uwsgi --ini /api/uwsgi.ini
+su -s /bin/bash -c 'uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini' www-data
