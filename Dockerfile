@@ -62,23 +62,13 @@ ARG MA_CONTAINER_SSH_ENABLED=false
 ENV MA_CONTAINER_SSH_ENABLED=$MA_CONTAINER_SSH_ENABLED
 
 COPY conf/uwsgi.ini /api/
+COPY conf/docker-entrypoint.sh /api/
 COPY conf/sshd_config /etc/ssh/
 
-RUN <<EOF
-# AZ AppService allows SSH into a App instance.
-if [ "$MA_CONTAINER_SSH_ENABLED" = "true" ]; then
-  if [ -n "$SSH_PASSWD"]; then
-    echo 'ERROR: Build argument SSH_PASSWD is required, try --build-arg="MA_CONTAINER_SSH_ENABLED=true,SSH_PASSWD=<user:password>"' >&2
-    exit 1
-  fi
-  echo "$SSH_PASSWD" | chpasswd
-  echo "Starting SSH ..."
-  service ssh start
-fi
-EOF
+RUN chmod u+x /api/docker-entrypoint.sh \
+  && echo "$SSH_PASSWD" | chpasswd
 
-USER www-data
-ENTRYPOINT uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini
+ENTRYPOINT [ "/bin/sh", "/api/docker-entrypoint.sh"]
 
 FROM publish AS publish-final
 
