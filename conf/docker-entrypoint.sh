@@ -8,4 +8,4 @@ then
     service ssh start
 fi
 
-uwsgi  --ini /api/uwsgi.ini
+uwsgi --ini /api/uwsgi.ini
