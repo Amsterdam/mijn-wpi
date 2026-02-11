@@ -8,4 +8,5 @@ then
     service ssh start
 fi
 
-uwsgi --ini /api/uwsgi.ini
+# see https://unix.stackexchange.com/a/358837 for more info on running uwsgi as www-data user
+su -s /bin/bash -c 'uwsgi --uid www-data --gid www-data --ini /api/uwsgi.ini' www-data
