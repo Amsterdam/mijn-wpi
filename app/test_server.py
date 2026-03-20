@@ -29,7 +29,6 @@ def post_good_request(client, path, json_data=None):
 class WPITestServer(unittest.TestCase):
     def setUp(self):
         self.app = app
-        self.app.config["TESTING"] = True
         self.client = self.app.test_client()
 
     def test_status(self):
