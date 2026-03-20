@@ -5,6 +5,8 @@ from datetime import date, datetime, time
 
 from flask.json.provider import DefaultJSONProvider
 
+locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")
+
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 OTAP_ENV = os.getenv("MA_OTAP_ENV")
@@ -17,8 +19,6 @@ IS_TEST = OTAP_ENV == "test"
 
 DEV_API_KEY = "dev-api-key"
 API_KEY = os.getenv("MA_API_KEY", DEV_API_KEY)
-
-locale.setlocale(locale.LC_TIME, "nl_NL.UTF-8")
 
 IS_TAP = IS_PRODUCTION or IS_ACCEPTANCE or IS_TEST
 IS_AP = IS_ACCEPTANCE or IS_PRODUCTION
