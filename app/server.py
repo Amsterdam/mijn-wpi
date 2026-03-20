@@ -72,8 +72,7 @@ def ensure_bsn(fn):
 
 
 @app.route("/")
-@api_key_auth
-@ensure_bsn
+@app.route("/status/health")
 def health_check():
     return success_response_json(
         {
@@ -130,9 +129,9 @@ def document():
 @ensure_bsn
 def specificaties_en_jaaropgaven():
     with tracer.start_as_current_span("/specificaties-en-jaaropgaven"):
-        user = auth.get_current_user()
-        jaaropgaven = get_jaaropgaven(user["id"])
-        uitkeringsspecificaties = get_uitkeringsspecificaties(user["id"])
+        bsn = request.bsn
+        jaaropgaven = get_jaaropgaven(bsn)
+        uitkeringsspecificaties = get_uitkeringsspecificaties(bsn)
         response_content = {
             "jaaropgaven": jaaropgaven,
             "uitkeringsspecificaties": uitkeringsspecificaties,
