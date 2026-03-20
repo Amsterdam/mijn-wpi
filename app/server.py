@@ -1,5 +1,6 @@
 import logging
 import os
+import functools
 from urllib.error import HTTPError
 
 from azure.monitor.opentelemetry import configure_azure_monitor
@@ -8,9 +9,11 @@ from opentelemetry import trace
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.trace import get_tracer_provider
 
-from app import auth
 from app.config import (
     API_BASE_PATH,
+    API_KEY,
+    DEV_API_KEY,
+    IS_DEV,
     IS_OT,
     UpdatedJSONProvider,
     get_application_insights_connection_string,
@@ -21,6 +24,9 @@ from app.focus_service_e_aanvraag import get_e_aanvragen
 from app.focus_service_get_document import get_document
 from app.focus_service_specificaties import get_jaaropgaven, get_uitkeringsspecificaties
 from app.utils import error_response_json, success_response_json
+
+if not IS_DEV and API_KEY == DEV_API_KEY:
+    raise Exception("DEV_API_KEY is used as API_KEY outside of development")
 
 # See also: https://medium.com/@tedisaacs/auto-instrumenting-python-fastapi-and-monitoring-with-azure-application-insights-768a59d2f4b9
 if get_application_insights_connection_string():
@@ -34,8 +40,40 @@ app.json = UpdatedJSONProvider(app)
 FlaskInstrumentor.instrument_app(app)
 
 
+def api_key_auth(fn):
+    @functools.wraps(fn)
+    def inner(*args, **kwargs):
+        try:
+            incoming_api_key = request.headers["x-api-key"]
+        except KeyError:
+            return error_response_json("required header x-api-key not found.", code=401)
+        if incoming_api_key != API_KEY:
+            return error_response_json(
+                "Value of header 'x-api-key' is invalid.", code=401
+            )
+
+        return fn(*args, **kwargs)
+
+    return inner
+
+
+def ensure_bsn(fn):
+    @functools.wraps(fn)
+    def inner(*args, **kwargs):
+        data = request.get_json(force=True)
+        try:
+            bsn = data["bsn"]
+        except KeyError:
+            return error_response_json("required field bsn not found.", code=400)
+        request.bsn = bsn
+        return fn(*args, **kwargs)
+
+    return inner
+
+
 @app.route("/")
-@app.route("/status/health")
+@api_key_auth
+@ensure_bsn
 def health_check():
     return success_response_json(
         {
@@ -46,34 +84,34 @@ def health_check():
     )
 
 
-@app.route(f"{API_BASE_PATH}/uitkering/aanvragen", methods=["GET"])
-@auth.login_required
+@app.route(f"{API_BASE_PATH}/uitkering/aanvragen", methods=["POST"])
+@api_key_auth
+@ensure_bsn
 def aanvragen():
     with tracer.start_as_current_span("/aanvragen"):
-        user = auth.get_current_user()
-        aanvragen = get_aanvragen(user["id"])
+        aanvragen = get_aanvragen(request.bsn)
         return success_response_json(aanvragen)
 
 
-@app.route(f"{API_BASE_PATH}/e-aanvragen", methods=["GET"])
-@auth.login_required
+@app.route(f"{API_BASE_PATH}/e-aanvragen", methods=["POST"])
+@api_key_auth
+@ensure_bsn
 def e_aanvragen():
     with tracer.start_as_current_span("/e-aanvragen"):
-        user = auth.get_current_user()
-        aanvragen = get_e_aanvragen(user["id"])
+        aanvragen = get_e_aanvragen(request.bsn)
         return success_response_json(aanvragen)
 
 
-@app.route(f"/{FOCUS_DOCUMENT_PATH}", methods=["GET"])
-@auth.login_required
+@app.route(f"/{FOCUS_DOCUMENT_PATH}", methods=["POST"])
+@api_key_auth
+@ensure_bsn
 def document():
     with tracer.start_as_current_span("/document"):
-        user = auth.get_current_user()
         id = request.args.get("id", None)
         isBulk = request.args.get("isBulk", "false").lower() == "true"
         isDms = request.args.get("isDms", "false").lower() == "true"
 
-        document = get_document(user["id"], id, isBulk, isDms)
+        document = get_document(request.bsn, id, isBulk, isDms)
 
         response = Response(
             response=document["document_content"],
@@ -87,8 +125,9 @@ def document():
         return response
 
 
-@app.route(f"{API_BASE_PATH}/uitkering/specificaties-en-jaaropgaven", methods=["GET"])
-@auth.login_required
+@app.route(f"{API_BASE_PATH}/uitkering/specificaties-en-jaaropgaven", methods=["POST"])
+@api_key_auth
+@ensure_bsn
 def specificaties_en_jaaropgaven():
     with tracer.start_as_current_span("/specificaties-en-jaaropgaven"):
         user = auth.get_current_user()
@@ -105,14 +144,12 @@ def specificaties_en_jaaropgaven():
 def handle_error(error):
     error_message_original = f"{type(error)}:{str(error)}"
 
-    msg_auth_exception = "Auth error occurred"
     msg_request_http_error = "Request error occurred"
     msg_server_error = "Server error occurred"
 
     logging.exception(error, extra={"error_message_original": error_message_original})
 
     if IS_OT:  # pragma: no cover
-        msg_auth_exception = error_message_original
         msg_request_http_error = error_message_original
         msg_server_error = error_message_original
 
@@ -121,8 +158,6 @@ def handle_error(error):
             msg_request_http_error,
             error.response.status_code,
         )
-    elif auth.is_auth_exception(error):
-        return error_response_json(msg_auth_exception, 401)
 
     return error_response_json(
         msg_server_error,
