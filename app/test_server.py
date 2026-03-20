@@ -12,7 +12,7 @@ TEST_BSN = 12312312399
 API_KEY = "dev-api-key"
 
 
-def post_good_request(client, path, json_data=None):
+def post_with_bsn(client, path, json_data=None):
     return client.post(
         path, json=json_data or {"bsn": TEST_BSN}, headers={"x-api-key": API_KEY}
     )
@@ -45,7 +45,7 @@ class WPITestServer(unittest.TestCase):
             TestFocusBijstandAanvraag.product_transformed
         ]
 
-        response = post_good_request(self.client, "/wpi/uitkering/aanvragen")
+        response = post_with_bsn(self.client, "/wpi/uitkering/aanvragen")
         response_json = response.get_json()
 
         get_aanvragen_mock.assert_called_with(TEST_BSN)
@@ -65,7 +65,7 @@ class WPITestServer(unittest.TestCase):
     def test_e_aanvragen(self, get_e_aanvragen_mock):
         get_e_aanvragen_mock.return_value = example_result
 
-        response = post_good_request(self.client, "/wpi/e-aanvragen")
+        response = post_with_bsn(self.client, "/wpi/e-aanvragen")
         response_json = response.get_json()
 
         get_e_aanvragen_mock.assert_called_with(TEST_BSN)
@@ -80,7 +80,7 @@ class WPITestServer(unittest.TestCase):
             "mime_type": "application/pdf",
         }
 
-        response = post_good_request(
+        response = post_with_bsn(
             self.client,
             "/wpi/document?id=test-id-xcfg&isDms=False&isBulk=True",
         )
@@ -115,7 +115,7 @@ class WPITestServer(unittest.TestCase):
         )
         get_jaaropgaven_mock.return_value = [jaaropgave]
 
-        response = post_good_request(
+        response = post_with_bsn(
             self.client, "/wpi/uitkering/specificaties-en-jaaropgaven"
         )
         response_json = response.get_json()
