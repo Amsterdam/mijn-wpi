@@ -1,10 +1,21 @@
 import datetime
 import os
+import unittest
 from unittest.mock import patch
+from zoneinfo import ZoneInfo
 
-from app.test_app import WpiApiTestApp
+from app.server import app
 from app.test_focus_service_aanvragen import TestFocusBijstandAanvraag
 from app.test_focus_service_e_aanvraag import example_result
+
+TEST_BSN = 12312312399
+API_KEY = "dev-api-key"
+
+
+def post_good_request(client, path, json_data=None):
+    return client.post(
+        path, json=json_data or {"bsn": TEST_BSN}, headers={"x-api-key": API_KEY}
+    )
 
 
 @patch.dict(
@@ -15,9 +26,14 @@ from app.test_focus_service_e_aanvraag import example_result
         "MA_OTAP_ENV": "unittesting",
     },
 )
-class WPITestServer(WpiApiTestApp):
+class WPITestServer(unittest.TestCase):
+    def setUp(self):
+        self.app = app
+        self.app.config["TESTING"] = True
+        self.client = self.app.test_client()
+
     def test_status(self):
-        response = self.client.get("/status/health")
+        response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.data.decode(),
@@ -30,17 +46,17 @@ class WPITestServer(WpiApiTestApp):
             TestFocusBijstandAanvraag.product_transformed
         ]
 
-        response = self.get_secure("/wpi/uitkering/aanvragen")
+        response = post_good_request(self.client, "/wpi/uitkering/aanvragen")
         response_json = response.get_json()
 
-        get_aanvragen_mock.assert_called_with(self.TEST_BSN)
+        get_aanvragen_mock.assert_called_with(TEST_BSN)
 
         self.assertEqual(
             response_json["content"], [TestFocusBijstandAanvraag.product_transformed]
         )
 
     def test_aanvragen_fail(self):
-        response = self.client.get("/wpi/uitkering/aanvragen")
+        response = self.client.post("/wpi/uitkering/aanvragen")
         response_json = response.get_json()
 
         self.assertEqual(response.status_code, 401)
@@ -50,10 +66,10 @@ class WPITestServer(WpiApiTestApp):
     def test_e_aanvragen(self, get_e_aanvragen_mock):
         get_e_aanvragen_mock.return_value = example_result
 
-        response = self.get_secure("/wpi/e-aanvragen")
+        response = post_good_request(self.client, "/wpi/e-aanvragen")
         response_json = response.get_json()
 
-        get_e_aanvragen_mock.assert_called_with(self.TEST_BSN)
+        get_e_aanvragen_mock.assert_called_with(TEST_BSN)
 
         self.assertEqual(response_json["content"], example_result)
 
@@ -65,11 +81,12 @@ class WPITestServer(WpiApiTestApp):
             "mime_type": "application/pdf",
         }
 
-        response = self.get_secure(
+        response = post_good_request(
+            self.client,
             "/wpi/document?id=test-id-xcfg&isDms=False&isBulk=True",
         )
 
-        get_document_mock.assert_called_with(self.TEST_BSN, "test-id-xcfg", True, False)
+        get_document_mock.assert_called_with(TEST_BSN, "test-id-xcfg", True, False)
 
         self.assertEqual(
             response.headers["Content-Disposition"],
@@ -99,10 +116,12 @@ class WPITestServer(WpiApiTestApp):
         )
         get_jaaropgaven_mock.return_value = [jaaropgave]
 
-        response = self.get_secure("/wpi/uitkering/specificaties-en-jaaropgaven")
+        response = post_good_request(
+            self.client, "/wpi/uitkering/specificaties-en-jaaropgaven"
+        )
         response_json = response.get_json()
 
-        get_jaaropgaven_mock.assert_called_with(self.TEST_BSN)
+        get_jaaropgaven_mock.assert_called_with(TEST_BSN)
 
         self.assertEqual(
             response_json["content"],

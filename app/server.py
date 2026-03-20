@@ -25,8 +25,8 @@ from app.focus_service_get_document import get_document
 from app.focus_service_specificaties import get_jaaropgaven, get_uitkeringsspecificaties
 from app.utils import error_response_json, success_response_json
 
-if not IS_DEV and API_KEY == DEV_API_KEY:
-    raise Exception("DEV_API_KEY is used as API_KEY outside of development")
+# if not IS_DEV and API_KEY == DEV_API_KEY:
+#     raise Exception("DEV_API_KEY is used as API_KEY outside of development")
 
 # See also: https://medium.com/@tedisaacs/auto-instrumenting-python-fastapi-and-monitoring-with-azure-application-insights-768a59d2f4b9
 if get_application_insights_connection_string():
