@@ -13,7 +13,6 @@ from app.config import (
     API_BASE_PATH,
     API_KEY,
     DEV_API_KEY,
-    IS_DEV,
     IS_OT,
     UpdatedJSONProvider,
     get_application_insights_connection_string,

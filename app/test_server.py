@@ -2,7 +2,6 @@ import datetime
 import os
 import unittest
 from unittest.mock import patch
-from zoneinfo import ZoneInfo
 
 from app.server import app
 from app.test_focus_service_aanvragen import TestFocusBijstandAanvraag
