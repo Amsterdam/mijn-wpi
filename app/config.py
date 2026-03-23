@@ -14,8 +14,11 @@ OTAP_ENV = os.getenv("MA_OTAP_ENV")
 # Environment determination
 IS_PRODUCTION = OTAP_ENV == "production"
 IS_ACCEPTANCE = OTAP_ENV == "acceptance"
-IS_DEV = OTAP_ENV == "development"
+IS_DEV = os.getenv("FLASK_ENV", "production") == "development"
 IS_TEST = OTAP_ENV == "test"
+
+DEV_API_KEY = "dev-api-key"
+API_KEY = os.getenv("MA_API_KEY", DEV_API_KEY)
 
 IS_TAP = IS_PRODUCTION or IS_ACCEPTANCE or IS_TEST
 IS_AP = IS_ACCEPTANCE or IS_PRODUCTION
