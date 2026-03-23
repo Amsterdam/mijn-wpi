@@ -3,12 +3,18 @@ import os
 import unittest
 from unittest.mock import patch
 
-from app.server import app
+from app import config
 from app.test_focus_service_aanvragen import TestFocusBijstandAanvraag
 from app.test_focus_service_e_aanvraag import example_result
 
 TEST_BSN = 12312312399
-API_KEY = "dev-api-key"
+API_KEY = "test-api-key"
+
+config.API_KEY = API_KEY
+
+# Prevent app.server being evaluated and API_KEY being the dev DEV_API_KEY.
+# When that is the case an error is thrown which will make running tests impossible.
+from app.server import app  # noqa: E402
 
 
 def post_with_bsn(client, path, json_data=None):
@@ -27,8 +33,7 @@ def post_with_bsn(client, path, json_data=None):
 )
 class WPITestServer(unittest.TestCase):
     def setUp(self):
-        self.app = app
-        self.client = self.app.test_client()
+        self.client = app.test_client()
 
     def test_status(self):
         response = self.client.get("/status/health")
