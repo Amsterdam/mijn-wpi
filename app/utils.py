@@ -53,4 +53,5 @@ def handle_soap_service_error(error):
         extra = extra_default
         error = "Focus connection failure"
 
+    print(error_string)
     logging.error(error, extra=extra)
