@@ -251,7 +251,6 @@ def get_aanvragen(bsn):
         handle_soap_service_error(error)
         return aanvragen
 
-
     for product_group in all_aanvragen["soortProduct"]:
         print(f"{product_group['naam']}:")
         if product_group["naam"] in FOCUS_PRODUCT_GROUPS_ALLOWED:
