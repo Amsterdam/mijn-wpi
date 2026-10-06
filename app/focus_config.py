@@ -10,7 +10,7 @@ FOCUS_PASSWORD = os.getenv("FOCUS_PASSWORD")
 
 FOCUS_DOCUMENT_PATH = f"{API_BASE_PATH[1:]}/document"
 
-FOCUS_PRODUCTS_ALLOWED = ["Levensonderhoud"]
+FOCUS_PRODUCTS_ALLOWED = ["Levensonderhoud", "Verhuiskosten (Eenm.)", "BB inc. Huisraad e.d.", "BB inc. Waarborgsom"]
 FOCUS_PRODUCT_GROUPS_ALLOWED = ["Minimafonds", "Participatiewet", "	Bijzondere Bijstand"]
 
 # NOTE: We probably need more up-to-date translations.
