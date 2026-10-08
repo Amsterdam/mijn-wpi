@@ -9,6 +9,7 @@ E_AANVRAAG_ABOUT = {
     "TONK": "TONK",
     "IOAZ": "IOAZ",
     "Bbz": "Bbz",
+    "Abb": "ABB",
 }
 
 E_ABOUT_SPECIFIC_UITKERING = "uitkering"
@@ -972,4 +973,20 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
         "step_id": E_AANVRAAG_STEP_ID["algemeenBatchDocument"],
         "is_active": True,
     },
+    # Aanvragen Bijzonder Bijstand
+    "669": {
+        "omschrijving": "Wij hebben u een brief gestuurd. Bekijk de brief voor meer details.",
+        "document_title": "Brief ABB",
+        "about": E_AANVRAAG_ABOUT["Abb"],
+        "step_id": E_AANVRAAG_STEP_ID["algemeenBatchDocument"],
+        "is_active": True,
+    },
 }
+# omschrijving: Original name of document
+# document_title: Mijn Amsterdam name of document
+# about: See $E_AANVRAAG_ABOUT,
+# about_parent: See $E_AANVRAAG_ABOUT,
+# about_specific: More specific type of about. "$about Uitkering" | "$about Lening"
+# step_id: See $E_AANVRAAG_STEP_ID,
+# decision: See $E_AANVRAAG_DECISION_ID
+# is_active: Boolean False = Not included in API response
