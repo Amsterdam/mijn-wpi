@@ -39,6 +39,7 @@ class FocusServiceEAanvraag(TestCase):
                 "Tozo 5": [],
                 "TONK": [],
                 "Bbz": [],
+                "ABB": [],
             },
         )
 
