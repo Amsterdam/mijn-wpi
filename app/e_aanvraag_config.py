@@ -9,7 +9,7 @@ E_AANVRAAG_ABOUT = {
     "TONK": "TONK",
     "IOAZ": "IOAZ",
     "Bbz": "Bbz",
-    "Abb": "ABB",
+    "ABB": "ABB",
 }
 
 E_ABOUT_SPECIFIC_UITKERING = "uitkering"
@@ -23,6 +23,7 @@ E_AANVRAAG_PRODUCT_TITLES = {
     E_AANVRAAG_ABOUT["Tozo 5"]: "Tozo 5 (aangevraagd vanaf 1 juli 2021)",
     E_AANVRAAG_ABOUT["TONK"]: "TONK",
     E_AANVRAAG_ABOUT["Bbz"]: "Bbz",
+    E_AANVRAAG_ABOUT["ABB"]: "ABB",
 }
 
 E_AANVRAAG_STEP_COLLECTION_IDS = list(E_AANVRAAG_PRODUCT_TITLES.keys())
@@ -977,7 +978,7 @@ E_AANVRAAG_DOCUMENT_CONFIG = {
     "669": {
         "omschrijving": "Wij hebben u een brief gestuurd. Bekijk de brief voor meer details.",
         "document_title": "Brief ABB",
-        "about": E_AANVRAAG_ABOUT["Abb"],
+        "about": E_AANVRAAG_ABOUT["ABB"],
         "step_id": E_AANVRAAG_STEP_ID["algemeenBatchDocument"],
         "is_active": True,
     },
