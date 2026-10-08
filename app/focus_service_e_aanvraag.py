@@ -233,6 +233,8 @@ def get_e_aanvragen_raw(bsn):
 
     try:
         response = get_client().service.getEAanvraagTOZO(bsn)
+        print('raw e-aanvragen response:')
+        print(response)
         e_aanvragen = response["documentgegevens"] if response else []
     except Exception as error:
         handle_soap_service_error(error)
@@ -242,6 +244,8 @@ def get_e_aanvragen_raw(bsn):
 
 def get_e_aanvragen(bsn):
     e_aanvragen = get_e_aanvragen_raw(bsn)
+    print('e-aanvragen:')
+    print(e_aanvragen)
 
     if not e_aanvragen:
         return []
