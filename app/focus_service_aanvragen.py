@@ -247,6 +247,7 @@ def get_aanvragen(bsn):
 
     try:
         all_aanvragen = get_client().service.getAanvragen(bsn)
+        print(all_aanvragen)
     except Exception as error:
         handle_soap_service_error(error)
         return aanvragen
