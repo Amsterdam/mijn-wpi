@@ -245,6 +245,7 @@ def get_aanvragen_raw(bsn):
     try:
         return get_client().service.getAanvragen(bsn)
     except Exception as error:
+        print(str(error))
         handle_soap_service_error(error)
         return []
 
@@ -254,16 +255,13 @@ def get_aanvragen(bsn):
 
     try:
         all_aanvragen = get_client().service.getAanvragen(bsn)
-        print(all_aanvragen)
     except Exception as error:
         handle_soap_service_error(error)
         return aanvragen
 
     for product_group in all_aanvragen["soortProduct"]:
-        print(f"{product_group['naam']}:")
         if product_group["naam"] in FOCUS_PRODUCT_GROUPS_ALLOWED:
             for product_aanvraag in product_group["product"]:
-                print(product_aanvraag["naam"])
                 if product_aanvraag["naam"] in FOCUS_PRODUCTS_ALLOWED:
                     aanvragen.append(product_aanvraag)
 
