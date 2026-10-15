@@ -249,6 +249,7 @@ def get_aanvragen_raw(bsn):
         handle_soap_service_error(error)
         return []
 
+
 def get_aanvragen(bsn):
     all_aanvragen = []
     aanvragen = []

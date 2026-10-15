@@ -1,7 +1,6 @@
 import functools
 import logging
 import os
-import re
 from urllib.error import HTTPError
 
 from azure.monitor.opentelemetry import configure_azure_monitor
@@ -93,6 +92,7 @@ def aanvragen():
         aanvragen = get_aanvragen(request.bsn)
         return success_response_json(aanvragen)
 
+
 @app.route(f"{API_BASE_PATH}/uitkering/aanvragen/raw", methods=["POST"])
 @api_key_auth
 @ensure_bsn
@@ -112,6 +112,7 @@ def e_aanvragen():
     with tracer.start_as_current_span("/e-aanvragen"):
         aanvragen = get_e_aanvragen(request.bsn)
         return success_response_json(aanvragen)
+
 
 @app.route(f"{API_BASE_PATH}/e-aanvragen/raw", methods=["POST"])
 @api_key_auth

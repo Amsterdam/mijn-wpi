@@ -29,6 +29,7 @@ def to_date(date_input):
 
 
 def default_if_none(data, key, default):
+    value = None
     if data and key in data:
         value = data[key]
     return default if value is None else value
