@@ -1,6 +1,7 @@
 import functools
 import logging
 import os
+import re
 from urllib.error import HTTPError
 
 from azure.monitor.opentelemetry import configure_azure_monitor
@@ -117,7 +118,7 @@ def e_aanvragen():
 @ensure_bsn
 def e_aanvragen_raw():
     if IS_PRODUCTION:
-      return error_response_json("Access to raw e_aanvragen is not allowed in production.", code=403)
+        return error_response_json("Access to raw e_aanvragen is not allowed in production.", code=403)
     with tracer.start_as_current_span("/e-aanvragen/raw"):
         aanvragen_raw = get_e_aanvragen_raw(request.bsn)
         return success_response_json(aanvragen_raw)
