@@ -1,5 +1,6 @@
 import hashlib
 import logging
+from zeep.helpers import serialize_object
 
 from app.e_aanvraag_config import (
     E_AANVRAAG_DOCUMENT_CONFIG,
@@ -229,23 +230,16 @@ def collect_and_transform_status_steps(e_aanvragen):
 
 
 def get_e_aanvragen_raw(bsn):
-    e_aanvragen = []
-
     try:
         response = get_client().service.getEAanvraagTOZO(bsn)
-        print('raw e-aanvragen response:')
-        print(response)
-        e_aanvragen = response["documentgegevens"] if response else []
+        response = serialize_object(response) if response else {}
+        return response.get("documentgegevens", [])
     except Exception as error:
         handle_soap_service_error(error)
-
-    return e_aanvragen
 
 
 def get_e_aanvragen(bsn):
     e_aanvragen = get_e_aanvragen_raw(bsn)
-    print('e-aanvragen:')
-    print(e_aanvragen)
 
     if not e_aanvragen:
         return []

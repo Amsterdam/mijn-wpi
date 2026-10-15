@@ -4,6 +4,7 @@ import hashlib
 from requests import ConnectionError, Session
 from requests.auth import HTTPBasicAuth
 from zeep import Client, Settings
+from zeep.helpers import serialize_object
 from zeep.transports import Transport
 
 from app.config import (
@@ -243,9 +244,9 @@ def transform_product(product):
 
 def get_aanvragen_raw(bsn):
     try:
-        return get_client().service.getAanvragen(bsn)
+        response = get_client().service.getAanvragen(bsn)
+        return serialize_object(response)
     except Exception as error:
-        print(str(error))
         handle_soap_service_error(error)
         return []
 
