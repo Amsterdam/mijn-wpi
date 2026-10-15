@@ -15,12 +15,13 @@ from app.config import (
     DEV_API_KEY,
     IS_DEV,
     IS_OT,
+    IS_PRODUCTION,
     UpdatedJSONProvider,
     get_application_insights_connection_string,
 )
 from app.focus_config import FOCUS_DOCUMENT_PATH
-from app.focus_service_aanvragen import get_aanvragen
-from app.focus_service_e_aanvraag import get_e_aanvragen
+from app.focus_service_aanvragen import get_aanvragen, get_aanvragen_raw
+from app.focus_service_e_aanvraag import get_e_aanvragen, get_e_aanvragen_raw
 from app.focus_service_get_document import get_document
 from app.focus_service_specificaties import get_jaaropgaven, get_uitkeringsspecificaties
 from app.utils import error_response_json, success_response_json
@@ -91,6 +92,17 @@ def aanvragen():
         aanvragen = get_aanvragen(request.bsn)
         return success_response_json(aanvragen)
 
+@app.route(f"{API_BASE_PATH}/uitkering/aanvragen/raw", methods=["POST"])
+@api_key_auth
+@ensure_bsn
+def aanvragen_raw():
+    if IS_PRODUCTION:
+        return error_response_json("Access to raw aanvragen is not allowed in production.", code=403)
+
+    with tracer.start_as_current_span("/aanvragen/raw"):
+        aanvragen_raw = get_aanvragen_raw(request.bsn)
+        return success_response_json(aanvragen_raw)
+
 
 @app.route(f"{API_BASE_PATH}/e-aanvragen", methods=["POST"])
 @api_key_auth
@@ -99,6 +111,16 @@ def e_aanvragen():
     with tracer.start_as_current_span("/e-aanvragen"):
         aanvragen = get_e_aanvragen(request.bsn)
         return success_response_json(aanvragen)
+
+@app.route(f"{API_BASE_PATH}/e-aanvragen/raw", methods=["POST"])
+@api_key_auth
+@ensure_bsn
+def e_aanvragen_raw():
+    if IS_PRODUCTION:
+      return error_response_json("Access to raw e_aanvragen is not allowed in production.", code=403)
+    with tracer.start_as_current_span("/e-aanvragen/raw"):
+        aanvragen_raw = get_e_aanvragen_raw(request.bsn)
+        return success_response_json(aanvragen_raw)
 
 
 @app.route(f"/{FOCUS_DOCUMENT_PATH}", methods=["POST"])

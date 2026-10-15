@@ -241,6 +241,13 @@ def transform_product(product):
     return product_transformed
 
 
+def get_aanvragen_raw(bsn):
+    try:
+        return get_client().service.getAanvragen(bsn)
+    except Exception as error:
+        handle_soap_service_error(error)
+        return []
+
 def get_aanvragen(bsn):
     all_aanvragen = []
     aanvragen = []
