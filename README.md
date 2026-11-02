@@ -6,6 +6,7 @@ Mijn-WPI API
 Deze api levert de volgende data:
 
 - Bijstandsuitkeringaanvragen met bijbehorende status updates.
+- Aanvragen voor bijzondere bijstand met bijbehorende status updates.
 - Aanvragen voor Tozo 1-5, Bbz en TONK met bijbehorende status updates.
 
 ### Local env
