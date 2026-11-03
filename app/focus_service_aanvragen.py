@@ -254,10 +254,7 @@ def get_aanvragen(bsn):
     for product_group in all_aanvragen["soortProduct"]:
         if product_group["naam"] in FOCUS_PRODUCT_GROUPS_ALLOWED:
             for product_aanvraag in product_group["product"]:
-                if (
-                    product_group["naam"] == "Bijzondere Bijstand"
-                    or product_aanvraag["naam"] in FOCUS_PRODUCTS_ALLOWED
-                ):
+                if product_aanvraag["naam"] in FOCUS_PRODUCTS_ALLOWED:
                     aanvragen.append(product_aanvraag)
 
     product_aanvragen = [

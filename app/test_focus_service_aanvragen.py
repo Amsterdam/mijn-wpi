@@ -154,13 +154,13 @@ class TestFocusBijstandAanvraag(TestCase):
     @patch("app.focus_service_aanvragen.get_client")
     def test_get_bijzondere_bijstand_aanvraag(self, get_client_mock):
         bijzondere_bijstand = deepcopy(self.product_source)
-        bijzondere_bijstand["naam"] = "BB inc. Huisraad e.d."
+        bijzondere_bijstand["naam"] = "Bijzondere Bijstand"
         mock_client = MockClient(
             name="getAanvragen",
             response={
                 "soortProduct": [
                     {
-                        "naam": "Bijzondere Bijstand",
+                        "naam": "Participatiewet",
                         "product": [bijzondere_bijstand],
                     }
                 ]
@@ -172,8 +172,8 @@ class TestFocusBijstandAanvraag(TestCase):
 
         mock_client.service.getAanvragen.assert_called_with(self.bsn)
         self.assertEqual(len(response), 1)
-        self.assertEqual(response[0]["title"], "BB inc. Huisraad e.d.")
-        self.assertEqual(response[0]["about"], "BB inc. Huisraad e.d.")
+        self.assertEqual(response[0]["title"], "Bijzondere Bijstand")
+        self.assertEqual(response[0]["about"], "Bijzondere Bijstand")
         self.assertEqual(response[0]["statusId"], "besluit")
 
 
