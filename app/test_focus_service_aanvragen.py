@@ -160,7 +160,7 @@ class TestFocusBijstandAanvraag(TestCase):
             response={
                 "soortProduct": [
                     {
-                        "naam": "Participatiewet",
+                        "naam": "Bijzondere Bijstand",
                         "product": [bijzondere_bijstand],
                     }
                 ]
