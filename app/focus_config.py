@@ -12,8 +12,9 @@ FOCUS_DOCUMENT_PATH = f"{API_BASE_PATH[1:]}/document"
 
 FOCUS_PRODUCTS_ALLOWED = ["Levensonderhoud", "Bijzondere Bijstand"]
 FOCUS_PRODUCT_GROUPS_ALLOWED = [
+    "Bijzondere Bijstand",
     "Minimafonds",
-    "Participatiewet",
+    "Participatiewet"
 ]
 
 # NOTE: We probably need more up-to-date translations.
