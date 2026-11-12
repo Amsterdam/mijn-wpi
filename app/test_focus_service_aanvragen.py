@@ -1,4 +1,5 @@
 import datetime
+from copy import deepcopy
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -149,6 +150,31 @@ class TestFocusBijstandAanvraag(TestCase):
 
         product = response[0]
         self.assertEqual(product, self.product_transformed)
+
+    @patch("app.focus_service_aanvragen.get_client")
+    def test_get_bijzondere_bijstand_aanvraag(self, get_client_mock):
+        bijzondere_bijstand = deepcopy(self.product_source)
+        bijzondere_bijstand["naam"] = "Bijzondere Bijstand"
+        mock_client = MockClient(
+            name="getAanvragen",
+            response={
+                "soortProduct": [
+                    {
+                        "naam": "Bijzondere Bijstand",
+                        "product": [bijzondere_bijstand],
+                    }
+                ]
+            },
+        )
+        get_client_mock.return_value = mock_client
+
+        response = get_aanvragen(bsn=self.bsn)
+
+        mock_client.service.getAanvragen.assert_called_with(self.bsn)
+        self.assertEqual(len(response), 1)
+        self.assertEqual(response[0]["title"], "Bijzondere Bijstand")
+        self.assertEqual(response[0]["about"], "Bijzondere Bijstand")
+        self.assertEqual(response[0]["statusId"], "besluit")
 
 
 class TestFocusService(TestCase):
